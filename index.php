@@ -1,4 +1,6 @@
 <?php
+	echo "dest deneme";
+die;
     define('ONLINE', 1);
     define('CORE', 1);
     

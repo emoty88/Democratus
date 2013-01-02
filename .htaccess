@@ -3,14 +3,14 @@
     RewriteEngine On
     RewriteBase /
 
-    # RewriteCond %{HTTP_HOST} ^democratusala.com [NC]
-    # RewriteCond %{HTTP_HOST} !^democratusala.com [NC]
+    # RewriteCond %{HTTP_HOST} ^democ.com [NC]
+    # RewriteCond %{HTTP_HOST} !^democ.com [NC]
 
-    # RewriteRule ^(.*)$ http://democratusala.com%{REQUEST_URI} [R=301,L]
+    # RewriteRule ^(.*)$ http://democ.com%{REQUEST_URI} [R=301,L]
     
     
-    RewriteCond %{HTTP_HOST} !^democratusala\.com$ [NC]
-    RewriteRule ^(.*)$ http://democratusala.com/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} !^democ\.com$ [NC]
+    RewriteRule ^(.*)$ http://democ.com/$1 [R=301,L]
 
     
 
