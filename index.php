@@ -53,7 +53,7 @@
         define('DB_USER', 'cafeincampusorg');
         define('DB_PASSWORD', "Tr45J9");
         //define('DB_PASSWORD', '');
-        define('DB_HOST', 'cafeincampus.org');
+      	define('DB_HOST', '178.63.46.159');
     }
     /* 
     define('DB_NAME', $_SERVER['DB_NAME']);
