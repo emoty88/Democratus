@@ -1,0 +1,32 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+    RewriteBase /
+
+    # RewriteCond %{HTTP_HOST} ^democratusala.com [NC]
+    # RewriteCond %{HTTP_HOST} !^democratusala.com [NC]
+
+    # RewriteRule ^(.*)$ http://democratusala.com%{REQUEST_URI} [R=301,L]
+    
+    
+    RewriteCond %{HTTP_HOST} !^democratusala\.com$ [NC]
+    RewriteRule ^(.*)$ http://democratusala.com/$1 [R=301,L]
+
+    
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule .* index.php [L]
+    
+</IfModule>
+
+
+
+
+
+
+
+
+
+
