@@ -1,0 +1,176 @@
+body {
+        background-color:#962b2b;
+      }
+	  #welcomeCenter
+	  {
+		display: none;		
+		position:absolute;
+		z-index:0;
+	  }	  
+	  #logo
+	  {
+		display: none;		
+		position:absolute;
+		z-index:10;
+	  }	 
+	  #motto
+	  {
+		display: none;		
+		position:absolute;
+		z-index:20;
+	  } 
+	  #form
+	  {
+		display: none;		
+		position:absolute;
+		z-index:20;
+		width:285px;
+	  }
+	  #formLogin
+	  {
+		display: none;		
+		position:absolute;
+		z-index:20;
+		width:285px;
+	  }
+	  #welcomeSocialBtn
+	  {
+	  	position:absolute;
+		display: none;
+	  	width: 285px;
+	  	margin-left:auto;
+	  	margin-right:auto;
+	    top: 250px;
+	  }
+	  #faceicon
+	  {
+		width:138px;
+		height:23px;
+		background-image:url(http://ofistesenlik.com/t/v2/static/images/faceIcon.png);
+		cursor:pointer;
+		float:left;
+	  }
+	  #faceicon:hover
+	  {
+		background-image:url(http://ofistesenlik.com/t/v2/static/images/faceIcon.png);
+		background-position:0 -26px; 
+	  }
+	  #twittericon
+	  {
+		width:138px;
+		height:23px;
+		background-image:url(http://ofistesenlik.com/t/v2/static/images/twitterIcon.png);
+		cursor:pointer;
+		float:right;
+	  }
+	  #twittericon:hover
+	  {
+		background-image:url(http://ofistesenlik.com/t/v2/static/images/twitterIcon.png);
+		background-position:0 -26px; 
+	  }
+	  input
+	  {
+		margin-top:10px;
+		margin-bottom:0px;
+		width:275px;
+		background-color:#dddddd;
+	  	
+	  }	 
+	  [type=text]
+	  {
+		color:#666666;
+	  	font-family: Myriad Pro;
+		text-shadow: 1px 1px 0px #fff;
+	  } 
+	  #selectB
+	  {
+		width:285px;
+		background-color:#dddddd;
+		margin-top:10px;
+		margin-bottom:0px;
+	  }
+	  .dlink
+	  {
+		margin-top:10px;
+		color:#ddd;
+		font-weight:bold;
+	  }	  
+	  .dlink:hover
+	  {
+		color:#ccc;
+		font-weight:bold;
+	  }
+	  .girisBtn
+	  {
+		background-color: #DA6E55;
+		border-color: #DA6E55;
+		color: #FFFFFF;
+		font-size: 12pt;
+		width: 285px;
+	  }
+	  .kaydolBtn
+	  {
+		background-color: #5f8e39;
+		border-color: #5f8e39;
+		color: #FFFFFF;
+		font-size: 12pt;
+		width: 285px;
+	  }
+	  #so
+	  {
+		float:left;
+		margin-top:10px;
+		margin-rigth:5px;
+		background: url(http://ofistesenlik.com/t/v2/static/images/faceIcon.png) no-repeat;
+	  }
+	  #soLabel
+	  {
+		color:#ccc;
+		float:left;
+		font-size:11px;
+		margin-left:5px;
+		margin-top:7px;
+	  }
+	  .checkbox {
+			width: 20px;
+			height: 20px;
+			padding: 0 5px 0 0;
+			margin-top:6px;
+			background: url(http://ofistesenlik.com/t/v2/static/images/checkboxBg.png) no-repeat;
+			display: block;
+			clear: left;
+			float: left;
+		}
+		#changeButon
+		{
+			display:none;
+			float:right;
+			margin-right:25px;
+		}
+		#changeButon input
+		{
+			width:100px;
+		}
+		.footer
+		{
+			width:100%;
+			margin-left:auto;
+			margin-right:auto;
+			margin-top:525px;
+			text-align:center;
+			z-index:40;
+		}
+		.footerContent
+		{
+			width:775px;
+			margin-left:auto;
+			margin-right:auto;
+			text-align:left;
+		}
+		a 
+		{
+		 color:#ccc;
+		}a:hover
+		{
+		 color:#ccc;
+		}

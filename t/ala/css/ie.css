@@ -1,0 +1,33 @@
+/**
+ * Democratus.com - Web Sitesi Projesi
+ *
+ * Copyright 2012 Atolye15.com
+ *
+ * @tasarım    Atölye15 <bilgi@atolye15.com>
+ * @css        Ömür Yanıkoğlu <webmaster@hayatbiralem.com>
+ */
+
+.lt-ie9 .bilesen .bilesen_icerigi { background-color: rgb(88, 88, 88); }
+.lt-ie9 .bilesen.beyaz .bilesen_icerigi { background-color: #F6F6F6; }
+
+.lt-ie9 .duvar_yazilari .duvar_yazisi:first-child { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d8d8', endColorstr='#ffffff',GradientType=0 ); }
+.lt-ie9 .gradyan_dolgu_1 { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#962627', endColorstr='#9d292a',GradientType=0 ); }
+.lt-ie9 .gradyan_dolgu_2 { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9d292a', endColorstr='#962627',GradientType=0 ); }
+.lt-ie9 #ana_menu > .acilir_menu_tutucu:hover { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#676767',GradientType=0 ); }
+.lt-ie9 #yeni_yazi_yaz { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#ffffff',GradientType=0 ); }
+.lt-ie9 .bilesen header { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#c5c5c5',GradientType=0 ); }
+.lt-ie9 .bilesen.kirmizi .kontroller .sayfaya_git .etiket { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#912627', endColorstr='#c44142',GradientType=0 ); }
+.lt-ie9 .alt_menu > li > a { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#2e2e2e',GradientType=0 ); }
+.lt-ie9 .alt_menu > li > a:hover { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6e6e6e', endColorstr='#585858',GradientType=0 ); }
+.lt-ie9 .alt_menu > li.aktif > a { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#868686', endColorstr='#ffffff',GradientType=0 ); }
+.lt-ie9 .kalan_zaman_ic { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dedede', endColorstr='#cacaca',GradientType=0 ); }
+.lt-ie9 .bilesen .kontroller .sayfaya_git .etiket { filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#161616', endColorstr='#585858',GradientType=0 ); }
+.lt-ie9 .bilesen.beyaz .kontroller .sayfaya_git .etiket { background-color: #F6F6F6; filter:none; }
+.lt-ie9 .duvar_yazisi.anket .anket_tutucu_arkaplan { border-bottom-width: 1px; background-color: rgb( 242, 201, 199 ); }
+.lt-ie9 .yorumlar .yorum .yorum_tutucu_arkaplan { border-bottom-width: 1px; background-color: #fff; }
+.lt-ie9 .suslu_dosya_yukle_dugmesi input[type="file"] { filter: alpha(opacity=0); }
+
+.lt-ie9 #atolye15 .mesajlar_listesi > li a.hoverlay { filter: alpha(opacity=0); }
+.lt-ie9 #atolye15 .mesajlar_listesi > li a.hoverlay:hover { filter: alpha(opacity=20); }
+
+.lt-ie9 {  }

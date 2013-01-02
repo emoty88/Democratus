@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<title>Democratus</title>
+		
+		<!-- CASCADING STYLE SHEETS [BEGIN] -->
+		<link type="text/css" rel="stylesheet" href="static/style/reset.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/generic.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/boxes.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/popup.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/selectbox.css" />
+		<!--[if IE 7]>
+			<style type="text/css">
+				#profile_information input { margin-left: -7px ; padding-top: 8px !important; height: 21px; }
+			</style>
+		<![endif]-->
+		<!--[if IE 8]>
+			<style type="text/css">
+				#profile_information input {  padding-top: 8px !important; height: 21px; }
+				#profile_information input[type='password'] { font-size: 12px !important; }
+			</style>
+		<![endif]-->
+		<!-- CASCADING STYLE SHEETS [END] -->
+		
+		<!-- JAVASCRIPTS [BEGIN] -->
+		<script type="text/javascript" src="http://use.typekit.com/yqj2pnd.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		
+		<script type="text/javascript" src="static/javascript/jquery.js"></script>
+		<script type="text/javascript" src="static/javascript/cufon.js"></script>
+		<script type="text/javascript" src="static/javascript/ronnia.js"></script>
+		<script type="text/javascript" src="static/javascript/popup.js"></script>
+		<script type="text/javascript" src="static/javascript/slider.js"></script>
+		<script type="text/javascript" src="static/javascript/checkbox.js"></script>
+		<script type="text/javascript" src="static/javascript/selectbox.js"></script>
+		<script type="text/javascript" src="static/javascript/generic.js"></script>
+		<script type="text/javascript">
+			$(function () {
+				$("#country, #city, #visibility").selectbox();
+				
+				$('input:checkbox').screwDefaultButtons({
+					checked: 	"url(static/image/form/checkbox_focus.png)",
+					unchecked:	"url(static/image/form/checkbox.png)",
+					width:		18,
+					height:		17
+				});
+			});
+		</script>
+		<!-- JAVASCRIPTS [END] -->
+		
+		<!--[if IE]>
+			<script type="text/javascript" src="static/javascript/corners.js"></script>
+			<script type="text/javascript">
+				curvyCorners.addEvent(window, 'load', initCorners);
+				function initCorners()
+				{
+					var settings = {
+						tl: { radius: 5 },
+						tr: { radius: 5 },
+						bl: { radius: 5 },
+						br: { radius: 5 },
+						antiAlias: true }
+
+					curvyCorners(settings, '.box');
+					curvyCorners(settings, '.main');
+					
+			  	}
+			</script>
+		<![endif]-->
+
+	</head>
+	
+	<body>
+		
+		<!-- DEMOCRATUS POPUP [BEGIN] -->
+		
+			<!-- Forgot Password - Step 1 [Begin] -->
+			<div id="forgot_password" class="democratus_popup">
+				<div class="main_generic">
+					<div class="left">
+						<p>Kayıtlı e-posta adresinizi girin</p>
+						<form method="post" style="margin-left: 10px;">
+							<input type="text" name="email" autocomplete="off" />
+							<button class="send">Gönder</button>
+						</form>
+					</div>
+					
+					<div class="line"></div>
+					
+					<div class="right">
+						<p>Sosyal medya hesaplarınızla kolayca bağlanın, şifrenizi hatırlamakla uğraşmayın.</p>
+						<div class="social">
+							<button class="twitter"></button>
+							<button class="facebook"></button>
+						</div>
+					</div>
+					
+					<div class="clear" style="margin-bottom: 10px"></div>
+				</div>
+			</div>
+			<!-- Forgot Password - Step 1 [END] -->
+		
+			<!-- Forgot Password - Step 2 [Begin] -->
+			<div id="forgot_password_step_2" class="democratus_popup">
+				<div class="main_generic" align="center">
+					<p class="forgot_password_message">Lütfen, <br />e-posta adresinizi kontrol ediniz.</p>
+					<button class="forgot_password_close">KAPAT</button>
+				</div>
+			</div>
+			<!-- Forgot Password - Step 2 [END] -->
+			
+			<!-- Invite Friend [Begin] -->
+			<div id="invite_friend" class="democratus_popup">
+				<div class="main_generic">
+					<div class="left">
+						<p>Arkadaşına e-posta ile davet gönder</p>
+						<form method="post" class="send_message">
+							<input type="text" name="email" autocomplete="off" value="E-Posta:" />
+							<textarea name="message">Mesajınız:</textarea>
+							<button class="invite_button">DAVET ET</button>
+						</form>
+					
+					</div>
+					
+					<div class="line_2"></div>
+					
+					<div class="right">
+						<p>Sosyal medya hesaplarına davet et.</p>
+						<div class="social">
+							<button class="twitter"></button>
+							<button class="facebook"></button>
+							<button class="google"></button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<!-- Invite Friend [End] -->
+		
+		<!-- DEMOCRATUS POPUP [END] -->
+		
+		<!-- CONTAINER [BEGIN] -->
+		<div id="container">
+			
+			<!-- HEADER [BEGIN] -->
+			<div id="header">
+				<!-- Languages [Begin] -->
+				<div class="languages">
+					<a href="#" class="selected">TR</a>
+					<a href="#">ENG</a>
+				</div>
+				<!-- Languages [End] -->
+				
+				<div class="clear"></div>
+				
+				<!-- Logo & Search [Begin] -->
+				<div class="logo">
+					<a href="#"><img src="static/image/background/header//logo.png" alt="Democratus Logosu" /></a>
+				</div>
+				<div class="search">
+					<form method="get">
+						<input type="text" name="search" value="ARAMA" autocomplete="off" />
+						<button></button>
+					</form>
+				</div>
+				<!-- Logo & Search [End] -->
+				
+				<!-- Navigation [Begin] -->
+				<div class="navigation">
+					<ul>
+						<li><div class="center">GİRİŞ YAP</div></li>
+						<li><div class="center">MECLİS</div></li>
+						<li><div class="center">DEMOCRATUS</div></li>
+					</ul>
+				</div>
+				<!-- Navigation [End] -->
+				
+			</div>
+			
+			<!-- MAIN WRAPPER [BEGIN] -->
+			<div id="main_wrapper">
+				
+				<!-- Main [Begin] -->
+				<div class="main_left"></div>
+				<div class="main">
+					
+					<!-- Main Left Column [Begin] -->
+					<div class="left">
+						
+						<div class="box" id="complete_information">
+							<div class="title">Bilgilerinizi tamamlayın</div>
+							<div class="line"></div>
+							
+							<p>Profilinizi eksiksiz olarak tamamlayarak insanların size olan desteğini arttırın.</p>
+						
+							<ul>
+								<li class="selected">
+									<a href="#" alt="">Bir profil fotoğrafı yükleyin.</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">İsim soyisminizi girin</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">Şehrinizi girin</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">Hakkınızda bir metin yazın</a>
+									<div class="line"></div>
+								</li>
+							</ul>
+												
+						</div>
+						
+					</div>
+					<!-- Main Left Column [End] -->
+					
+					<!-- Main Center Column [Begin] -->
+					<div class="center">
+						
+						<!-- Profile Informations [Begin] -->
+						<div class="box" id="profile_information">
+							<div class="title">Profil Bilgileri</div>
+							<div class="line_center"></div>
+							
+							<form method="post" enctype="multipart/form-data">
+								<div class="col_1">
+									<p style="font-size: 12px">İstenen alanları doldurun.</p>
+									
+									<input type="text" name="first_name" value="İsminiz" />
+									<input type="text" name="last_name" value="Soyisminiz" />
+									
+									<select name="country" id="country">
+										<option value="">Ülke Seçin</option>
+										<option value="">Türkiye</option>
+										<option value="">Amerika</option>
+										<option value="">İngiltere</option>
+									</select>
+									<select name="city" id="city">
+										<option value="">Şehir Seçin</option>
+										<option value="">İstanbul</option>
+										<option value="">Ankara</option>
+										<option value="">İzmir</option>
+									</select>
+								</div>
+								<div class="col_2">
+									<p  style="font-size: 12px">Profil fotoğrafı yükleyin</p>
+									
+									<input type="file" name="image" class="image" style="display: none" />
+									<div class="upload_image"></div>
+									<p style="text-align: center">Maksimum 500kb, .jpg ya da gif</p>
+								</div>
+								
+								<div class="clear"></div>
+								<div class="title" style="margin-top: 20px">Şifre Değişikliği</div>
+								<div class="line_center" style="margin-bottom: 10px"></div>
+								
+								<div class="col_1">
+									
+									<span class="current_password_wrapper">
+										<input type="text" name="" rel="current_password" value="Mevcut Şifreniz" />
+										<input type="password" name="current_password" rel="current_password_focus" class="current_password" style="display: none" />
+									</span>
+									
+									<span class="password_wrapper">
+										<input type="text" name="" rel="password" value="Yeni Şifreniz" />
+										<input type="password" name="password" rel="password_focus" class="password" style="display: none" />
+									</span>
+
+									<span class="password_confirm_wrapper">
+										<input type="text" name="" rel="password_confirm" value="Yeni Şifrenizi tekrar girin" />
+										<input type="password" name="password_confirm" rel="password_confirm_focus" class="password_confirm" style="display: none" />
+									</span>
+									
+								</div>
+								
+								<div class="col_2">
+									<p>Şifreniz en az 8 karakter olmalıdır.</p>
+									<p>Şifreniz en az bir adet harf ve en az bir adet rakam içermelidir.</p>
+								</div>
+								
+								<div class="clear"></div>
+								<div class="title" style="margin-top: 20px">Kendinizi Anlatın</div>
+								<div class="line_center"></div>
+								
+								<div class="textarea_wrapper"><textarea></textarea></div>
+
+								<div class="clear"></div>
+								<div class="title" style="margin-top: 20px">Ayarlar</div>
+								<div class="line_center"></div>
+								
+								<div class="col_1">
+									<input type="text" name="email" value="E-posta Adresiniz" />
+								</div>
+								<div class="col_2" style="height: 40px">
+									<p>Girdiğiniz e-posta adresine gelecek mesaja onay vermeniz gerekmektedir.</p>
+								</div>
+								
+								<div class="clear"></div>
+								
+								<div class="col_1">
+									<select name="visibility" id="visibility">
+										<option value="">Görünürlük Ayarı</option>
+										<option value="">Seçenek 1</option>
+										<option value="">Seçenek 2</option>
+									</select>
+								</div>
+								<div class="col_2">
+									<p>Profilinizi sadece  arkadaşlarınız görsün istiyorsanız bu alanı boş bırakın.</p>
+								</div>
+								
+								<div class="clear"></div>
+								
+								<input type="checkbox" value="" id="checkbox" />
+								<label for="checkbox">Mesaj gelirse e-posta gönder.</label>
+								
+								<div class="clear" style="margin-bottom: 20px"></div>	
+								
+								<button class="update_information_button"></button>	
+								
+								<div class="clear"></div>	
+							</form>
+							
+							<div class="clear" style="margin-bottom: 20px;"></div>
+						</div>
+						<!-- Profile Informations [End] -->
+					</div>
+					<!-- Main Center Column [End] -->
+					
+					<!-- Main Right Column [Begin] -->
+					<div class="right">
+						
+						<!-- Advertise [Begin] -->
+						<div class="advertise"><img src="static/image/advertise/1.jpg" /></div>
+						<!-- Advertise [End] -->
+						
+					</div>
+					<!-- Main Right Column [End] -->
+					
+				</div>
+				<div class="main_right"></div>
+				<!-- Main [End] -->
+				
+			</div>
+			<!-- MAIN WRAPPER [END] -->
+
+			<div class="clear"></div>
+			
+			<!-- FOOTER [BEGIN] -->
+			<div id="footer">
+				<div class="democratus">2011 &copy; Democratus</div>
+				<ul>
+					<li><a href="#" title="">Kayıt Ol</a></li>
+					<li><a href="#" title="">Democratus</a></li>
+					<li><a href="#" title="">Meclis</a></li>
+					<li><a href="#" title="">Gizlilik</a></li>
+					<li><a href="#" title="">İletişim</a></li>
+				</ul>
+			</div>
+			<!-- FOOTER [END] -->
+
+		</div>
+		<!-- CONTAINER [END] -->
+		
+	</body>
+</html>

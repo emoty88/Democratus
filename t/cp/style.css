@@ -1,0 +1,284 @@
+@charset "utf-8";
+
+
+
+.dialogform {
+    font-size: 11px;
+}
+.dialogform label {
+    display:inline-block;
+    margin-right:10px;
+    text-align:right;
+    vertical-align:top;
+    width:100px;
+}
+.dialogform label.simple {
+    display:inline-block;
+    margin-right:10px;
+    text-align:left;
+    vertical-align:top;
+    width:100px;
+}
+.dialogform input[type=text] {
+    width:240px;
+    height: 17px;
+}
+.dialogform select {
+    width:245px;
+    height: 22px;
+}
+.dialogform textarea {
+    height:90px;
+    width:240px;
+}
+.dialogform .required {
+    color: red;
+    font-weight: 700;
+    padding: 3px;
+}
+.dialogform .column {
+    width: 400px;
+    display: inline;
+    float: left;
+}
+.dialogform span.validerror {
+    color:red;
+    font-size:11px;
+    width:240px;
+    clear: both;
+    margin-left: 100px;
+    display: block;
+}
+.dialogform span.message {
+    color:#333;
+    font-size:11px;
+    width:240px;
+    clear: both;
+    margin-left: 100px;
+    display: block;
+}
+.form .indent{margin-left:133px;}  
+
+.form label {
+    display:inline-block;
+    margin-right:10px;
+    text-align:right;
+    vertical-align:top;
+    width:120px;
+}
+.form label.simple {
+    display:inline-block;
+    margin-right:10px;
+    text-align:left;
+    vertical-align:top;
+    width:120px;
+}
+.form input[type=text] {
+    width:240px;
+    height: 17px;
+    padding: 3px;
+}
+.form input[type=password] {
+    width:120px;
+    height: 17px;
+    padding: 3px;
+}
+.form input[type=text].small {
+    width:120px;
+}
+.form select {
+    width:250px;
+    height: 22px;
+    padding: 0;
+}
+.form textarea {
+    height:90px;
+    width:240px;
+    padding: 3px;
+    vertical-align: top;
+}
+.form .required {
+    color: red;
+    font-weight: 700;
+    padding: 3px;
+}
+.form .column {
+    width: 400px;
+    display: inline;
+    float: left;
+}
+.form span.validerror {
+    color:red;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+
+.form .validerror {
+    /*color:red;*/
+    border-color: red;
+}
+.form span.message {
+    color:#333;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+.form span.info {
+    color:#AAA;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+.form hr {
+    border: 0;
+    color: #CCC;
+    background-color: #CCC;
+    height: 1px;
+    margin:10px 5px 20px 5px;
+}
+.form h3 {
+    margin: 25px 5px 5px 5px;
+}
+
+
+
+
+body {
+    background: #ffffff url("images/bg.gif");
+    background-repeat: repeat-x;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+}
+a img {
+	border:none;
+}
+#header {
+	height: 85px;
+	width: 980px;
+	margin: 0 auto;
+}
+#headertop {
+	height: 24px;
+	width: 980px;
+	font-size: 12px;
+    font-weight: bold;
+}
+#middle {
+	height: auto;
+	min-height:500px !important;
+	width: 980px;
+	margin: 0 auto;
+    position: relative;
+}
+#footer {
+	height: 43px;
+	width: 990px;
+	margin: 5px auto;
+}
+#footer_left{
+	height: 43px;
+	width: 20px;
+	float: left;
+	background-image:url(images/footer_left_bg.gif);
+	background-repeat:no-repeat;
+}
+#footer_center{
+	height: 43px;
+	width: 950px;
+	float: left;
+	background-image:url(images/footer_center_bg.gif);
+	background-repeat:repeat-x;
+}
+#footer_right{
+	height: 43px;
+	width: 20px;
+	float: left;
+	background-image:url(images/footer_right_bg.gif);
+	background-repeat:no-repeat;
+}
+#headertopmenu {
+	list-style-type: none;
+	margin:3px; padding:0;
+	float:right;
+}
+#headertopmenu li{
+	display:inline;
+	padding:3px;
+	height:24px;
+}
+#headertopmenu a, #headertopmenu li{
+	color: #C0A300;
+    text-decoration: none;
+	padding:3px;
+}
+#headermiddle {
+	padding: 5px;
+	position: relative;
+	height: 55px;
+}
+#headermiddle ul {
+	list-style-type: none;
+	margin:0px;
+	padding:0;
+}
+#headermiddle ul li{
+	display:block;
+	width: 80px;
+	float: left;
+	text-align: center;
+}
+#headermiddle a, #headermiddle li{
+	color: #C0A300;
+	text-decoration: none;
+	padding:0px;
+	font-size:9px;
+	text-align: center;
+}
+#headermiddle span {
+	clear: both;
+	display: block;
+}
+.dialogblock{
+    width: 400px;
+    display: block;
+    float: left;
+}
+
+#dialog div.image{
+    width: 106px;
+    height: 150px;
+    padding: 3px;
+    margin:0 5px 5px 0;
+    float: left;
+    border: 1px solid #CCC;
+}
+#dialog div.image img{
+    padding: 2px;
+}
+
+input[type=button].removebutton{
+    -moz-border-radius:3px;border:none;height:20px;width:20px;vertical-align:middle; font-size: 50%;color: #AAA;
+    cursor: pointer;
+}
+
+input[type=button].removebutton:hover{
+    border:1px solid #FBCB09;
+}
+
+#dialog #imageuploadbutton{
+    clear: both;
+    cursor: pointer;
+}
+#dialog #addoption{
+    clear: both;
+    cursor: pointer;
+}

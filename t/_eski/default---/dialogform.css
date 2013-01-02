@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* forms.css */
+.dialogform {font-size: 11px;}
+.dialogform label{display:inline-block;margin-right:10px;text-align:right;vertical-align:top;width:100px;}
+.dialogform label.simple{display:inline-block;margin-right:10px;text-align:left;vertical-align:top;width:100px;}
+.dialogform input[type=text]{width:240px;height: 17px;}
+.dialogform select{width:245px; height: 22px;}
+.dialogform textarea{height:90px;width:240px;} 
+.dialogform .required{color: red; font-weight: 700; padding: 3px;} 
+.dialogform .column{width: 400px; display: inline; float: left;}

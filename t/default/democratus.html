@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<title>Democratus</title>
+		
+		<!-- CASCADING STYLE SHEETS [BEGIN] -->
+		<link type="text/css" rel="stylesheet" href="static/style/reset.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/generic.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/boxes.css" />
+		<link type="text/css" rel="stylesheet" href="static/style/popup.css" />
+		<!-- CASCADING STYLE SHEETS [END] -->
+		
+		<!-- JAVASCRIPTS [BEGIN] -->
+		<script type="text/javascript" src="http://use.typekit.com/yqj2pnd.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		
+		<script type="text/javascript" src="static/javascript/jquery.js"></script>
+		<script type="text/javascript" src="static/javascript/cufon.js"></script>
+		<script type="text/javascript" src="static/javascript/ronnia.js"></script>
+		<script type="text/javascript" src="static/javascript/popup.js"></script>
+		<script type="text/javascript" src="static/javascript/slider.js"></script>
+		<script type="text/javascript" src="static/javascript/generic.js"></script>
+		<!-- JAVASCRIPTS [END] -->
+		
+		<!--[if IE]>
+			<script type="text/javascript" src="static/javascript/corners.js"></script>
+			<script type="text/javascript">
+				curvyCorners.addEvent(window, 'load', initCorners);
+				function initCorners()
+				{
+					var settings = {
+						tl: { radius: 5 },
+						tr: { radius: 5 },
+						bl: { radius: 5 },
+						br: { radius: 5 },
+						antiAlias: true }
+
+					curvyCorners(settings, '.box');
+					curvyCorners(settings, '.main');
+					
+			  	}
+			</script>
+		<![endif]-->
+
+	</head>
+	
+	<body>
+		
+		<!-- DEMOCRATUS POPUP [BEGIN] -->
+		
+			<!-- Forgot Password - Step 1 [Begin] -->
+			<div id="forgot_password" class="democratus_popup">
+				<div class="main_generic">
+					<div class="left">
+						<p>Kayıtlı e-posta adresinizi girin</p>
+						<form method="post" style="margin-left: 10px;">
+							<input type="text" name="email" autocomplete="off" />
+							<button class="send">Gönder</button>
+						</form>
+					</div>
+					
+					<div class="line"></div>
+					
+					<div class="right">
+						<p>Sosyal medya hesaplarınızla kolayca bağlanın, şifrenizi hatırlamakla uğraşmayın.</p>
+						<div class="social">
+							<button class="twitter"></button>
+							<button class="facebook"></button>
+						</div>
+					</div>
+					
+					<div class="clear" style="margin-bottom: 10px"></div>
+				</div>
+			</div>
+			<!-- Forgot Password - Step 1 [END] -->
+		
+			<!-- Forgot Password - Step 2 [Begin] -->
+			<div id="forgot_password_step_2" class="democratus_popup">
+				<div class="main_generic" align="center">
+					<p class="forgot_password_message">Lütfen, <br />e-posta adresinizi kontrol ediniz.</p>
+					<button class="forgot_password_close">KAPAT</button>
+				</div>
+			</div>
+			<!-- Forgot Password - Step 2 [END] -->
+			
+			<!-- Invite Friend [Begin] -->
+			<div id="invite_friend" class="democratus_popup">
+				<div class="main_generic">
+					<div class="left">
+						<p>Arkadaşına e-posta ile davet gönder</p>
+						<form method="post" class="send_message">
+							<input type="text" name="email" autocomplete="off" value="E-Posta:" />
+							<textarea name="message">Mesajınız:</textarea>
+							<button class="invite_button">DAVET ET</button>
+						</form>
+					
+					</div>
+					
+					<div class="line_2"></div>
+					
+					<div class="right">
+						<p>Sosyal medya hesaplarına davet et.</p>
+						<div class="social">
+							<button class="twitter"></button>
+							<button class="facebook"></button>
+							<button class="google"></button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<!-- Invite Friend [End] -->
+		
+		<!-- DEMOCRATUS POPUP [END] -->
+		
+		<!-- CONTAINER [BEGIN] -->
+		<div id="container">
+			
+			<!-- HEADER [BEGIN] -->
+			<div id="header">
+				<!-- Languages [Begin] -->
+				<div class="languages">
+					<a href="#" class="selected">TR</a>
+					<a href="#">ENG</a>
+				</div>
+				<!-- Languages [End] -->
+				
+				<div class="clear"></div>
+				
+				<!-- Logo & Search [Begin] -->
+				<div class="logo">
+					<a href="#"><img src="static/image/background/header//logo.png" alt="Democratus Logosu" /></a>
+				</div>
+				<div class="search">
+					<form method="get">
+						<input type="text" name="search" value="ARAMA" autocomplete="off" />
+						<button></button>
+					</form>
+				</div>
+				<!-- Logo & Search [End] -->
+				
+				<!-- Navigation [Begin] -->
+				<div class="navigation">
+					<ul>
+						<a href="main.html" alt=""><li><div class="center">GİRİŞ YAP</div></li></a>
+						<li><div class="center">MECLİS</div></li>
+						<a href="democratus.html" alt="">
+							<li  class="selected">
+								<div class="left"></div>
+								<div class="center">DEMOCRATUS</div>
+								<div class="right"></div>
+							</li>
+						</a>
+					</ul>
+				</div>
+				<!-- Navigation [End] -->
+				
+			</div>
+			
+			<!-- MAIN WRAPPER [BEGIN] -->
+			<div id="main_wrapper">
+				
+				<!-- Main [Begin] -->
+				<div class="main_left"></div>
+				<div class="main">
+					
+					<!-- Main Left Column [Begin] -->
+					<div class="left">
+						
+						<!-- Profile Progress [Begin] -->
+						<div class="box" id="profile_progress" style="display: none">
+							<span class="title">Bilgilerinizi tamamlayın</span>
+							<div class="line"></div>
+						</div>
+						<!-- Profile Progress [End] -->
+						
+						<!-- Meet Democratus [Begin] -->
+						<div class="box" id="meet_democratus">
+							<span class="title">Democratus'u Tanıyın</span>
+							<div class="line"></div>
+							
+							<p>Profilinizi eksiksiz olarak tamamlayarak insanların size olan desteğini arttırın.</p>
+							
+							<ul>
+								<li class="selected">
+									<a href="#" alt="">Nedir ?</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">Ne İşe Yarar ?</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">Gizlilik</a>
+									<div class="line"></div>
+								</li>
+								<li>
+									<a href="#" alt="">İletişim</a>
+									<div class="line"></div>
+								</li>
+							</ul>
+						</div>
+						<!-- Meet Democratus [End] -->
+						
+						<!-- Mini About Democratus [Begin] -->
+						<div class="box" id="mini_about">
+							<span class="title">Ne işe yarar ?</span>
+							<div class="line"></div>
+							<p>Democratus’a hoşgeldiniz. <br /> Burada fikirlerinizi özgürce paylaşabilir, sadece sizin bildiğinizi düşündüğünüz konuları başkaları ile paylaşabilir, ortak fikirlerde beraber hareket edebilirsiniz.</p>
+							<p>Meclis alanında beğendiğiniz fikirleri oylayabilir, herkesin sesi haline dönüşerek Democratus vekilleri arasına girebilirsiniz.</p>					
+						</div>
+						<!-- Mini About Democratus [End] -->
+	
+						
+					</div>
+					<!-- Main Left Column [End] -->
+					
+					<!-- Main Center Column [Begin] -->
+					<div class="center">
+						
+						<!-- Big About [Begin] -->
+						<div class="box" id="big_about">
+							<span class="title">Democratus Nedir ?</span>
+							<div class="line_center"></div>
+							
+							<img src="static/image/logo/big_center.png" alt="" />
+							<p>BORAJET, 2008 yılında başlattığı yeniden yapılanma çalışmalarını tamamlayarak, yepyeni ve deneyimli bir kadro ile Atatürk Havalimanındaki yeni hangarına taşınmıştır.</p>
+							<p>Genel Müdürlüğü Yeşilköy İstanbul Dünya Ticaret Merkezinde , hangarı Atatürk Havalimanı Genel Havacılık Terminalinde bulunan Borajet Havayolları Türk Sivil Havacılığının en büyük eksiği olan bölgesel havacılık hizmeti vermek üzere kurulmuştur. Borajet Havayolları JAR-SHY-145/JAR 145 belgesine sahip olup, ATR-42/72 serisi uçaklara bakım yapma yetkisine sahiptir.</p>
+							<p>Ülkemizin içinde bulunduğu coğrafi koşullar nedeniyle filosunda bulunan 4 adet ATR 72-500 tipi uçaklar ile hizmet vermektedir. ‘Ulaşımı kolay olan illerin gelişimi de kolay olur.’ hedefi ile emin adımlarla ilerlemektedir.</p>
+							<p>Çok uzun menzilli ve hali hazırda dünya üzerindeki en modern Business jet uçaklarından olan Global Express XRS uçağı 2010 yılı Kasım ayı içinde hizmete girmiştir.</p
+							<p>Türkiye ve çevre ülkelerde eksikliği hissedilen uzun menzilli uçak ihtiyacı büyük ölçüde karşılanabilecek ve böylece BORAJET, uçak menzili nedeniyle oluşan sınırlamaları aşarak “SINIRLARIN ÖTESİNDE” hizmet ilkesini hayata geçirmiştir.</p>
+							<p>Ayrıca BORAJET Türkiye’nin ihtiyacı olan ve bugüne kadar hiçbir yatırımın yapılmadığı, Bölgesel Havacılık konusunda da faaliyet göstermek üzere yapılanmasını tamamlamış, tüm yatırımlar yapılmış ve hayata geçirilmiştir.</p>
+							<p>Başlangıç olarak 4 adet ATR 72-500 tipi uçaklar ile hizmet vermeye başlamış olup kısa zamanda uçak sayısı arttırılacaktır.</p>
+						</div>
+						<!-- Big About [End] -->
+						
+					</div>
+					<!-- Main Center Column [End] -->
+					
+					<!-- Main Right Column [Begin] -->
+					<div class="right">
+						
+						<!-- Advertise [Begin] -->
+						<div class="advertise"><img src="static/image/advertise/1.jpg" /></div>
+						<!-- Advertise [End] -->
+						
+						<!-- Information Area [Begin] -->
+						<div id="information_area" class="box">
+							<span class="title_icon">Bilgi Alanı</span>
+							<div class="line_center"></div>
+							
+							<p>Meclis alanında beğendiğiniz fikirleri oylayabilir, herkesin sesi haline dönüşerek Democratus vekilleri arasına girebilirsiniz</p>
+						</div>
+						<!-- Information Area [End] -->
+						
+					</div>
+					<!-- Main Right Column [End] -->
+					
+				</div>
+				<div class="main_right"></div>
+				<!-- Main [End] -->
+				
+			</div>
+			<!-- MAIN WRAPPER [END] -->
+			<div class="clear"></div>
+			
+			<!-- FOOTER [BEGIN] -->
+			<div id="footer">
+				<div class="democratus">2011 &copy; Democratus</div>
+				<ul>
+					<li><a href="#" title="">Kayıt Ol</a></li>
+					<li><a href="#" title="">Democratus</a></li>
+					<li><a href="#" title="">Meclis</a></li>
+					<li><a href="#" title="">Gizlilik</a></li>
+					<li><a href="#" title="">İletişim</a></li>
+				</ul>
+			</div>
+			<!-- FOOTER [END] --
+		</div>
+		<!-- CONTAINER [END] -->
+		
+	</body>
+</html>

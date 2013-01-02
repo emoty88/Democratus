@@ -1,0 +1,11 @@
+#tooltip_normal { z-index: 999999; display: none; margin-top: -35px; position: absolute; left: -35px; }
+#tooltip_delete { z-index: 999999; display: none; margin-top: -40px; position: absolute; left: -92px; }
+#tooltip_menu { z-index: 999999; display: none; margin-top: -82px; position: absolute; left: -92px; }
+#tooltip_menu a { display: block; font-size: 11px; color: #584c43; padding-left: 20px; margin-top: 7px; }
+#tooltip_three { z-index: 9999999;  display: none; position: inherit; left: -125px;  }
+.left_menu { position: relative; }
+.three { z-index: 9999; background: url(../image/background/tooltip/tooltip_three.png) no-repeat; width: 130px; height: 90px; position: absolute; }
+.three_sub { z-index: 999999; background: url(../image/background/tooltip/tooltip_three_sub.png) no-repeat; width: 120px; height: 94px; position: absolute; }
+.big { background: url(../image/background/tooltip/tooltip_big.png) no-repeat; width: 110px; height: 79px; position: absolute; }
+.smalla { background: url(../image/background/tooltip/tooltip.png) no-repeat; width: 65px; height: 35px; position: absolute; text-align: center; font-size: 10px; color: #584c43; text-decoration: underline; padding-top: 4px; }
+.delete_tip { width: 105px; height: 32px; background: url(../image/background/tooltip/delete.png) no-repeat; font-size: 18px; color: #584c43; text-decoration: underline; font-weight: 600; padding: 8px 0 0 20px; }

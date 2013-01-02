@@ -1,0 +1,63 @@
+#container {
+    min-height:1700px;
+    width:960px;
+    height:auto;
+    position:relative;
+    margin:0 auto;
+}
+#header{
+    clear: both;
+    border-bottom: 1px solid #CCC;
+}
+#left{
+    width: 220px; float: left;
+}
+
+#middle{
+    width: 500px; float: left;
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    min-height: 300px;
+}
+
+#right{
+    width: 220px; float: left;
+}
+#footer{
+    clear: both;
+    border-top: 1px solid #CCC;
+}
+
+
+/* SHARES */
+.share{
+    border: 1px solid red;
+    padding: 2px; margin: 2px;
+}
+.share .likebox{
+    
+}
+
+
+/* my */
+#myphotos .myphoto{
+    width: 150px;
+    height: 120px;
+    float: left;
+    border: 1px solid #CCC;
+    margin: 5px;
+}
+
+#myphotos .myphoto img.image{
+    padding: 5px;
+}
+
+#myphotos .myphoto .remove{
+    display: block;
+    clear: both;
+    float: right;
+    width: 10px;
+    height: 10px;
+    font-size: 11px;
+    padding: 5px;
+}

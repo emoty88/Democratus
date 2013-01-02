@@ -1,0 +1,419 @@
+@charset "utf-8";
+
+/*
+ * @author	: Democratus 2011
+ * @package	: generic.css 
+ */
+
+/*body { background: url(../image/background/header/header.jpg) repeat-x; font-family: myriad-pro,sans-serif; }*/
+body { background: url(../image/background/header/header.jpg) repeat-x; font-family: Arial,Calibri,Verdana,Helvetica,sans-serif; }
+
+.clear { clear: both; }
+a { color: #962b2b;    font-size: 13px; text-decoration: none; }
+a:hover { color: #f33; }
+
+/* Container */
+#container { width: 966px; height: 100%; margin: 0 auto; }
+
+/* Header */
+#header { margin: 0 auto; width: 958px; height: 77px; background: url(../image/background/header/header_top.jpg) no-repeat; padding: 20px 0 0 0; }
+
+
+/* Header Languages [Begin] */
+#header .languages { width: 64px; height: 24px; background: url(../image/background/header/languages.png) 0 1px no-repeat; float: right; }
+#header .languages a { font-size: 11px; color: #c18181; text-decoration: none; margin-left: 11px; }
+#header .languages a.selected { color: #fff; }
+/* Header Languages [End] */
+
+/* Logo */
+#header .logo { width: 209px; height: 51px; float: left; margin-left: 13px; }
+
+/* Header Search [Begin] */
+#header .search { float: left; margin: 15px 0 0 50px; }
+#header .search input { color: #993131; width: 217px; border: none; font-size: 12px; background: url(../image/background/header/search.png) no-repeat; height: 26px; padding: 0 12px 0 12px; padding: 5px 12px 0 12px\9; float: left; }
+#header .search button { width: 19px; height: 25px; background: none; border: none; background: url(../image/background/header/search_button.png) no-repeat; cursor: pointer; margin: 2px 0 0 5px; float: left; }
+/* Header Search [End] */
+
+/* Header Navigation [Begin] */
+#header .navigation { float: right; margin: 13px 30px 0 0; }
+#header .navigation ul { list-style: none; }
+#header .navigation ul li { float: left; letter-spacing: 1px; font-size: 10px; color: #fff;  cursor: pointer; }
+#header .navigation ul li .left { height: 30px; width: 25px; float: left; }
+#header .navigation ul li .center { height: 22px; float: left; padding: 8px 5px 0 5px; }
+#header .navigation ul li .right { height: 30px; width: 10px; float: left; }
+#header .navigation ul li.selected .left { background: url(../image/background/navigation/left_2.png) no-repeat; }
+#header .navigation ul li.selected .center { background: url(../image/background/navigation/center.png) repeat-x; }
+#header .navigation ul li.selected .right { background: url(../image/background/navigation/right.png) no-repeat; }
+
+#header .navigation_main {  float: right; margin: 20px 30px 0 0; }
+#header .navigation_main ul { list-style: none; }
+#header .navigation_main ul li { width: 93px; text-align: center; padding-top: 4px; height: 21px; float: left; letter-spacing: 1px; font-size: 12px; color: #fff;  cursor: pointer; }
+#header .navigation_main .nav_1 { z-index: 9999999999; position: relative !important; }
+#header .navigation_main .nav_1:hover {  background: url(../image/background/navigation/hover.png) 0 0 no-repeat; }
+#header .navigation_main .nav_2:hover { background: url(../image/background/navigation/hover.png) 0 0 no-repeat; }
+#header .navigation_main .nav_3 { width: 106px; }
+#header .navigation_main .nav_3:hover { background: url(../image/background/navigation/democratus_hover.png) 0 0 no-repeat; }
+
+#header_login { float: right; margin: 18px 0 0 0; }
+#header_login .password_wrapper { float: right; height: 30px;}
+#header_login .email { float: left; background: url(../image/form/header_login_input.png) no-repeat; width: 180px; height: 27px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#header_login .password_wrapper input { background: url(../image/form/header_login_input.png) no-repeat; width: 180px; height: 27px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#header_login button { border: 0; background: url(../image/button/header_login.png) no-repeat; width: 93px; height: 28px; cursor: pointer; float: right; margin:0;padding:0;}
+#header_login button:hover { background-position: 0 -28px;  }
+#header_login span { font-size: 11px; color: #fff;  }
+#header_login .remember_me { margin-top: -10px; margin-left: 2px;width: 200px; display: block; float: left;}
+#header_login .remember_me .styledCheckbox { float: left !important; margin-right: 10px; margin-top: -3px; }
+#header_login .forget_password { margin-top: -10px; margin-left: 2px; width: 200px; display: block; float: left; font-style: italic;}
+#header_login .forget_password a { color: #fff !important; }
+#header_login input { line-height: 200%; }
+
+
+/* Header Navigation [End] */
+
+#main_wrapper .main_left { width: 4px; height: 3px; float: left; margin-top: 300px; background: url(../image/background/main/radius_left.jpg) no-repeat; }
+#main_wrapper .main_right { width: 4px; height: 3px; float: left; margin-top: 300px; background: url(../image/background/main/radius_right.jpg) no-repeat; }
+#main_wrapper .main { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; float: left; width: 958px; background-color: #fafafa; }
+
+/* Main Columns */
+#main_wrapper .main .left { float: left; width: 250px; height: 100%; margin: 6px 0 0 7px; }
+#main_wrapper .main .center {  float: left; width: 424px; height: 100%; margin: 6px 10px 0 10px; }
+#main_wrapper .main .right { float: left; width: 250px; height: 100%; margin-top: 6px; }
+
+
+#footer { height: 44px; width: 944px; background-color: #dbdbdb; margin: 10px auto; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; }
+#footer .democratus { float: left; font-size: 12px; margin-left: 20px; margin-top: 16px; color: #797069; }
+#footer ul { list-style: none; float: right; margin-top: 16px; margin-right: 20px; }
+#footer ul li { float: left; font-size: 12px; margin-left: 20px; }
+#footer ul li a { text-decoration: none;color: #797069; }
+
+#content-slider { width: 490px; height: 6px; margin: 5px; background: #BBBBBB; position: relative; }
+.ui-slider-handle { width: 8px; height: 14px; position: absolute; top: -4px; background: #478AFF; border: solid 1px black; }
+#content-scroll { width: 500px; height: 300px; margin-top: 10px; overflow: hidden; border: solid 1px black; }
+#content-holder { width: 1500px; height: 270px; }
+.content-item { width: 290px; height: 270px; padding: 5px; float: left; }
+
+
+      #main_register { width: 100%; height: 100%;  }
+#main_register .main_register_left { float: left; margin-left: 10px; width: 545px; }
+#main_register .main_register_left h1 { font-weight: 600; font-size: 34px; font-style: italic; color: #030303; margin: 20px 0 5px 20px; }
+#main_register .main_register_left h2 { font-weight: 600; font-size: 12px; font-style: italic; color: #030303; margin: 5px 0 30px 20px; }
+#main_register .main_register_left ul { list-style: none; width: 500px; height: 140px; }
+#main_register .main_register_left ul li { display: inline; float: left; margin-left: 20px; }
+#main_register .main_register_left p { font-size: 14px; color: #030303; width: 500px; margin: 10px 0 0 20px; line-height: 18px; }
+#main_register .main_register_right { float: left; }
+#main_register .main_register_right .register_form { width: 370px;  margin: 25px 0 0 20px; overflow: hidden; }
+#main_register .main_register_right .register_form form { width: 350px; margin: 15px auto 0 auto; }
+#main_register .main_register_right .register_form .wide { background: url(../image/form/register_input_wide.png) no-repeat; width: 308px; height: 29px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#main_register .main_register_right .register_form .password { background: url(../image/form/register_input_wide.png) no-repeat; width: 308px; height: 29px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#main_register .main_register_right .register_form .password_confirm { background: url(../image/form/register_input_wide.png) no-repeat; width: 308px; height: 29px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#main_register .main_register_right .register_form .narrow { background: url(../image/form/register_input_narrow.png) no-repeat; width: 150px; height: 29px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#main_register .main_register_right .register_form .name { background: url(../image/form/register_small_input.png) no-repeat; border: none; height: 27px; width: 139px; float: left; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#main_register .main_register_right .change_captcha { cursor: pointer; width: 8px; height: 9px; background: url(../image/form/change_captcha.png) no-repeat; display: block; float: left; margin: 3px 3px 0 0; }
+#main_register .main_register_right .captcha { float: left; margin-right: 12px; }
+#main_register .main_register_right .register_form .title  { font-size: 14px; font-weight: 600; color: #584c43; display: block; margin-left: 8px; }
+#main_register .main_register_right .register_form .register_button { width: 329px; height: 34px; background: url(../image/form/register_button.png) no-repeat; border: none; cursor: pointer; }
+
+
+ /*
+#header_login { float: right; margin: 18px 0 0 0; }
+#header_login .email { float: left; background: url(../image/form/header_login_input.png) no-repeat; width: 180px; height: 27px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#header_login .password_wrapper input { background: url(../image/form/header_login_input.png) no-repeat; width: 180px; height: 27px; border: none; font-size: 12px; color: #413429; padding: 0 10px 0 10px; margin-bottom: 17px; }
+#header_login button { border: 0; background: url(../image/button/header_login.png) no-repeat; width: 93px; height: 28px; cursor: pointer; }
+#header_login button:hover { background-position: 0 -28px;  }
+#header_login span { font-size: 11px; color: #fff;  }
+#header_login .remember_me { margin-top: -10px; margin-left: 2px;width: 200px; display: block; float: left;}
+#header_login .remember_me .styledCheckbox { float: left !important; margin-right: 10px; margin-top: -3px; }
+#header_login .forget_password { margin-top: -10px; margin-left: 2px; width: 200px; display: block; float: left; font-style: italic;}
+#header_login .forget_password a { color: #fff !important; }
+*/
+
+#main_register .main_register_left .line { border-top: 1px solid #ddd; clear: both; margin: 0 20px; }
+#main_register .main_register_right .line { border-top: 1px solid #ddd; clear: both; margin: 0 10px; }
+#main_register .main_register_left .steps .step { margin: 15px 0; }
+#main_register .main_register_left .steps .step .content h3 { color: #413429; font-size: 14px; padding-top: 10px;}
+#main_register .main_register_left .steps .step .content p { color: #030303; font-size: 12px;}
+#main_register .main_register_left .steps .step .image_1 { width: 106px; height: 71px; margin-right: 15px; background: url(../image/main/steps.png) no-repeat; float: left; }
+#main_register .main_register_left .steps .step .image_2 { width: 106px; height: 65px; margin: 0 15px 10px 0; background: url(../image/main/steps.png) 0 -75px no-repeat; float: left; }
+#main_register .main_register_left .steps .step .image_3 { width: 106px; height: 65px; margin: 0 15px 10px 0; background: url(../image/main/steps.png) 0 -142px no-repeat; float: left; }
+
+
+.social .twitter { margin-bottom: 7px; border: none; width: 154px; height: 29px; cursor: pointer; background: url(../image/button/social.png) 0 0 no-repeat; }
+.social .twitter:hover { background-position: 0 -40px; }
+.social .facebook { border: none; width: 154px; height: 29px; cursor: pointer; background: url(../image/button/social.png) -161px 0 no-repeat; }
+.social .facebook:hover { background-position: -161px -39px; }
+.social .google { margin-top: 7px; border: none; width: 154px; height: 29px; cursor: pointer; background: url(../image/button/social.png) -321px 0 no-repeat; }
+.social .google:hover { background-position: -321px -40px; }
+
+.social_connect .twitter { margin-bottom: 7px; border: none; width: 154px; height: 29px; cursor: pointer; background: url(../image/button/social_connect.png) 0 0 no-repeat; }
+.social_connect .twitter:hover { background-position: 0 -39px }
+.social_connect .facebook { margin-bottom: 7px; border: none; width: 154px; height: 29px; cursor: pointer; background: url(../image/button/social_connect.png) -164px 0 no-repeat; }
+.social_connect .facebook:hover { background-position: -164px -39px }
+
+
+
+.parliamentoption{
+    background-image: url("/t/v2/static/image/form/checkbox.png"); width: 18px; height: 17px; cursor: pointer; background-repeat: no-repeat;
+}
+
+
+
+/* forms.css */
+
+input[type=text], input[type=password], input.text, input.title, textarea {
+    background-color:#fff;
+    border:1px solid #bbb;
+}
+input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus {
+    border-color:#666;
+}
+select {
+    background-color:#fff;
+    border:1px solid #bbb;
+}
+.dialogform {
+    font-size: 11px;
+}
+.dialogform p{
+    margin: 0 0 5px 0;
+}
+.dialogform label {
+    display:inline-block;
+    margin-right:10px;
+    text-align:right;
+    vertical-align:top;
+    width:100px;
+}
+.dialogform label.simple {
+    display:inline-block;
+    margin-right:10px;
+    text-align:left;
+    vertical-align:top;
+    width:100px;
+}
+.dialogform input[type=text] {
+    width:240px;
+    height: 17px;
+}
+.dialogform select {
+    width:245px;
+    height: 22px;
+}
+.dialogform textarea {
+    height:90px;
+    width:240px;
+}
+.dialogform .required {
+    color: red;
+    font-weight: 700;
+    padding: 3px;
+}
+.dialogform .column {
+    width: 400px;
+    display: inline;
+    float: left;
+}
+.dialogform span.validerror {
+    color:red;
+    font-size:11px;
+    width:240px;
+    clear: both;
+    margin-left: 100px;
+    display: block;
+}
+.dialogform span.message {
+    color:#333;
+    font-size:11px;
+    width:240px;
+    clear: both;
+    margin-left: 110px;
+    display: block;
+}
+.form p {
+    margin: 0 0 20px 0;
+}
+.form label {
+    display:inline-block;
+    margin-right:10px;
+    text-align:right;
+    vertical-align:top;
+    width:120px;
+}
+.form label.simple {
+    display:inline-block;
+    margin-right:10px;
+    text-align:left;
+    vertical-align:top;
+    width:120px;
+}
+.form input[type=text] {
+    width:240px;
+    height: 17px;
+    padding: 3px;
+}
+.form input[type=password] {
+    width:120px;
+    height: 17px;
+    padding: 3px;
+}
+.form input[type=text].small {
+    width:120px;
+}
+.form select {
+    width:250px;
+    height: 22px;
+    padding: 0;
+}
+.form textarea {
+    height:90px;
+    width:240px;
+    padding: 3px;
+    vertical-align: top;
+}
+.form .required {
+    color: red;
+    font-weight: 700;
+    padding: 3px;
+}
+.form .column {
+    width: 400px;
+    display: inline;
+    float: left;
+}
+.form span.validerror {
+    color:red;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+
+.form .validerror {
+    /*color:red;*/
+    border-color: red;
+}
+.form span.message {
+    color:#333;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+.form span.info {
+    color:#AAA;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 140px;
+    display: block;
+}
+.form hr {
+    border: 0;
+    color: #CCC;
+    background-color: #CCC;
+    height: 1px;
+    margin:10px 5px 20px 5px;
+}
+.form h3 {
+    margin: 25px 5px 5px 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.wellcomeform p {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+}
+.wellcomeform label {
+    display:inline-block;
+    margin:8px 10px 0 0;
+    text-align:right;
+    vertical-align:top;
+    width:80px;
+    font-weight: 700;
+}          
+.wellcomeform input[type=text] {
+    width:180px;
+    height: 24px;
+    padding: 3px;
+}
+.wellcomeform input[type=password] {
+    width:180px;
+    height: 24px;
+    padding: 3px;
+}
+.wellcomeform input[type=text].small {
+    width:110px;
+}
+.wellcomeform select {
+    width:120px;
+    height: 34px;
+    padding: 5px;
+}
+.wellcomeform textarea {
+    height:90px;
+    width:120px;
+    padding: 3px;
+    vertical-align: top;
+}
+.wellcomeform span.message {
+    color:#333;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 100px;
+    display: block;
+}
+.wellcomeform span.info {
+    color:#AAA;
+    font-size:11px;
+    width:100%;
+    clear: both;
+    margin-left: 100px;
+    display: block;
+}
+
+#wellcome-registerbox #message {
+    color:#F00;
+    font-size:11px;
+    font-weight: 700;
+    width:260px;
+    clear: both;
+    margin: 10px;
+    padding: 10px;
+    display: block;
+    border: 1px solid #F00;
+}
+
+.statistic_tip{
+    display: none;
+}
+.statistic_tip span{
+    cursor: pointer;
+}
+.dilike, .diclike, #profilecomplaint{
+    cursor: pointer;
+}
+.birth select{
+    width:80px;
+}
+.more{
+    clear: both;
+    width: 424px;
+    height: 32px;
+    background-image: url(../image/button/more.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    
+    display: block;
+    cursor: pointer;
+}
