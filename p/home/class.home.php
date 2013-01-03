@@ -12,7 +12,7 @@
 	        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-	        $model->addScript("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", "jquery.tmpl.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 			
 			$model->addScript($model->pluginurl . 'home.js', 'home.js', 1);
 			$model->addScript("paths=".json_encode($model->paths));
