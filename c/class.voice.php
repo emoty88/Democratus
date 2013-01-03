@@ -107,6 +107,7 @@
 				return FALSE;
 			}
 		}
+		
 		public function get_return_object($v_obj, $iW=48, $iH=48)
 		{
 			global $model;

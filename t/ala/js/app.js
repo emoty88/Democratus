@@ -488,7 +488,7 @@ jQuery(document).ready(function ($) {
 				if(response.status == "success")
 				{
 					$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
-					$("#yeni_yazi").val("");
+					$("#replyTextArea_"+randID).val("");
 					$("#initem").val(0);
 					$("#initem-name").val(0);
 				}
@@ -685,7 +685,6 @@ jQuery(document).ready(function ($) {
 				$("#voiceSliceTop_"+randID).slideDown();
 				$("#voiceSliceBottom_"+randID).slideDown();
 				$("#voice_detailArea_"+randID).slideDown();
-				
 				get_voiceReply(vID, randNum);
 				
 			}
@@ -695,6 +694,7 @@ jQuery(document).ready(function ($) {
 				$("#voiceSliceTop_"+randID).slideUp();
 				$("#voiceSliceBottom_"+randID).slideUp();
 				$("#voice_detailArea_"+randID).slideUp();
+				$("#voiceReplyArea_"+vID+"-"+randNum).slideUp();
 			}
 			notOpen=0;
 		}
@@ -704,13 +704,22 @@ jQuery(document).ready(function ($) {
 	
 	function get_voiceReply(vID, randNum)
 	{
-		$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"_"+randNum);
-		$("#voiceReplyArea_"+vID+"_"+randNum).show();
+		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
+		//$("#voiceReplyArea_"+vID+"-"+randNum).show();
+		if($("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload")==1)
+		{
+			$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
+			return ;
+		}
 		$.post("/ajax/get_voiceReply", {voiceID: vID}, function(response){ 
 	        if(response.status=="success")
 	        {
-	        	$(".loading_bar").remove();
-	        	$("#parliament-agenda-tmpl").tmpl(response.agendas).appendTo("#referandum-container");
+	        	if(response.voice_count>0)
+	        	{
+	        		$("#voice-reply-tmpl").tmpl(response.voices).appendTo("#voiceReplyArea_"+vID+"-"+randNum);
+	        		$("#voiceReplyArea_"+vID+"-"+randNum).show();
+	        		$("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload", "1");
+	        	}
 	        }
 	    },'json');  
 	}

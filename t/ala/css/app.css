@@ -338,7 +338,7 @@ body.atolye15_body { overflow-x: hidden; }
 .duvar_yazisi .profil_resmi { position: absolute; top: 20px; left: 20px; width: 48px; height: 48px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .duvar_yazisi .yazar,
 .duvar_yazisi .duvar_yazisi_icerigi,
-.duvar_yazisi .komutlar { padding-left: 58px; }
+.duvar_yazisi .komutlar { padding-left: 58px; display:table;}
 
 .duvar_yazisi .yazar { margin:0; font-size: 13px; }
 .duvar_yazisi .yazar a { color: #d04647; }
@@ -1736,4 +1736,14 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 .social_connect a:hover {
 	text-decoration: none;
 	color: #fff;
+}
+
+.voice_hover_area{
+	padding: 20px; 
+	margin: -20px;
+	cursor: pointer;
+}
+
+.voice_hover_area:hover{
+	background-color: #E5E5E5;
 }

@@ -1187,17 +1187,7 @@ function get_repliedVoice(voiceID,repliedID,uniqueKey)
     		}
         },'json');
 }
-function get_voiceReply(voiceID,uniqueKey)
-{
-	$.post('/ajax/get_voiceReply/'+voiceID, "voiceID="+voiceID,  function(data){
-    		if(data.success=="success")
-    		{
-    			//console.log(data);
-    			$("#di_subAreaContenReplideList-"+voiceID+"-"+uniqueKey).hide().html(data.html).slideDown("fast");
-    			$("#itemLoaded-"+voiceID+"-"+uniqueKey).val("1");
-    		}
-        },'json');
-}
+
 
 function createUploader(){            
 	var uploader = new qq.FileUploader({

@@ -962,7 +962,12 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    try{
 	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
-			$response["voices"] = $c_voice->get_reply();
+			$voices =  $c_voice->get_reply();
+			$response["voice_count"] = count($voices);
+			foreach($voices as $v)
+			{
+				$response["voices"][] = $c_voice->get_return_object($v, 32, 32);	
+			}
 	    } catch (Exception $e){
 	        $response['status'] = 'error';
 	        $response['message'] = $e->getMessage();
