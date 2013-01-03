@@ -314,7 +314,7 @@
 			<div style="clear:both;"></div>';
 			return $html;
 		}
-      /*
+       /**
        * PARAM @profil profil nesnesi
        * bir kişinin profille  ilişkisini getiririr
        */

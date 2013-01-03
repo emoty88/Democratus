@@ -5,7 +5,7 @@ class jstemplates_block extends control{
 		<script id="duvaryazisi-tmpl" type="text/x-jquery-tmpl">
 			<!-- Duvar Yazısı -->
 			<div id="voiceSliceTop_${ID}-${randNum}" class="dyazi_top_slice" ></div>
-			<article class="duvar_yazisi"onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}">
+			<article class="duvar_yazisi" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}">
 				
 				<img class="profil_resmi" src="${sImage}" alt="${sName}">
 				<address class="yazar">
@@ -45,6 +45,7 @@ class jstemplates_block extends control{
 						<span>Saygı Duy</span>
 					</a>
 				</aside>
+				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar" style="display: none;"></aside>
 			</article>
 				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
 					<div id="replyArea_${ID}-${randNum}" class="replyArea">
@@ -55,12 +56,13 @@ class jstemplates_block extends control{
 								</div>
 							<div class="kontroller_voice">
 							
-								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button">Paylaş</button>
+								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
 								<a href="javascript:void(0)" id="fine-uploader-btn" style="position: relative; overflow: hidden; direction: ltr;" class="">
 									<i class="atolye15-ikon-gorsel atolye15-ikon-24" id="bootstrapped-fine-uploader"></i>
 								<input type="file" name="file" style="position: absolute; right: 0px; top: 0px; font-family: Arial; font-size: 118px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0;"></a>
 								<div id="fine-uploader-msg"></div>	
 								
+								<input type="hidden" id="replyer_${ID}-${randNum}" value="${ID}" />
 							</div>
 							<div style="clear: both;"> </div>
 						</div>

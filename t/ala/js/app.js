@@ -49,6 +49,7 @@ jQuery(document).ready(function ($) {
    		case "parliament": parliament_page(); break;
    		case "message" : message_page(); break;
    		case "message-dialog" : message_dialog_page(); break;
+   		case "voice" : voice_page(); break;
    	}  	
 	
 	if(plugin=="profile" || plugin=="home")
@@ -471,11 +472,12 @@ jQuery(document).ready(function ($) {
 	function share_voice(shareBtn)
 	{
 		var $shareBtn	= $(shareBtn);
-		var voice_text	= $("#yeni_yazi").val();
-		var initem		= $("#initem").val();
-		var initemName	= $("#initem-name").val();
-		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName};
-		alert("asd");
+		var randID 		= $shareBtn.attr("data-randID");
+		var voice_text	= $("#replyTextArea_"+randID).val();
+		var replyer		= $("#replyer_"+randID).val();
+		var initem		= $("#initem").val();  // initemler  düzenlenmeli
+		var initemName	= $("#initem-name").val(); //intiremler düzenlenmeli
+		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName, replyer:replyer};
 		$.ajax({
 			type: "POST",
 			url: "/ajax/set_share_voice",
@@ -684,6 +686,8 @@ jQuery(document).ready(function ($) {
 				$("#voiceSliceBottom_"+randID).slideDown();
 				$("#voice_detailArea_"+randID).slideDown();
 				
+				get_voiceReply(vID, randNum);
+				
 			}
 			else
 			{
@@ -697,6 +701,20 @@ jQuery(document).ready(function ($) {
 
 		
 	}
+	
+	function get_voiceReply(vID, randNum)
+	{
+		$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"_"+randNum);
+		$("#voiceReplyArea_"+vID+"_"+randNum).show();
+		$.post("/ajax/get_voiceReply", {voiceID: vID}, function(response){ 
+	        if(response.status=="success")
+	        {
+	        	$(".loading_bar").remove();
+	        	$("#parliament-agenda-tmpl").tmpl(response.agendas).appendTo("#referandum-container");
+	        }
+	    },'json');  
+	}
+	
 	function replyTextFocus(voiceID, randNum)
 	{
 		var randID= voiceID+"-"+randNum;
@@ -947,7 +965,10 @@ jQuery(document).ready(function ($) {
 		get_myFollowing();
 		get_proposal();
 	}
-	
+	function voice_page()
+	{
+		$("#duvaryazisi-tmpl").tmpl(voiceObj).appendTo("#orta_alan_container");
+	}
 	function follow(profileID)
 	{
 		$.post("/ajax/follow", {profileID: profileID}, function(response){ 

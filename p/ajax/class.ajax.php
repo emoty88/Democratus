@@ -47,7 +47,9 @@ class ajax_plugin extends control{
 	public function set_share_voice(){
             global $model, $db;
             $response = array();
+			
             try{
+            	
                 if($model->profile->status==5) // yeni versiyonda düzenlenecek;
 				{
 					$response["status"]="error";
@@ -64,8 +66,8 @@ class ajax_plugin extends control{
 				$share->di=$urlS->changeUrlShort($share->di); 
                 $share->di=  mb_substr($share->di , 0, 200 ) ; 
                 $share->onlyProfile=0;
-         
-                if(@$_POST["linkli"]=="voice")// yeni versiyonda düzenlenicek
+        
+                if(@$_POST["replyer"]>0)// yeni versiyonda düzenlenicek
             	{
             		$share->di=trim($share->di);
             		if(strpos($share->di, "+voice")===false)
@@ -74,9 +76,9 @@ class ajax_plugin extends control{
 					}
 					if(strpos($share->di, "+voice")==0)
 					$share->onlyProfile=1;
-            		$share->di=str_replace("+voice", '<a href="/di/'.$_POST["sesHakkındaID"].'">+voice</a>', $share->di);
+            		$share->di=str_replace("+voice", '<a href="/voice/'.$_POST["replyer"].'">+voice</a>', $share->di);
 					$share->isReply="1";
-					$share->replyID=$_POST["sesHakkındaID"];
+					$share->replyID=$_POST["replyer"];
 				}
 				else if (@$_POST["linkli"]=="profile")// yeni versiyonda düzenlenicek 
             	{
@@ -103,11 +105,11 @@ class ajax_plugin extends control{
 					$share->profileType	= "tagPage";
 				}	
 				
-                if( $db->insertObject('#__di', $share,"ID") ){
+                if( $db->insertObject('di', $share,"ID") ){
                 	$share->ID=$db->insertid();
 					//KM::identify($model->user->email); // aktif edilince açılacak 
 				    //KM::record('writingvoice');
-				  
+				     
                    if(@$_POST["linkli"]=="voice"){
 	                		$db->setQuery("select profileID from di where ID='".$_POST["sesHakkındaID"]."'");
 	                		$id = $db->loadResult();
@@ -150,10 +152,12 @@ class ajax_plugin extends control{
 	                	$tw=new twitter();
 	                	$tw->sendTweet(strip_tags($share->di),$share->ID);
 	                }
-					
                     $response['status'] = 'success';
+					 
 					$share->sharerimage = $model->profile->image;
 					$share->sharername = $model->profile->name;
+					$share->permalink = $model->profile->permalink;
+					$share->count_reply = 0;
                     $response['voice'] 	= $c_voice->get_return_object($share);
 					
 					if($share->initem=="1")
@@ -942,6 +946,23 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			{
 				throw new Exception ($res["message"]);
 			}
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
+	
+	public function get_voiceReply()
+	{
+		global $model, $db;
+    	$model->mode = 0;
+   		$response = array("status" => "success");
+	    try{
+	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+		   	$c_voice = new voice($vID);
+			$response["voices"] = $c_voice->get_reply();
 	    } catch (Exception $e){
 	        $response['status'] = 'error';
 	        $response['message'] = $e->getMessage();

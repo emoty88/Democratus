@@ -139,15 +139,66 @@
 			$v->randNum		= rand(1000,9999);
 			return $v;
 		}
-		public function get_replyCount($ID)
+		/**
+		 * Voice'a verilen cevapları (+voice) döndürür
+		 * @param $voiceID = cevapları istenen voice ID si
+		 * @param $start = hangin cevaptan sonrası isteniyorusa o voice ID si
+		 * @param $limit = kaç cevap bekleniyorsa 
+		 */
+		public function get_reply($voiceID=null, $start=0, $limit=7)
+		{
+			global $model, $db;
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			
+			$SELECT = "SELECT DISTINCT 	di.*, 
+										sharer.image AS sharerimage, 
+										sharer.name AS sharername, 
+										redier.name AS rediername, 
+										redier.image AS redierimage, 
+										sharer.deputy AS deputy, 
+										sharer.showdies, 
+										sharer.permalink as permalink";
+        	$FROM   = "\n FROM di as di";
+        	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
+        	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
+			$WHERE	="\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+			if($start>0){
+        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+        	}  
+			$ORDER  = "\n ORDER BY di.ID DESC";
+        	$LIMIT  = "\n LIMIT $limit";
+			
+			
+            $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+            $voices = $db->loadObjectList();
+			return $voices;
+		}
+		
+		public function get_replyCount($voiceID)
 		{
             global $model, $db;
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			
             //kendi tablosundan gelsin	
-            $SELECT = "SELECT COUNT(*)";
+            $SELECT = "SELECT count_(*)";
             $FROM   = "\n FROM di AS di";
             $JOIN   = "\n ";
             
-            $WHERE  = "\n WHERE di.replyID = " . $db->quote($ID);
+            $WHERE  = "\n WHERE di.replyID = " . $db->quote($voiceID);
             $WHERE .= "\n AND di.status>0";
             
             $ORDER  = "\n ";
