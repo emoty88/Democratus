@@ -74,7 +74,7 @@
     			</div> 
     			  			
     		</section>
-                <div style="width: 240px; margin: 0 auto; color: white; margin-top: -50px; clear: both">
+                <div style="width: 240px; margin: 0 auto; color: white; margin-top: -30px; clear: both">
                         <p id="message"></p>
                 </div> 
 

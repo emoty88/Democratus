@@ -15,6 +15,7 @@ $(document).ready(function() {
                 //alert('success');
                 window.location = "/";
             } else {
+                $('#message').show();
                 $('#message').text(data.message);
                                 
             }
