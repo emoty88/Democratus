@@ -96,7 +96,7 @@ body.atolye15_body { overflow-x: hidden; }
  * Ana Menü
  */
 #logo { display: inline-block; margin-top: 10px; }
-#ust_kisim { min-height: 60px; border-bottom: 1px solid #fff; }
+#ust_kisim { min-height: 40px; border-bottom: 1px solid #fff; } 
 #ust_kisim hgroup { display: none; }
 
 #mobil_menu_tetikleyici {
@@ -1284,32 +1284,8 @@ body #atolye15 .kirmizi_arkaplan h1 { font-size: 24px; line-height: 30px; color:
 #profil .tablo_tutucu table .istatistik { color: #d04647; font-size: 11px; line-height: 14px; }
 #profil .tablo_tutucu table .istatistik strong { display: block; font-size: 15px; }
 #profil .mobil_etiketler { display: none; }
-#profil .show-all-tags { 
-	position: absolute;
-	bottom: -10px;
-	right: 140px;
-	display: block;
-	padding: 3px 8px;
-	background: white;
-	border: 1px solid #DDD;
-	border-radius: 5px;
-}
 
-#all-tags ul {
-	margin: 0;
-	list-style-type: none !important;
-}
-
-#all-tags ul li {
-	padding: 5px 0;
-	border-bottom: 1px solid #ddd;
-}
-
-#all-tags ul li:last-child {
-	border-bottom: none;
-}
-
-#profil .takip_bilgileri { width: 95px; position: absolute; display: block; top: 15px; right: 15px; }
+#profil .takip_bilgileri { width: 120px; position: absolute; display: block; top: 15px; right: 15px; }
 #profil .asil_alan { padding: 10px 20px 0px 20px; position: relative; z-index: 2; }
 #profil .istatistik_listesi_2 button { margin-bottom: 4px; font-weight: bold; width: 100%; }
 #profil .istatistik_listesi_2 .puan {
@@ -1441,7 +1417,6 @@ body .boluklari_azalt { margin-bottom: 0; padding-bottom: 0; }
 .dm-menu {
  	position: relative;
  	margin-top: -10px;
- 	margin-left: 2px;
 }
 
 .dm-menu-content {
@@ -1454,7 +1429,7 @@ body .boluklari_azalt { margin-bottom: 0; padding-bottom: 0; }
 	-webkit-box-shadow: 3px 3px 0 #D6D6D6;
 	border: 1px solid #cdcdcd;
 	padding-top: 15px;
-	padding-right: 17px;
+	padding-right: 20px;
 
 }
 
@@ -1492,35 +1467,6 @@ body .boluklari_azalt { margin-bottom: 0; padding-bottom: 0; }
 .dm-menu-content ul li i {
 	position: absolute;
 	top: 7px; right: -8px;
-}
-
-#dm-menu ul {
-	list-style-type: none;
-}
-
-li.dm-menu-content {
-	margin-top: 10px;
-	width: 103%;
-	margin-left: -28px;
-	padding-top: 12px !important;
-	background-repeat: no-repeat;
-	position: relative;
-	padding-bottom: 10px;
-}
-
-li.dm-menu-content i {
-	position: absolute;
-	top: 10px; right: 6px;
-}
-
-li.dm-menu-content a {
-	color: #666 !important;
-	padding-left: 40px;
-}
-
-li.dm-menu-content a:hover {
-	text-decoration: none;
-	color: #982728 !important;
 }
 
 #new-message {
@@ -1562,134 +1508,6 @@ li.dm-menu-content a:hover {
 	background: url(../img/path-to-up.png);
 }
 
-#dm-menu .path-to-up {
-	left: 63px;
-}
-
-
-/****************************
- * Quick Editor
- */
-
- #quick-editor textarea {
- 	margin-left: 15px;
- 	padding: 12px;
- 	height: 76px;
- 	resize: vertical;
- }
-
- #quick-editor .path-to-up {
-	left: 0;
-}
-
-#quick-editor .kalan_karakter_mesaji {
-	margin-top: 8px;
-}
-
-#quick-editor .textarea-controller {
-	margin: 0 0 10px 15px;
-}
-
-
-/****************************
- * Notification Content
- */
-
-.notification-content {
-	width: 240px;
-	position: absolute;
-	top: 42px; left: -98px;
-	border: 1px solid #e8e8e8;
-	box-shadow: 0px 1px 8px #666;
-	-moz-box-shadow: 0px 1px 8px #666;
-	-webkit-box-shadow: 0px 1px 8px #666;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	background: #ffffff;
-	display: none;
-}
-
-.notification-content ul {
-	display: block !important;
-}
-
-.notification-content li {
-	padding: 5px 7px 10px 7px;
-	border-bottom: 1px solid #e9e9e9;
-}
-
-.notification-content li:last-child {
-	border-bottom: none;
-}
-
-.notification-content li span {
-	color: #a9a9a9;
-	font-size: 12px;
-}
-
-.notification-content li span a {
-	color: #982728 !important;
-	display: inline-block !important;
-}
-
-.notification-content li a {
-	line-height: 14px !important;
-	color: #575757 !important;
-	padding: 0 !important;
-	font-size: 12px;
-}
-
-.notification-content li a:hover {
-	background: #ffffff !important;
-	color: #982728 !important;
-}
-
-.notification-content h3 {
-	font-size: 12px;
-	color: #626262;
-	margin: 0 0 5px 0;
-	padding-left: 10px;
-	font-family: Arial;
-	border-bottom: 1px solid #e9e9e9;
-}
-
-.noti-triangle {
-	display: block;
-	width: 11px; height: 6px;
-	background: url(../img/noti-triangle.png) no-repeat 0 0;
-	position: absolute;
-	top: -6px; left: 50%;
-	margin-left: -5.5px;
-}
-
-
-/****************************
- * Arkdaşlar
- */
-
-.arkadas_bul .arkadaslar {
-	padding: 10px 0 0 10px;
-}
-
-.arkadas_bul .arkadaslar a {
-	margin: 0 6px 9px 0;
-	display: inline-block;
-	width: 32px; height: 32px;
-}
-
-.arkadaslar-text {
-	padding: 10px;
-	font-size: 12px;
-	line-height: 16px;
-	font-weight: bold;
-	border-top: 1px solid #DDD;
-}
-
-.find-friends {
-	padding-left: 30px;
-	background: url(../img/find-friends.png) no-repeat -2px 1px;
-}
 
 
 /****************************
@@ -1868,3 +1686,64 @@ ul.sutunlar_4_sutun > li { display: block; float: left; margin-left: 2%; width: 
 
 ul.sutunlar_2_sutun.fix > li { margin-left: 2%; width: 49%;  }
 ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
+.caroufredsel_wrapper {height:220px; }
+.noticeMini {
+	max-height:450px; overflow:auto; margin:5px;
+}
+.noticeMini ul {
+	list-style:none;	
+}
+.noticeMini ul li {
+	border:0! important;
+	padding:5px !important;
+}
+.noticeMini ul li a{
+	color:#464646 !important;
+	border:0! important;
+	padding:0 !important;
+	display:inline !important;
+}
+.noticeMini ul li a:hover{
+	color:#962B2B !important;
+	background-color:#fff !important;
+	border:0! important;
+	padding:0 !important;
+	display:inline !important;
+}
+
+.social_connect {
+	float: left;
+}
+
+.social_connect a {
+	width: 150px;
+	height: 32px;
+	background: url(../img/login-social_connect.png) no-repeat top left;
+	padding-left: 33px;
+	display: block;
+	margin-bottom: 12px;
+	text-align: center;
+	color: #fff;
+	line-height: 32px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.social_connect a.twitter_login {
+	background-position: bottom;
+}
+
+.social_connect a:hover {
+	text-decoration: none;
+	color: #fff;
+}
+
+.voice_hover_area{
+	margin: -20px -20px -10px;
+    padding: 20px 20px 10px;
+	cursor: pointer;
+}
+
+.voice_hover_area:hover{
+	background-color: #E5E5E5;
+}

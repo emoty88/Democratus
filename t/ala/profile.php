@@ -37,17 +37,13 @@
 						<!-- Yan Alan -->
 						<section id="yan_alan" class="span4">
 							<div class="satirlar">
-								<div class="satir duvar_kontrolleri_tutucu">
-									<div class="duvar_kontrolleri">
-										<a href="#"><i class="atolye15-ikon-yeni-yazi atolye15-ikon-48"></i></a>
-										<a id="duvara_git" href="profil.html" class="">
-											<span class="baslik">Duvarım</span> <i class="atolye15-ikon-ok atolye15-ikon-24"></i>
-											<span class="sag_tarafi_sil"></span>
-										</a>
-									</div>
-								</div>
+								
+								{{sidebarTop}}
+								
 								<div class="satir bilesenler hidden-phone">
-
+									
+									{{quickEditor}}
+									
 									{{meclis}}
 
 									{{populardies}}
