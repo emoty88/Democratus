@@ -42,7 +42,7 @@
 	    						<a class="facebook_login" href="#">Facebook ile Bağlan</a>
 	    					</div>
 	    			
-		    				<input class="inputR" type="text" name="name" id="name" placeholder="İsim-Soyisim">
+		    				<input class="inputR" type="text" name="name" id="name" placeholder="Ad-Soyad">
 		    				<input class="inputR" type="text" name="userName" id="userName" placeholder="Kullanıcı adı">
 		    				<input class="inputR" type="text" name="email" id="email" placeholder="E-Posta adresi">
 		    				<div style="clear: both"></div>

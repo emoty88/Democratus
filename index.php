@@ -49,7 +49,7 @@
     	//define('DB_PASSWORD', '');
     	define('DB_HOST', '178.63.46.159');
     } elseif ($_SERVER['SERVER_NAME']=="democratusala.org" or TRUE) {
-        define('DB_NAME', 'demo');
+        define('DB_NAME', 'cafeincampusorg');
         define('DB_USER', 'root');
         define('DB_PASSWORD', "crm100dkAZ");
         //define('DB_PASSWORD', '');
