@@ -42,9 +42,9 @@
 	    						<a class="facebook_login" href="#">Facebook ile Bağlan</a>
 	    					</div>
 	    			
-		    				<input class="input" type="text" name="name" id="name" placeholder="İsim-Soyisim">
-		    				<input class="input" type="text" name="userName" id="userName" placeholder="Kullanıcı adı">
-		    				<input class="input" type="text" name="email" id="email" placeholder="E-Posta adresi">
+		    				<input class="inputR" type="text" name="name" id="name" placeholder="Ad-Soyad">
+		    				<input class="inputR" type="text" name="userName" id="userName" placeholder="Kullanıcı adı">
+		    				<input class="inputR" type="text" name="email" id="email" placeholder="E-Posta adresi">
 		    				<div style="clear: both"></div>
 		    				<input type="checkbox" id="agree" style="float: left" />
 		    				<p style="color: white; font-size: 12px; width: 220px; padding-left: 15px"> 
@@ -60,8 +60,8 @@
 		    				<div class="social_connect">
 	    						<a class="twitter_login" href="#">Twitter ile Bağlan</a>
     						</div>
-		    				<input class="input" type="password" name="password" id="password" placeholder="Şifre">
-		    				<input class="input" type="password" name="password2" id="password2" placeholder="Şifre Tekrar">
+		    				<input class="inputR" type="password" name="password" id="password" placeholder="Şifre">
+		    				<input class="inputR" type="password" name="password2" id="password2" placeholder="Şifre Tekrar">
 		    				<select name="male" id="selectB" tabindex="11">  
 								<option value="unknow">Cinsiyet</option>
 								<option value="male">Erkek</option>

@@ -596,7 +596,26 @@
 		public function update_profile($uProfile)
 		{
 			global $model, $db;
-        	return $db->updateObject('profile', $uProfile, 'ID', 0);
+                        return $db->updateObject('profile', $uProfile, 'ID', 0);
 		}
+                public function get_FollowingHashtags($profile = -1, $limit = 4){
+                    global $model, $db;
+                
+                    if(!is_object($profile)){
+                            $profile=$model->profile;
+                    }
+                    //print_r($profile);
+                    $query = "SELECT ht.* ". 
+                              "FROM profile ht, follow f ".
+                              "WHERE ht.ID=f.followingID ".
+                                  "AND f.followerID='".$profile->ID."' ".
+                                  "AND f.status=1 ". 
+                                  "AND ht.status=1 ".
+                                  "AND ht.type='hashTag' ".
+                              "ORDER BY ID desc ". 
+                              "LIMIT $limit ";
+                    $db->setQuery($query);
+                    return $rows = $db->loadObjectList();                    
+                }
     }
 ?>
