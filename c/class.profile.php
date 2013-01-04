@@ -5,7 +5,7 @@
         public function __construct($profile=null)
 		{
 			global $model;
-			print_r($this->getFallowingHashtags());
+			
 			if(is_object($profile))
           	{
             	$this->profile=$profile;
@@ -598,7 +598,7 @@
 			global $model, $db;
                         return $db->updateObject('profile', $uProfile, 'ID', 0);
 		}
-                public function getFallowingHashtags($profile = -1, $limit = 4){
+                public function get_FollowingHashtags($profile = -1, $limit = 4){
                     global $model, $db;
                 
                     if(!is_object($profile)){
