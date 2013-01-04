@@ -15,7 +15,7 @@ $(document).ready(function() {
                 //alert('success');
                 window.location = "/";
             } else {
-                alert(data.message);
+                $('#message').text(data.message);
                                 
             }
             
@@ -29,8 +29,10 @@ $(document).ready(function() {
         
         if($(this).html()=='Giriş Yap'){
         	$(this).html('Hemen Kayıt Ol');
+                $('#message').hide();
         }else{
         	$(this).html('Giriş Yap');
+                $('#message').hide();
         }
         return false;
     });
@@ -41,7 +43,7 @@ $(document).ready(function() {
         }
     });
 	
-    $('#registerBtn').click(function() {
+    $('#registerBtn').live('click',function() {
 		
         try{
             if(!$("#agree").is(":checked"))
@@ -78,8 +80,11 @@ $(document).ready(function() {
             $.post( '/ajax/register/', { name: name, userName:userName, email: email, password: password, password2: password2,male:male }, function(data){
                
                 if(data.status=='success'){
-                    //alert(data.message);
-                    window.location = "/";
+                    $('#message').text(data.message);
+                    $('#registerBtn').text('Kayıt Başarılı');
+                    $('#registerBtn').attr('id','registerBtn2');
+                    $('#registerBtn2').attr('disabled','disabled');
+                    
                 } else if (data.status=='error') {
                     $('#message').text(data.message);
                     $('#message').show();
@@ -104,6 +109,51 @@ $(document).ready(function() {
         }
         
         
+    });
+    
+    $('.forget_password').click(function() {
+        var dialog = $(".dialog").dialog({
+                         width: 400,
+                         height: 300,
+                         title: "Şifre sıfırlama", 
+                         modal: true,
+                         resizable: true,
+                         close: function() { $( this ).hide(); },
+                         buttons: {
+                            "Tamam": function() {
+                                var email = $("#email-forgot").val();
+                                
+                                if(email.length<3) return false;
+                                
+                                $.post("/ajax/resetpassword", {  
+                                                            email: $("#dialog input[name=email]").val()
+                                                            
+                                                            }, function(data){ 
+                                                                if(data.status=='success'){
+                                                                    $('#message').text(data.message);;
+                                                                    //window.location = "/";
+                                                                } else {
+                                                                    $('#message').text(data.message);
+                                                                }
+                                                            
+                                                                //eval(data); 
+                                                            }, 'json');
+                                                            
+                                                            
+                                $( this ).dialog( "close" );
+                                $( this ).hide();
+                                
+                            },
+                            "İptal": function() {
+                                $( this ).dialog( "close" );
+                                $( this ).hide();
+                            }
+                         }
+                    });
+        
+        
+
+        return false;
     });
  
 });

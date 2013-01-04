@@ -1038,7 +1038,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 				               
                 if(!isEmail($form->email)){
                     $response['field'] = 'email';
-                    throw new Exception('Email adresi geçerli değil',1);
+                    throw new Exception('Email adresi geçerli değil.'.$form->email,1);
                 }
                 
                 //bu mail kayıtlı mı?
@@ -1094,7 +1094,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                             
                             if($db->insertObject('userrequest', $request)){
                                 $response['status'] = 'success';
-                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol edin. Onay maili birkaç dakika içerisinde ulaşacaktır.'.$request->key;
+                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol edin. Onay maili birkaç dakika içerisinde ulaşacaktır.';
                                 
                                 $model->sendsystemmail($request->email, 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$request->key.'"> http://democratus.com/user/activate/'.$request->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                                 
@@ -1120,6 +1120,64 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 
                 //login yap  session oluştur
                 
+            } catch (Exception $e){
+                $response['status'] = 'error';
+                $response['message'] = $e->getMessage();
+            }
+            
+            echo json_encode($response);
+        }
+        
+        public function resetpassword(){ // die('resetpassword'); 
+            global $model, $db, $l;            
+            
+            $model->mode = 0;
+            $response = array();
+            
+            try{
+                
+
+                
+                $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+
+                if(!isEmail($email)){
+                    $response['field'] = 'email';
+                    throw new Exception('email adresi geçerli değil',1);
+                }
+                
+                //bu mail kayıtlı mı?
+                $db->setQuery("SELECT * FROM user WHERE email=".$db->quote($email));
+                $user = null;
+                if( ! $db->loadObject($user)){
+                    $response['field'] = 'email';
+                    throw new Exception('email adresi bulunamadı',1);
+                }
+                    
+                //reset kaydı oluştur.
+                
+                
+                $request = new stdClass;
+                    
+                $request->email     = strtolower( trim( $email ) );
+                $request->userID    = $user->ID;
+                $request->profileID = $user->ID;
+                $request->key       = md5( KEY . time() . uniqid() );
+                $request->ip        =  filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+                $request->datetime  = date('Y-m-d H:i:s');
+                $request->status    = 1;
+                
+                if($db->insertObject('resetpassword', $request)){
+                    $response['status'] = 'success';
+                    $response['message'] = 'Şifre yenileme başvurunuz alındı. Lütfen mail kutunuzu kontrol edin. Yenileme maili birkaç dakika içerisinde ulaşacaktır.';
+                    $model->sendsystemmail($request->email, 'Şifre yenileme işlemi', 'Merhabalar, <br /> Democratus.com üyelik şifrenizi yenilemek için şu linkine tıklamalı veya tarayıcınızın adres çubuğuna yapıştırmalısınız:<br /><a href="http://democratus.com/user/resetpassword/'.$request->key.'"> http://democratus.com/user/resetpassword/'.$request->key.'</a>');
+                    //mail($request->email, 'başvuru onayı', 'onay linki: http://democratus.com/user/activate/'.$request->key);
+                    //echo '<h3>Kayıt başarılı. mailinizi kontrol ediniz.</h3>'.$request->email;
+                    $_SESSION['captcha'] = null;
+                    
+                } else {
+                    
+                    throw new Exception('kayıt hatası');
+                }
             } catch (Exception $e){
                 $response['status'] = 'error';
                 $response['message'] = $e->getMessage();

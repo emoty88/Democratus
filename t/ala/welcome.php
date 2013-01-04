@@ -16,7 +16,7 @@
 			$model->addStyle('http://fonts.googleapis.com/css?family=Ubuntu:700&subset=latin,latin-ext', 'http://fonts.googleapis.com/css?family=Ubuntu:700&subset=latin,latin-ext', 1 ); 
 			$model->addStyle($this->url.'css/bootstrap-custom-build.css', 'bootstrap-custom-build.css', 1 ); 
 			$model->addStyle($this->url.'css/bootstrap-helper.css', 'bootstrap-helper.css', 1 ); 
-			$model->addStyle($this->url.'css/ui-lightness/jquery-ui-1.9.1.custom.min.css', 'ui-lightness/jquery-ui-1.9.1.custom.min.css', 1 ); 
+			$model->addStyle($this->url.'css/blitzer/jquery-ui-1.9.2.custom.min.css', 'blitzer/jquery-ui-1.9.2.custom.min.css', 1 ); 
 			$model->addStyle($this->url.'css/welcome.css', 'app.css', 1 ); 
 			echo  '<!--[if lte IE 9]>';
 			$model->addStyle($this->url.'css/ie.css', 'ie.css', 1 ); 

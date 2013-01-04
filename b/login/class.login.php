@@ -4,13 +4,22 @@
 		{
 			global $model;
 			?>
-			<section class="login" style="height: 150px; width: 530px">
+                    <div id="dialog" class="dialog" style="display: none">
+                        <form class="dialogform" id="dialog">
+                            <p>
+                                <label>E-posta:</label>
+                                <input type="text" id="email-forgot" name="email" value="" autocomplete="off" /><br>
+                                <span class="message">Kayıt olurken kullandığınız e-posta adresinizi giriniz.</span>
+                            </p>
+                        </form>
+                    </div>
+                    <section class="login" style="height: 150px; width: 530px">
     			<div class="login-box">
 	       			<form>
-	    				<input class="input" type="text" id="loginemail" placeholder="E-Posta Adresi">
+	    				<input class="input" type="text" id="loginemail" placeholder="E-Posta ya da kullanıcı adı">
 	    				<input class="input" type="password" id="loginpass" placeholder="Şifre">
 	    				<a class="btn" id="wellcome-login" href="javascript::void()">Giriş</a>
-	    				<a class="forget_password" href="#">Şifremi Unuttum</a>
+	    				<a class="forget_password" href="javascript::void()">Şifremi Unuttum</a>
 	    				
 	    			</form>
 	    			
@@ -33,9 +42,9 @@
 	    						<a class="facebook_login" href="#">Facebook ile Bağlan</a>
 	    					</div>
 	    			
-		    				<input class="input" type="text" name="name" id="name" placeholder="İsim Soyisim">
-		    				<input class="input" type="text" name="userName" id="userName" placeholder="Kullanıcı Adı">
-		    				<input class="input" type="text" name="email" id="email" placeholder="E-Posta Adresi">
+		    				<input class="input" type="text" name="name" id="name" placeholder="İsim-Soyisim">
+		    				<input class="input" type="text" name="userName" id="userName" placeholder="Kullanıcı adı">
+		    				<input class="input" type="text" name="email" id="email" placeholder="E-Posta adresi">
 		    				<div style="clear: both"></div>
 		    				<input type="checkbox" id="agree" style="float: left" />
 		    				<p style="color: white; font-size: 12px; width: 220px; padding-left: 15px"> 
@@ -65,9 +74,9 @@
     			</div> 
     			  			
     		</section>
-    		<div>
-				<p id="message"></p>
-			</div> 
+                <div style="width: 240px; margin: 0 auto; color: white; margin-top: -50px; clear: both">
+                        <p id="message"></p>
+                </div> 
 
 			<?php
 			
