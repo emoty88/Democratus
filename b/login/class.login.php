@@ -13,8 +13,8 @@
                             </p>
                         </form>
                     </div>
-                    <section class="login" style="height: 150px; width: 530px">
-    			<div class="login-box">
+                    <section class="login" style="height: 180px; width: 530px">
+                        <div id="login-box" class="login-box" style="position: absolute">
 	       			<form>
 	    				<input class="input" type="text" id="loginemail" placeholder="E-Posta ya da kullanıcı adı">
 	    				<input class="input" type="password" id="loginpass" placeholder="Şifre">
@@ -35,7 +35,7 @@
 	    			
 	    			</div>
     			</div>
-    			<div class="login-box" style="display:none">
+    			<div id="register-box" class="login-box" style="display:none; position: absolute">
 	    		
 	    				<div style="float: left; width: 280px">
 	    					<div class="social_connect">
@@ -74,7 +74,7 @@
     			</div> 
     			  			
     		</section>
-                <div style="width: 240px; margin: 0 auto; color: white; margin-top: -50px; clear: both">
+                <div style="width: 240px; margin: 0 auto; color: white; margin-top: -30px; clear: both">
                         <p id="message"></p>
                 </div> 
 
