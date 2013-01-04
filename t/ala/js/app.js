@@ -13,6 +13,7 @@ var linkCount		= 0;
 var paths			= 0;
 var plugin			= 0;
 var currentTab		= 0;
+var voiceDControl 	= 0;
 
 jQuery(document).ready(function ($) {
 
@@ -343,10 +344,11 @@ jQuery(document).ready(function ($) {
     		return $(this).find('div').html();
     	}
     });
-
+	/* onclick eventinde fonksiyon çağırıldı
 	$("#share_voice").live("click", function (){
 		share_voice(this);
 	});
+	*/
 	$(".meclis_oy").live("click", function(){
 		var agendaID=$(this).attr("data-agendaID");
 		var choice=$(this).attr("data-choice");
@@ -487,8 +489,18 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
-					$("#replyTextArea_"+randID).val("");
+					if(randID != "0")
+					{
+						
+						$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
+						$("#replyTextArea_"+randID).val("+voice ");
+						$("#voiceReplyArea_"+randID).slideDown();
+					}
+					else
+					{
+						$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
+						$("#replyTextArea_"+randID).val("");
+					}	
 					$("#initem").val(0);
 					$("#initem-name").val(0);
 				}
@@ -670,6 +682,13 @@ jQuery(document).ready(function ($) {
 	}
 	function voiceDetail(voice)
 	{
+		if(plugin=="voice")
+		{	
+			if(voiceDControl==1)
+				return 0;
+			else
+				voiceDControl=1;
+		}
 		if(notOpen==1)
 		{
 			notOpen=0;

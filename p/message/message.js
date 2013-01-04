@@ -9,7 +9,7 @@ function deleteMessage(id,mode){
 	if(mode==1){
 		$(".x").show();
 	}elseif(mode==0){
-		$.post('/message/ajax/delete', {'id':id , 0},  function(response){ 
+		$.post('/message/ajax/delete', {'id':id },  function(response){ 
 		if(response && response.result=='success'){
 	   		window.document.location.reload();
 	  	} else {

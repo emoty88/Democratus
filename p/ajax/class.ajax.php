@@ -80,7 +80,12 @@ class ajax_plugin extends control{
 					$share->isReply="1";
 					$share->replyID=$_POST["replyer"];
 				}
-				else if (@$_POST["linkli"]=="profile")// yeni versiyonda düzenlenicek 
+				else
+				{
+					$share->isReply="0";
+					$share->replyID="0";
+				}
+				if (@$_POST["linkli"]=="profile")// yeni versiyonda düzenlenicek 
             	{
             		$share->di=str_replace("@".$_POST["profileName"], '<a href="/profile/'.$_POST["profileID"].'">@'.$_POST["profileName"].'</a>', $share->di);
             	}

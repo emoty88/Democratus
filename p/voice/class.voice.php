@@ -22,6 +22,9 @@
 			
 			$voiceRObj = $c_voice->get_return_object($c_voice->_voice);
 			$model->addScript("voiceObj = ".json_encode($voiceRObj));
+			$model->addScript("$(document).ready(function (){
+				voiceDetail($('.voice_hover_area'));
+			});")
 			?>
 			
 			<?

@@ -10,12 +10,13 @@
 			<!-- Yeni Yazı Yaz -->
 			<div class="satir">
 				<div id="yeni_yazi_yaz" class="karakter_sayaci_tutucu">
-					<textarea id="yeni_yazi" name="yeni_yazi" class="karakteri_sayilacak_alan" placeholder="Fikrini Paylaş..." rows="2"></textarea>
+					<textarea id="replyTextArea_0" name="yeni_yazi" class="karakteri_sayilacak_alan" placeholder="Fikrini Paylaş..." rows="2"></textarea>
 					<div class="kalan_karakter_mesaji"><span class="karakter_sayaci">200</span> karakter</div>
 					
 					<div class="kontroller">
+						<button id="share_voice" class="btn btn-danger" onclick="share_voice(this)" data-randID="0" >Paylaş</button>
 						
-						<button id="share_voice" class="btn btn-danger">Paylaş</button>
+						<input type="hidden" name="replyer_0" id="replyer_0" value="0" />
 						<a id="fine-uploader-btn" href="javascript:void(0)">
 							<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
 						</a>
