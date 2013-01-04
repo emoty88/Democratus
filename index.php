@@ -49,11 +49,11 @@
     	//define('DB_PASSWORD', '');
     	define('DB_HOST', '178.63.46.159');
     } elseif ($_SERVER['SERVER_NAME']=="democratusala.org" or TRUE) {
-        define('DB_NAME', 'cafeincampusorg');
-        define('DB_USER', 'cafeincampusorg');
-        define('DB_PASSWORD', "Tr45J9");
+        define('DB_NAME', 'demo');
+        define('DB_USER', 'root');
+        define('DB_PASSWORD', "56yn234rty");
         //define('DB_PASSWORD', '');
-      	define('DB_HOST', '178.63.46.159');
+      	define('DB_HOST', 'localhost');
     }
     /* 
     define('DB_NAME', $_SERVER['DB_NAME']);

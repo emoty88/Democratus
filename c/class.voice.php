@@ -137,6 +137,7 @@
 				$v->initem= 0;
 			}
 			$v->replyCount	= $v_obj->count_reply;
+			$v->replyID		= $v_obj->replyID;
 			$v->randNum		= rand(1000,9999);
 			return $v;
 		}
@@ -155,8 +156,8 @@
 			}
 			else if($this->_cons==1)
 			{
-				$voiceID=$this->_ID;
-			}
+ 				$voiceID=$this->_ID;
+ 			}
 			
 			$SELECT = "SELECT DISTINCT 	di.*, 
 										sharer.image AS sharerimage, 
@@ -181,7 +182,35 @@
             $voices = $db->loadObjectList();
 			return $voices;
 		}
-		
+		public function get_parent($voiceID=null)
+		{
+			global $model, $db;
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			$SELECT = "SELECT DISTINCT 	di.*, 
+										sharer.image AS sharerimage, 
+										sharer.name AS sharername, 
+										redier.name AS rediername, 
+										redier.image AS redierimage, 
+										sharer.deputy AS deputy, 
+										sharer.showdies, 
+										sharer.permalink as permalink";
+        	$FROM   = "\n FROM di as di";
+        	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
+        	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
+			$WHERE	="\n WHERE di.status=1 and di.ID='".$voiceID."' ";
+			$ORDER  = "\n ORDER BY di.ID DESC";
+        	$LIMIT  = "\n LIMIT 1";
+        	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+            $db->loadObject($voices);
+			return $voices;
+		}
 		public function get_replyCount($voiceID)
 		{
             global $model, $db;

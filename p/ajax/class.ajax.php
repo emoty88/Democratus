@@ -975,5 +975,24 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    
 	    echo json_encode($response);
 	}
+	
+	public function get_parentVoice()
+	{
+		global $model, $db;
+    	$model->mode = 0;
+   		$response = array("status" => "success");
+	    try{
+	       	$vID = filter_input(INPUT_POST, 'replyID', FILTER_SANITIZE_NUMBER_INT);
+		   	$c_voice = new voice($vID);
+			$voice =  $c_voice->get_parent();
+			$response["voice"] = $c_voice->get_return_object($voice, 32, 32);	
+			
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
 }
 ?>

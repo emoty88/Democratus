@@ -4,8 +4,16 @@ class jstemplates_block extends control{
 	?>
 		<script id="duvaryazisi-tmpl" type="text/x-jquery-tmpl">
 			<!-- Duvar Yazısı -->
+			
 			<div id="voiceSliceTop_${ID}-${randNum}" class="dyazi_top_slice" ></div>
+			
+			<aside id="voiceTopArea_${ID}-${randNum}" class="yorumlar" data-replyID="${replyID}" data-isload="0" style="border:0; margin:0px; display: none;" onclick="notOpen=1;" >
+					
+			</aside>
+			
+			
 			<article class="duvar_yazisi" >
+				
 				<div class="voice_hover_area" style="" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}" >
 					<img class="profil_resmi" src="${sImage}" alt="${sName}">
 					<address class="yazar">
@@ -46,30 +54,35 @@ class jstemplates_block extends control{
 						</a>
 					</aside>
 				</div>
-				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar" data-isload="0" style="display: none;" onclick="notOpen=1;" ></aside>
-			</article>
-				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
-					<div id="replyArea_${ID}-${randNum}" class="replyArea">
-						<textarea id="replyTextArea_${ID}-${randNum}" class="karakterSay" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
-						<div class="reply_bottom">
-							<div class="kalan_karakter_mesaji">
-								<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci">200</span> karakter
-								</div>
-							<div class="kontroller_voice">
-							
-								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
-								<a href="javascript:void(0)" id="fine-uploader-btn" style="position: relative; overflow: hidden; direction: ltr;" class="">
-									<i class="atolye15-ikon-gorsel atolye15-ikon-24" id="bootstrapped-fine-uploader"></i>
-								<input type="file" name="file" style="position: absolute; right: 0px; top: 0px; font-family: Arial; font-size: 118px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0;"></a>
-								<div id="fine-uploader-msg"></div>	
-								
-								<input type="hidden" id="replyer_${ID}-${randNum}" value="${ID}" />
-							</div>
-							<div style="clear: both;"> </div>
-						</div>
-						
-					</div>
+				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar" data-isload="0" style="display: none;" onclick="notOpen=1;" >
+					<!-- İnce Ayar -->
+					<span class="ust_golge"></span>
+					<span class="alt_golge"></span>
+					<span class="asagi_ok"><span></span></span>
 				</aside>
+			</article>
+			<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
+				<div id="replyArea_${ID}-${randNum}" class="replyArea">
+					<textarea id="replyTextArea_${ID}-${randNum}" class="karakterSay" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
+					<div class="reply_bottom">
+						<div class="kalan_karakter_mesaji">
+							<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci">200</span> karakter
+							</div>
+						<div class="kontroller_voice">
+						
+							<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
+							<a href="javascript:void(0)" id="fine-uploader-btn" style="position: relative; overflow: hidden; direction: ltr;" class="">
+								<i class="atolye15-ikon-gorsel atolye15-ikon-24" id="bootstrapped-fine-uploader"></i>
+							<input type="file" name="file" style="position: absolute; right: 0px; top: 0px; font-family: Arial; font-size: 118px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0;"></a>
+							<div id="fine-uploader-msg"></div>	
+							
+							<input type="hidden" id="replyer_${ID}-${randNum}" value="${ID}" />
+						</div>
+						<div style="clear: both;"> </div>
+					</div>
+					
+				</div>
+			</aside>
 			<div id="voiceSliceBottom_${ID}-${randNum}" class="dyazi_bottom_slice" ></div>
 			<!-- Duvar Yazısı Son -->
 		</script>
@@ -78,8 +91,8 @@ class jstemplates_block extends control{
 			<article style="display: block;" class="yorum">
 				<div class="yorum_tutucu_arkaplan">
 					<div class="yorum_tutucu">
-						<img class="profil_resmi" src="${sImage}" alt="${sName}">
-						<address class="yazar">
+						<img class="profil_resmi" src="${sImage}" alt="${sName}" style="position: absolute;">
+						<address class="yazar" style="margin:0;">
 							<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
 							<span>${sTime} önce</span>
 						</address>

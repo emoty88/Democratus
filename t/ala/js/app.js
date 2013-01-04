@@ -686,6 +686,7 @@ jQuery(document).ready(function ($) {
 				$("#voiceSliceBottom_"+randID).slideDown();
 				$("#voice_detailArea_"+randID).slideDown();
 				get_voiceReply(vID, randNum);
+				get_parentVoice(vID, randNum);
 				
 			}
 			else
@@ -695,6 +696,7 @@ jQuery(document).ready(function ($) {
 				$("#voiceSliceBottom_"+randID).slideUp();
 				$("#voice_detailArea_"+randID).slideUp();
 				$("#voiceReplyArea_"+vID+"-"+randNum).slideUp();
+				$("#voiceTopArea_"+vID+"-"+randNum).slideUp();
 			}
 			notOpen=0;
 		}
@@ -720,6 +722,33 @@ jQuery(document).ready(function ($) {
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).show();
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload", "1");
 	        	}
+	        }
+	    },'json');  
+	}
+	
+	function get_parentVoice(vID, randNum)
+	{
+		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
+		//$("#voiceReplyArea_"+vID+"-"+randNum).show();
+		if($("#voiceTopArea_"+vID+"-"+randNum).attr("data-replyID")==0)
+		{
+			return ;
+		}
+		if($("#voiceTopArea_"+vID+"-"+randNum).attr("data-isload")==1)
+		{
+			$("#voiceTopArea_"+vID+"-"+randNum).slideDown();
+			return ;
+		}
+		
+		replyID = $("#voiceTopArea_"+vID+"-"+randNum).attr("data-replyID");
+		$.post("/ajax/get_parentVoice", {replyID: replyID}, function(response){ 
+	        if(response.status=="success")
+	        {
+	        	
+	        	$("#voice-reply-tmpl").tmpl(response.voice).appendTo("#voiceTopArea_"+vID+"-"+randNum);
+	        	$("#voiceTopArea_"+vID+"-"+randNum).show();
+	        	$("#voiceTopArea_"+vID+"-"+randNum).attr("data-isload", "1");
+	        	
 	        }
 	    },'json');  
 	}

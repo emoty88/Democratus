@@ -1739,8 +1739,8 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 }
 
 .voice_hover_area{
-	padding: 20px; 
-	margin: -20px;
+	margin: -20px -20px -10px;
+    padding: 20px 20px 10px;
 	cursor: pointer;
 }
 
