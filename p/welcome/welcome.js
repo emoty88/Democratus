@@ -43,6 +43,11 @@ $(document).ready(function() {
             $('#wellcome-login').focus().click();
         }
     });
+    $('.inputR').keypress(function(e) {
+        if(e.which == 13) {
+            $('#registerBtn').focus().click();
+        }
+    });
 	
     $('#registerBtn').live('click',function() {
 		
