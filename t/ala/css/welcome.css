@@ -1,0 +1,212 @@
+body {
+	background: url(../img/login-bg.png) no-repeat center 50px #872425;
+}
+
+h1.logo {
+	width: 488px;
+	height: 116px;
+	display: block;
+	margin: 40px auto;
+	background: url(../img/login-logo.png) no-repeat;
+	position: relative;
+}
+
+h1.logo a {
+	width: 488px;
+	height: 116px;
+	position: relative;
+	display: block;
+	text-indent: -9999px;
+}
+
+h1.logo span {
+	position: absolute;
+	display: inline-block;
+	bottom: 0;
+	right: 0;
+	color: #faf4f4;
+	font-size: 18px; 
+	line-height: 20px;
+	font-weight: normal;
+}
+
+section.login {
+	width: 500px;
+	margin: 40px auto 50px;
+	height: 106px;
+	position: relative;
+}
+
+section.login form {
+	display: inline-block;
+	float: left;
+	width: 200px;
+}
+
+section.login form input {
+	width: 190px;
+}
+
+section.login form a.btn {
+	width: 60px;
+	text-align: center;
+	padding: 2px 4px;
+	font-size: 12px;
+}
+
+section.login form .forget_password {
+	float: right;
+	color: #fff;
+	font-size: 12px;
+	display: inline-block;
+	margin-top: 2px;
+}
+
+section.login .or {
+	position: relative;
+	display: inline-block;
+	float: left;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	color: #fff;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	background: #9c3c3c;
+	text-align: center;
+	font-size: 12px;
+	margin: 10px 25px;
+}
+section.login .or_before,
+section.login .or_after {
+	position: absolute;
+	display: block;
+	width: 0;
+	height: 45px;
+	left: 249px;
+	border-left: 1px solid #993738;
+	top: -45px;
+}
+
+section.login .or_after {
+	top: 70px;
+}
+
+section.login .social_connect {
+	float: left;
+}
+
+section.login .social_connect a {
+	width: 150px;
+	height: 32px;
+	background: url(../img/login-social_connect.png) no-repeat top left;
+	padding-left: 33px;
+	display: block;
+	margin-bottom: 12px;
+	text-align: center;
+	color: #fff;
+	line-height: 32px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+section.login .social_connect a.twitter_login {
+	background-position: bottom;
+}
+
+section.login .social_connect a:hover {
+	text-decoration: none;
+}
+
+.features {
+	width: 970px;
+	margin: 40px auto;
+	padding: 0;
+	list-style: none;
+	height: 168px;
+}
+
+.features li {
+	float: left;
+	width: 205px;
+	margin-right: 50px;
+}
+
+.features li.last {
+	margin-right: 0;
+}
+
+.features li .img {
+	background: #fff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width: 196px;
+	height: 103px;
+	padding: 5px;
+	-webkit-box-shadow: 0px 11px 30px -7px #000;
+	-moz-box-shadow: 0px 11px 30px -7px #000;
+	box-shadow: 0px 11px 30px -7px #000;
+}
+
+.features li:hover .img {
+	
+}
+
+.features li:hover h3 {
+	font-size: 15px;
+}
+
+.features li h3 {
+	width: 215px;
+	margin: 15px -5px 0;
+	color: #fff;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Arial, sans-serif !important;
+	text-align: center;
+	line-height: 20px;
+}
+
+.signup {
+	width: 300px;
+	margin: 0 auto 30px;
+}
+
+.signup .btn {
+	font-weight: bold;
+	cursor: default;
+}
+
+.signup .btn:hover {
+  color: #333333;
+	background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #e6e6e6;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+
+  background-position: 0;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.signup a {
+	color: #fff;
+	font-size: 18px;
+	font-family: Arial, sans-serif;
+	display: block;
+	margin: 20px auto 10px;
+	width: 100%;
+	text-align: center;
+}

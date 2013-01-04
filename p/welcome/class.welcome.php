@@ -1,14 +1,40 @@
 <?php
     class welcome_plugin extends control{
+    	
+		public function main(){
+			global $model, $db;
+			
+			$model->title = 'The Political Network';
+            $model->description = 'by Which You Can Shape Your World';
+            
+            //print_r($_COOKIE);
+                $model->initTemplate('ala','welcome');
+                $model->view = 'welcome';
+			
+		$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+	       // $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+	        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/jquery-ui.js", "jquery-ui.js", 1);
+			
+                $model->addScript($model->pluginurl . 'welcome.js', 'welcome.js', 1);
+                $model->addScript("paths=".json_encode($model->paths));
+                $model->addScript("plugin='welcome'");
+			
+			
+		}
         
-        public function main(){
+        public function main_old(){
             global $model, $db;
             
             $model->title = 'The Political Network';
             $model->description = 'by Which You Can Shape Your World';
             
             //print_r($_COOKIE);
-            $model->initTemplate('v2','wellcome');
+            $model->initTemplate('v2','welcome');
             $model->view = 'wellcome';
            
             //$model->addScript(PLUGINURL . 'lib/en.js', 'en.js', 1 );

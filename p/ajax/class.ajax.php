@@ -975,7 +975,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    
 	    echo json_encode($response);
 	}
-	
+
 	public function get_parentVoice()
 	{
 		global $model, $db;
@@ -994,5 +994,216 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    
 	    echo json_encode($response);
 	}
+
+        public function register(){ // todo 
+            global $model, $db, $l;            
+            
+            $model->mode = 0;
+            $response = array();
+            //print_r($_POST);
+            try{
+                
+
+                $form               = new stdClass;
+                $form->name         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+				$form->userName    	= strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'userName', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->password     = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'password'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->password2    = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'password2'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->male    = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'male'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->captcha      = filter_input(INPUT_POST, 'captcha', FILTER_SANITIZE_STRING);                
+                
+                
+                if( strlen( $form->name ) < 3 ){
+                    $response['field'] = 'name';
+                    throw new Exception('Adınızı kontrol eder misiniz.', 1);                    
+                }
+				
+				
+				$ka = $form->userName;
+				
+				if(strlen($ka)<3 || strlen($ka)>25)
+				{
+					$response['field'] = 'name';
+                                        throw new Exception('Kullanıcı adınız en az 6 en fazla 25 karakter olmalıdır.', 1);       
+				} 
+				
+				$letters = "/^([a-zA-Z0-9._-]+)$/"; 
+				if(!preg_match($letters, $ka))
+				{
+					$response['field'] = 'name';
+                                        throw new Exception('Sadece harf, rakam ve (- _ .) karakterlerinden oluşan bir kullanıcı adı belirlemelisiniz. ', 1); 
+				}
+			
+				
+				$query = "SELECT permalink FROM page WHERE permalink=".$db->Quote($ka);  
+				$db->setQuery($query);
+				$varmi="";
+                                $db->loadObject($varmi);
+				if(count($varmi)>0)
+				{
+					$response["field"]="name";
+					throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
+				}
+				
+				$query = "SELECT permalink FROM profile WHERE permalink=".$db->Quote($ka);  
+				$db->setQuery($query);
+				$varmi="";
+                                $db->loadObject($varmi);
+				if(count($varmi)>0)
+				{
+					$response["field"]="name";
+					throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
+				}
+				               
+                if(!isEmail($form->email)){
+                    $response['field'] = 'email';
+                    throw new Exception('Email adresi geçerli değil.'.$form->email,1);
+                }
+                
+                //bu mail kayıtlı mı?
+                $db->setQuery("SELECT COUNT(email) FROM user WHERE email=".$db->quote($form->email));
+                if(intval($db->loadResult())>0){
+                    $response['field'] = 'email';
+                    throw new Exception('Email adresi kayıtlı, şifrenizi yenileyebilirsiniz',1);
+                }
+                    
+                if( strlen( $form->password ) < 4 ){
+                    $response['field'] = 'password';
+                    throw new Exception('Şifreniz çok kısa', 1);
+                }
+                    
+                if($form->password != strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'password2'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') ) ){
+                    $response['field'] = 'password2';
+                    throw new Exception('Şifreleriniz aynı değil', 1);
+                }
+                //bilgiler normal mi?
+                
+                
+                //kaydet
+                $profile = new stdClass;    
+                $profile->name = $form->name;
+				$profile->permalink = $ka;
+                $profile->status = 5;
+                $profile->class = 1;
+                $profile->sex = $form->male;
+                
+                //profil kaydet
+                
+                
+                //user kaydet
+                
+                if( $db->insertObject('profile', $profile ) ){
+                        //echo 'profile ok';
+                        
+                        $user = new stdClass;
+                        $user->email = $form->email;
+                        $user->pass = md5(KEY . trim( $form->password ));
+                        $user->status = 5;
+                        $user->ID = $db->insertid();
+                        $user->registertime = date('Y-m-d H:i:s');
+                        
+                        if( $db->insertObject('user', $user ) ){
+                            $request = new stdClass;
+                    
+                            $request->email     = strtolower( trim( $user->email ) );
+                            $request->key       = md5( KEY . time() . uniqid() );
+                            $request->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+                            $request->datetime  = date('Y-m-d H:i:s');
+                            $request->status    = 0;
+                            
+                            if($db->insertObject('userrequest', $request)){
+                                $response['status'] = 'success';
+                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol edin. Onay maili birkaç dakika içerisinde ulaşacaktır.';
+                                
+                                $model->sendsystemmail($request->email, 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$request->key.'"> http://democratus.com/user/activate/'.$request->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+                                
+                                $_SESSION['captcha'] = null;
+                                
+                            } else {
+                                
+                                throw new Exception('kayıt hatası');
+                            }
+                            
+                            
+        
+                            
+                        } else {
+                            //user ID 
+                            $db->setQuery('DELETE FROM profile WHERE ID = ' . intval($user->ID) );
+                            $db->uquery();
+                            @mail('developer@democratus.com', 'userID çakışması', 'User ID:'.$user->ID);
+                        }
+                        
+                        
+                    }
+                
+                //login yap  session oluştur
+                
+            } catch (Exception $e){
+                $response['status'] = 'error';
+                $response['message'] = $e->getMessage();
+            }
+            
+            echo json_encode($response);
+        }
+        
+        public function resetpassword(){ // die('resetpassword'); 
+            global $model, $db, $l;            
+            
+            $model->mode = 0;
+            $response = array();
+            
+            try{
+                
+
+                
+                $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+
+                if(!isEmail($email)){
+                    $response['field'] = 'email';
+                    throw new Exception('email adresi geçerli değil',1);
+                }
+                
+                //bu mail kayıtlı mı?
+                $db->setQuery("SELECT * FROM user WHERE email=".$db->quote($email));
+                $user = null;
+                if( ! $db->loadObject($user)){
+                    $response['field'] = 'email';
+                    throw new Exception('email adresi bulunamadı',1);
+                }
+                    
+                //reset kaydı oluştur.
+                
+                
+                $request = new stdClass;
+                    
+                $request->email     = strtolower( trim( $email ) );
+                $request->userID    = $user->ID;
+                $request->profileID = $user->ID;
+                $request->key       = md5( KEY . time() . uniqid() );
+                $request->ip        =  filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+                $request->datetime  = date('Y-m-d H:i:s');
+                $request->status    = 1;
+                
+                if($db->insertObject('resetpassword', $request)){
+                    $response['status'] = 'success';
+                    $response['message'] = 'Şifre yenileme başvurunuz alındı. Lütfen mail kutunuzu kontrol edin. Yenileme maili birkaç dakika içerisinde ulaşacaktır.';
+                    $model->sendsystemmail($request->email, 'Şifre yenileme işlemi', 'Merhabalar, <br /> Democratus.com üyelik şifrenizi yenilemek için şu linkine tıklamalı veya tarayıcınızın adres çubuğuna yapıştırmalısınız:<br /><a href="http://democratus.com/user/resetpassword/'.$request->key.'"> http://democratus.com/user/resetpassword/'.$request->key.'</a>');
+                    //mail($request->email, 'başvuru onayı', 'onay linki: http://democratus.com/user/activate/'.$request->key);
+                    //echo '<h3>Kayıt başarılı. mailinizi kontrol ediniz.</h3>'.$request->email;
+                    $_SESSION['captcha'] = null;
+                    
+                } else {
+                    
+                    throw new Exception('kayıt hatası');
+                }
+            } catch (Exception $e){
+                $response['status'] = 'error';
+                $response['message'] = $e->getMessage();
+            }
+            
+            echo json_encode($response);
+        }
 }
 ?>
