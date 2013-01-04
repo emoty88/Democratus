@@ -14,7 +14,7 @@
 	        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 	        $model->addScript("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", "jquery.tmpl.js", 1);
-			$model->addScript(PLUGINURL."my/musti.js", "musti.js", 1);
+			$model->addScript(PLUGINURL."my/my.js", "my.js", 1);
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
 			
