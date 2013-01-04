@@ -96,7 +96,7 @@ body.atolye15_body { overflow-x: hidden; }
  * Ana Menü
  */
 #logo { display: inline-block; margin-top: 10px; }
-#ust_kisim { min-height: 60px; border-bottom: 1px solid #fff; }
+#ust_kisim { min-height: 40px; border-bottom: 1px solid #fff; } 
 #ust_kisim hgroup { display: none; }
 
 #mobil_menu_tetikleyici {
