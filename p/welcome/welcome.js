@@ -23,9 +23,9 @@ $(document).ready(function() {
         return false;
     });
 
-	$('#wellcome-register-button').click(function() {
+    $('#wellcome-register-button').click(function() {
 		
-        $('.login-box').toggle('slow');
+        $('.login-box').fadeToggle('slow');
         
         if($(this).html()=='Giriş Yap'){
         	$(this).html('Hemen Kayıt Ol');

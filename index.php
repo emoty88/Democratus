@@ -51,9 +51,9 @@
     } elseif ($_SERVER['SERVER_NAME']=="democratusala.org" or TRUE) {
         define('DB_NAME', 'demo');
         define('DB_USER', 'root');
-        define('DB_PASSWORD', "56yn234rty");
+        define('DB_PASSWORD', "crm100dkAZ");
         //define('DB_PASSWORD', '');
-      	define('DB_HOST', 'localhost');
+      	define('DB_HOST', '178.63.46.159');
     }
     /* 
     define('DB_NAME', $_SERVER['DB_NAME']);
