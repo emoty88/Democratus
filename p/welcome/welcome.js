@@ -94,7 +94,7 @@ $(document).ready(function() {
                 } else if (data.status=='error') {
                     $('#message').text(data.message);
                     $('#message').show();
-                    $('#applyform [name='+data.field+']').focus();
+                    $('#'+data.field).focus();
                     //$('#applyform [name=name]').focus();
                 } else {
                     $('#message').text('bir hata oluştu!');
