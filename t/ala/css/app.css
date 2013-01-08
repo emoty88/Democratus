@@ -509,6 +509,7 @@ body.atolye15_body { overflow-x: hidden; }
 	margin-bottom: 10px !important;
 	background-repeat: repeat-x;
 	float:left;
+	box-shadow:1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .yuzdeler_meclis.olumlu {

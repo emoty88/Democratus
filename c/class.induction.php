@@ -42,6 +42,10 @@ class induction {
 				
 				//$c_counter->set_voiceCount($voice->ID, "reShare");
 				break;
+			case 'delete':
+				$puanClass->puanIslem($voice->profileID,"7",$voice);
+				$c_counter->set_profileCount($voice->profileID, "voice","-");
+				break;
 		}
 		
 	}

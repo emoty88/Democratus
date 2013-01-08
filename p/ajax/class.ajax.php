@@ -67,7 +67,7 @@ class ajax_plugin extends control{
                 $share->di=  mb_substr($share->di , 0, 200 ) ; 
                 $share->onlyProfile=0;
         
-                if(@$_POST["replyer"]>0)// yeni versiyonda düzenlenicek
+                if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek
             	{
             		$share->di=trim($share->di);
             		if(strpos($share->di, "+voice")===false)
@@ -76,9 +76,9 @@ class ajax_plugin extends control{
 					}
 					if(strpos($share->di, "+voice")==0)
 					$share->onlyProfile=1;
-            		$share->di=str_replace("+voice", '<a href="/voice/'.$_POST["replyer"].'">+voice</a>', $share->di);
+            		$share->di=str_replace("+voice", '<a href="/voice/'.$_POST["replying"].'">+voice</a>', $share->di);
 					$share->isReply="1";
-					$share->replyID=$_POST["replyer"];
+					$share->replyID=$_POST["replying"];
 				}
 				else
 				{
@@ -583,6 +583,24 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$sharelike->voice = $c_voice->_voice;
 		$int->set_voice_intduction("like_voice",$sharelike);
 		
+		echo json_encode($response);
+	}
+	function voice_delete()
+	{
+		global $model;
+		$voiceID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+		$c_voice = new voice($voiceID);
+		$return = $c_voice->delete();
+		if($return)
+		{
+			$response["status"] = "success";
+			$int = new induction;
+			$int->set_voice_intduction("delete",$c_voice->_voice);
+		}
+		else
+		{
+			$response["status"] = "error";
+		}
 		echo json_encode($response);
 	}
 	function get_voiceIconText()

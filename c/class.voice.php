@@ -122,6 +122,14 @@
 				$v_obj=$this->get_voiceObjec($v_obj->rediID);
 			}
         	$v->ID		= $v_obj->ID;
+			if($v_obj->profileID == $model->profileID)
+			{
+				$v->isMine = true;
+			}
+			else
+			{
+				$v->isMine = false;
+			}
 			$v->sName	= $v_obj->sharername;
 			$v->sPerma	= $v_obj->permalink;
 			$v->sImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
@@ -275,7 +283,27 @@
 				return false;
 			}
 		}
-		
+		public function delete($voiceID=null)
+		{
+			global $model, $db;
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			if($model->profileID != $this->_voice->profileID)
+			{
+				return false;
+			}
+            $dVoice = new stdClass;
+            $dVoice->ID =  $voiceID;
+			$dVoice->status = 0;
+			return $db->updateObject("di", $dVoice, "ID");
+			
+       	}
 		
 	}
 ?>

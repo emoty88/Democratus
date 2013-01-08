@@ -14,16 +14,24 @@ var paths			= 0;
 var plugin			= 0;
 var currentTab		= 0;
 var voiceDControl 	= 0;
+var globalRandID	= 0;
 
 jQuery(document).ready(function ($) {
 
+	//$(".fineUploader").each(function (){
+	//	init_fineUploader(this);
+	//});	
 	
-	$(".unfollow").mouseover(function () {
+	$(".fineUploader").live("click", function (){
+		globalRandID=$(this).attr("data-randID");
+	});
+
+	$(".unfollow").live("mouseover",function () {
 		$(this).addClass("btn-danger");
 		$(this).removeClass("btn-info");
 		$(this).html($(this).attr("data-unfText"));
 	});
-	$(".unfollow").mouseout(function () {
+	$(".unfollow").live("mouseout", function () {
 		$(this).addClass("btn-info");
 		$(this).removeClass("btn-danger");
 		$(this).html($(this).attr("data-fText"));
@@ -45,6 +53,7 @@ jQuery(document).ready(function ($) {
     	$(this).tab('show');
     	location.href="#"+$(this).attr("rel");
    	});
+
    	switch(plugin)
    	{
    		case "parliament": parliament_page(); break;
@@ -335,15 +344,7 @@ jQuery(document).ready(function ($) {
             .appendTo( ul );
     };
 
-    // Hover on percentage
-    $('.yuzde').css({'cursor':'pointer'}).popover({
-    	html: true,
-    	placement: 'left',
-    	trigger: 'hover',
-    	content: function () {
-    		return $(this).find('div').html();
-    	}
-    });
+   
 	/* onclick eventinde fonksiyon çağırıldı
 	$("#share_voice").live("click", function (){
 		share_voice(this);
@@ -476,10 +477,12 @@ jQuery(document).ready(function ($) {
 		var $shareBtn	= $(shareBtn);
 		var randID 		= $shareBtn.attr("data-randID");
 		var voice_text	= $("#replyTextArea_"+randID).val();
-		var replyer		= $("#replyer_"+randID).val();
-		var initem		= $("#initem").val();  // initemler  düzenlenmeli
-		var initemName	= $("#initem-name").val(); //intiremler düzenlenmeli
-		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName, replyer:replyer};
+		var replying	= $("#replying_"+randID).val();
+		var initem		= $("#initem_"+randID).val();  // initemler  düzenlenmeli
+		var initemName	= $("#initem-name_"+randID).val(); //intiremler düzenlenmeli
+		
+		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName, replying:replying};
+		//console.log(post_data);
 		$.ajax({
 			type: "POST",
 			url: "/ajax/set_share_voice",
@@ -489,10 +492,16 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					if(randID != "0")
+					if(response.voice.replyID>0)
 					{
-						
-						$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
+						if(randID == "qe")
+						{
+							$("#voice-reply-tmpl").tmpl(response.voice).prependTo(".replyAreaFix");
+						}
+						else
+						{
+							$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
+						}
 						$("#replyTextArea_"+randID).val("+voice ");
 						$("#voiceReplyArea_"+randID).slideDown();
 					}
@@ -501,8 +510,8 @@ jQuery(document).ready(function ($) {
 						$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
 						$("#replyTextArea_"+randID).val("");
 					}	
-					$("#initem").val(0);
-					$("#initem-name").val(0);
+					$("#initem_"+randID).val(0);
+					$("#initem-name_"+randID).val(0);
 				}
 				else
 				{
@@ -568,6 +577,7 @@ jQuery(document).ready(function ($) {
 					$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 					wallmoreAction=0;
 					get_iconText(response.voices);
+					init_voice_details();
 				}
 				else
 				{
@@ -647,6 +657,17 @@ jQuery(document).ready(function ($) {
 	        		$("#saygi_btn_"+voiceID+" span").html(" Saygı Duydun");
 	        	}
 	            
+	        }
+	    },'json');  
+	}
+	function voice_delete(voiceID)
+	{
+		$.post("/ajax/voice_delete", {voiceID: voiceID}, function(data){ 
+	        if(data.status == 'success'){
+	        	$("#duvar_yazisi-content-"+voiceID).slideUp("400", function (){
+	        		$("#duvar_yazisi-content-"+voiceID).remove();
+	        	});
+	        	
 	        }
 	    },'json');  
 	}
@@ -819,6 +840,7 @@ jQuery(document).ready(function ($) {
 	        {
 	        	$(".loading_bar").remove();
 	        	$("#parliament-oldAgenda-tmpl").tmpl(response.olAgendas).appendTo("#eskiReferandum-container");
+	        	init_oldAgenda();
 	        }
 	    },'json');  
 	}
@@ -1031,9 +1053,69 @@ jQuery(document).ready(function ($) {
 		$.post("/ajax/follow", {profileID: profileID}, function(response){ 
 			if(response.status == "success")
 			{
-				console.log(".unfollow-" + profileID);
 				$(".unfollow-" + profileID).toggle();
 	        	$(".follow-" + profileID).toggle();	
 			}
 	    },'json');
+	}
+
+	function init_quick_editor()
+	{
+		if(plugin=="profile")
+		{
+			 $("#replyTextArea_qe").val("@"+profilePerma+" ");
+		}
+		if(plugin=="voice")
+		{
+			$("#replyTextArea_qe").val("+voice ");
+			$("#replying_qe").val(voiceID);
+		}
+	}
+	function init_voice_details()
+	{
+		$(".fineUploader").each(function (){
+			init_fineUploader(this);
+		});	
+		
+	}
+	/**
+	 * 
+ 	 * @param {Object} dom fine uploader a dönüşecek dom elementi
+ 	 * 
+	 */
+	function init_fineUploader(dom)
+	{
+		$fub = $(dom);
+		var uploader = new qq.FineUploaderBasic({
+			button: $fub[0],
+			request: {
+				endpoint: '/ajax/upload_image'
+			},
+			validation: {
+				allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+				sizeLimit: 4194304 // 200 kB = 200 * 1024 bytes
+			},
+			callbacks: {
+				onComplete: function(id, fileName, responseJSON) {
+					if(responseJSON.success==true)
+					{
+						$("#initem_"+globalRandID).val("1");
+						$("#initem-name_"+globalRandID).val(responseJSON.fileName);
+					}
+				}
+			},
+			debug:false
+		});
+	}
+	function init_oldAgenda()
+	{
+		 // Hover on percentage
+	    $(".yuzde").css({'cursor':'pointer'}).popover({
+	    	html: true,
+	    	placement: 'left',
+	    	trigger: 'hover',
+	    	content: function () {
+	    		return $(this).find('div').html();
+	    	}
+	    });
 	}

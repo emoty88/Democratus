@@ -3,9 +3,6 @@
         public function block()
 		{
 			global $model;
-						
-			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			?>
 			<!-- Yeni Yazı Yaz -->
 			<div class="satir">
@@ -17,16 +14,18 @@
 						<button id="share_voice" class="btn btn-danger" onclick="share_voice(this)" data-randID="0" >Paylaş</button>
 						
 						<input type="hidden" name="replyer_0" id="replyer_0" value="0" />
-						<a id="fine-uploader-btn" href="javascript:void(0)">
+						
+						<a id="fine-uploader-btn_0" class="fineUploader" href="javascript:globalRandID=0;" data-randID="0">
 							<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
 						</a>
-						<div id="fine-uploader-msg"></div>	
+						<div id="fine-uploader-msg_0"></div>	
 						
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				<input type="hidden" id="initem" name="initem" value="0" />
-			    <input type="hidden" id="initem-name" name="initem-name" value="0" />
+				
+				<input type="hidden" id="initem_0" name="initem" value="0" />
+			    <input type="hidden" id="initem-name_0" name="initem-name" value="0" />
 			</div><!-- Yeni Yazı Yaz -->
 			<?
 		}

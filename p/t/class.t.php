@@ -3,6 +3,11 @@
         public $limit = 14;
         
         public function main(){
+			global $model;
+			echo "test";
+			die;
+		}
+		public function main_old(){
             global $model, $db,$dbez, $l;
             
             if($model->paths[1] == 'ajax') return $this->ajax();

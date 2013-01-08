@@ -68,8 +68,8 @@
 					<span><?=$model->profile->name?></span>
 				</a>
 				<ul class="acilir_menu">
-					<li><a href="/myprofil"><i class="icon-user icon-white"></i> Profilim</a></li>
-					<li><a href="/ayarlar"><i class="icon-wrench icon-white"></i> Ayarlar</a></li>
+					<li><a href="/<?=$model->profileID?>"><i class="icon-user icon-white"></i> Profilim</a></li>
+					<li><a href="/my"><i class="icon-wrench icon-white"></i> Ayarlar</a></li>
 					<li class="son"><a href="/user/logout"><i class="icon-off icon-white"></i> Çıkış</a></li>
 				</ul>
 			</li>

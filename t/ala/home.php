@@ -11,12 +11,7 @@
 			$model->addStyle($this->url.'css/bootstrap-helper.css', 'bootstrap-helper.css', 1 ); 
 			$model->addStyle($this->url.'css/ui-lightness/jquery-ui-1.9.1.custom.min.css', 'ui-lightness/jquery-ui-1.9.1.custom.min.css', 1 ); 
 			$model->addStyle($this->url.'css/app.css', 'app.css', 1 ); 
-			
 		?>
-		<?php 
-	       
-		?>
-
     </head>
     <body class="atolye15_body ana_sayfa">
 
