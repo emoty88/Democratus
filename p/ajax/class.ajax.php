@@ -1043,41 +1043,37 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 }
 				
 				
-				$ka = $form->userName;
-				
-				if(strlen($ka)<3 || strlen($ka)>25)
-				{
-					$response['field'] = 'name';
-                                        throw new Exception('Kullanıcı adınız en az 6 en fazla 25 karakter olmalıdır.', 1);       
-				} 
-				
-				$letters = "/^([a-zA-Z0-9._-]+)$/"; 
-				if(!preg_match($letters, $ka))
-				{
-					$response['field'] = 'name';
-                                        throw new Exception('Sadece harf, rakam ve (- _ .) karakterlerinden oluşan bir kullanıcı adı belirlemelisiniz. ', 1); 
-				}
-			
-				
-				$query = "SELECT permalink FROM page WHERE permalink=".$db->Quote($ka);  
-				$db->setQuery($query);
-				$varmi="";
-                                $db->loadObject($varmi);
-				if(count($varmi)>0)
-				{
-					$response["field"]="name";
-					throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
-				}
-				
-				$query = "SELECT permalink FROM profile WHERE permalink=".$db->Quote($ka);  
-				$db->setQuery($query);
-				$varmi="";
-                                $db->loadObject($varmi);
-				if(count($varmi)>0)
-				{
-					$response["field"]="name";
-					throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
-				}
+                $ka = $form->userName;
+
+                if(strlen($ka)<3 || strlen($ka)>25){
+                        $response['field'] = 'userName';
+                        throw new Exception('Kullanıcı adınız en az 6 en fazla 25 karakter olmalıdır.', 1);       
+                } 
+
+                $letters = "/^([a-zA-Z0-9._-]+)$/"; 
+                if(!preg_match($letters, $ka)){
+                        $response['field'] = 'userName';
+                        throw new Exception('Sadece harf, rakam ve (- _ .) karakterlerinden oluşan bir kullanıcı adı belirlemelisiniz. ', 1); 
+                }
+
+
+                $query = "SELECT permalink FROM page WHERE permalink=".$db->Quote($ka);  
+                $db->setQuery($query);
+                $varmi="";
+                $db->loadObject($varmi);
+                if(count($varmi)>0){
+                        $response["field"]="userName";
+                        throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
+                }
+
+                $query = "SELECT permalink FROM profile WHERE permalink=".$db->Quote($ka);  
+                $db->setQuery($query);
+                $varmi="";
+                $db->loadObject($varmi);
+                if(count($varmi)>0){
+                        $response["field"]="userName";
+                        throw new Exception('Seçmiş olduğunuz kullanıcı adı uygun değildir.', 1); 
+                }
 				               
                 if(!isEmail($form->email)){
                     $response['field'] = 'email';
