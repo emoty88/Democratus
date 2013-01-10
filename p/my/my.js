@@ -80,8 +80,27 @@ jQuery(document).ready(function ($) {
 		        }else{
 		        	$('#kaydet_dgmesi').html('Hata oluştu');
 		        }
-		    },'json');   
+		},'json');   
 	});
+        
+        $("#myprivacysave").live('click', function(){
+            $("#myprivacysave").attr("disabled", true);
+            $(this).html('Kaydediliyor');
+            $.post( "/ajax/myprivacysave", $('#myprivacyform').serialize(), function(data){ 
+                
+                if(data.status == 'success'){
+                    $("#myprivacysave").html('Kaydedildi');
+                    
+                }else{
+                    $("#myprivacysave").html('Bir sorun oluştu');
+                }
+                
+            },'json');
+
+            $(this).removeAttr("disabled");
+            return false;
+        
+        });
 	
 	function disable_save_button(){
 		

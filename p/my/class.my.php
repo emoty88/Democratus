@@ -8,13 +8,14 @@
 			$model->title = 'Democratus';
 
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-	        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-	        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-	        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-	        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-	        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-	        $model->addScript("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", "jquery.tmpl.js", 1);
-			$model->addScript(PLUGINURL."my/my.js", "my.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+                        $model->addScript("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1);
+                        $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
 			
@@ -34,6 +35,24 @@
 				$birth['day'] = '0'.$birth['day'];
 			}
 			$birth['month']=model::int2trMonth($birth['month']);
+                        
+                        $profileChecked[$profile->showprofile]=' checked="ture" ';
+                        $birthChecked[$profile->showbirth]=' checked="ture" ';
+                        $mottoChecked[$profile->showmotto]=' checked="ture" ';
+                        $showdiesChecked[$profile->showdies]=' checked="ture" ';
+                        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
+                        $hometownChecked[$profile->showhometown]=' checked="ture" ';
+                        $countryChecked[$profile->showcountry]=' checked="ture" ';
+                        $cityChecked[$profile->showcity]=' checked="ture" ';
+                        $materialChecked[$profile->showmarital]=' checked="ture" ';
+                        $educationChecked[$profile->showeducation]=' checked="ture" ';
+                        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
+
+                        $langChecked[$profile->showlanguages]=' checked="ture" ';
+                        $emailChecked[$profile->showemail]=' checked="ture" ';
+                        $followersChecked[$profile->showfollowers]=' checked="ture" ';
+                        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
+                        $photosChecked[$profile->showphotos]=' checked="ture" ';
 			?>
 			<section class="banner">
 				<header>
@@ -44,7 +63,7 @@
 					<ul class="alt_menu visible-desktop">
 						<li class="active"><a href="#tab-profilA" rel="profilA" data-toggle="tab">PROFİL AYARLARI</a></li>
 						<li><a href="#tab-arkadasB" rel="arkadasB" data-toggle="tab">ARKADAŞ BUL</a></li>
-						<li><a href="#tab-hesapA" rel="hesapA" data-toggle="tab">HESAP AYARLARI</a></li>
+						<li><a href="#tab-gizlilik" rel="gizlilik" data-toggle="tab">GİZLİLİK</a></li>
 						<li><a href="#tab-engellemeler" rel="engellemeler" data-toggle="tab">ENGELLEMELER</a></li>
 					</ul>
 					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
@@ -250,8 +269,220 @@
 						</div>
 					</section>
 					
-				</div><!-- Profile Ayarları Tab  Sonu -->
-			</div>
+                                </div><!-- Profile Ayarları Tab  Sonu -->
+                                        <!-- Gizlilik Tab -->
+                                        <div class="tab-pane fade in passive" id="tab-gizlilik">
+                                            <section class="satir ilk_satir uste_cikar">
+						<div class="satir_ic">
+                                                    <form action="" method="post" id="myprivacyform">
+                                                        
+                                                        <div class="" id="myprivacyResponse" style="display:none;"></div>
+                                                        <p></p>
+                                                        <table class="table table-bordered table-striped tblsecure" width="500">
+                                                            <thead>
+                                                                <tr>
+                                                                        <th></th>
+                                                                    <th>Kimse</th>
+                                                                    <th>Beni Takip Edenler</th>
+                                                                    <th>Takip Ettiklerim</th>
+                                                                    <th>Herkes</th>
+                                                                </tr>
+                                                            </thead>
+                                                                <?php /* ?>
+                                                                <tr>
+                                                                        <td>Profil</td>
+                                                                                        <td><label class="radio">
+                                                                            <input type="radio" name="showprofile" id="showprofile0" value="0" <?=@$profileChecked[0]?>></label></td>
+                                                                            <td><label class="radio">
+                                                                            <input type="radio" name="showprofile" id="showprofile1" value="1" <?=@$profileChecked[1]?>></label></td>
+                                                                            <td><label class="radio">
+                                                                            <input type="radio" name="showprofile" id="showprofile2" value="2" <?=@$profileChecked[2]?>></label></td>
+                                                                            <td><label class="radio">
+                                                                            <input type="radio" name="showprofile" id="showprofile5" value="5" <?=@$profileChecked[5]?>></label></td>
+                                                                                </tr>
+                                                                                <?php */ ?>
+                                                                    <tr>
+                                                                        <td>Doğum Tarihim</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showbirth" id="showbirth0" value="0" <?=@$birthChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showbirth" id="showbirth1" value="1" <?=@$birthChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showbirth" id="showbirth2" value="2" <?=@$birthChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showbirth" id="showbirth5" value="5" <?=@$birthChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Motto Cümlem</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showmotto" id="showmotto0" value="0" <?=@$mottoChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmotto" id="showmotto1" value="1" <?=@$mottoChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmotto" id="showmotto2" value="2" <?=@$mottoChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmotto" id="showmotto5" value="5" <?=@$mottoChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Paylaşımlarım</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showdies" id="showdies0" value="0" <?=@$showdiesChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showdies" id="showdies1" value="1" <?=@$showdiesChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showdies" id="showdies2" value="2" <?=@$showdiesChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showdies" id="showdies5" value="5" <?=@$showdiesChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <?php /* ?>
+                                                                <tr>
+                                                                        <td nowrap>Yorum Görünürlüğü</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="dicomment" id="dicomment0" value="0" <?=@$dicommentChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="dicomment" id="dicomment1" value="1" <?=@$dicommentChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="dicomment" id="dicomment2" value="2" <?=@$dicommentChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="dicomment" id="dicomment5" value="5" <?=@$dicommentChecked[5]?>></label></td>
+                                                                </tr>   
+
+                                                                <tr>
+                                                                        <td>Memleket</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showhometown" id="showhometown0" value="0" <?=@$hometownChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhometown" id="showhometown1" value="1" <?=@$hometownChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhometown" id="showhometown2" value="2" <?=@$hometownChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhometown" id="showhometown5" value="5" <?=@$hometownChecked[5]?>></label></td>
+                                                                </tr> 
+                                                                                <?php */ ?>             	
+                                                                <tr>
+                                                                        <td>Yaşadığın Ülke</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showcountry" id="showcountry0" value="0" <?=@$countryChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcountry" id="showcountry1" value="1" <?=@$countryChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcountry" id="showcountry2" value="2" <?=@$countryChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcountry" id="showcountry5" value="5" <?=@$countryChecked[5]?>></label></td>
+                                                                </tr>            	
+                                                                <tr>
+                                                                        <td>Yaşadığın Şehir</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showcity" id="showcity0" value="0" <?=@$cityChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcity" id="showcity1" value="1" <?=@$cityChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcity" id="showcity2" value="2" <?=@$cityChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showcity" id="showcity5" value="5" <?=@$cityChecked[5]?>></label></td>
+                                                                </tr>          
+                                                                                <?php /* ?>
+                                                                <tr>
+                                                                        <td>Medeni durum</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showmarital" id="showmarital0" value="0" <?=@$materialChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmarital" id="showmarital1" value="1" <?=@$materialChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmarital" id="showmarital2" value="2" <?=@$materialChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showmarital" id="showmarital5" value="5" <?=@$materialChecked[5]?>></label></td>
+                                                                </tr>      	
+                                                                <?php */ ?>
+                                                                <tr>
+                                                                        <td>Eğitim Durumum</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showeducation" id="showeducation0" value="0" <?=@$educationChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showeducation" id="showeducation1" value="1" <?=@$educationChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showeducation" id="showeducation2" value="2" <?=@$educationChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showeducation" id="showeducation5" value="5" <?=@$educationChecked[5]?>></label></td>
+                                                                </tr>      	
+                                                                <tr>
+                                                                        <td>Hobilerim</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showhobbies" id="showhobbies0" value="0" <?=@$hobbiesChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhobbies" id="showhobbies1" value="1" <?=@$hobbiesChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhobbies" id="showhobbies2" value="2" <?=@$hobbiesChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showhobbies" id="showhobbies5" value="5" <?=@$hobbiesChecked[5]?>></label></td>
+                                                                </tr>  
+                                                                <tr>
+                                                                        <td>Bildiğim Diller</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showlanguages" id="showlanguages0" value="0" <?=@$langChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showlanguages" id="showlanguages1" value="1" <?=@$langChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showlanguages" id="showlanguages2" value="2" <?=@$langChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showlanguages" id="showlanguages5" value="5" <?=@$langChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <?php /* ?>
+                                                                <tr>
+                                                                        <td>E-Mail</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showemail" id="showemail0" value="0" <?=@$emailChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showemail" id="showemail1" value="1" <?=@$emailChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showemail" id="showemail2" value="2" <?=@$emailChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showemail" id="showemail5" value="5" <?=@$emailChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <?php */ ?>
+                                                                <tr>
+                                                                        <td>Takipçilerim</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showfollowers" id="showfollowers0" value="0" <?=@$followersChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowers" id="showfollowers1" value="1" <?=@$followersChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowers" id="showfollowers2" value="2" <?=@$followersChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowers" id="showfollowers5" value="5" <?=@$followersChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Takip Ettiklerim</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showfollowings" id="showfollowings0" value="0" <?=@$followingsChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowings" id="showfollowings1" value="1" <?=@$followingsChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowings" id="showfollowings2" value="2" <?=@$followingsChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showfollowings" id="showfollowings5" value="5" <?=@$followingsChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <?php /* ?>
+                                                               <tr>
+                                                                        <td>Fotoğraflarım</td>
+                                                                    <td><label class="radio">
+                                                                        <input type="radio" name="showphotos" id="showphotos0" value="0" <?=@$photosChecked[0]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showphotos" id="showphotos1" value="1" <?=@$photosChecked[1]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showphotos" id="showphotos2" value="2" <?=@$photosChecked[2]?>></label></td>
+                                                                        <td><label class="radio">
+                                                                        <input type="radio" name="showphotos" id="showphotos5" value="5" <?=@$photosChecked[5]?>></label></td>
+                                                                </tr>
+                                                                <?php */ ?>
+                                                            </table>
+                                                       
+                                                        <div style="clear: both; margin-bottom: 40px;"><button class="btn btn-success pull-right" type="button" id="myprivacysave">Kaydet</button></div>
+                                                    </form>
+                                                </div>
+                                            </section>
+                                        </div>
+                                </div>
 			<?php
 			//var_dump($model);
 		}
