@@ -448,7 +448,7 @@
                 $this->plugin = DEFAULTPLUGIN;
                 
             } else {
-            	$query  = "SELECT p.ID"
+            	$query  = "SELECT p.ID, p.type"
                     . "\n FROM profile AS p"
                     . "\n WHERE p.permalink=".$db->quote($permalink)." "
                     . "\n AND p.status>0"
@@ -460,9 +460,15 @@
 						
 						$this->urlsizProfile=true;
 						$this->urlsizProfileID=$profileID->ID;
+						$page = "profile";
+						
+						if($profileID->type == "hashTag")
+						{
+							$page = "hashTag";
+						}
 						$query  = "SELECT p.*"
 			                    . "\n FROM #__page AS p"
-			                    . "\n WHERE p.permalink=".$db->quote("profile")." AND ( p.domain IS NULL OR p.domain=".$db->quote($domain)." )"
+			                    . "\n WHERE p.permalink=".$db->quote($page)." AND ( p.domain IS NULL OR p.domain=".$db->quote($domain)." )"
 			                    . "\n AND status>0"
 			                    . "\n LIMIT 1"
 			                    ;

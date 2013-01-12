@@ -1310,7 +1310,7 @@ body #atolye15 .kirmizi_arkaplan h1 { font-size: 24px; line-height: 30px; color:
 	border-bottom: none;
 }
 
-#profil .takip_bilgileri { width: 95px; position: absolute; display: block; top: 15px; right: 15px; }
+#profil .takip_bilgileri { width: 120px; position: absolute; display: block; top: 15px; right: 15px; }
 #profil .asil_alan { padding: 10px 20px 0px 20px; position: relative; z-index: 2; }
 #profil .istatistik_listesi_2 button { margin-bottom: 4px; font-weight: bold; width: 100%; }
 #profil .istatistik_listesi_2 .puan {

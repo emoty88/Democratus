@@ -60,16 +60,25 @@ jQuery(document).ready(function ($) {
    		case "message" : message_page(); break;
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
+   		case "hashTag" : hashtag_page();
    	}  	
 	
-	if(plugin=="profile" || plugin=="home")
+	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
 	{
+		if(plugin == "hashTag")
+		{
+			hashTag = profilePerma;
+		}
+		else 
+		{
+			hashTag = 0;
+		}
 		$(window).scroll(function(){
 		if(wallmoreAction==0 && $(window).scrollTop() == $(document).height() - $(window).height()){
-		    	get_wall(profileID,lastVoiceID,onlyProfile);
+		    	get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
 	        }
 		});
-		get_wall(profileID,lastVoiceID,onlyProfile);
+		get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
 	}
 	
 	get_noticeCount();
@@ -159,7 +168,6 @@ jQuery(document).ready(function ($) {
 		scroll_to(target);
 		return false;
 	}
-
 	// scroll to target
 	function scroll_to( target ){
 		$('html, body').animate({scrollTop:target }, 'slow');
@@ -544,8 +552,12 @@ jQuery(document).ready(function ($) {
 			}
 		});	
 	}
-	function get_wall(profileID, start, onlyProfile){
+	function get_wall(profileID, start, onlyProfile, hashTag){
 		wallmoreAction=1;
+		if(get_wall.arguments.length<4)
+		{
+			hashTag=0;
+		}
 		if(get_wall.arguments.length<3)
 		{
 			onlyProfile=0;
@@ -558,7 +570,7 @@ jQuery(document).ready(function ($) {
 		{
 			profileID=0;
 		}
-		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile};
+		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		$.ajax({
@@ -1048,6 +1060,23 @@ jQuery(document).ready(function ($) {
 	{
 		$("#duvaryazisi-tmpl").tmpl(voiceObj).appendTo("#orta_alan_container");
 	}
+	function hashtag_page()
+	{
+		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
+		get_imageGalery(profileID);
+	}
+	function get_imageGalery(profileID)
+	{
+		$.post("/ajax/get_imageGalery", {profileID: profileID}, function(response){ 
+			if(response.status == "success")
+			{
+				//console.log(response);
+				$("#hashtag-image-tmpl").tmpl(response.images).appendTo("#imageGaleryArea");
+				//$(".unfollow-" + profileID).toggle();
+	        	//$(".follow-" + profileID).toggle();	
+			}
+	    },'json');
+	}
 	function follow(profileID)
 	{
 		$.post("/ajax/follow", {profileID: profileID}, function(response){ 
@@ -1069,6 +1098,10 @@ jQuery(document).ready(function ($) {
 		{
 			$("#replyTextArea_qe").val("+voice ");
 			$("#replying_qe").val(voiceID);
+		}
+		if(plugin=="hashTag")
+		{
+			$("#replyTextArea_qe").val("#"+profilePerma+" ");
 		}
 	}
 	function init_voice_details()

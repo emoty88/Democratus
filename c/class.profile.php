@@ -598,24 +598,61 @@
 			global $model, $db;
                         return $db->updateObject('profile', $uProfile, 'ID', 0);
 		}
-                public function get_FollowingHashtags($profile = -1, $limit = 4){
-                    global $model, $db;
-                
-                    if(!is_object($profile)){
-                            $profile=$model->profile;
-                    }
-                    //print_r($profile);
-                    $query = "SELECT ht.* ". 
-                              "FROM profile ht, follow f ".
-                              "WHERE ht.ID=f.followingID ".
-                                  "AND f.followerID='".$profile->ID."' ".
-                                  "AND f.status=1 ". 
-                                  "AND ht.status=1 ".
-                                  "AND ht.type='hashTag' ".
-                              "ORDER BY ID desc ". 
-                              "LIMIT $limit ";
-                    $db->setQuery($query);
-                    return $rows = $db->loadObjectList();                    
-                }
+        public function get_FollowingHashtags($profile = -1, $limit = 4){
+            global $model, $db;
+        
+            if(!is_object($profile)){
+                    $profile=$model->profile;
+            }
+            //print_r($profile);
+            $query = "SELECT ht.* ". 
+                      "FROM profile ht, follow f ".
+                      "WHERE ht.ID=f.followingID ".
+                          "AND f.followerID='".$profile->ID."' ".
+                          "AND f.status=1 ". 
+                          "AND ht.status=1 ".
+                          "AND ht.type='hashTag' ".
+                      "ORDER BY ID desc ". 
+                      "LIMIT $limit ";
+            $db->setQuery($query);
+            return $rows = $db->loadObjectList();                    
+        }
+		public function get_imageGalery($profile=-1)
+		{
+			global $model,$db;
+			if(!is_object($profile))
+            {
+            	$profile=$this->profile;
+            }
+			
+			$response=false;
+			$SELECT	=  "SELECT * ";
+			$FROM	=  "FROM tagimage ";
+			$WHERE	=  "WHERE tagID=".$db->quote($profile->ID)." and status='1' ";
+			$ORDER	=  "ORDER BY ID DESC ";
+			$LIMIT	=  "LIMIT 6";
+			$db->setQuery($SELECT.$FROM.$WHERE.$ORDER.$LIMIT);
+			$images = $db->loadObjectList();
+			$i_list= array();
+			if(count($images)>0)
+			{
+				//var_dump($images);
+				$response["status"]="success";
+				//$model->getProfileImage($i->image, 600,400, 'scale')
+				foreach ($images as $i) {
+					$i_list["small"] = $model->getProfileImage($i->image, 85,50, 'cutout');
+					$i_list["big"] = $model->getProfileImage($i->image, 600,400, 'cutout');
+					$response["images"][]=$i_list;
+				}
+				return $response;
+			}
+			else
+			{
+				$response["status"]="error";
+				return $response;
+			}
+	
+		
+		}
     }
 ?>

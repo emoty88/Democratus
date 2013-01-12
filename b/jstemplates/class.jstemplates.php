@@ -200,7 +200,7 @@ class jstemplates_block extends control{
 			<article class="duvar_yazisi anket referandum {{if myVote == null}}yeni{{/if}}">
 				<div class="anket_tutucu_arkaplan">
 					<div class="anket_tutucu">
-						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						<i<img alt="" src="img/slider.jpg">mg alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
 						<address class="yazar">
 							<a title="Sedef Kul'un Profilini Görüntüle" href="#">${dName}</a> 
 							<span>2 gün, 2 saat</span>
@@ -393,6 +393,11 @@ class jstemplates_block extends control{
 				<div style="clear: both;"></div>
 			</article>
 		</script> 
+		
+		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
+			<img alt="" src="${small}">
+		</script> 
+		
 	<?	
 	}
 }
