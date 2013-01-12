@@ -50,7 +50,7 @@
 			$db->loadObject($result);
 			return $result;
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0)
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0)
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
@@ -77,6 +77,10 @@
         	} else {
         		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
         	}
+			if($hashTag !== 0)
+			{
+				$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+			}
         	if($start>0){
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
@@ -86,18 +90,17 @@
 			
         	$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
-        
+        	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 			$rows = $db->loadObjectList();
 			$voices	=array();
-			
-			if($rows>0)
+			if(count($rows)>0)
 			{
 				//return $rows;
-				
 				foreach($rows as $row)
 				{
 					if(!profile::isallowed($row->profileID, $row->showdies)) continue; //seslerini gizledi ise bu özellik kaldırıldı 
+					//var_dump($row->ID);
 					$voices[]	= $this->get_return_object($row);
 				}
 				return $voices;
@@ -112,7 +115,7 @@
 		{
 			global $model;
 			$v	= new stdClass;
-			
+
 			if($v_obj->rediID>0)// redi yniden modellensin 
 			{
 				$v->redierName	= $v_obj->sharername;
@@ -121,6 +124,7 @@
 				$v->redierImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
 				$v_obj=$this->get_voiceObjec($v_obj->rediID);
 			}
+			//var_dump($v_obj);
         	$v->ID		= $v_obj->ID;
 			if($v_obj->profileID == $model->profileID)
 			{

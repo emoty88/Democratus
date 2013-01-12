@@ -18,10 +18,11 @@ class ajax_plugin extends control{
 		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
+		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
 
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile);// gelen değişkenler eklensin
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile, $hashTag);
         echo json_encode($response);
 	}
 	public function get_voiceImage()
@@ -1224,5 +1225,13 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
             
             echo json_encode($response);
         }
+	public function get_imageGalery()
+	{
+		global $model, $db;
+		$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+		$c_profile = new profile($profileID);
+		$galery = $c_profile->get_imageGalery();
+		echo json_encode($galery);
+	}
 }
 ?>
