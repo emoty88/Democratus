@@ -957,9 +957,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	}
 
 	public function follow(){
-    global $model, $db;
-    $model->mode = 0;
-    $response = array("status" => "success");
+            global $model, $db;
+            $model->mode = 0;
+            $response = array("status" => "success");
 	    try{
 	        $followingID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
 	        if($followingID == $model->profileID) throw new Exception('Kendi kendini takip edemessin');
@@ -1019,7 +1019,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    echo json_encode($response);
 	}
 
-        public function register(){ // todo 
+        public function register(){  
             global $model, $db, $l;            
             
             $model->mode = 0;
@@ -1225,6 +1225,36 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
             
             echo json_encode($response);
         }
+	 public function myprivacysave(){
+    	global $model,$db;
+        $profile = $model->profile;
+        $response = array();
+        $response['status'] = 'success';
+        $response['message'] = 'Kaydedildi';
+        $profile->showbirth     = filter_input(INPUT_POST, 'showbirth', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showmotto     = filter_input(INPUT_POST, 'showmotto', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showdies      = filter_input(INPUT_POST, 'showdies', FILTER_SANITIZE_NUMBER_INT);
+        $profile->dicomment     = filter_input(INPUT_POST, 'dicomment', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showhometown  = filter_input(INPUT_POST, 'showhometown', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showcountry   = filter_input(INPUT_POST, 'showcountry', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showcity      = filter_input(INPUT_POST, 'showcity', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showeducation = filter_input(INPUT_POST, 'showeducation', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showhobbies   = filter_input(INPUT_POST, 'showhobbies', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showlanguages = filter_input(INPUT_POST, 'showlanguages', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showfollowers = filter_input(INPUT_POST, 'showfollowers', FILTER_SANITIZE_NUMBER_INT);
+        $profile->showfollowings = filter_input(INPUT_POST, 'showfollowings', FILTER_SANITIZE_NUMBER_INT);
+        try{
+            if(!$db->updateObject('profile', $profile, 'ID')){
+                throw new Exception('Bir sorun oluştu');
+            }
+        }  catch (Exception $e){
+            $response['status'] = 'error';
+            $response['message'] = $e->getMessage();
+        }
+        
+        echo json_encode($response);
+    }
+
 	public function get_imageGalery()
 	{
 		global $model, $db;

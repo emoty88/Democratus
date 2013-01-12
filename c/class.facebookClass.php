@@ -8,7 +8,8 @@ class facebookClass{
 	public function __construct ($fbID=0)
 	{
 		global $model,$db;
-		require_once( CLASSPATH.'smclass/facebook/facebook.php' );
+               
+		require_once( 'c/smclass/facebook/facebook.php' );
 		$this->facebook = new Facebook(
 			array(
 				'appId' => $this->facebook_app_id,
@@ -24,7 +25,7 @@ class facebookClass{
 	public function main($fbID=0){
 		global $model,$db;
 			
-		require_once( CLASSPATH.'smclass/facebook/facebook.php' );
+		require_once( 'c/smclass/facebook/facebook.php' );
 		
 		$this->facebook = new Facebook(
 			array(
