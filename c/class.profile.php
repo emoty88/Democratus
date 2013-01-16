@@ -476,6 +476,7 @@
 				$ro=new stdClass;
 				$ro->ID		= $r->ID;
 				$ro->name	= $r->name;
+				$ro->perma	= $r->permalink;
 				$ro->image	= $model->getProfileImage($r->image, 90,90, 'cutout');
 				$ro->motto	= $r->motto;
 				$ro->isfollow	= $this->isFollow($r->ID);

@@ -200,9 +200,11 @@ class jstemplates_block extends control{
 			<article class="duvar_yazisi anket referandum {{if myVote == null}}yeni{{/if}}">
 				<div class="anket_tutucu_arkaplan">
 					<div class="anket_tutucu">
-						<i<img alt="" src="img/slider.jpg">mg alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						<a title="${dName} Profilini Görüntüle" href="${dPerma}">
+							<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						</a>
 						<address class="yazar">
-							<a title="Sedef Kul'un Profilini Görüntüle" href="#">${dName}</a> 
+							<a title="${dName} Profilini Görüntüle" href="${dPerma}">${dName}</a> 
 							<span>2 gün, 2 saat</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
@@ -228,7 +230,8 @@ class jstemplates_block extends control{
 		<script id="parliament-deputys-tmpl" type="text/x-jquery-tmpl">
 			<li>
 				<article>
-					<img src="${image}">
+					
+					<img src="${image}" alt="${name} Profil fotosu">
 					<aside class="vekil_bilgileri">
 						<ul class="istatistik_listesi_2">
 							{{if isfollow}}
@@ -245,7 +248,7 @@ class jstemplates_block extends control{
 					<hr>
 					<header>
 						<address>
-							<h1><a title="${name}" href="#">${name}</a></h1>
+							<h1><a title="${name}" href="${perma}">${name}</a></h1>
 						</address>
 					</header>
 					<p style="height: 100px;">${motto}</p>
@@ -309,7 +312,9 @@ class jstemplates_block extends control{
 		</script> 
 		<script id="parliament-friendItem-tmpl" type="text/x-jquery-tmpl">
 			<li>
-				<img alt="" src="${pImage}" class="vekil_resmi">
+				<a title="${pName}" href="/${pPerma}">
+					<img alt="" src="${pImage}" class="vekil_resmi">
+				</a>
 				<address style="height: 30px;"><a title="${pName}" href="/${pPerma}">${pName}</a></address>
 				<p><a class="btn" href="javascript:vekilOyu(${ID})">Oy Ver</a></p>
 			</li>

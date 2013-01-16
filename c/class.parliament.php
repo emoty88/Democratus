@@ -8,7 +8,7 @@
 		static function get_agenda($type=0,$parentID=0)
 		{
 			global $model,$db;
-			$SELECT = "\n SELECT a.* , av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname, p.ID as deputyID";
+			$SELECT = "\n SELECT a.* , av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname, p.permalink AS deputyPerma, p.ID as deputyID";
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
@@ -95,6 +95,7 @@
 				$r_obj->ID		= $a->ID;
 				$r_obj->dImage	= $model->getProfileImage($a->deputyimage, 48,48, 'cutout');
 				$r_obj->dName	= $a->deputyname;
+				$r_obj->dPerma	= $a->deputyPerma;
 				$r_obj->agendaT	= $a->title;
 				$r_obj->myVote	= $a->myvote;
 				$r_obj->percent	= $this->get_agendaPercent($a->ID);
@@ -106,7 +107,7 @@
 		public function get_oldAgenda($start=0)
 		{
 			global $model,$db;
-			$SELECT = "\n SELECT a.*, av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname";
+			$SELECT = "\n SELECT a.*, av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname, p.permalink AS deputyPerma";
 			$FROM = "\n FROM agenda AS a";
 			$JOIN  = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
 			$JOIN .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
