@@ -21,7 +21,9 @@ jQuery(document).ready(function ($) {
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
 	//});	
-	
+	$(".pImageUpload").each(function (){
+		init_userfUploader(this);
+	});
 	$(".fineUploader").live("click", function (){
 		globalRandID=$(this).attr("data-randID");
 	});
@@ -1111,6 +1113,42 @@ jQuery(document).ready(function ($) {
 		});	
 		
 	}
+	
+	function init_userfUploader(dom)
+	{
+		$fub = $(dom);
+		uploadData = $fub.attr("data-upload");
+		var uploader = new qq.FineUploaderBasic({
+			button: $fub[0],
+			request: {
+				params : {uploadType:uploadData},
+				endpoint: '/ajax/upload_image'
+			},
+			validation: {
+				allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+				sizeLimit: 4194304 // 200 kB = 200 * 1024 bytes
+			},
+			callbacks: {
+				onComplete: function(id, fileName, responseJSON) {
+					if(responseJSON.success==true)
+					{
+						set_coverImage(responseJSON);
+					}
+				}
+			},
+			debug:false
+		});
+	}
+	
+	function set_coverImage(imageData)
+	{
+		$.post("/ajax/set_coverImage", {imageData: imageData}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#profileCoverImage").attr("src",response.imageUrl);
+			}
+	    },'json');
+	}
 	/**
 	 * 
  	 * @param {Object} dom fine uploader a dönüşecek dom elementi
@@ -1140,6 +1178,7 @@ jQuery(document).ready(function ($) {
 			debug:false
 		});
 	}
+	
 	function init_oldAgenda()
 	{
 		 // Hover on percentage

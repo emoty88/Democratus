@@ -2,6 +2,7 @@
     class profile{
     	public $profile;
 		public $profileID;
+		public $_isAdmin = FALSE;
         public function __construct($profile=null)
 		{
 			global $model;
@@ -18,6 +19,11 @@
 			else {
 				$this->profile	= $model->profile;
 				$this->profileID= $model->profileID;
+			}
+
+			if($this->profileID == $model->profileID)
+			{
+				$this->_isAdmin = TRUE;
 			}
 		}
 		public function get_porfileObject($KEY)
@@ -597,7 +603,9 @@
 		public function update_profile($uProfile)
 		{
 			global $model, $db;
-                        return $db->updateObject('profile', $uProfile, 'ID', 0);
+			//$update->ID kontrol edilsin eğer yoksa  init ile  gelen profil set edilsin ($this->ID)
+			
+           	return $db->updateObject('profile', $uProfile, 'ID', 0);
 		}
         public function get_FollowingHashtags($profile = -1, $limit = 4){
             global $model, $db;

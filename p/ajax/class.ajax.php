@@ -212,19 +212,22 @@ class ajax_plugin extends control{
 		// max file size in bytes
 		$sizeLimit = 2 * 1024 * 1024; // dosya upload limitini arttır in php.ini
 		
-		
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 		$upDir="voiceImage";
 		if(@$_REQUEST["uploadType"]=="hasTag")
 		{
 			$upDir="hashtag/".$_REQUEST["hastag"];
-			
-			if(!file_exists(UPLOADPATH.$upDir))
-			{
-				$olustur = mkdir(UPLOADPATH.$upDir, 0777);
-			}
 		}
-
+		else if(@$_REQUEST["uploadType"]=="cover")
+		{
+			$uniqueP = date("y_m_d");
+			$upDir="cover/".$uniqueP;
+		}
+		
+		if(!file_exists(UPLOADPATH.$upDir))
+		{
+			$olustur = mkdir(UPLOADPATH.$upDir, 0777);
+		}
 		$result = $uploader->handleUpload(UPLOADPATH.$upDir.'/');
 		$result["uploadDir"]=$upDir;
 	
@@ -1262,6 +1265,24 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_profile = new profile($profileID);
 		$galery = $c_profile->get_imageGalery();
 		echo json_encode($galery);
+	}
+	public function set_coverImage()
+	{
+		global $model, $db;
+		$c_profile = new profile();
+		$uProfile = new stdClass;
+		$uProfile->ID = $model->profileID;
+		$uProfile->coverImage = $_REQUEST["imageData"]["uploadDir"].SLASH.$_REQUEST["imageData"]["fileName"];
+		if($c_profile->update_profile($uProfile))
+		{
+			$response["status"] = "success";
+			$response["imageUrl"] = $model->getcoverimage($uProfile->coverImage);
+		}
+		else 
+		{
+			$response["status"] = "error"	;
+		}
+		echo json_encode($response);
 	}
 }
 ?>
