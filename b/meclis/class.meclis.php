@@ -15,7 +15,7 @@
 			
         	?>
         		<!-- Kırmızı Bileşen -->
-				<section class="bilesen kirmizi kontroller_var">
+				<section class="bilesen kirmizi kontroller_var" id="meclis_gagget">
 					<header>
 						<hgroup>
 							<h1>Türkiye Meclisi</h1>

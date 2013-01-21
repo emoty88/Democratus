@@ -7,7 +7,7 @@
 			$voices=$c_pVoice->get_popularVoice();
 			?>
 			<!-- Bileşen -->
-				<section class="bilesen kontroller_var">
+				<section class="bilesen kontroller_var" id="popularVoice_gadget">
 					<header>
 						<hgroup>
 							<h1>Ses Getirenler</h1>
