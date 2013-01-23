@@ -1,5 +1,4 @@
 <?php
-
 class parliament_plugin extends control {
     public function main() {
         global $model, $db, $l;
@@ -14,7 +13,7 @@ class parliament_plugin extends control {
 	    $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
 	    $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 		
-	    $model->addScript("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js", "jquery.tmpl.js", 1);
+	    $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 		
 		$model->addScript("paths=".json_encode($model->paths));
 		$model->addScript("plugin='parliament'");
@@ -23,7 +22,6 @@ class parliament_plugin extends control {
 				<header>
 					<h1>TÜRKİYE MECLİSİ</h1>
 				</header>
-				<img alt="" src="img/banner-adaylarim.png">
 				<nav>
 					<ul class="alt_menu visible-desktop" id="tab-container" >
 						<li class="active"><a href="#tab-referandum" rel="referandum" data-toggle="tab" >REFERANDUM</a></li>

@@ -502,24 +502,31 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					if(response.voice.replyID>0)
-					{
-						if(randID == "qe")
+					
+						if(response.voice.replyID>0)
 						{
-							$("#voice-reply-tmpl").tmpl(response.voice).prependTo(".replyAreaFix");
+							if(randID == "qe")
+							{
+								
+								$("#voice-reply-tmpl").tmpl(response.voice).prependTo(".replyAreaFix");
+								
+							}
+							else
+							{
+								$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
+							}
+							$("#replyTextArea_"+randID).val("+voice ");
+							$("#voiceReplyArea_"+randID).slideDown();
 						}
 						else
 						{
-							$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
-						}
-						$("#replyTextArea_"+randID).val("+voice ");
-						$("#voiceReplyArea_"+randID).slideDown();
-					}
-					else
-					{
-						$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
-						$("#replyTextArea_"+randID).val("");
-					}	
+							if(plugin != "parliament")
+							{
+								$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");	
+							}
+							$("#replyTextArea_"+randID).val("");
+						}	
+					
 					$("#initem_"+randID).val(0);
 					$("#initem-name_"+randID).val(0);
 				}
@@ -528,8 +535,8 @@ jQuery(document).ready(function ($) {
 					alert(response.message);
 					
 				}
-				
 			}
+			
 		});	
 	}
 	function get_noticeCount()
@@ -831,9 +838,29 @@ jQuery(document).ready(function ($) {
 	        if(response.status=="success")
 	        {
 	        	$(".loading_bar").remove();
-	        	$("#parliament-agenda-tmpl").tmpl(response.agendas).appendTo("#referandum-container");
+	        	agendeSortList = agendaSortNew(response.agendas);
+	        	$("#parliament-agenda-tmpl").tmpl(agendeSortList).appendTo("#referandum-container");
 	        }
 	    },'json');  
+	}
+	function agendaSortNew(list)
+	{
+		var ilk = new Array();
+		var son = new Array();
+		$.each(list, function(key, value){
+			if(value.myVote == null)
+			{
+				ilk.push(value);
+			}
+			else
+			{
+				son.push(value);
+			}
+		});
+
+		returnArr = ilk.concat(son);
+
+		return returnArr;
 	}
 	function get_deputyList()
 	{

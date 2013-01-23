@@ -378,7 +378,7 @@ body.atolye15_body { overflow-x: hidden; }
 
 .duvar_yazisi .yazar { margin:0; font-size: 13px; }
 .duvar_yazisi .yazar a { color: #d04647; }
-.duvar_yazisi .yazar span { color: #969696; }
+.duvar_yazisi .yazar span { color: #969696; margin-left: 10px; }
 
 .duvar_yazisi_icerigi { margin-bottom: 5px; }
 .duvar_yazisi_icerigi p { margin-bottom: 0px; }
@@ -995,7 +995,7 @@ a.prev span, a.next span {
 }
 #alt_menu_mobil { display: block; margin: 10px auto; }
 
-.banner .alt_menu { position: absolute; bottom: -1px; left: 15px; }
+.banner .alt_menu { position: absolute; bottom: -1px; left: 10px; }
 
 .ilk_satir { padding: 15px 20px 15px 20px; }
 .ilk_satir_2 { padding: 15px 0px 15px 0px; }
@@ -1456,7 +1456,7 @@ body .boluklari_azalt { margin-bottom: 0; padding-bottom: 0; }
 .vekil_secim_listesi > li > article { padding: 15px; }
 .vekil_secim_listesi > li > article > img { float: left; margin: 0 10px 5px 0; width: 90px; height: 90px; }
 .vekil_secim_listesi > li > article > header address { margin: 0; }
-.vekil_secim_listesi > li > article > header address h1 { margin: 0; font-size: 20px; line-height: 30px; }
+.vekil_secim_listesi > li > article > header address h1 { margin: 0; font-size: 20px; line-height: 25px; height:50px; }
 .vekil_secim_listesi > li > article > header address h1 a { font-weight: normal; }
 .vekil_secim_listesi > li > article .istatistik_listesi_2 button { font-weight: bold; }
 .vekil_secim_listesi > li > article hr { margin: 20px 0 5px; }
@@ -1828,6 +1828,7 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 .atolye15-ikon-soylesi { background-position: -48px -32px; }
 .atolye15-ikon-taktir { background-position: -72px -32px; }
 .atolye15-ikon-saygi { background-position: -96px -32px; }
+.atolye15-ikon-kaldir { background-position: -224px -32px; }
 .atolye15-ikon-paylas { background-position: -120px -32px; }
 .atolye15-ikon-ok { background-position: -144px -32px; }
 :hover > .atolye15-ikon-atac, .aktif > .atolye15-ikon-atac { background-position: 0px -56px; }
@@ -1835,6 +1836,7 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 :hover > .atolye15-ikon-soylesi, .aktif > .atolye15-ikon-soylesi { background-position: -48px -56px; }
 :hover > .atolye15-ikon-taktir, .aktif > .atolye15-ikon-taktir { background-position: -72px -56px; }
 :hover > .atolye15-ikon-saygi, .aktif > .atolye15-ikon-saygi { background-position: -96px -56px; }
+:hover > .atolye15-ikon-kaldir, .aktif > .atolye15-ikon-kaldir { background-position: -224px -56px; }
 :hover > .atolye15-ikon-paylas, .aktif > .atolye15-ikon-paylas { background-position: -120px -56px; }
 :hover > .atolye15-ikon-ok, .aktif > .atolye15-ikon-ok { background-position: -144px -56px; }
 

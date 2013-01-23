@@ -77,13 +77,14 @@
         	} else {
         		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
         	}
+			if($start>0){
+        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+        	}  
 			if($hashTag !== 0)
 			{
 				$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
 			}
-        	if($start>0){
-        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
-        	}  
+        	
         	$WHERE .= "\n AND di.status>0";
         	if($onlyProfile==0)
         		$WHERE .= "\n AND onlyProfile='0'";
@@ -91,6 +92,7 @@
         	$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+   
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 			$rows = $db->loadObjectList();
 			$voices	=array();

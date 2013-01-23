@@ -2,6 +2,7 @@
     class profile{
     	public $profile;
 		public $profileID;
+		public $_isAdmin = false;
         public function __construct($profile=null)
 		{
 			global $model;
@@ -19,6 +20,8 @@
 				$this->profile	= $model->profile;
 				$this->profileID= $model->profileID;
 			}
+			if($this->profileID == $model->profileID)
+				$this->_isAdmin = true;
 		}
 		public function get_porfileObject($KEY)
 		{

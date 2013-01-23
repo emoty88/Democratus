@@ -10,6 +10,11 @@ class induction {
 			case 'new_share':
 				$puanClass->puanIslem($voice->profileID,"1",$voice);
 				$c_counter->set_profileCount($voice->profileID, "voice");
+				if($voice->replyID>0)
+				{
+					$c_voice = new voice($voice->replyID);
+					$puanClass->puanIslem($c_voice->_voice->profileID,"5",$c_voice->_voice);
+				}
 				break;
 				
 			case 'redi_share':

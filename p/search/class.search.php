@@ -3,6 +3,25 @@
         public $limit = 14;
         
         public function main(){
+			global $model, $db, $l;
+			$model->template="ala";
+			$model->view="default";
+			$model->title = 'Democratus';
+			
+			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
+          	$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+                        
+            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			
+			echo $model->paths[1]." arandı <br />";
+			echo "hazırlanıyor";
+		}
+		public function main_old()
+		{
             global $model, $db, $l;
             
             if($model->paths[1] == 'ajax') return $this->ajax();

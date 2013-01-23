@@ -13,7 +13,7 @@
 							<header>
 								<hgroup>
 									<h1><a href="#" title="Democratus :: Ana Sayfa">Democratus</a></h1>
-									<h2>S"osyal paylaşım platformu...</h2>
+									<h2>Sosyal paylaşım platformu...</h2>
 								</hgroup>
 								<a id="logo" href="/" title="Democratus :: Ana Sayfa">
 									<img src="<?=TEMPLATEURL?>/ala/img/logo.png" alt="Democratus Logo">
@@ -33,7 +33,7 @@
 							<div id="arama_formu">
 								<form action="#" method="post">
 									<input type="submit" value="Ara" id="arama_dugmesi">
-									<input type="text" name="q" placeholder="Arama yapın ..." id="arama_kutusu" class="bradius5">
+									<input type="text" name="q" placeholder="Arama yap ..." id="arama_kutusu" class="bradius5">
 								</form>
 							</div>
 						</div><!-- // Arama Formu -->
@@ -68,7 +68,7 @@
 					<span><?=$model->profile->name?></span>
 				</a>
 				<ul class="acilir_menu">
-					<li><a href="/<?=$model->profileID?>"><i class="icon-user icon-white"></i> Profilim</a></li>
+					<li><a href="/<?=$model->profile->permalink?>"><i class="icon-user icon-white"></i> Profilim</a></li>
 					<li><a href="/my"><i class="icon-wrench icon-white"></i> Ayarlar</a></li>
 					<li class="son"><a href="/user/logout"><i class="icon-off icon-white"></i> Çıkış</a></li>
 				</ul>

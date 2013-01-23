@@ -43,7 +43,7 @@ class jstemplates_block extends control{
 						</a>
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
-							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
+							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 							<span>Kaldır</span>
 						</a>
 						{{else}}

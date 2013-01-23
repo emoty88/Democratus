@@ -18,7 +18,7 @@
 								</ul>
 							</div>
 							<div class="span6">
-								<address class="copyright">2012 © <a href="#" title="Democratus">Democratus</a></address>
+								<address class="copyright"><?=date("Y")?> © <a href="#" title="Democratus">Democratus</a></address>
 							</div>
 						</div>
 					</div>

@@ -46,6 +46,23 @@
 
 			return $agendas;
 		}
+		public function short_agandaNew($agendas)
+		{
+			$ilk =  array();
+			$son =  array();
+			foreach($agendas as $a)
+			{
+				if($a->myvote==null)
+				{
+					$ilk[] = $a;
+				}
+				else{
+					$son[] = $a;
+				} 
+
+			}
+			return array_merge($ilk, $son);
+		}
 		public function get_agendaPercent($agendaID)
 		{
 			global $model, $db;
@@ -136,7 +153,7 @@
 				$vekilOy->datetime = date('Y-m-d H:i:s');
 				$vekilOy->ip = $_SERVER['REMOTE_ADDR'];
 				
-				if ($db->insertObject( ' mydeputy', $vekilOy )) {
+				if ($db->insertObject( 'mydeputy', $vekilOy )) {
 					$vekilOy->ID = $db->insertid() ;
 					$c_puan = new puan;
 					$c_puan->puanIslem($deputyID,"70",$vekilOy);
@@ -254,6 +271,49 @@
 			global $model, $db;
 			$db->setQuery("SELECT count(*) FROM proposal WHERE status=1 and st=1 and used=0 and deputyID='".$model->profileID."' and datetime>='".date('Y-m-d 00:00:00')."'");
 			return $db->loadResult();
+		}
+		
+		public function count_agenda($type=0,$parentID=0)
+		{
+			global $model, $db;
+
+			$SELECT = "\n SELECT count(*) ";
+            $FROM   = "\n FROM agenda AS a";
+            $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
+            $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
+            //$WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
+            $WHERE = "\n  WHERE a.status>0"; 
+            $WHERE .= "\n AND av.profileID = " . $db->quote($model->profileID);
+            if($type!="0")
+			{
+				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	
+			}
+			else
+			{
+				$WHERE .= "\n  AND ( a.regionID IS NULL AND a.countryID IS NULL AND a.cityID IS NULL AND a.hastagID =0 )";	
+			}   
+             //hastag sayfalarının gündemi yok ve gündemi yoksa  alan boş geliyor tagin gündemi yoksa gerçek meclis gelsin 
+            $GROUP  = "\n ";
+      
+			if($type!="0")
+			{
+				$ORDER  = "\n ORDER BY a.$type DESC";
+				$ORDER  .= "\n , a.ID DESC";
+			}else
+			{
+				$ORDER  = "\n ORDER BY a.ID DESC";
+			} 
+            $LIMIT  = "\n  LIMIT 7";
+            // Bu alanı sunucuya gönderme  // doğru zaman kriteri eklenmeli 
+            
+            
+            $db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$GROUP.$ORDER.$LIMIT);
+            //echo $db->_sql;
+            
+            //$db->setQuery('SELECT a.* FROM agenda AS a WHERE '.$db->quote(date('Y-m-d H:i:s')).' BETWEEN a.starttime AND a.endtime ORDER BY ID desc');
+           
+
+			return 7-$db->loadResult();
 		}
 	}
 ?>

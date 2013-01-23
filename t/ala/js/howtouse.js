@@ -17,7 +17,7 @@ $(document).ready(function () {
 	{
 		init_step(i);
 	}
-	show_step(0);
+	//show_step(0); // tetikleyici
 });
 function init_step(stepIndex)
 {
@@ -41,7 +41,7 @@ function hide_step(stepIndex)
 {
 	if(stepIndex== -1)
 	return;
-	console.log(stepIndex);
+	//console.log(stepIndex);
 	step = steps[stepIndex];
 	$(step.domSelector).popover("hide");
 	$(step.domSelector).css("z-index","1000");
@@ -71,7 +71,7 @@ function get_content(stepIndex)
 	var html = step.content;
 	if(step.buttons.length>0)
 	{
-		console.log(step.buttons);
+		//console.log(step.buttons);
 		$.each(step.buttons, function(key,btn) {
 			html += create_button(btn);
 		});
