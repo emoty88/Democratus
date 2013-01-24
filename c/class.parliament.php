@@ -205,7 +205,7 @@
                	if($model->profile->deputy<1) throw new Exception('Tasarı yazmak için Vekil olmak gerek!');                
                		
                	$ppCount=$this->count_poroposal();
-				if($ppCount>2){throw new Exception('Bir günde enfazla 3 tasarı yazabilirsiniz.');};
+				if($ppCount>2){throw new Exception('Bir günde enfazla 3 tasarı gönderebilirsiniz.');};
                 
                	$pp = new stdClass;
                	$pp->title       = $porposalT;
@@ -231,38 +231,63 @@
 		public function get_proposal()
 		{
 			global $model, $db;
-			
-			$SELECT = "SELECT pp.*, pr.name, pr.image, pr.permalink";
+                        $retunObj=array();
+			try { 
+                            if($model->profile->deputy<1) throw new Exception('Bu bölümü sadece vekiller görebilir.');  
+                            $SELECT = "SELECT pp.*, pr.name, pr.image, pr.permalink";
 
-			$SELECT .= "\n , (( pp.count_approve  - pp.count_reject) *  pp.count_approve ) AS points";
-			$FROM = "\n FROM proposal AS pp";
-			$JOIN = "\n LEFT JOIN profile AS pr ON pr.ID = pp.deputyID";
-			$WHERE = "\n WHERE pp.datetime>" . $db->quote ( date ( 'Y-m-d H:i:s', LASTPROPOSAL ) );
-			$WHERE .= "\n AND pp.status>0";
-			$WHERE .= "\n AND pp.used<1";
-			$WHERE .= "\n AND pp.st=1";
-				// $GROUP = "\n GROUP BY ppv.proposalID";
-			$GROUP = "\n GROUP BY pp.ID";
-			$ORDER = "\n ORDER BY points DESC, pp.count_approve DESC, pp.ID ASC";
+                            $SELECT .= "\n , (( pp.count_approve  - pp.count_reject) *  pp.count_approve ) AS points";
+                            $FROM = "\n FROM proposal AS pp";
+                            $JOIN = "\n LEFT JOIN profile AS pr ON pr.ID = pp.deputyID";
+                            $WHERE = "\n WHERE pp.datetime>" . $db->quote ( date ( 'Y-m-d H:i:s', LASTPROPOSAL ) );
+                            $WHERE .= "\n AND pp.status>0";
+                            $WHERE .= "\n AND pp.used<1";
+                            $WHERE .= "\n AND pp.st=1";
+                                    // $GROUP = "\n GROUP BY ppv.proposalID";
+                            $GROUP = "\n GROUP BY pp.ID";
+                            $ORDER = "\n ORDER BY points DESC, pp.count_approve DESC, pp.ID ASC";
 
-			$LIMIT = "\n ";
-			$db->setQuery ( $SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT );
+                            $LIMIT = "\n ";
+                            $db->setQuery ( $SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT );
 
-			$proposals = $db->loadObjectList ();
-			$retunObj=array();
-			foreach($proposals as $p){
-				$ro	= new stdClass;
-				$ro->ID = $p->ID;
-				$ro->text = $p->spot;
-				$ro->deputyID = $p->deputyID;
-				$ro->mecliseAlan = $p->mecliseAlan;
-				$ro->count_approve = $p->count_approve;
-				$ro->count_reject = $p->count_reject;
-				$ro->dName = $p->name;
-				$ro->dImage = $model->getProfileImage($p->image, 48,48, 'cutout');
-				$ro->dPerma = $p->permalink;
-				$retunObj[]=$ro;
-			}
+                            $proposals = $db->loadObjectList ();
+                            $ids = array();
+                            foreach($proposals as $p){
+                                    $ro	= new stdClass;
+                                    $ro->ID = $p->ID;
+                                    $ro->text = $p->spot;
+                                    $ro->deputyID = $p->deputyID;
+                                    $ro->mecliseAlan = $p->mecliseAlan;
+                                    $ro->count_approve = $p->count_approve;
+                                    $ro->count_reject = $p->count_reject;
+                                    $ro->dName = $p->name;
+                                    $ro->dImage = $model->getProfileImage($p->image, 48,48, 'cutout');
+                                    $ro->dPerma = $p->permalink;
+                                    $ro->time = model::get_beforeTime( strtotime($p->datetime));
+                                    $ro->approve =0;
+                                    $ro->reject=0;
+                                    $retunObj['proposal'][]=$ro;
+                                    $ids[] = $ro->ID;
+                            }
+                            
+                            $query='SELECT proposalID, approve, reject from proposalvote WHERE proposalID IN ('.implode(' , ', $ids).')';
+                            $db->setQuery($query);
+                            $votes = $db->loadObjectList ();
+                           
+                            foreach ($votes as $vote){
+                                foreach ($retunObj['proposal'] as $key=>$v){
+                                    if($v->ID == $vote->proposalID){
+                                        $retunObj['proposal'][$key]->approve = $vote->approve;
+                                        $retunObj['proposal'][$key]->reject = $vote->reject;
+                                    }
+                                }
+                            }
+                                                        
+                            $retunObj['result'] = 'success';
+                        }  catch (Exception $e){
+                                $retunObj['result'] = 'error';
+                                $retunObj['message'] = $e->getMessage();
+                        }
 			return $retunObj;
 		} 
 
@@ -315,5 +340,55 @@
 
 			return 7-$db->loadResult();
 		}
+                
+                public static function set_proposal_vote($id,$value){
+                    global $model, $db;
+                    try{
+                        if($model->profile->deputy!=1)                            throw  new Exception('verkil degil');
+                        
+                        $id = intval($id);
+                        $value = intval($value);
+                        $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING ) ;
+                        $QUERY  = 'SELECT count(ID) '. 
+                                  'FROM proposalvote '.
+                                  'WHERE proposalID='.$id.' AND '.
+                                  'deputyID='.$model->profileID.' AND '.
+                                  'status = 1  '.
+                                  '';
+                        $db->setQuery($QUERY);
+                        $count = $db->loadResult();
+                        if($value>0){
+                            $approve = 1;
+                            $reject = 0;
+                            $q = ' approve=1, reject=0 ';
+                        }else{
+                            $approve = 0;
+                            $reject = 1;
+                            $q = ' approve=0, reject=1  ';
+                        }
+                        if($count<1){
+                            //insert
+                            $QUERY = 'INSERT INTO proposalvote (proposalID,deputyID,approve,reject,status, datetime, ip) VALUES'.
+                                "($id,$model->profileID,$approve,$reject,1,NOW(),'$ip')";
+                            $db->setQuery($QUERY);
+                            if(!$db->query()) throw new Exception('db error2');
+                            
+                        }else{
+                            //update
+                            $QUERY = 'UPDATE proposalvote SET '.$q.', datetime = NOW(), '." ip = '$ip' ".
+                                  'WHERE proposalID='.$id.' AND '.
+                                  'deputyID='.$model->profileID.' AND '.
+                                  'status = 1  '.
+                                  '';
+                            //echo $QUERY;
+                            $db->setQuery($QUERY);
+                            if(!$db->query()) throw new Exception('db error2');
+                              }
+                    }  catch (Exception $e){
+                        echo $e->getMessage();
+                        return false;
+                    }
+                    return true;
+                }
 	}
 ?>

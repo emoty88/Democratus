@@ -735,8 +735,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_parliament	= new parliament;
 		$return		= array();
 		$proposal	= $c_parliament->get_proposal();
-		$return["status"]	= "success";
-		$return["proposals"]= $proposal;
+		$return["status"]	= $proposal['result'];
+                if($return['status'] == 'success')
+                    $return["proposals"] = $proposal['proposal'];
 		echo json_encode($return);
 	}
 	function set_proposal(){
@@ -1284,5 +1285,18 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
 		echo json_encode($response);
 	}
+        
+        public function set_proposal_vote(){
+            global $model, $db;
+            $rArray = array();
+            $profileID = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+            $value = filter_input(INPUT_POST, 'value', FILTER_SANITIZE_NUMBER_INT);
+            if(parliament::set_proposal_vote($profileID,$value)){
+                $rArray['status']='success';
+            }else{
+                $rArray['status']='error';
+            }
+            echo json_encode($rArray);
+        }
 }
 ?>

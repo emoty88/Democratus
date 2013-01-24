@@ -945,9 +945,19 @@ jQuery(document).ready(function ($) {
 			{
 				get_proposal();
 				$("#tasari_textarea").val("");
-			}
+                                count++;
+                                check_proposal_count();
+			}else{
+                                $('#message').html(response.message);
+                                $('#message').show();
+                        }
 	    },'json'); 
 	}
+        function check_proposal_count(){
+            if(count>2){
+                $('#yeni_yazi_yaz').html('Bir günde en fazla 3 tasarı gönderebilirsiniz.');
+            }
+        }
 	function get_kalanOyCount()
 	{
 		$.post("/ajax/get_kalanOyCount", {deputyID: 0}, function(response){ 
@@ -1078,6 +1088,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function parliament_page(){
+                check_proposal_count();
 		get_agendas();
 		get_deputyList();
 		get_oldAgenda();
@@ -1218,3 +1229,16 @@ jQuery(document).ready(function ($) {
 	    	}
 	    });
 	}
+        function set_proposal_vote(id,value){
+            
+            
+            $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
+                if(response.status=='success'){
+                    $('#v-'+id+'-'+value).addClass('btn-danger');
+                    $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
+                    
+                }else{
+                    alert('hata');
+                }
+            },'json');
+        }
