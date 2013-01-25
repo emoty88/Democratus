@@ -21,6 +21,7 @@ jQuery(document).ready(function ($) {
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
 	//});	
+
 	$(".pImageUpload").each(function (){
 		init_userfUploader(this);
 	});
@@ -62,7 +63,8 @@ jQuery(document).ready(function ($) {
    		case "message" : message_page(); break;
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
-   		case "hashTag" : hashtag_page();
+   		case "hashTag" : hashtag_page();break;
+   		case "search" : search_page();break;
    	}  	
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
@@ -561,8 +563,128 @@ jQuery(document).ready(function ($) {
 			}
 		});	
 	}
-	function get_wall(profileID, start, onlyProfile, hashTag){
+	function get_archiveSearch(keyword,start)
+	{
+		if(get_archiveSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_archiveSearch.arguments.length<1)
+		{
+			return false;
+		}
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#kisiler-container");
+		
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_oldAgenda",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					$(".loading_bar").remove();
+	        		$("#parliament-oldAgenda-tmpl").tmpl(response.olAgendas).appendTo("#arsivler-container");
+	        		init_oldAgenda();
+					
+					
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_userSearch(keyword,start)
+	{
+		if(get_userSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_userSearch.arguments.length<1)
+		{
+			return false;
+		}
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#kisiler-container");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_userSearch",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					$("#social-friendList-tmpl").tmpl(response.users).appendTo("#kisiler-container");
+					//console.log(response.users);
+					$(".loading_bar").remove();
+					//$("#dahafazlases-tmpl").tmpl().appendTo("#kisiler-container");
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_voiceSearch(keyword,start)
+	{
+		if(get_voiceSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_voiceSearch.arguments.length<1)
+		{
+			return false;
+		}
+
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#sesler-container");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_voiceSearch",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					if(response.voices.length>0)
+					{
+						firstVoice	= response.voices[0].ID;
+						lastVoiceID	= response.voices[response.voices.length-1].ID;;
+						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#sesler-container");
+						$(".loading_bar").remove();
+					}
+					else
+					{
+						$("#voiceBulunamadı-tmpl").tmpl().appendTo("#sesler-container");
+					}
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_wall(profileID, start, onlyProfile, hashTag, keyword){
 		wallmoreAction=1;
+		
+		if(get_wall.arguments.length<5)
+		{
+			keyword="";
+		}
 		if(get_wall.arguments.length<4)
 		{
 			hashTag=0;
@@ -579,7 +701,7 @@ jQuery(document).ready(function ($) {
 		{
 			profileID=0;
 		}
-		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag};
+		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		$.ajax({
@@ -1094,6 +1216,12 @@ jQuery(document).ready(function ($) {
 		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
 		get_imageGalery(profileID);
 	}
+	function search_page()
+	{
+		get_voiceSearch(keyword);
+		get_userSearch(keyword);
+		get_archiveSearch(keyword);
+	}
 	function get_imageGalery(profileID)
 	{
 		$.post("/ajax/get_imageGalery", {profileID: profileID}, function(response){ 
@@ -1217,4 +1345,17 @@ jQuery(document).ready(function ($) {
 	    		return $(this).find('div').html();
 	    	}
 	    });
+	}
+	
+	function gotoSearch()
+	{
+		var word=$('#arama_kutusu').val();
+		if(word.search("#")>=0)
+		{
+			word=word.replace("#","");location.href='/search/'+word+"#sesler";
+		}
+		else
+		{
+			location.href='/search/'+word+"#kisiler";
+		}
 	}

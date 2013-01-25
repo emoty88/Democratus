@@ -50,7 +50,7 @@
 			$db->loadObject($result);
 			return $result;
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0)
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
@@ -80,7 +80,7 @@
 			if($start>0){
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
-			if($hashTag !== 0)
+			if($hashTag != 0)
 			{
 				$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
 			}
@@ -94,6 +94,7 @@
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+		
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)
@@ -112,7 +113,59 @@
 				return FALSE;
 			}
 		}
+		public function get_voiceSearch($keyword, $limit=20, $start=0,$onlyProfile=0)
+		{
+			global $model, $db, $l, $LIKETYPES;
+			if($model->profileID < 1)
+			{
+				return FALSE;
+			}
+        	$SELECT = "SELECT DISTINCT 	di.*, 
+        								sharer.image AS sharerimage, 
+        								sharer.name AS sharername, 
+        								redier.name AS rediername, 
+        								redier.image AS redierimage, 
+        								sharer.deputy AS deputy, 
+        								sharer.showdies,
+        								sharer.permalink as permalink";
+        	$FROM   = "\n FROM di";
+        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
+        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
+			$WHERE = "\n WHERE di.status>0";
+			if($start>0){
+        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+        	}  
+			$WHERE .= "\n  AND (di.di  LIKE '%". $db->escape( $keyword )."%')";
+        	
+        	if($onlyProfile==0)
+        	{
+        		$WHERE .= "\n AND onlyProfile='0'";
+			}
+			
+        	$ORDER  = "\n ORDER BY di.ID DESC";
+        	$LIMIT  = "\n LIMIT $limit";
+        	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+ 			//die;
+        	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 		
+			$rows = $db->loadObjectList();
+			$voices	=array();
+			if(count($rows)>0)
+			{
+				//return $rows;
+				foreach($rows as $row)
+				{
+					if(!profile::isallowed($row->profileID, $row->showdies)) continue; //seslerini gizledi ise bu özellik kaldırıldı 
+					//var_dump($row->ID);
+					$voices[]	= $this->get_return_object($row);
+				}
+				return $voices;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
 		public function get_return_object($v_obj, $iW=48, $iH=48)
 		{
 			global $model;

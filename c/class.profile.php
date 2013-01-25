@@ -566,6 +566,7 @@
 				 $ro->pImage	= $model->getProfileImage($p->image, 45,45, 'cutout');
 				 $ro->pName		= $p->name;
 				 $ro->pMotto	= $p->motto;
+				 $ro->ismyFollow= $this->isFollow($ro->ID);
 				 $returnObj[]	= $ro;	
 			}
 			return $returnObj;
@@ -658,6 +659,26 @@
 			}
 	
 		
+		}
+		public function get_userSearch($keyword, $limit=20, $start=0)
+		{
+			global $model, $db;
+			$SELECT = "SELECT * ";
+        	$FROM   = "\n FROM profile";
+			$WHERE = "\n WHERE status>0";
+			if($start>0){
+        		$WHERE .= "\n AND ID<" . $db->quote($start);
+        	}  
+			$WHERE .= "\n  AND (name LIKE '%". $db->escape( $keyword )."%' OR permalink  LIKE '%". $db->escape( $keyword )."%')";
+   		
+        	$ORDER  = "\n ORDER BY ID DESC";
+        	$LIMIT  = "\n LIMIT $limit";
+        	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+ 			//die;
+        	$db->setQuery($SELECT . $FROM .  $WHERE . $ORDER . $LIMIT);
+		
+			$rows = $db->loadObjectList();
+			return $rows;
 		}
     }
 ?>
