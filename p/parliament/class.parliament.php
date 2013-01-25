@@ -7,16 +7,19 @@ class parliament_plugin extends control {
 		$model->title 		= 'Democratus - Parliament';
 		
 		$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-	    $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-	    $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-	    $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-	    $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-	    $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-		
-	    $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+                $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+
+                $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 		
 		$model->addScript("paths=".json_encode($model->paths));
 		$model->addScript("plugin='parliament'");
+                
+                $model->addScript("var count=".parliament::count_poroposal().';');
+                
 		?>
 			<section class="banner">
 				<header>
@@ -31,11 +34,11 @@ class parliament_plugin extends control {
 						<li><a href="#tab-eskireferandumlar" rel="eskireferandumlar" data-toggle="tab" >ESKİ REFERANDUMLAR</a></li>
 					</ul>
 					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
-						<option value="http://atolye15.com">REFERANDUM</option>
-						<option value="http://atolye15.com">DÖNEM VEKİLLERİ</option>
-						<option value="http://atolye15.com">VEKİL SEÇİMLERİ</option>
-						<option selected="" value="http://atolye15.com">ADAYLARIM</option>
-						<option value="http://atolye15.com">ESKİ REFERANDUMLAR</option>
+						<option value="">REFERANDUM</option>
+						<option value="">DÖNEM VEKİLLERİ</option>
+						<option value="">VEKİL SEÇİMLERİ</option>
+						<option selected="" value="">ADAYLARIM</option>
+						<option value="">ESKİ REFERANDUMLAR</option>
 					</select>
 				</nav>
 				<div class="clearfix"></div>
@@ -138,11 +141,13 @@ class parliament_plugin extends control {
 								<h1 class="sayfa_basligi_2">Tasarı Yaz</h1>
 							</header>
 						</div>
+                                                <div style="display: none" id="message">message</div>
 					</section>
 					<!-- tasarı yaz title End -->
 					<!-- tasarı yaz textarea -->
 					<div class="satir">
 						<div class="karakter_sayaci_tutucu" id="yeni_yazi_yaz">
+                                                        <?php if($model->profile->deputy == 1) : ?>
 							<textarea rows="2" placeholder="Tasarı Yaz..." class="karakteri_sayilacak_alan" name="yeni_yazi" id="tasari_textarea"></textarea>
 							<div class="kalan_karakter_mesaji"><span data-limit="200" class="karakter_sayaci">200</span> karakter</div>
 
@@ -153,6 +158,9 @@ class parliament_plugin extends control {
 								<a href="javascript:void(0)"><i class="atolye15-ikon-atac atolye15-ikon-24"></i></a>
 								-->
 							</div>
+                                                        <?php else: ?>
+                                                            Tasarı yazabilmek için vekil olmalısınız.
+                                                        <?php endif; ?>
 							<div class="clearfix"></div>
 						</div>
 					</div>

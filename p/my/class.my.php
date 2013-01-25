@@ -18,6 +18,8 @@
 			
 			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1); // düzenle
             $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
+            $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
+			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
@@ -192,14 +194,16 @@
 
 								<div class="sag_form_bolumu span3">
 									<div class="profil_resmi">
-										<img alt="" src="<?=$model->getProfileImage($profile->image,200,200,"cutout");?>">
+										<img id="profileImage" alt="" src="<?=$model->getProfileImage($profile->image,200,200,"cutout");?>">
 										<p>Profil Resmi Yükle<br><small>(JPG, GIF, PNG); 1000 KB Max</small></p>
-
-										<div class="suslu_dosya_yukle_dugmesi">
-											<input type="file" value="" id="profil_resmi" name="profil_resmi">
+                                                                                <div class="myImageUpload" data-upload="profileImage">
+                                                                                        <button data-ftext="Resmi Güncelle"  style="width: 209px" class="btn btn-info "  type="button">Resmi Güncelle</button>
+                                                                                </div>
+										<div style="display:none" class="suslu_dosya_yukle_dugmesi">
+											<input style="" type="file" value="" id="profil_resmi" name="profil_resmi" />
 											<div class="suslu_dosya_yukle_dugmesi_ic">
 												<div class="input-append">
-													<input type="text" id="profil_resmi_gorunur" name="profil_resmi_gorunur" class="span1">
+													<input  type="text" id="profil_resmi_gorunur" name="profil_resmi_gorunur" class="span1">
 													<button type="button" class="btn">Dosya Seçiniz</button>
 												</div>
 											</div>

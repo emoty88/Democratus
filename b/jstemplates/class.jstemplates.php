@@ -30,7 +30,7 @@ class jstemplates_block extends control{
 							<br />
 						{{/if}}
 						{{if initem>0}}
-							<a href="javascript:;" onclick="ac_kapa_manual(this);" data-tetikleyici="ac-kapa" data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
+							<a href="javascript:;"  data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
 								<i class="atolye15-ikon-gorsel atolye15-ikon-24"></i> <span>Fotoğrafı Göster</span>
 							</a>
 							<div id="fotograf_${ID}" style="display:none;">
@@ -332,14 +332,22 @@ class jstemplates_block extends control{
 						<img class="profil_resmi" src="${dImage}" alt="${dName} Profil Fotoğrafı">
 						<address class="yazar">
 							<a href="/${dPerma}" title="${dName} Profilini Görüntüle">${dName}</a> 
-							<span> 2 gün, 2 saat</span>
+							<span> ${time}</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p style="min-height: 48px;">${text}</p>
 						</div>
 						<aside class="cevaplar tasari_yaz_cevaplar">
-							<a href="#" class="btn">Tartışılsın</a>
-							<a href="#" class="btn">Tartışılmasın</a>
+                                                    {{if approve>0}}
+                                                        <a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
+                                                    {{else}}
+							<a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn">Tartışılsın</a>
+                                                    {{/if}}
+                                                    {{if reject>0}}
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
+                                                    {{else}}
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn">Tartışılmasın</a>
+                                                    {{/if}}
 						</aside>
 					</div>
 				</div>

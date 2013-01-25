@@ -25,6 +25,9 @@ jQuery(document).ready(function ($) {
 	$(".pImageUpload").each(function (){
 		init_userfUploader(this);
 	});
+        $(".myImageUpload").each(function (){
+                init_profileImageUploader(this);
+        });
 	$(".fineUploader").live("click", function (){
 		globalRandID=$(this).attr("data-randID");
 	});
@@ -495,6 +498,10 @@ jQuery(document).ready(function ($) {
 		
 		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName, replying:replying};
 		//console.log(post_data);
+                
+                $('#voice-share-progress').show();
+                $(shareBtn).attr('disabled',true);
+                
 		$.ajax({
 			type: "POST",
 			url: "/ajax/set_share_voice",
@@ -537,6 +544,9 @@ jQuery(document).ready(function ($) {
 					alert(response.message);
 					
 				}
+                                
+                                $('#voice-share-progress').hide();
+                                $(shareBtn).removeAttr('disabled');
 			}
 			
 		});	
@@ -846,6 +856,8 @@ jQuery(document).ready(function ($) {
 	}
 	function voiceDetail(voice)
 	{
+                var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
+                ac_kapa_manual($tetik);
 		if(plugin=="voice")
 		{	
 			if(voiceDControl==1)
@@ -1067,9 +1079,19 @@ jQuery(document).ready(function ($) {
 			{
 				get_proposal();
 				$("#tasari_textarea").val("");
-			}
+                                count++;
+                                check_proposal_count();
+			}else{
+                                $('#message').html(response.message);
+                                $('#message').show();
+                        }
 	    },'json'); 
 	}
+        function check_proposal_count(){
+            if(count>2){
+                $('#yeni_yazi_yaz').html('Bir günde en fazla 3 tasarı gönderebilirsiniz.');
+            }
+        }
 	function get_kalanOyCount()
 	{
 		$.post("/ajax/get_kalanOyCount", {deputyID: 0}, function(response){ 
@@ -1200,6 +1222,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function parliament_page(){
+                check_proposal_count();
 		get_agendas();
 		get_deputyList();
 		get_oldAgenda();
@@ -1294,6 +1317,47 @@ jQuery(document).ready(function ($) {
 			debug:false
 		});
 	}
+        
+        
+        function init_profileImageUploader(dom)
+	{
+		$fub = $(dom);
+		uploadData = $fub.attr("data-upload");
+		var uploader = new qq.FineUploaderBasic({
+			button: $fub[0],
+			request: {
+				params : {uploadType:uploadData},
+				endpoint: '/ajax/upload_image'
+			},
+			validation: {
+				allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+				sizeLimit: 4194304 // 200 kB = 200 * 1024 bytes
+			},
+			callbacks: {
+				onComplete: function(id, fileName, responseJSON) {
+					if(responseJSON.success==true)
+					{
+						set_profileImage(responseJSON);
+					}
+				}
+			},
+			debug:false
+		});
+	}
+        
+        function set_profileImage(imageData)
+	{
+           // console.log(imageData);
+            
+		$.post("/ajax/set_profileImage", {imageData: imageData}, function(response){ 
+                    console.log(response);
+			if(response.status == "success")
+			{
+				$("#profileImage").attr("src",response.imageUrl);
+                                $(".uye_profili img").attr('src',response.imageUrl);
+			}
+	    },'json');
+	}
 	
 	function set_coverImage(imageData)
 	{
@@ -1346,6 +1410,7 @@ jQuery(document).ready(function ($) {
 	    	}
 	    });
 	}
+<<<<<<< HEAD
 	
 	function gotoSearch()
 	{
@@ -1369,3 +1434,18 @@ jQuery(document).ready(function ($) {
 			}
 	    },'json');
 	}
+=======
+        function set_proposal_vote(id,value){
+            
+            
+            $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
+                if(response.status=='success'){
+                    $('#v-'+id+'-'+value).addClass('btn-danger');
+                    $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
+                    
+                }else{
+                    alert('hata');
+                }
+            },'json');
+        }
+>>>>>>> a0efb88f849f443fef69d8d5c1298ca5b6047b93
