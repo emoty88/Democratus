@@ -1295,3 +1295,16 @@ jQuery(document).ready(function ($) {
                 }
             },'json');
         }
+        
+        function populardiToPopular(ID,button){
+            data="populardiID="+ID;
+            $.post('/ajax/set_popularToProposal', data,  
+                function(response){ 
+                    if(response.status=="success"){
+                        $(button).html("Tasarı olarak kaydedildi.");
+                        $(button).removeAttr('onclick');
+                    }else{
+                        $(button).html("En fazla 3 tasarı gönderbilirsiniz.");
+                    }
+                },'json');
+        }

@@ -1324,5 +1324,27 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
             }
             echo json_encode($rArray);
         }
+        
+        public function set_popularToProposal()
+	{
+		
+		$popularDiID=intval($_POST["populardiID"]);
+		$rJson=array();
+		
+		$sonuc=  proposal::set_popularDitoProposal($popularDiID);
+		if($sonuc=='true')
+		{
+			$rJson["status"]="success";
+		}
+		else if($sonuc=='notVekil')
+		{
+			$rJson["status"]="error";
+                        $rJson["message"]='Vekil değil';
+		}else if($sonuc=='proposalCount'){
+                        $rJson["status"]="error";
+                        $rJson['message']='En fazla 3 tasarı göndereblirsiniz';
+                }
+		echo json_encode($rJson);
+	}
 }
 ?>
