@@ -1410,7 +1410,6 @@ jQuery(document).ready(function ($) {
 	    	}
 	    });
 	}
-<<<<<<< HEAD
 	
 	function gotoSearch()
 	{
@@ -1434,18 +1433,16 @@ jQuery(document).ready(function ($) {
 			}
 	    },'json');
 	}
-=======
-        function set_proposal_vote(id,value){
-            
-            
-            $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
-                if(response.status=='success'){
-                    $('#v-'+id+'-'+value).addClass('btn-danger');
-                    $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
-                    
-                }else{
-                    alert('hata');
-                }
-            },'json');
-        }
->>>>>>> a0efb88f849f443fef69d8d5c1298ca5b6047b93
+    function set_proposal_vote(id,value){
+      
+        
+        $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
+            if(response.status=='success'){
+                $('#v-'+id+'-'+value).addClass('btn-danger');
+                $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
+                
+            }else{
+                alert('hata');
+            }
+        },'json');
+    }

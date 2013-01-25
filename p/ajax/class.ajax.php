@@ -1345,7 +1345,6 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
 		echo json_encode($response);
 	}
-<<<<<<< HEAD
 	public function get_who2follow()
 	{
 		global $model;
@@ -1357,10 +1356,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
 		echo json_encode($response);
 	}
-=======
-        
-        
-        public function set_profileImage()
+    public function set_profileImage()
 	{
 		global $model, $db;
 		$c_profile = new profile();
@@ -1391,6 +1387,6 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
             }
             echo json_encode($rArray);
         }
->>>>>>> a0efb88f849f443fef69d8d5c1298ca5b6047b93
+
 }
 ?>
