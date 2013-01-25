@@ -19,10 +19,54 @@ class ajax_plugin extends control{
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
 		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
-
+		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile, $hashTag);
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile, $hashTag, $keyword);
+        echo json_encode($response);
+	}
+	public function get_archiveSearch()
+	{
+		global $model, $db;
+		$model->mode = 0;
+		$response = new stdClass;
+		
+		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		
+        $c_parliament	 	= new parliament;
+		$response->status	= "success";
+		$agenda				= $c_parliament->get_archiveSearch($keyword, 20, $start);
+		//$response->users	= $c_profile->get_profileMultiReturtnObj($users);
+	}
+	public function get_userSearch()
+	{
+		global $model, $db;
+		$model->mode = 0;
+		$response = new stdClass;
+		
+		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		
+        $c_profile 	= new profile;
+		$response->status	= "success";
+		$users				= $c_profile->get_userSearch($keyword, 20, $start);
+		$response->users	= $c_profile->get_profileMultiReturtnObj($users);
+        echo json_encode($response);
+	}
+	public function get_voiceSearch()
+	{
+		global $model, $db;
+		$model->mode = 0;
+		$response = new stdClass;
+		
+		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		
+        $c_voice 	= new voice;
+		$response->status	= "success";
+		$response->voices	= $c_voice->get_voiceSearch($keyword, 20, $start);
         echo json_encode($response);
 	}
 	public function get_voiceImage()
@@ -653,7 +697,17 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		global $model;
 		$c_parliament=new parliament;
 		$return["status"]	= "success";
-		$agendas	= $c_parliament->get_oldAgenda();
+		$start = 0;
+		if($_REQUEST["start"]>0)
+		{
+			$start = $_REQUEST["start"];
+		}
+		$keyword="";
+		if($_REQUEST["keyword"]!="" && isset($_REQUEST["keyword"]))
+		{
+			$keyword = $_REQUEST["keyword"];
+		}
+		$agendas	= $c_parliament->get_oldAgenda($start, $keyword);
 		$return["olAgendas"]= $c_parliament->get_agendaReturnObject($agendas);
 		echo json_encode($return);
 	}

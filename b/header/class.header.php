@@ -31,9 +31,16 @@
 						<!-- Arama Formu -->
 						<div class="span4  landscape-tablet-span3 hidden-phone">
 							<div id="arama_formu">
-								<form action="#" method="post">
+								<?php
+									$keyword = "";
+									if($model->paths[0]=="search" && $model->paths[1]!="")
+									{
+										$keyword = $model->paths[1];
+									} 
+								?>
+								<form id="arama_formuForm"  onsubmit="gotoSearch(); return false;" method="post">
 									<input type="submit" value="Ara" id="arama_dugmesi">
-									<input type="text" name="q" placeholder="Arama yap ..." id="arama_kutusu" class="bradius5">
+									<input type="text" name="q" placeholder="Arama yap ..." id="arama_kutusu" class="bradius5" value="<?=$keyword?>">
 								</form>
 							</div>
 						</div><!-- // Arama Formu -->

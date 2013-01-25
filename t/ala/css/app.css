@@ -145,7 +145,7 @@ body.atolye15_body { overflow-x: hidden; }
 	#arama_formu form { margin: 0 0 0 60px; }
 }
 
-#arama_kutusu { border: 0; width: 79%; color: #CCC; padding: 7px 25px 7px 33px; }
+#arama_kutusu { border: 0; width: 79%; color: #3D3D3D; padding: 7px 25px 7px 33px; }
 #arama_dugmesi {
 	position: absolute; z-index: 10; top: 8px; left: 6px; width: 20px; height: 20px; text-indent: -9999px;
 	border: 0; background: url(../img/arama-dugmesi.png) no-repeat 0 0;  cursor: pointer; }
