@@ -177,6 +177,10 @@ class jstemplates_block extends control{
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
 		</script>
 		
+		<script id="voiceBulunamadı-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Hiç Voice Bulunamadı...</a></aside>
+		</script>
+		
 		<script id="loadingbar-tmpl" type="text/x-jquery-tmpl">
 			<aside id="loading_bar" class="loading_bar">
 				<img src="/t/ala/img/loading.gif" />
@@ -310,6 +314,7 @@ class jstemplates_block extends control{
 				</a> 
 			</li>
 		</script> 
+		
 		<script id="parliament-friendItem-tmpl" type="text/x-jquery-tmpl">
 			<li>
 				<a title="${pName}" href="/${pPerma}">
@@ -387,8 +392,9 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="social-friendList-tmpl" type="text/x-jquery-tmpl">
-			<article class="duvar_yazisi">
+			<article class="duvar_yazisi" style="min-height: 45px;">
 				<img alt="${pName} Profil Fotoğrafı" src="${pImage}" class="profil_resmi">
+				
 				<address class="yazar">
 					<a title="${pName} Profilini Görüntüle" href="/${pPerma}">
 						${pName} 
@@ -401,11 +407,28 @@ class jstemplates_block extends control{
 					<p style="">${pMotto}</p>
 				</div>
 				<div style="position: absolute;top: 20px; left: 500px;">
-					<button type="button" class="btn">Takip Et</button>
+					
+					{{if ismyFollow}}
+						<button type="button" class="btn btn follow follow-${ID}" style="display:none" onclick="follow(${ID});">Takip Et</button>
+						<button type="button" class="btn btn-info unfollow unfollow-${ID}" style="" onclick="follow(${ID});" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
+					{{else}}
+						<button type="button" class="btn btn follow follow-${ID}" style="${followHide}" onclick="follow(${ID});">Takip Et</button>
+						<button type="button" class="btn btn-info unfollow unfollow-${ID}" style="display:none" onclick="follow(${ID});" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
+					{{/if}}
+					
 				</div>
 				<div style="clear: both;"></div>
 			</article>
 		</script> 
+		
+		<script id="gaget-w2f-tmpl" type="text/x-jquery-tmpl">
+			<li>
+				<img src="${pImage}" alt="${pName} profil resmi">
+				<address><a href="/${pPerma}" title="${pName}">${pName}</a></address>
+				<p></p>
+				<a class="takip_et" href="">Takip Et!</a>
+			</li>
+		</script>
 		
 		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
 			<img alt="" src="${small}">

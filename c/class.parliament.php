@@ -121,7 +121,7 @@
 			}
 			return $return;
 		}
-		public function get_oldAgenda($start=0)
+		public function get_oldAgenda($start=0, $keyword="")
 		{
 			global $model,$db;
 			$SELECT = "\n SELECT a.*, av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname, p.permalink AS deputyPerma";
@@ -132,6 +132,10 @@
 			$WHERE .= "\n AND a.status>0";
 			if ($start > 0)
 				$WHERE .= "\n AND a.ID<" . intval ( $start );
+			if($keyword!="")
+			{
+				$WHERE .= "\n AND a.title LIKE '%". $db->escape( $keyword )."%' ";
+			}
 			$GROUP = "\n ";
 			$ORDER = "\n ORDER BY a.ID desc";
 			$LIMIT = "\n LIMIT 7";
