@@ -223,6 +223,12 @@ class ajax_plugin extends control{
 			$uniqueP = date("y_m_d");
 			$upDir="cover/".$uniqueP;
 		}
+                
+                else if(@$_REQUEST["uploadType"]=="profileImage")
+		{
+			$uniqueP = date("y_m_d");
+			$upDir="p_image/".$uniqueP;
+		}
 		
 		if(!file_exists(UPLOADPATH.$upDir))
 		{
@@ -1278,6 +1284,26 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		{
 			$response["status"] = "success";
 			$response["imageUrl"] = $model->getcoverimage($uProfile->coverImage);
+		}
+		else 
+		{
+			$response["status"] = "error"	;
+		}
+		echo json_encode($response);
+	}
+        
+        
+        public function set_profileImage()
+	{
+		global $model, $db;
+		$c_profile = new profile();
+		$uProfile = new stdClass;
+		$uProfile->ID = $model->profileID;
+		$uProfile->image = $_REQUEST["imageData"]["uploadDir"].SLASH.$_REQUEST["imageData"]["fileName"];
+		if($c_profile->update_profile($uProfile))
+		{
+			$response["status"] = "success";
+			$response["imageUrl"] = $model->getProfileImage($uProfile->image,200,200);
 		}
 		else 
 		{
