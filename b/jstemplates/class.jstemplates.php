@@ -413,6 +413,15 @@ class jstemplates_block extends control{
 			</article>
 		</script> 
 		
+		<script id="gaget-w2f-tmpl" type="text/x-jquery-tmpl">
+			<li>
+				<img src="${pImage}" alt="${pName} profil resmi">
+				<address><a href="/${pPerma}" title="${pName}">${pName}</a></address>
+				<p></p>
+				<a class="takip_et" href="">Takip Et!</a>
+			</li>
+		</script>
+		
 		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
 			<img alt="" src="${small}">
 		</script> 

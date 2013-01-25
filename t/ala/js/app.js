@@ -1359,3 +1359,13 @@ jQuery(document).ready(function ($) {
 			location.href='/search/'+word+"#kisiler";
 		}
 	}
+	function get_who2follow()
+	{
+		$.post("/ajax/get_who2follow", {data: 0}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#gaget-w2f-tmpl").tmpl(response.persons).appendTo("#gaget_who2follow");
+				//$("#profileCoverImage").attr("src",response.imageUrl);
+			}
+	    },'json');
+	}

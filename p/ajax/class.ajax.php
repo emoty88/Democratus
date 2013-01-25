@@ -1338,5 +1338,16 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
 		echo json_encode($response);
 	}
+	public function get_who2follow()
+	{
+		global $model;
+		$c_profile = new profile();
+		$response = new stdClass;
+		$response->status	= "success";
+		$persons	= $c_profile->get_who2follow();
+		$personsObj = $c_profile->get_porfileObject($persons);
+		$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
+		echo json_encode($response);
+	}
 }
 ?>
