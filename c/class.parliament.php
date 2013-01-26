@@ -270,6 +270,10 @@
                                     $ro->time = model::get_beforeTime( strtotime($p->datetime));
                                     $ro->approve =0;
                                     $ro->reject=0;
+                                    if($p->deputyID == $model->profileID)
+                                        $ro->isMine = TRUE;
+                                    else
+                                        $ro->isMine = FALSE;
                                     $retunObj['proposal'][]=$ro;
                                     $ids[] = $ro->ID;
                             }
@@ -348,7 +352,8 @@
                 public static function set_proposal_vote($id,$value){
                     global $model, $db;
                     try{
-                        if($model->profile->deputy!=1)                            throw  new Exception('verkil degil');
+                        if($model->profile->deputy!=1)
+                            throw  new Exception('verkil degil');
                         
                         $id = intval($id);
                         $value = intval($value);
@@ -386,13 +391,29 @@
                                   '';
                             //echo $QUERY;
                             $db->setQuery($QUERY);
-                            if(!$db->query()) throw new Exception('db error2');
-                              }
+                            if(!$db->query()) 
+                                throw new Exception('db error2');
+                        }
                     }  catch (Exception $e){
-                        echo $e->getMessage();
+                        //echo $e->getMessage();
                         return false;
                     }
                     return true;
+                }
+                
+                public static function proposal_delete($ID){
+                    global $model,$db;
+                    try {
+                        $uID = $model->profileID;
+                        $QUERY = "UPDATE proposal SET status = 0 WHERE ID=$ID AND deputyID = $uID AND status>0";
+                        $db->setQuery($QUERY);
+                        if(!$db->query())
+                            throw new Exception('hata');
+                    }  catch (Exception $e){
+                        return FALSE;
+                    }
+                    
+                    return TRUE;
                 }
 	}
 ?>

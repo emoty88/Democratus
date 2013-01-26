@@ -1410,5 +1410,20 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 }
 		echo json_encode($rJson);
 	}
+        public function proposal_delete(){
+            global $model;
+                $pID = filter_input(INPUT_POST, 'pID', FILTER_SANITIZE_NUMBER_INT);
+		$return = parliament::proposal_delete($pID);
+		if($return)
+		{
+			$response["status"] = "success";
+			
+		}
+		else
+		{
+			$response["status"] = "error";
+		}
+		echo json_encode($response);
+        }
 }
 ?>

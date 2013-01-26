@@ -1474,4 +1474,15 @@ jQuery(document).ready(function ($) {
             }
         },'json');
     }
+    function proposal_delete(pID)
+	{
+		$.post("/ajax/proposal_delete", {pID: pID}, function(data){ 
+	        if(data.status == 'success'){
+	        	$("#duvar_yazisi-content-"+pID).slideUp("400", function (){
+	        		$("#duvar_yazisi-content-"+pID).remove();
+	        	});
+	        	
+	        }
+	    },'json');  
+	}
 
