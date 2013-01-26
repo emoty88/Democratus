@@ -177,30 +177,33 @@
 			
 			if($model->profile->deputy<1)
 			{
-				return false;
+				return 'notVekil';
 			}
 			if(self::get_p2PoroposalCount()>2)
 			{
-				return false;
+				return 'proposalCount';
 			}
-			$popularDi=$dbez->get_row("SELECT * FROM di WHERE ID='".$popularDiID."'");
+                        $db->setQuery("SELECT * FROM di WHERE ID='".$popularDiID."'");
+                        $popularDi = new stdClass();
+                        $db->loadObject($popularDi);
+			//$popularDi=$dbez->get_row("SELECT * FROM di WHERE ID='".$popularDiID."'");
 			if($popularDi)
 			{
 				$pp = new stdClass;
 				
 				$pp->title       = $popularDi->di;
-                $pp->spot        = $popularDi->di;
-                $pp->deputyID    = $popularDi->profileID;
+                                $pp->spot        = $popularDi->di;
+                                $pp->deputyID    = $popularDi->profileID;
 				$pp->mecliseAlan = $model->profileID;
 				$pp->popularDiID = $popularDi->ID;
 				$pp->status      = 1;
-                $pp->datetime    = date('Y-m-d H:i:s');
-                $pp->ip          = $_SERVER['REMOTE_ADDR'];
+                                $pp->datetime    = date('Y-m-d H:i:s');
+                                $pp->ip          = $_SERVER['REMOTE_ADDR'];
                 
-                if($db->insertObject('proposal', $pp)) {
-                   	return true;
-                } 
-                else  
+                                if($db->insertObject('proposal', $pp)) {
+                                        return 'true';
+                                } 
+                                else  
 				{
 					return false;
 				}
@@ -208,8 +211,11 @@
 		}
 		public static function get_p2PoroposalCount()
 		{
-			global $model, $dbez;
-			return $dbez->get_var("SELECT count(*) FROM proposal WHERE status=1 and st=1 and used=0 and mecliseAlan='".$model->profileID."' and datetime>='".date('Y-m-d 00:00:00')."'");//bu gün
+			global $model, $dbez,$db;
+                        $db->setQuery("SELECT count(*) FROM proposal WHERE status=1 and st=1 and used=0 and mecliseAlan='".$model->profileID."' and datetime>='".date('Y-m-d 00:00:00')."'");
+			$result = $db->loadResult();
+                        return $result;
+                        //return $dbez->get_var("SELECT count(*) FROM proposal WHERE status=1 and st=1 and used=0 and mecliseAlan='".$model->profileID."' and datetime>='".date('Y-m-d 00:00:00')."'");//bu gün
 		}
 		public static function get_poroposalCount()
 		{
@@ -230,9 +236,11 @@
 		}
 		public static function check_popular2proposal($popularID)
 		{
-			global $dbez;
-			$varmi=$dbez->get_var("SELECT count(ID) from proposal WHERE status=1 and popularDiID='".$popularID."'");
-			if($varmi>0)
+			global $dbez,$db;
+			
+                        $db->setQuery("SELECT count(ID) from proposal WHERE status=1 and popularDiID='".$popularID."'");
+			$varmi=$result = $db->loadResult();
+                        if($varmi>0)
 			{
 				return false;
 			}

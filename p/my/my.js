@@ -71,8 +71,9 @@ jQuery(document).ready(function ($) {
 	
 	$('#kaydet_dgmesi').live('click',function(){
 		var data = $('#profil_bilgileri_formu').serialize();
-		console.log(data);
+		$(this).attr("disabled", true);
 		$(this).html('Kaydediliyor');
+                
 		$.post("/ajax/save_settings", data, function(data){ 
 		        if(data.status == 'success'){
 		        	$('#kaydet_dgmesi').html('Kaydedildi');
@@ -81,10 +82,12 @@ jQuery(document).ready(function ($) {
 		        	$('#kaydet_dgmesi').html('Hata oluştu');
 		        }
 		},'json');   
+                $(this).removeAttr("disabled");
 	});
         
         $("#myprivacysave").live('click', function(){
             $("#myprivacysave").attr("disabled", true);
+            $(this).attr("disabled", true);
             $(this).html('Kaydediliyor');
             $.post( "/ajax/myprivacysave", $('#myprivacyform').serialize(), function(data){ 
                 

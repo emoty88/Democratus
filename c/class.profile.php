@@ -2,6 +2,7 @@
     class profile{
     	public $profile;
 		public $profileID;
+		public $_isAdmin = false;
         public function __construct($profile=null)
 		{
 			global $model;
@@ -19,25 +20,40 @@
 				$this->profile	= $model->profile;
 				$this->profileID= $model->profileID;
 			}
+			if($this->profileID == $model->profileID)
+				$this->_isAdmin = true;
 		}
 		public function get_porfileObject($KEY)
 		{
 			global $model, $db;
 			
-			$SELECT = "SELECT *";
-	        $FROM   = "\n FROM profile ";
-			$WHERE  = "\n WHERE ID=".$db->quote($KEY)." OR permalink like '".$KEY."'";
-		    $WHERE .= "\n AND status>0";
-	        $ORDER  = "\n ";
-	        $LIMIT  = "\n LIMIT 1";
-			$db->setQuery($SELECT . $FROM  . $WHERE . $ORDER . $LIMIT);
-	        if($db->loadObject($profile)) {
-	        	return $profile;
-	        }
-			else {
-				return FALSE;
+			if(!is_object($KEY) && !is_array($KEY))
+			{
+				$SELECT = "SELECT *";
+		        $FROM   = "\n FROM profile ";
+				$WHERE  = "\n WHERE ID=".$db->quote($KEY)." OR permalink like '".$KEY."'";
+			    $WHERE .= "\n AND status>0";
+		        $ORDER  = "\n ";
+		        $LIMIT  = "\n LIMIT 1";
+				$db->setQuery($SELECT . $FROM  . $WHERE . $ORDER . $LIMIT);
+		        if($db->loadObject($profile)) {
+		        	return $profile;
+		        }
+				else {
+					return FALSE;
+				}
 			}
+			else {
 				
+				$SELECT = "SELECT *";
+		        $FROM   = "\n FROM profile ";
+				$WHERE  = "\n WHERE ID in (".implode(",", $KEY).")";
+			    $WHERE .= "\n AND status>0";
+		        $ORDER  = "\n ";
+		        $LIMIT  = "\n ";
+				$db->setQuery($SELECT . $FROM  . $WHERE . $ORDER . $LIMIT);
+				return $db->loadObjectList();
+			}
 		}
 		public function isFollow($followingID=0, $followerID=0)
 		{
@@ -476,6 +492,7 @@
 				$ro=new stdClass;
 				$ro->ID		= $r->ID;
 				$ro->name	= $r->name;
+				$ro->perma	= $r->permalink;
 				$ro->image	= $model->getProfileImage($r->image, 90,90, 'cutout');
 				$ro->motto	= $r->motto;
 				$ro->isfollow	= $this->isFollow($r->ID);
@@ -553,7 +570,6 @@
 		{
 			global $model;
 			$returnObj=array();
-
 			foreach($profiles as $p)
 			{
 				 $ro	= new stdClass;
@@ -562,6 +578,7 @@
 				 $ro->pImage	= $model->getProfileImage($p->image, 45,45, 'cutout');
 				 $ro->pName		= $p->name;
 				 $ro->pMotto	= $p->motto;
+				 $ro->ismyFollow= $this->isFollow($ro->ID);
 				 $returnObj[]	= $ro;	
 			}
 			return $returnObj;
@@ -596,26 +613,116 @@
 		public function update_profile($uProfile)
 		{
 			global $model, $db;
-                        return $db->updateObject('profile', $uProfile, 'ID', 0);
+			//$update->ID kontrol edilsin eğer yoksa  init ile  gelen profil set edilsin ($this->ID)
+            return $db->updateObject('profile', $uProfile, 'ID', 0);
 		}
-                public function get_FollowingHashtags($profile = -1, $limit = 4){
-                    global $model, $db;
-                
-                    if(!is_object($profile)){
-                            $profile=$model->profile;
-                    }
-                    //print_r($profile);
-                    $query = "SELECT ht.* ". 
-                              "FROM profile ht, follow f ".
-                              "WHERE ht.ID=f.followingID ".
-                                  "AND f.followerID='".$profile->ID."' ".
-                                  "AND f.status=1 ". 
-                                  "AND ht.status=1 ".
-                                  "AND ht.type='hashTag' ".
-                              "ORDER BY ID desc ". 
-                              "LIMIT $limit ";
-                    $db->setQuery($query);
-                    return $rows = $db->loadObjectList();                    
-                }
+        public function get_FollowingHashtags($profile = -1, $limit = 4){
+            global $model, $db;
+        
+            if(!is_object($profile)){
+                    $profile=$model->profile;
+            }
+            //print_r($profile);
+            $query = "SELECT ht.* ". 
+                      "FROM profile ht, follow f ".
+                      "WHERE ht.ID=f.followingID ".
+                          "AND f.followerID='".$profile->ID."' ".
+                          "AND f.status=1 ". 
+                          "AND ht.status=1 ".
+                          "AND ht.type='hashTag' ".
+                      "ORDER BY ID desc ". 
+                      "LIMIT $limit ";
+            $db->setQuery($query);
+            return $rows = $db->loadObjectList();                    
+        }
+		public function get_imageGalery($profile=-1)
+		{
+			global $model,$db;
+			if(!is_object($profile))
+            {
+            	$profile=$this->profile;
+            }
+			
+			$response=false;
+			$SELECT	=  "SELECT * ";
+			$FROM	=  "FROM tagimage ";
+			$WHERE	=  "WHERE tagID=".$db->quote($profile->ID)." and status='1' ";
+			$ORDER	=  "ORDER BY ID DESC ";
+			$LIMIT	=  "LIMIT 6";
+			$db->setQuery($SELECT.$FROM.$WHERE.$ORDER.$LIMIT);
+			$images = $db->loadObjectList();
+			$i_list= array();
+			if(count($images)>0)
+			{
+				//var_dump($images);
+				$response["status"]="success";
+				//$model->getProfileImage($i->image, 600,400, 'scale')
+				foreach ($images as $i) {
+					$i_list["small"] = $model->getProfileImage($i->image, 85,50, 'cutout');
+					$i_list["big"] = $model->getProfileImage($i->image, 600,400, 'cutout');
+					$response["images"][]=$i_list;
+				}
+				return $response;
+			}
+			else
+			{
+				$response["status"]="error";
+				return $response;
+			}
+	
+		
+		}
+		public function get_userSearch($keyword, $limit=20, $start=0)
+		{
+			global $model, $db;
+			$SELECT = "SELECT * ";
+        	$FROM   = "\n FROM profile";
+			$WHERE = "\n WHERE status>0";
+			if($start>0){
+        		$WHERE .= "\n AND ID<" . $db->quote($start);
+        	}  
+			$WHERE .= "\n  AND (name LIKE '%". $db->escape( $keyword )."%' OR permalink  LIKE '%". $db->escape( $keyword )."%')";
+   		
+        	$ORDER  = "\n ORDER BY ID DESC";
+        	$LIMIT  = "\n LIMIT $limit";
+        	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+ 			//die;
+        	$db->setQuery($SELECT . $FROM .  $WHERE . $ORDER . $LIMIT);
+		
+			$rows = $db->loadObjectList();
+			return $rows;
+		}
+		public function get_who2follow()
+		{
+			global $model, $db;
+			
+			$SELECT = "SELECT followerID, count( followerID ) AS derece";
+			$FROM	= "\n FROM follow";
+			$WHERE	= "\n WHERE followingID IN (SELECT followingID FROM follow WHERE followerID = ".$db->quote($this->profileID)." AND status=1) ";
+			$WHERE	.= "\n AND followerID NOT IN (SELECT followingID FROM follow WHERE followerID = ".$db->quote($this->profileID)." AND status=1) ";
+			//$WHERE .= "\n AND not exist (SELECT followingID FROM follow WHERE followerID = ".$db->quote($this->profileID).") AND followerID = ".$db->quote($this->profileID).")";
+			$WHERE .= "\n AND status>0";
+			$WHERE .= "\n AND followerID != ".$db->quote($model->profileID);
+			$GROUP 	= "\n GROUP BY followerID";
+			$ORDER	= "\n ORDER BY derece desc"; // randomize yapılmalı
+			$LIMIT	= "\n limit 30";
+			
+			
+			$db->setQuery($SELECT . $FROM .  $WHERE . $GROUP. $ORDER . $LIMIT);
+		
+			$rows = $db->loadObjectList();
+	
+			$secilenler = array ();
+			$don = 4;
+			if(count($rows)<4)
+				$don = count($rows);
+			for($i=0; $i<$don; $i++)
+			{
+				$secim = array_rand($rows);
+				$secilenler[]=$rows[$secim]->followerID;
+				unset($rows[$secim]);
+			}
+			return $secilenler;
+		}
     }
 ?>

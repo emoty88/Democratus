@@ -9,7 +9,21 @@
         		<!-- Profil -->
 				<section id="profil" class="satir">
 					<article>
-						<img class="banner" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
+						<? 
+						if($c_profile->_isAdmin)
+						{
+							?>
+							<div style="float:right; margin:15px 15px -50px 15px; z-index: 9999; position: relative; ">
+								<div class="pImageUpload" data-upload="cover">
+									<button data-ftext="Resmi Güncelle"  style="" class="btn btn-info "  type="button">Resmi Güncelle</button>
+								</div>
+							</div>
+							
+							<?
+							
+						} 
+						?>
+						<img id="profileCoverImage" class="banner" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
 						<div class="asil_alan">
 							<a class="profil_resmi" href="#">
 								<img src="<?=$model->getprofileimage($p->image,105,130,"cutout");?>" alt="">

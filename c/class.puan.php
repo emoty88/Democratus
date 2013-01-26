@@ -18,7 +18,7 @@
                                         '2'=>"Sesi Taktir Aldı",
                                         '3'=>"Sesi Saygı Aldı",
                                         '4'=>"Sesi Paylaşıldı",
-                                        '5'=>"Sesine Yorum Yapıldı",
+                                        '5'=>"Sesi Cevaplandı ",
    										'6'=>"Kendi Yorumunu sildi",
    										'7'=>"Kendi Sesini sildi",
    										'10'=>"Takipçi kazandı",

@@ -448,7 +448,7 @@
                 $this->plugin = DEFAULTPLUGIN;
                 
             } else {
-            	$query  = "SELECT p.ID"
+            	$query  = "SELECT p.ID, p.type"
                     . "\n FROM profile AS p"
                     . "\n WHERE p.permalink=".$db->quote($permalink)." "
                     . "\n AND p.status>0"
@@ -460,9 +460,15 @@
 						
 						$this->urlsizProfile=true;
 						$this->urlsizProfileID=$profileID->ID;
+						$page = "profile";
+						
+						if($profileID->type == "hashTag")
+						{
+							$page = "hashTag";
+						}
 						$query  = "SELECT p.*"
 			                    . "\n FROM #__page AS p"
-			                    . "\n WHERE p.permalink=".$db->quote("profile")." AND ( p.domain IS NULL OR p.domain=".$db->quote($domain)." )"
+			                    . "\n WHERE p.permalink=".$db->quote($page)." AND ( p.domain IS NULL OR p.domain=".$db->quote($domain)." )"
 			                    . "\n AND status>0"
 			                    . "\n LIMIT 1"
 			                    ;
@@ -1579,31 +1585,26 @@ a:hover {
 		* @param $firstTime = integer insert time (time stamp)
 		* 
 		*/
-		function get_beforeTime($firstTime){
-		   // convert to unix timestamps
-		  /* $firstTime=strtotime($firstTime);
-		   $lastTime=strtotime($lastTime);
-			*/
-		   // perform subtraction to get the difference (in seconds) between times
+		public static  function get_beforeTime($firstTime){
+		   
 		   $difference=time()-$firstTime;
-			//Usage :
 			
-			$diff = abs(floor($difference / 31536000));
-			if($diff>0)
-				return $diff.' yıl önce';
-			$diff = abs(floor(($difference-($years * 31536000))/86400));
-			if($diff>0)
-				return $diff.' gün önce';
-			$diff = abs(floor(($difference-($years * 31536000)-($days * 86400))/3600));
-			if($diff>0)
-				return $diff.' saat önce';
+			$years = abs(floor($difference / 31536000));
+			if($years>0)
+				return $years.' yıl önce';
+			$days = abs(floor(($difference-($years * 31536000))/86400));
+			if($days>0)
+				return $days.' gün önce';
+			$hours = abs(floor(($difference-($years * 31536000)-($days * 86400))/3600));
+			if($hours>0)
+				return $hours.' saat önce';
 			$diff = abs(floor(($difference-($years * 31536000)-($days * 86400)-($hours * 3600))/60));
 			if($diff>0)
 				return $diff.' dakika önce';
 			
 			return $difference.' saniye önce';
-		   // return the difference
-		   return $timeDiff;
+		   
+		   
 		}
 		
 		public static function int2trMonth($month){

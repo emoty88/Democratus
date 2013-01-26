@@ -7,7 +7,7 @@
 			$voices=$c_pVoice->get_popularVoice();
 			?>
 			<!-- Bileşen -->
-				<section class="bilesen kontroller_var">
+				<section class="bilesen kontroller_var" id="popularVoice_gadget">
 					<header>
 						<hgroup>
 							<h1>Ses Getirenler</h1>
@@ -23,7 +23,15 @@
 										<img src="<?=$v->sImage?>" alt="<?=$v->sName?>-mini-profile-img">
 										<h5><a href="<?=$v->sPerma?>"><?=$v->sName?></a></h5>
 										<p><?=$v->voice?></p>
-									</li>
+                                                                                <?php 
+                                                                                
+                                                                                if($model->profile->deputy>0 and proposal::get_p2PoroposalCount()<3 and proposal::check_popular2proposal($v->ID)):
+			                                                                       
+                                                                                ?>
+                                                                                
+                                                                                <button style="float:right" onclick="populardiToPopular(<?=$v->ID?>,this)"class="button">Tasarı olarak öner</button>
+                                                                                <?php endif; ?>
+                                                                        </li>
 									<?
 								}
 							?>

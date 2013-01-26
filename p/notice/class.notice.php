@@ -1,7 +1,15 @@
 <?php
     class notice_plugin extends control{
-        
-        public function main(){
+        public function main()
+		{
+			global $model, $db;
+			//notice  yapılacak
+			$model->template="ala";
+			$model->view="home";
+			$model->title = 'Democratus';
+			$model->mode = 0;
+		}
+        public function main_old(){
             global $model, $db, $l;
             if($model->profileID<1){
             	$model->mode = 0;

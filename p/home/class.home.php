@@ -5,6 +5,7 @@
 			$model->template="ala";
 			$model->view="home";
 			$model->title = 'Democratus';
+
 			if($model->profileID<1){
                 $model->mode = 0;
                 return $model->redirect('/welcome', 1);
@@ -16,6 +17,11 @@
 	        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			
+			$model->addScript(TEMPLATEURL."ala/js/howtouse.js", "howtouse.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo.min.js", "jquery.scrollTo.min.js", 1);
+			
+			//$model->addScript(TEMPLATEURL."ala/js/howtouse-steps.js", "howtouse-steps.js", 1);
 			
 			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
 			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );

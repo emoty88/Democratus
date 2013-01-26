@@ -21,7 +21,13 @@ jQuery(document).ready(function ($) {
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
 	//});	
-	
+
+	$(".pImageUpload").each(function (){
+		init_userfUploader(this);
+	});
+        $(".myImageUpload").each(function (){
+                init_profileImageUploader(this);
+        });
 	$(".fineUploader").live("click", function (){
 		globalRandID=$(this).attr("data-randID");
 	});
@@ -60,16 +66,26 @@ jQuery(document).ready(function ($) {
    		case "message" : message_page(); break;
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
+   		case "hashTag" : hashtag_page();break;
+   		case "search" : search_page();break;
    	}  	
 	
-	if(plugin=="profile" || plugin=="home")
+	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
 	{
+		if(plugin == "hashTag")
+		{
+			hashTag = profilePerma;
+		}
+		else 
+		{
+			hashTag = 0;
+		}
 		$(window).scroll(function(){
 		if(wallmoreAction==0 && $(window).scrollTop() == $(document).height() - $(window).height()){
-		    	get_wall(profileID,lastVoiceID,onlyProfile);
+		    	get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
 	        }
 		});
-		get_wall(profileID,lastVoiceID,onlyProfile);
+		get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
 	}
 	
 	get_noticeCount();
@@ -159,7 +175,6 @@ jQuery(document).ready(function ($) {
 		scroll_to(target);
 		return false;
 	}
-
 	// scroll to target
 	function scroll_to( target ){
 		$('html, body').animate({scrollTop:target }, 'slow');
@@ -483,6 +498,10 @@ jQuery(document).ready(function ($) {
 		
 		var post_data	= {voice_text:voice_text, initem:initem, initemName:initemName, replying:replying};
 		//console.log(post_data);
+                
+                $('#voice-share-progress').show();
+                $(shareBtn).attr('disabled',true);
+                
 		$.ajax({
 			type: "POST",
 			url: "/ajax/set_share_voice",
@@ -492,24 +511,31 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					if(response.voice.replyID>0)
-					{
-						if(randID == "qe")
+					
+						if(response.voice.replyID>0)
 						{
-							$("#voice-reply-tmpl").tmpl(response.voice).prependTo(".replyAreaFix");
+							if(randID == "qe")
+							{
+								
+								$("#voice-reply-tmpl").tmpl(response.voice).prependTo(".replyAreaFix");
+								
+							}
+							else
+							{
+								$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
+							}
+							$("#replyTextArea_"+randID).val("+voice ");
+							$("#voiceReplyArea_"+randID).slideDown();
 						}
 						else
 						{
-							$("#voice-reply-tmpl").tmpl(response.voice).prependTo("#voiceReplyArea_"+randID); // bu alanda  diğer yazılan larda  yüklenicek.
-						}
-						$("#replyTextArea_"+randID).val("+voice ");
-						$("#voiceReplyArea_"+randID).slideDown();
-					}
-					else
-					{
-						$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
-						$("#replyTextArea_"+randID).val("");
-					}	
+							if(plugin != "parliament")
+							{
+								$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");	
+							}
+							$("#replyTextArea_"+randID).val("");
+						}	
+					
 					$("#initem_"+randID).val(0);
 					$("#initem-name_"+randID).val(0);
 				}
@@ -518,8 +544,11 @@ jQuery(document).ready(function ($) {
 					alert(response.message);
 					
 				}
-				
+                                
+                                $('#voice-share-progress').hide();
+                                $(shareBtn).removeAttr('disabled');
 			}
+			
 		});	
 	}
 	function get_noticeCount()
@@ -544,8 +573,132 @@ jQuery(document).ready(function ($) {
 			}
 		});	
 	}
-	function get_wall(profileID, start, onlyProfile){
+	function get_archiveSearch(keyword,start)
+	{
+		if(get_archiveSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_archiveSearch.arguments.length<1)
+		{
+			return false;
+		}
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#kisiler-container");
+		
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_oldAgenda",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					$(".loading_bar").remove();
+	        		$("#parliament-oldAgenda-tmpl").tmpl(response.olAgendas).appendTo("#arsivler-container");
+	        		init_oldAgenda();
+					
+					
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_userSearch(keyword,start)
+	{
+		if(get_userSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_userSearch.arguments.length<1)
+		{
+			return false;
+		}
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#kisiler-container");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_userSearch",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					$("#social-friendList-tmpl").tmpl(response.users).appendTo("#kisiler-container");
+					//console.log(response.users);
+					$(".loading_bar").remove();
+					//$("#dahafazlases-tmpl").tmpl().appendTo("#kisiler-container");
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_voiceSearch(keyword,start)
+	{
+		if(get_voiceSearch.arguments.length<2)
+		{
+			start=0;	
+		}
+		if(get_voiceSearch.arguments.length<1)
+		{
+			return false;
+		}
+
+		var post_data = {keyword:keyword, start:start};
+		$(".daha_fazla_duvar_yazisi").remove();
+		$("#loadingbar-tmpl").tmpl().appendTo("#sesler-container");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_voiceSearch",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					if(response.voices.length>0)
+					{
+						firstVoice	= response.voices[0].ID;
+						lastVoiceID	= response.voices[response.voices.length-1].ID;;
+						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#sesler-container");
+						$(".loading_bar").remove();
+					}
+					else
+					{
+						$("#voiceBulunamadı-tmpl").tmpl().appendTo("#sesler-container");
+					}
+				}
+				else
+				{
+					//$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				}
+				
+			}
+		});		
+	}
+	function get_wall(profileID, start, onlyProfile, hashTag, keyword){
 		wallmoreAction=1;
+		
+		if(get_wall.arguments.length<5)
+		{
+			keyword="";
+		}
+		if(get_wall.arguments.length<4)
+		{
+			hashTag=0;
+		}
 		if(get_wall.arguments.length<3)
 		{
 			onlyProfile=0;
@@ -558,7 +711,7 @@ jQuery(document).ready(function ($) {
 		{
 			profileID=0;
 		}
-		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile};
+		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		$.ajax({
@@ -703,6 +856,8 @@ jQuery(document).ready(function ($) {
 	}
 	function voiceDetail(voice)
 	{
+                var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
+                ac_kapa_manual($tetik);
 		if(plugin=="voice")
 		{	
 			if(voiceDControl==1)
@@ -817,9 +972,29 @@ jQuery(document).ready(function ($) {
 	        if(response.status=="success")
 	        {
 	        	$(".loading_bar").remove();
-	        	$("#parliament-agenda-tmpl").tmpl(response.agendas).appendTo("#referandum-container");
+	        	agendeSortList = agendaSortNew(response.agendas);
+	        	$("#parliament-agenda-tmpl").tmpl(agendeSortList).appendTo("#referandum-container");
 	        }
 	    },'json');  
+	}
+	function agendaSortNew(list)
+	{
+		var ilk = new Array();
+		var son = new Array();
+		$.each(list, function(key, value){
+			if(value.myVote == null)
+			{
+				ilk.push(value);
+			}
+			else
+			{
+				son.push(value);
+			}
+		});
+
+		returnArr = ilk.concat(son);
+
+		return returnArr;
 	}
 	function get_deputyList()
 	{
@@ -904,9 +1079,19 @@ jQuery(document).ready(function ($) {
 			{
 				get_proposal();
 				$("#tasari_textarea").val("");
-			}
+                                count++;
+                                check_proposal_count();
+			}else{
+                                $('#message').html(response.message);
+                                $('#message').show();
+                        }
 	    },'json'); 
 	}
+        function check_proposal_count(){
+            if(count>2){
+                $('#yeni_yazi_yaz').html('Bir günde en fazla 3 tasarı gönderebilirsiniz.');
+            }
+        }
 	function get_kalanOyCount()
 	{
 		$.post("/ajax/get_kalanOyCount", {deputyID: 0}, function(response){ 
@@ -1037,6 +1222,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function parliament_page(){
+                check_proposal_count();
 		get_agendas();
 		get_deputyList();
 		get_oldAgenda();
@@ -1047,6 +1233,29 @@ jQuery(document).ready(function ($) {
 	function voice_page()
 	{
 		$("#duvaryazisi-tmpl").tmpl(voiceObj).appendTo("#orta_alan_container");
+	}
+	function hashtag_page()
+	{
+		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
+		get_imageGalery(profileID);
+	}
+	function search_page()
+	{
+		get_voiceSearch(keyword);
+		get_userSearch(keyword);
+		get_archiveSearch(keyword);
+	}
+	function get_imageGalery(profileID)
+	{
+		$.post("/ajax/get_imageGalery", {profileID: profileID}, function(response){ 
+			if(response.status == "success")
+			{
+				//console.log(response);
+				$("#hashtag-image-tmpl").tmpl(response.images).appendTo("#imageGaleryArea");
+				//$(".unfollow-" + profileID).toggle();
+	        	//$(".follow-" + profileID).toggle();	
+			}
+	    },'json');
 	}
 	function follow(profileID)
 	{
@@ -1070,6 +1279,10 @@ jQuery(document).ready(function ($) {
 			$("#replyTextArea_qe").val("+voice ");
 			$("#replying_qe").val(voiceID);
 		}
+		if(plugin=="hashTag")
+		{
+			$("#replyTextArea_qe").val("#"+profilePerma+" ");
+		}
 	}
 	function init_voice_details()
 	{
@@ -1077,6 +1290,83 @@ jQuery(document).ready(function ($) {
 			init_fineUploader(this);
 		});	
 		
+	}
+	
+	function init_userfUploader(dom)
+	{
+		$fub = $(dom);
+		uploadData = $fub.attr("data-upload");
+		var uploader = new qq.FineUploaderBasic({
+			button: $fub[0],
+			request: {
+				params : {uploadType:uploadData},
+				endpoint: '/ajax/upload_image'
+			},
+			validation: {
+				allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+				sizeLimit: 4194304 // 200 kB = 200 * 1024 bytes
+			},
+			callbacks: {
+				onComplete: function(id, fileName, responseJSON) {
+					if(responseJSON.success==true)
+					{
+						set_coverImage(responseJSON);
+					}
+				}
+			},
+			debug:false
+		});
+	}
+        
+        
+        function init_profileImageUploader(dom)
+	{
+		$fub = $(dom);
+		uploadData = $fub.attr("data-upload");
+		var uploader = new qq.FineUploaderBasic({
+			button: $fub[0],
+			request: {
+				params : {uploadType:uploadData},
+				endpoint: '/ajax/upload_image'
+			},
+			validation: {
+				allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+				sizeLimit: 4194304 // 200 kB = 200 * 1024 bytes
+			},
+			callbacks: {
+				onComplete: function(id, fileName, responseJSON) {
+					if(responseJSON.success==true)
+					{
+						set_profileImage(responseJSON);
+					}
+				}
+			},
+			debug:false
+		});
+	}
+        
+        function set_profileImage(imageData)
+	{
+           // console.log(imageData);
+            
+		$.post("/ajax/set_profileImage", {imageData: imageData}, function(response){ 
+                    console.log(response);
+			if(response.status == "success")
+			{
+				$("#profileImage").attr("src",response.imageUrl);
+                                $(".uye_profili img").attr('src',response.imageUrl);
+			}
+	    },'json');
+	}
+	
+	function set_coverImage(imageData)
+	{
+		$.post("/ajax/set_coverImage", {imageData: imageData}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#profileCoverImage").attr("src",response.imageUrl);
+			}
+	    },'json');
 	}
 	/**
 	 * 
@@ -1107,6 +1397,7 @@ jQuery(document).ready(function ($) {
 			debug:false
 		});
 	}
+	
 	function init_oldAgenda()
 	{
 		 // Hover on percentage
@@ -1119,3 +1410,68 @@ jQuery(document).ready(function ($) {
 	    	}
 	    });
 	}
+
+        function set_proposal_vote(id,value){
+            
+            
+            $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
+                if(response.status=='success'){
+                    $('#v-'+id+'-'+value).addClass('btn-danger');
+                    $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
+                    
+                }else{
+                    alert('hata');
+                }
+            },'json');
+        }
+        
+        function populardiToPopular(ID,button){
+            data="populardiID="+ID;
+            $.post('/ajax/set_popularToProposal', data,  
+                function(response){ 
+                    if(response.status=="success"){
+                        $(button).html("Tasarı olarak kaydedildi.");
+                        $(button).removeAttr('onclick');
+                    }else{
+                        $(button).html("En fazla 3 tasarı gönderbilirsiniz.");
+                    }
+                },'json');
+        }
+
+	
+	function gotoSearch()
+	{
+		var word=$('#arama_kutusu').val();
+		if(word.search("#")>=0)
+		{
+			word=word.replace("#","");location.href='/search/'+word+"#sesler";
+		}
+		else
+		{
+			location.href='/search/'+word+"#kisiler";
+		}
+	}
+	function get_who2follow()
+	{
+		$.post("/ajax/get_who2follow", {data: 0}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#gaget-w2f-tmpl").tmpl(response.persons).appendTo("#gaget_who2follow");
+				//$("#profileCoverImage").attr("src",response.imageUrl);
+			}
+	    },'json');
+	}
+    function set_proposal_vote(id,value){
+      
+        
+        $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
+            if(response.status=='success'){
+                $('#v-'+id+'-'+value).addClass('btn-danger');
+                $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
+                
+            }else{
+                alert('hata');
+            }
+        },'json');
+    }
+

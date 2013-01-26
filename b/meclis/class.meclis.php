@@ -11,11 +11,12 @@
 				$type="hastagID";
 				$parentID=profile::change_perma2ID($model->paths[1]);
 			}
-            $agendas=$c_parliament->get_agenda($type, $parentID);
+            $agendasNonSort=$c_parliament->get_agenda($type, $parentID);
+			$agendas = $c_parliament->short_agandaNew($agendasNonSort);
 			
         	?>
         		<!-- Kırmızı Bileşen -->
-				<section class="bilesen kirmizi kontroller_var">
+				<section class="bilesen kirmizi kontroller_var" id="meclis_gagget">
 					<header>
 						<hgroup>
 							<h1>Türkiye Meclisi</h1>
@@ -25,7 +26,13 @@
 					
 					<aside class="kontroller">
 						<a href="/parliament" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
-							<span class="etiket">7</span>
+							<?
+							$new_agenda = $c_parliament->count_agenda($type, $parentID);
+							if($new_agenda>0)
+							{?>
+								<span class="etiket"><?=$new_agenda?></span>
+							<?}
+							?>
 							<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
 						</a>
 					</aside>

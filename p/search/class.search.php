@@ -3,6 +3,71 @@
         public $limit = 14;
         
         public function main(){
+			global $model, $db, $l;
+			$model->template="ala";
+			$model->view="default";
+			$model->title = 'Democratus';
+			
+			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
+          	$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+                        
+            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			
+			$model->addScript("paths=".json_encode($model->paths));
+			$model->addScript("plugin='search'");
+			$model->addScript("keyword='".$model->paths[1]."'");
+			//echo $model->paths[1]." arandı <br />";
+			//echo "hazırlanıyor";
+			?>
+			<section class="banner">
+				<header>
+					<h1>ARAMA SONUÇLARI</h1>
+				</header>
+				<nav>
+					<ul class="alt_menu visible-desktop" id="tab-container" >
+						<li class="active"><a href="#tab-kisiler" rel="kisiler" data-toggle="tab" >KİŞİLER</a></li>
+						<li><a href="#tab-sesler" rel="sesler" data-toggle="tab" >SESLER</a></li>
+						<li><a href="#tab-arsivler" rel="arsivler" data-toggle="tab" >ARŞİVLER</a></li>
+					</ul>
+					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
+						<option value="">KİŞİLER</option>
+						<option value="">SESLER</option>
+						<option value="">ARŞİVLER</option>
+					</select>
+				</nav>
+				<div class="clearfix"></div>
+			</section>
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-kisiler">
+					<!-- Referandumlar Tab -->
+					<section id="kisiler-container" class="duvar_yazilari">
+						
+					</section>
+					<!-- Referandumlar Tab Son -->
+				</div>
+				<div class="tab-pane fade in" id="tab-sesler">
+					<!-- Kişiler Tab -->
+					<section id="sesler-container" class="duvar_yazilari">
+						
+					</section>
+					<!-- Kişiler Tab Son -->
+				</div>
+				<div class="tab-pane fade in" id="tab-arsivler">
+					<!-- Arşiv Tab -->
+					<section id="arsivler-container" class="duvar_yazilari">
+							
+					</section>
+					<!-- Arşiv Tab Son -->
+				</div>
+			</div>
+			<?
+		}
+		public function main_old()
+		{
             global $model, $db, $l;
             
             if($model->paths[1] == 'ajax') return $this->ajax();

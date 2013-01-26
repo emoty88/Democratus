@@ -2,6 +2,11 @@
     class whotofollow_block extends control{
         
         public function block(){
+        	global $model;
+			$model->addScript("
+			jQuery(document).ready(function ($) {
+				get_who2follow();
+			});");
 		?>
 			<!-- Bileşen -->
 			<section class="bilesen beyaz padding_yok">
@@ -9,29 +14,12 @@
 					<h1>Takip Önerileri</h1>
 				</header>
 				<div class="bilesen_icerigi">
-					<ul class="profil_listesi">
-						<li>
-							<img src="http://lorempixel.com/48/48/people/7/" alt="">
-							<address><a href="#" title="Serdar Karatay">Serdar Karatay</a></address>
-							<p>Cansu Bikay takip ediyor...</p>
-							<a class="takip_et" href="#">Takip Et!</a>
-						</li>
-						<li>
-							<img src="http://lorempixel.com/48/48/people/8/" alt="">
-							<address><a href="#" title="Serdar Karatay">Demet Birand</a></address>
-							<p>Bora Erduran takip ediyor...</p>
-							<a class="takip_et" href="#">Takip Et!</a>
-						</li>
-						<li>
-							<img src="http://lorempixel.com/48/48/people/9/" alt="">
-							<address><a href="#" title="Serdar Karatay">Jeff Finley</a></address>
-							<p>Hür Baysel takip ediyor...</p>
-							<a class="takip_et" href="#">Takip Et!</a>
-						</li>
+					<ul id="gaget_who2follow" class="profil_listesi">
+						
 					</ul>
 				</div>
 				<aside class="kontroller">
-					<a href="#" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
+					<a href="javascript:;" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
 						<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
 					</a>
 				</aside>

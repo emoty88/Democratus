@@ -30,7 +30,7 @@ class jstemplates_block extends control{
 							<br />
 						{{/if}}
 						{{if initem>0}}
-							<a href="javascript:;" onclick="ac_kapa_manual(this);" data-tetikleyici="ac-kapa" data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
+							<a href="javascript:;"  data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
 								<i class="atolye15-ikon-gorsel atolye15-ikon-24"></i> <span>Fotoğrafı Göster</span>
 							</a>
 							<div id="fotograf_${ID}" style="display:none;">
@@ -43,7 +43,7 @@ class jstemplates_block extends control{
 						</a>
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
-							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
+							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 							<span>Kaldır</span>
 						</a>
 						{{else}}
@@ -177,6 +177,10 @@ class jstemplates_block extends control{
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
 		</script>
 		
+		<script id="voiceBulunamadı-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Hiç Voice Bulunamadı...</a></aside>
+		</script>
+		
 		<script id="loadingbar-tmpl" type="text/x-jquery-tmpl">
 			<aside id="loading_bar" class="loading_bar">
 				<img src="/t/ala/img/loading.gif" />
@@ -200,9 +204,11 @@ class jstemplates_block extends control{
 			<article class="duvar_yazisi anket referandum {{if myVote == null}}yeni{{/if}}">
 				<div class="anket_tutucu_arkaplan">
 					<div class="anket_tutucu">
-						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						<a title="${dName} Profilini Görüntüle" href="${dPerma}">
+							<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						</a>
 						<address class="yazar">
-							<a title="Sedef Kul'un Profilini Görüntüle" href="#">${dName}</a> 
+							<a title="${dName} Profilini Görüntüle" href="${dPerma}">${dName}</a> 
 							<span>2 gün, 2 saat</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
@@ -228,7 +234,8 @@ class jstemplates_block extends control{
 		<script id="parliament-deputys-tmpl" type="text/x-jquery-tmpl">
 			<li>
 				<article>
-					<img src="${image}">
+					
+					<img src="${image}" alt="${name} Profil fotosu">
 					<aside class="vekil_bilgileri">
 						<ul class="istatistik_listesi_2">
 							{{if isfollow}}
@@ -245,7 +252,7 @@ class jstemplates_block extends control{
 					<hr>
 					<header>
 						<address>
-							<h1><a title="${name}" href="#">${name}</a></h1>
+							<h1><a title="${name}" href="${perma}">${name}</a></h1>
 						</address>
 					</header>
 					<p style="height: 100px;">${motto}</p>
@@ -307,9 +314,12 @@ class jstemplates_block extends control{
 				</a> 
 			</li>
 		</script> 
+		
 		<script id="parliament-friendItem-tmpl" type="text/x-jquery-tmpl">
 			<li>
-				<img alt="" src="${pImage}" class="vekil_resmi">
+				<a title="${pName}" href="/${pPerma}">
+					<img alt="" src="${pImage}" class="vekil_resmi">
+				</a>
 				<address style="height: 30px;"><a title="${pName}" href="/${pPerma}">${pName}</a></address>
 				<p><a class="btn" href="javascript:vekilOyu(${ID})">Oy Ver</a></p>
 			</li>
@@ -322,14 +332,22 @@ class jstemplates_block extends control{
 						<img class="profil_resmi" src="${dImage}" alt="${dName} Profil Fotoğrafı">
 						<address class="yazar">
 							<a href="/${dPerma}" title="${dName} Profilini Görüntüle">${dName}</a> 
-							<span> 2 gün, 2 saat</span>
+							<span> ${time}</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p style="min-height: 48px;">${text}</p>
 						</div>
 						<aside class="cevaplar tasari_yaz_cevaplar">
-							<a href="#" class="btn">Tartışılsın</a>
-							<a href="#" class="btn">Tartışılmasın</a>
+                                                    {{if approve>0}}
+                                                        <a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
+                                                    {{else}}
+							<a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn">Tartışılsın</a>
+                                                    {{/if}}
+                                                    {{if reject>0}}
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
+                                                    {{else}}
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn">Tartışılmasın</a>
+                                                    {{/if}}
 						</aside>
 					</div>
 				</div>
@@ -374,8 +392,9 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="social-friendList-tmpl" type="text/x-jquery-tmpl">
-			<article class="duvar_yazisi">
+			<article class="duvar_yazisi" style="min-height: 45px;">
 				<img alt="${pName} Profil Fotoğrafı" src="${pImage}" class="profil_resmi">
+				
 				<address class="yazar">
 					<a title="${pName} Profilini Görüntüle" href="/${pPerma}">
 						${pName} 
@@ -388,11 +407,33 @@ class jstemplates_block extends control{
 					<p style="">${pMotto}</p>
 				</div>
 				<div style="position: absolute;top: 20px; left: 500px;">
-					<button type="button" class="btn">Takip Et</button>
+					
+					{{if ismyFollow}}
+						<button type="button" class="btn btn follow follow-${ID}" style="display:none" onclick="follow(${ID});">Takip Et</button>
+						<button type="button" class="btn btn-info unfollow unfollow-${ID}" style="" onclick="follow(${ID});" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
+					{{else}}
+						<button type="button" class="btn btn follow follow-${ID}" style="${followHide}" onclick="follow(${ID});">Takip Et</button>
+						<button type="button" class="btn btn-info unfollow unfollow-${ID}" style="display:none" onclick="follow(${ID});" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
+					{{/if}}
+					
 				</div>
 				<div style="clear: both;"></div>
 			</article>
 		</script> 
+		
+		<script id="gaget-w2f-tmpl" type="text/x-jquery-tmpl">
+			<li>
+				<img src="${pImage}" alt="${pName} profil resmi">
+				<address><a href="/${pPerma}" title="${pName}">${pName}</a></address>
+				<p></p>
+				<a class="takip_et" href="">Takip Et!</a>
+			</li>
+		</script>
+		
+		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
+			<img alt="" src="${small}">
+		</script> 
+		
 	<?	
 	}
 }
