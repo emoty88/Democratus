@@ -5,7 +5,10 @@
 			$model->template="ala";
 			$model->view="home";
 			$model->title = 'Democratus';
-			
+			if($model->profileID<1){
+                $model->mode = 0;
+                return $model->redirect('/welcome', 1);
+            }
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);

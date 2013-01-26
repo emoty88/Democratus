@@ -1392,7 +1392,7 @@ body .boluklari_azalt { margin-bottom: 0; padding-bottom: 0; }
 
 .duvar_yazisi.anket.tamamlanmis .cevaplar {
 	top: 0; bottom:0; vertical-align: middle; padding-left: 25px;
-	/* background: url(../img/separator-cevaplar.png) scroll no-repeat left top; */
+	 background: url(../img/separator-cevaplar.png) scroll no-repeat left top; 
 	-webkit-box-shadow: -10px 0px 10px -11px rgba(0, 0, 0, 1);
 	/* top: 50%; margin-top: -30px; */ }
 .duvar_yazisi.anket.tamamlanmis .cevaplar span { display: block; margin-top: 30px; }

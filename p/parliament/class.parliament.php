@@ -23,7 +23,7 @@ class parliament_plugin extends control {
 				<header>
 					<h1>TÜRKİYE MECLİSİ</h1>
 				</header>
-				<img alt="" src="img/banner-adaylarim.png">
+				<!-- <img alt="" src="img/banner-adaylarim.png"> -->
 				<nav>
 					<ul class="alt_menu visible-desktop" id="tab-container" >
 						<li class="active"><a href="#tab-referandum" rel="referandum" data-toggle="tab" >REFERANDUM</a></li>
