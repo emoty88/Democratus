@@ -8,7 +8,12 @@
 			$model->view="home";
 			$model->title = 'Democratus';
 			$model->mode = 0;
+                        //main_old kullanılıyor. ya o fonksiyondan sökülecek ya da yeniden yazılacak
+                        if($model->paths["1"]=="mini"):
+                            return $this->main_old();
+                        endif; 
 		}
+                //main_old kullanılıyor silme!!
         public function main_old(){
             global $model, $db, $l;
             if($model->profileID<1){
@@ -38,7 +43,7 @@
             	$noticeFark=$farkGun;
             //echo $noticeFark;
             
-            $SELECT = "SELECT n.*, p.name, p.image, p.ID AS pID";
+            $SELECT = "SELECT n.*, p.name, p.image, p.ID AS pID, permalink";
             $FROM   = "\n FROM notice AS n";
             $JOIN   = "\n JOIN profile AS p ON p.ID=n.fromID";
             $WHERE  = "\n WHERE n.profileID=".$db->quote(intval( $model->profileID ));
@@ -66,82 +71,74 @@
 	            	 switch ($row->type) {
 	                    case 'dilike':
 	                        if($row->subtype == 'dilike1') 
-	                        $message = '<i class="icon-thumbs-up"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi takdir etti.</a>';
+	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi takdir etti.</a>';
 	                        elseif($row->subtype == 'dilike2') 
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi saygı duydu.</a>';
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi saygı duydu.</a>';
 	                        else
-	                        $message ='<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi oyladı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi oyladı.</a>';
 	                    
 	                    break;
 	                    case 'redi':
-	                        $message ='<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
 	                    break;
 	                    case 'dicomment':
 	                    	$db->setQuery("SELECT DISTINCT fromID FROM notice WHERE TYPE = 'dicomment' AND ID3 = '".$row->ID3."'");
 		            		$kackisi = count($db->loadObjectList());
 		            		if($kackisi>1)
-	                        $message = '<i class="icon-comment"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha  sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
+	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha  sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
 	                    	else 
-	                    	$message = '<i class="icon-comment"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
+	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
 	                    	break; 
 	                    case 'dicommentcomment':
 	                    	$db->setQuery("SELECT DISTINCT fromID FROM notice WHERE TYPE = 'dicommentcomment' AND ID3 = '".$row->ID3."'");
 		            		$kackisi = count($db->loadObjectList());
 		            		if($kackisi>1)
-	                        $message = '<i class="icon-comment"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
+	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
 	                    	else
-	                    	$message = '<i class="icon-comment"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
+	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
 	                  	break;
 	                    case 'dicommentlike':
 	                        //$message = $row->name . ' isimli kullanıcı sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> di yorumunuzu oyladı.</a>';                    
 	                        
 	                        if($row->subtype == 'dilike1') 
-	                        $message = '<i class="icon-thumbs-up"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu takdir etti.</a>';
+	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu takdir etti.</a>';
 	                        elseif($row->subtype == 'dilike2') 
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuza saygı duydu.</a>';
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuza saygı duydu.</a>';
 	                        else
-	                        $message ='<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu oyladı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu oyladı.</a>';
 	                    break;
 	                    case 'follow':
-	                        $message = '<i class="icon-eye-open"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizi takip etmeye başladı.';                    
+	                        $message = '<i class="icon-eye-open"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizi takip etmeye başladı.';                    
 	                    break;
 	                    case 'deputy':
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> size milletvekili oyu verdi.';                    
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> size milletvekili oyu verdi.';                    
 	                    break;
 	                    case 'proposalvote':
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir<a href="/proposal#pp'.$row->ID2.'"> tasarınıza </a> oy verdi.';                    
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir<a href="/proposal#pp'.$row->ID2.'"> tasarınıza </a> oy verdi.';                    
 	                    break;
 	                    case 'mentionDi':
-	                        $message = '<i class="icon-tag"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'"> Sesiniz </a>\'den bahseti.';                    
+	                        $message = '<i class="icon-tag"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'"> Sesiniz </a>\'den bahseti.';                    
 	                    break;
 	                    case 'mentiontoReplied':
-	                        $message = '<i class="icon-tag"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> sizin cevapladığınız bir <a href="/di/'.$row->ID3.'"> Ses </a>\'ten bahseti.';                    
+	                        $message = '<i class="icon-tag"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin cevapladığınız bir <a href="/di/'.$row->ID3.'"> Ses </a>\'ten bahseti.';                    
 	                    break;
 	                    case 'mentionProfile':
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> bir <a href="/di/'.$row->ID2.'"> Sesinde </a> Sizden bahseti.';                    
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> bir <a href="/di/'.$row->ID2.'"> Sesinde </a> Sizden bahseti.';                    
 	                    break;
 	                    default:
-	                        $message = '<i class="icon-user"></i> <a href="/profile/'.$row->pID.'">'.$row->name.'</a> birşeyler yaptı.';                    
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> birşeyler yaptı.';                    
 	                  }
 	                  $db->setQuery("SELECT ID FROM follow WHERE followerID = ".$model->profileID." AND followingID ='".$row->pID."' and followerstatus=1 and status=1");
 	                  $takipediliyormu = count($db->loadObjectList());
 	                  //var_dump($takipediliyormu);
 	                  if(!($takipediliyormu>0))
 	                  {
-	                  		$message.='<span id="follow'.$row->pID.'" >Bu kişiyi <a href="javascript:;" rel="'.$row->pID.'" onclick="follow('.$row->pID.');" class="follow " >Takip Edin</a></span>';
-	                  		$message.='<span id="unfollow'.$row->pID.'" style="display:none;"> Artık Takip ediyorsunuz.</span>';
+	                  		$message.='<span id="follow'.$row->pID.'" >Bu kişiyi <a href="javascript:;" rel="'.$row->pID.'" onclick="follow('.$row->pID.');" class="follow-'.$row->pID.'" >Takip Edin</a></span>';
+	                  		$message.='<span id="unfollow'.$row->pID.'" class="unfollow-'.$row->pID.'" style="display:none;"> "Artık Takip ediyorsunuz."</span>';
 	                  		
 	                  }
             		$da=$this->dateParcala($row->datetime);
-                    /*
-                    echo $da[1];
-                    echo "<br/>";
-                    echo $da[2];
-                    echo "<br/> --";
-					echo date("m");
-					echo "<br/>";
-					echo date("d");
-					*/
+                    
                     $gosterDate="";
                     if($da[1]==date("m") && $da[2]==date("d"))
                     {
@@ -171,23 +168,7 @@
                     			'.$message.'
         					</li>
                             ';   
-                    /*        		
-                              <div class="result" id="profile'.$row->pID.'">
-                                <div class="image"><img src="'.$model->getProfileImage($row->image, 50, 50, 'cutout').'" style="width: 50px" /></div>
-                                <div class="content">
-                                    <div class="head">
-                                        <span class="username"><a href="/profile/'.$row->pID.'">'.$row->name.'</a></span>
-                                        <span class="statistic">
-                                            <span class="time">'.$this->trTime($row->datetime).'</span>
-                                        </span>
-                                    </div>
-                                    <p>'.$message.'</p>
-                                    <span class="mini_about">'.'</span>
-                                </div>
-                                
-                                <div class="clear"></div>
-                            </div>
-                    */
+                    
                     if($gosterDate!="")
                     $dateLi='<li class="noticeTime" style="color:#962B2B; font-weight:bold;"><i class="icon-calendar"></i> '.$gosterDate.'</li>';
                     else
@@ -204,12 +185,19 @@
             	} //foreach($rows as $row){ END
             		if($model->paths["1"]=="mini")
 					{
+                                                ?>
+                                                <style>
+                                                   .noticeMini  a {
+                                                        color: #555555 !important;
+                                                    }
+                                                </style>
+                                                <?php
 						$model->mode=0;
 						echo '
 							<div class="noticeMini" style="">
-								<ul class="" style="display:block;" >
+								<div class="" style="display:block;" >
 									'.$yaz.'
-								</ul>
+								</div>
 							</div>';
 					}
 					else {
@@ -334,7 +322,7 @@
                                 <div class="image"><img src="'.$model->getProfileImage($row->image, 50, 50, 'cutout').'" style="width: 50px" /></div>
                                 <div class="content">
                                     <div class="head">
-                                        <span class="username"><a href="/profile/'.$row->pID.'">'.$row->name.'</a></span>
+                                        <span class="username"><a href="/'.$row->permalink.'">'.$row->name.'</a></span>
                                         <span class="statistic">
                                             <span class="time">'.$this->trTime($row->datetime).'</span>
                                         </span>

@@ -1094,7 +1094,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 
                 $form               = new stdClass;
                 $form->name         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-				$form->userName    	= strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'userName', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $form->userName    	= strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'userName', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                 $form->email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                 $form->password     = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'password'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                 $form->password2    = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'password2'), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
@@ -1425,5 +1425,22 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
 		echo json_encode($response);
         }
+        public function send_activationMail()	{
+		global $model,$db;
+                $mail=$model->user->email;
+		$db->setQuery("SELECT * FROM userrequest WHERE email='".$mail."' and status=0");
+                $db->loadObject($ur);
+		if(count($ur)>0 and $ur->email = $mail){
+			//print_r($ur);
+                        //echo 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$ur->key.'"> http://democratus.com/user/activate/'.$ur->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!';
+		
+			$model->sendsystemmail($mail, 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$ur->key.'"> http://democratus.com/user/activate/'.$ur->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+		
+                        $response['status'] = 'success';
+                } else {
+                        $response['status'] = 'error';
+		}
+                echo json_encode($response);
+	}
 }
 ?>
