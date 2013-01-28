@@ -326,7 +326,7 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="parliament-proposal-tmpl" type="text/x-jquery-tmpl">
-			<article class="duvar_yazisi anket referandum">
+			<article id="duvar_yazisi-content-${ID}" class="duvar_yazisi anket referandum">
 				<div class="anket_tutucu_arkaplan">
 					<div class="anket_tutucu">
 						<img class="profil_resmi" src="${dImage}" alt="${dName} Profil Fotoğrafı">
@@ -339,16 +339,26 @@ class jstemplates_block extends control{
 						</div>
 						<aside class="cevaplar tasari_yaz_cevaplar">
                                                     {{if approve>0}}
-                                                        <a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
+                                                        <a onclick="set_proposal_vote(${ID},1)" href="javascript:;" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
                                                     {{else}}
-							<a onclick="set_proposal_vote(${ID},1)" href="javascript::void" id="v-${ID}-1" class="btn">Tartışılsın</a>
+							<a onclick="set_proposal_vote(${ID},1)" href="javascript:;" id="v-${ID}-1" class="btn">Tartışılsın</a>
                                                     {{/if}}
                                                     {{if reject>0}}
-                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript:;" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
                                                     {{else}}
-                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript::void" id="v-${ID}-0" class="btn">Tartışılmasın</a>
+                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript:;" id="v-${ID}-0" class="btn">Tartışılmasın</a>
                                                     {{/if}}
 						</aside>
+                                                <aside class="komutlar" onclick="notOpen=1;">
+						
+						{{if isMine}}
+						<a id="kaldir_${ID}" href="javascript:proposal_delete(${ID});">
+							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
+							<span>Kaldır</span>
+						</a>
+						{{/if}}
+						
+					</aside>
 					</div>
 				</div>
 			</article>
@@ -423,10 +433,11 @@ class jstemplates_block extends control{
 		
 		<script id="gaget-w2f-tmpl" type="text/x-jquery-tmpl">
 			<li>
-				<img src="${pImage}" alt="${pName} profil resmi">
+				<img src="${pImage}" alt="${pName} profil resmi"/>
 				<address><a href="/${pPerma}" title="${pName}">${pName}</a></address>
 				<p></p>
-				<a class="takip_et" href="">Takip Et!</a>
+				<a onclick="follow(${ID})" class="follow-${ID}" href="javascript:;">Takip Et!</a>
+                                <a onclick="follow(${ID})" class="unfollow-${ID}" style="display:none;" href="javascript:;">Takibi Bırak!</a>
 			</li>
 		</script>
 		
