@@ -1442,5 +1442,13 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
                 echo json_encode($response);
 	}
+        public function change_password(){
+            $inputArray['password']= filter_input(INPUT_POST, 'password',FILTER_SANITIZE_STRING);
+            $inputArray['password_new']=  filter_input(INPUT_POST, 'password_new');
+            $inputArray['password_new2']=  filter_input(INPUT_POST, 'password_new2');
+            //print_r($inputArray);
+            $returnArray=profile::change_password($inputArray);
+            echo json_encode($returnArray);
+        }
 }
 ?>

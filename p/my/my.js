@@ -3,11 +3,11 @@ jQuery(document).ready(function ($) {
 		$.post("/ajax/check_settings/username", {value: $("#kullanici_adi").val()}, function(data){ 
 		        if(data.status == 'success'){
 		        	if(data.validate == 'false'){
-		        		$('#usernameValidate').show();
-		            	$('#usernameValidate').tooltip();
-		            	
-		            	disable_save_button();
-		            	return;
+                                    $('#usernameValidate').show();
+                                    $('#usernameValidate').tooltip();
+
+                                    disable_save_button();
+                                    return;
 		        	}else{
 		        		$('#usernameValidate').hide();
 		            	enable_save_button();
@@ -84,6 +84,34 @@ jQuery(document).ready(function ($) {
 		},'json');   
                 $(this).removeAttr("disabled");
 	});
+        $('#change_password_button').live('click', function(){
+            var data = $('#sifre_degistirme_formu').serialize();
+            $(this).attr("disabled", true);
+            $(this).html('Değiştiriliyor');
+            var button = $(this);
+            $.post('/ajax/change_password', data, function(response){
+                    $('#password_i').hide();
+                    $('#password_new_i').hide();
+                    $('#password_new2_i').hide();
+                if(response.status=='success'){
+                    $(button).html('Değiştirildi');
+                    $('#password').val('');
+                    $('#password_new').val('');
+                    $('#password_new2').val('');
+                    
+                    
+                }else{
+                    if(response.element==null)
+                        response.element='button';
+                    $('#'+response.element+'_i').attr('data-original-title', response.message);
+                    $('#'+response.element+'_i').tooltip();
+                    $('#'+response.element+'_i').show();
+                    $(button).html('Değiştir');
+                    $(button).removeAttr('disabled');
+                }
+            },'json');
+            
+        });
         
         $("#myprivacysave").live('click', function(){
             $("#myprivacysave").attr("disabled", true);

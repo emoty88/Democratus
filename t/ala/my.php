@@ -28,9 +28,10 @@
 			<![endif]-->
 
 			{{header}}
-
+		
 			<!-- İçerik -->
 			<div id="icerik">
+				{{alertarea}}
 				<div class="container">
 					<div class="row prelative">
 						
@@ -39,7 +40,7 @@
 							<div class="satirlar">
 								
 								{{sidebarTop}}
-								
+
 								<div class="satir bilesenler hidden-phone">
 									
 									{{quickEditor}}
@@ -58,45 +59,6 @@
 						<section id="orta_alan" class="span8">
 							<div class="satirlar padding_yok">
 								<div id="orta_alan_container_">
-									<section class="satir ilk_satir kirmizi_arkaplan" id="gelen_kutusu_baslik">
-										<div class="satir_ic">
-											<header>
-												<h1>Gelen Kutusu</h1>
-												<div class="komut_tutucu">
-													<button onclick="new_messageToggle();" class="btn btn-medium fwbold">Yeni Mesaj</button>
-												</div>
-											</header>
-											<div class="clearfix"></div>
-										</div>
-									</section>
-									<section class="satir ilk_satir" id="direkt_mesaj_formu_tutucu" style="margin-top: -20px; display:none;">
-										<div class="satir_ic">
-											<div name="direkt_mesaj_formu" id="direkt_mesaj_formu" >
-												<div class="etiket_metin_kutusunun_ustunde">
-													<label for="alici">Kime:</label>
-													<input type="text" placeholder="Alıcının adı" id="alici" name="alici">
-													<input type="hidden" name="aliciPerma" id="aliciPerma" value="0" />
-												</div>
-												<div class="karakter_sayaci_tutucu" id="yeni_yazi_yaz">
-													<div class="textarea_tutucu">
-														<textarea rows="4" placeholder="Mesaj" class="karakteri_sayilacak_alan" name="yeni_yazi" id="yeni_yazi"></textarea>
-													</div>
-													<div class="kalan_karakter_mesaji"><span class="karakter_sayaci">140</span> karakter</div>
-	
-													<div class="kontroller">
-														<button class="btn btn-danger" onclick="send_newMesage();">Gönder</button>
-														<!--
-														<a href="javascript:void(0)" class="gorsel_ekle"><i class="atolye15-ikon-gorsel atolye15-ikon-24"></i></a>
-														<a href="javascript:void(0)" class="dosya_ekle"><i class="atolye15-ikon-atac atolye15-ikon-24"></i></a>
-														-->
-													</div>
-													<div class="clearfix"></div>
-												</div>
-											</div><!-- /#direkt_mesaj_formu -->
-	
-											<div class="clearfix"></div>
-										</div>
-									</section>
 									{{main}}
 								</div>
 							</div>
