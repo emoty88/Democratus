@@ -1,6 +1,6 @@
 <?php
 class facebookClass{
-		private $facebook_app_id        = '142184682596814';
+		private $facebook_app_id        = '131574663563753';
 		private $facebook_app_secret    = '44c5a4a0d75c75f426c0a4560c66154b';  
 		private $fbID = 0;
 		private $facebook;
@@ -116,5 +116,49 @@ class facebookClass{
 		}
 		return $returnA;
 	}
+	public function send_post($postIcerik,$ID)
+	{
+		global $model, $db;
+	    
+		
+		$urlS=new urlshorter();
+		$response=$urlS->useBitly("http://democratus.com/di/".$ID);
+		if($response["url"]!="")
+		{
+			$link=$response["url"];
+		}
+		else 
+		{
+			$link="http://democratus.com/di/".$ID;
+		}
+		
+		$ret_obj = $this->facebook->api('/'.$fbID.'/feed', 'POST',
+			array(
+				'message' => $postIcerik
+			));
+	}
+	public function yazmaizniVarmi()
+    {
+    	global $model, $db;
+	   	$user = $this->facebook->getUser(); 
+		if(!$user){
+			$login_url = $this->facebook->getLoginUrl(array( 'scope' => 'publish_stream'));
+			//$model->redirect($login_url);
+			$return["durum"]="login";
+			$return["loginUrl"]=$login_url;
+		}
+		else 
+		{	
+			$permissions = $this->facebook->api("/me/permissions");
+	    	if( array_key_exists('publish_stream', $permissions['data'][0]) ) {
+	    		$return["durum"]="izinVar";
+			} else {
+				$return["durum"]="izinal";
+				$return["izinUrl"]=$this->facebook->getLoginUrl(array("scope" => "publish_stream"));
+				//header( "Location: " . $facebook->getLoginUrl(array("scope" => "publish_stream")) );
+			}
+		}
+		return $return;
+    } 
 }
 ?>

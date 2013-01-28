@@ -193,8 +193,10 @@ class ajax_plugin extends control{
 					
 	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0)
 	                {
-	                	$fb=new facebook();
-	                	$fb->facebookPost(strip_tags($share->di),$share->ID);
+	                	$fb = new facebookClass();
+						var_dump($fb->yazmaizniVarmi());
+						die;
+	                	$fb->send_post(strip_tags($share->di),$share->ID);
 	                }
 						
                 	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0) 
@@ -870,7 +872,8 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$friends = $c_facebook->get_friend($model->profile->fbID);
 		$dFriend = $c_facebook->get_friendSuggestion($friends);
 		
-		$returnA["friendList"] = profile::get_profileMultiReturtnObj($dFriend); 
+		$c_profile = new profile();
+		$returnA["friendList"] = $c_profile->get_profileMultiReturtnObj($dFriend); 
 		echo json_encode($returnA);
 	}
 	function twitter_get_friendSuggestion()
@@ -881,7 +884,8 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$friends = $c_twitter->get_friends($model->profile->fbID);
 		$dFriend = $c_twitter->get_friendSuggestion($friends);
 		
-		$returnA["friendList"] = profile::get_profileMultiReturtnObj($dFriend); 
+		$c_profile = new profile();
+		$returnA["friendList"] = $c_profile->get_profileMultiReturtnObj($dFriend); 
 		echo json_encode($returnA);
 	}
 	function check_settings(){
