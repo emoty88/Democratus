@@ -962,7 +962,28 @@ jQuery(document).ready(function ($) {
 		{
 			$("#replyArea_"+randID).addClass("replyAreaActive");
 		}	
+                
+                replyKarakterSay(voiceID,randNum);
 	}
+        
+        function replyKarakterSay(voiceID,randNum){
+            var textarea = $('#replyTextArea_'+voiceID+'-'+randNum);
+            
+            var sayici = $('#replyArea_'+voiceID+'-'+randNum+'Number');
+            
+            var say = function(textarea,sayici){
+                var kalan = 200-textarea.val().length;
+                sayici.html(kalan);
+                if( kalan < 0 )
+                        $(sayici).addClass('limit_asimi');
+                else
+                        $(sayici).removeClass('limit_asimi');
+            };
+            //textarea.keypress(function(){say(textarea,sayici)});
+            textarea.keyup(function(){say(textarea,sayici)});
+            textarea.change(function(){say(textarea,sayici)});
+            
+        }
 	function replyTextBlur(voiceID, randNum)
 	{
 		var randID= voiceID+"-"+randNum;
