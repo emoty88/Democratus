@@ -704,12 +704,12 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_parliament=new parliament;
 		$return["status"]	= "success";
 		$start = 0;
-		if($_REQUEST["start"]>0)
+		if(isset($_REQUEST["start"]) && $_REQUEST["start"]>0)
 		{
 			$start = $_REQUEST["start"];
 		}
 		$keyword="";
-		if($_REQUEST["keyword"]!="" && isset($_REQUEST["keyword"]))
+		if( isset($_REQUEST["keyword"])  && $_REQUEST["keyword"]!="")
 		{
 			$keyword = $_REQUEST["keyword"];
 		}

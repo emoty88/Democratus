@@ -370,6 +370,13 @@ jQuery(document).ready(function ($) {
 		var choice=$(this).attr("data-choice");
 		set_meclis_oy(agendaID, choice);
 	});
+        
+        $('#findMyFriend').keypress(function (){
+            var input = $(this);
+            if(input.val().length >=0){
+                get_myFollowing(input.val());
+            }
+        });
 });
 	// is_valid_data_attr
 	function set_meclis_oy(agendaID, choice)
@@ -1030,13 +1037,16 @@ jQuery(document).ready(function ($) {
 	        }
 	    },'json');  
 	}
-	function get_myFollowing()
+	function get_myFollowing(search)
 	{
-		$.post("/ajax/get_myFollowing", {limit: 15}, function(response){ 
+		$.post("/ajax/get_myFollowing", {limit: 15,keyword:search}, function(response){ 
 	        if(response.status=="success")
 	        {
 	        	//$(".loading_bar").remove();
-	        	$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).appendTo("#arkadas_listesi_ul");
+                        
+                        $("#arkadas_listesi_ul").html("");
+	        	$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).prependTo("#arkadas_listesi_ul");
+                        //$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
 	        }
 	    },'json');  
 	}
@@ -1227,7 +1237,7 @@ jQuery(document).ready(function ($) {
 		get_deputyList();
 		get_oldAgenda();
 		get_myDeputy();
-		get_myFollowing();
+		get_myFollowing('');
 		get_proposal();
 	}
 	function voice_page()
