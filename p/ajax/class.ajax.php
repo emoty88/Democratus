@@ -821,8 +821,15 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
 		$fID   	= filter_input(INPUT_POST, 'fID', FILTER_SANITIZE_NUMBER_INT );
-		$dialogs = $c_message->getDialog($model->profileID, $fID);
+                $before = filter_input(INPUT_POST, 'before',FILTER_SANITIZE_STRING);
+                if(empty($before))
+                    $before = NULL;
+		$dialogs = $c_message->getDialog($model->profileID, $fID,$before);
 		$return["dialogs"] = $c_message->getDialogDetailRObj($dialogs);
+                if(sizeof($dialogs)<1){
+                    $return['last']='x';
+                }
+                $return['last'] = (string)$dialogs[0]['_id'];
 		echo json_encode($return);
 	}
 	function send_message()
@@ -833,6 +840,22 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$fPerma   	= filter_input(INPUT_POST, 'friendPerma', FILTER_SANITIZE_STRING );
 		$message   	= filter_input(INPUT_POST, 'msgText', FILTER_SANITIZE_STRING );
 		$fID = profile::change_perma2ID($fPerma);
+                $profileClass = new profile;
+                $test = $profileClass->get_porfileObject($fID);
+                if(!isset($test->ID)){
+                    echo '{"result": "error"}';
+                    return;
+                }
+			
+                if(empty($message)){
+                        echo '{"result": "empty"}';
+                        return;
+                }
+                
+                if($fID == $model->profileID){
+                    echo '{"result": "error"}';
+                    return;
+                }
 		if($c_message->insertMessage($model->profileID, $fID, $message))
 		{
 			$return = array("status"=>"success");

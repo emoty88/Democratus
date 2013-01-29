@@ -17,7 +17,8 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 
 jQuery(document).ready(function ($) {
-
+    
+    var last = 0;
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
 	//});	
@@ -355,7 +356,7 @@ jQuery(document).ready(function ($) {
     .data( "autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
             .data( "item.autocomplete", item )
-            .append( '<img class="search-r-img" src="'+item.pImage+'" /><a class="search-r-name">' + item.pName + '</a><a class="search-r-username">@' + item.pPerma + '</a>'+'<div class="clearfix"></div>' )
+            .append( '<img class="search-r-img" src="'+item.pImage+'" /><a href="/'+item.pPerma+'" class="search-r-name">' + item.pName + '</a><a href="/'+item.pPerma+'" class="search-r-username">@' + item.pPerma + '</a>'+'<div class="clearfix"></div>' )
             .appendTo( ul );
     };
 
@@ -788,7 +789,7 @@ jQuery(document).ready(function ($) {
 						location.href="/message/dialog/"+friendPerma;
 					}
 					else if(callF=="messageSendBtn"){
-						get_dialog_details();
+						get_dialog_details('');
 						$("#new_message").val("");
 					}
 					
@@ -1141,22 +1142,48 @@ jQuery(document).ready(function ($) {
 	        }
 	    },'json');
 	}
-	function get_dialog_details()
+	function get_dialog_details(before,x)
 	{
-		$("#onceki_mesajlar").html("");
-		$("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
-		$.post("/ajax/get_messageDialogDetail", {fID: fID}, function(response){
-			if(response.status=="success")
-	        {
-	        	$("#message-dialog-detail-tmpl").tmpl(response.dialogs).appendTo("#onceki_mesajlar");
-	        	$(".loading_bar").remove();
-	        }
-	        else
-	        {
-	        	
-	        }
-	    },'json');
+                        $('#onceki_mesajlar').niceScroll();
+                        
+                        if(before.length<1)
+                                $("#onceki_mesajlar").html("");
+                                
+                        $("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
+                        $.post("/ajax/get_messageDialogDetail", {fID: fID,before:before}, function(response){
+                            if(response.status=="success")
+                            {
+                                if(response.last=='x')
+                                       $('#before-messages').hide();
+                                last = response.last;
+                                //alert(last);
+                                $('#before-messages').remove();
+                                $("#message-dialog-detail-tmpl").tmpl(response.dialogs).prependTo("#onceki_mesajlar");
+                                $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
+                                
+                                
+                                if(x==1)
+                                    $('#onceki_mesajlar').scrollTo('#before-messages');
+                                else{
+                                    $('#onceki_mesajlar').append('<div id="focus"></div>');
+                                    $('#onceki_mesajlar').scrollTo('#focus');
+                                }
+                                $(".loading_bar").hide();
+                                //$.prependTo(content)
+                            }
+                            else
+                            {
+
+                            }
+                        },'json');
 	}
+        
+        function before(){
+            if(last.length>0)
+                get_dialog_details(last,1);
+            else
+                $('#before-messages').hide();
+        }
 	//sm functions 
 	function twitter_friendFind()
 	{
@@ -1244,7 +1271,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function message_dialog_page(){
-		get_dialog_details();
+		get_dialog_details('');
 		// ajax ile yeni mesajları kontrol et gelince  göster;
 		var myScroll;
 		function loaded() {

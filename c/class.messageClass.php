@@ -71,7 +71,7 @@ class messageClass {
 		);
 		
 		if($before)
-			$query['_id'] = array('$lt' => new MongoId("50a792d8b87be5191f002b4b"));
+			$query['_id'] = array('$lt' => new MongoId($before));
 		
 		//print_r($query);
 		

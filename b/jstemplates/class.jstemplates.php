@@ -19,7 +19,7 @@ class jstemplates_block extends control{
 					<img class="profil_resmi" src="${sImage}" alt="${sName}">
 					<address class="yazar">
 						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
-						<span>${sTime} Önce</span>
+                                                <span>${sTime} Önce</span>
 					</address>
 					<div class="duvar_yazisi_icerigi">
 						<p>{{html voice}}</p>
@@ -377,7 +377,7 @@ class jstemplates_block extends control{
 					</header>
 					<p style="min-height: 40px;">${message}</p>
 					<img alt="" src="${fImage}">
-					<a class="hoverlay" href="#">&nbsp;</a>
+					<a class="hoverlay" href="/message/dialog/${fPerma}">&nbsp;</a>
 					<aside>
 						<time datetime="${mTime}">${mTime}</time>
 						<i class="icon-chevron-right"></i>

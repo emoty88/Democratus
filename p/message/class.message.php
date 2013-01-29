@@ -8,7 +8,7 @@
 			$model->view="message";
 			$model->title = 'Democratus';
 			
-			//$this->msg = new messageClass;
+			$this->msg = new messageClass;
 
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
 	   	 	$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
@@ -17,13 +17,14 @@
                         $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
                         $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
                         $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
-			
+			$model->addScript(TEMPLATEURL."ala/js/jquery.nicescroll.min.js", "jquery.nicescroll.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo-1.4.3.1-min.js", "jquery.scrollTo-1.4.3.1-min.js", 1);
 			//$model->addScript(PLUGINURL . 'lib/jquery-ui/jquery-ui.js', 'jquery-ui.js', 1);
 			//$model->addStyle( 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css', 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='message'");
-			return ;
+			
 			if($model->paths[1] == "dialog") {return $this->page_dialog();}
 			//$model->addScript('');
 			?>
@@ -46,13 +47,13 @@
 			$mesajlar=$this->msg->getDialog($model->profileID,$pID,null,20);
 			//$model->addScript(TEMPLATEURL."ala/js/iscroll.js", "iscroll.js", 1);
 			//$model->addStyle(TEMPLATEURL."ala/css/antiscroll.css", "antiscroll.css", 1);
-			
+
 
 			?>
 	
-	        
-			<section class="satir padding20lr antiscroll-inner box-inner" id="onceki_mesajlar">
-							
+                        
+			<section class="satir padding20lr antiscroll-inner box-inner" id="onceki_mesajlar" style="height: 500px;">
+                            	
 			</section>
 				
 			
