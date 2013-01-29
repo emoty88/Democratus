@@ -43,11 +43,11 @@
 								<div class="satir bilesenler hidden-phone">
 									
 									{{quickEditor}}
-									
+									<div class="hashTag_slide">
 									{{meclis}}
 
 									{{populardies}}
-
+									</div>
 									{{whotofollow}}
 
 								</div>

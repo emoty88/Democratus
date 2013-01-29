@@ -65,7 +65,7 @@
 				</header>
 				
 				<nav>
-					<ul class="alt_menu visible-desktop">
+					<ul class="alt_menu visible-desktop" id="tab-container">
 						<li class="active"><a href="#tab-profilA" rel="profilA" data-toggle="tab">PROFİL AYARLARI</a></li>
 						<li><a href="#tab-arkadasB" rel="arkadasB" data-toggle="tab">ARKADAŞ BUL</a></li>
 						<li><a href="#tab-gizlilik" rel="gizlilik" data-toggle="tab">GİZLİLİK</a></li>

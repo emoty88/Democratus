@@ -16,6 +16,7 @@ class ajax_plugin extends control{
 		$response = new stdClass;
 		
 		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$limit		= filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
 		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
@@ -23,7 +24,7 @@ class ajax_plugin extends control{
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile, $hashTag, $keyword);
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword);
         echo json_encode($response);
 	}
 	public function get_archiveSearch()

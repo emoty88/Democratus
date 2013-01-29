@@ -1,11 +1,11 @@
 <?php
     class home_plugin extends control{
+    	
         public function main(){
         	global $model, $db, $l;
 			$model->template="ala";
 			$model->view="home";
 			$model->title = 'Democratus';
-			
 			
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
@@ -18,13 +18,14 @@
 			$model->addScript(TEMPLATEURL."ala/js/howtouse.js", "howtouse.js", 1);
 			$model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo.min.js", "jquery.scrollTo.min.js", 1);
 			
-			//$model->addScript(TEMPLATEURL."ala/js/howtouse-steps.js", "howtouse-steps.js", 1);
-			
 			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
 			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");
+			
+			$model->addScript("$(document).ready(function () { show_step(0); });");
+			
 			//var_dump($model);
 		}
 		public function main_old(){ 

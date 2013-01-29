@@ -82,10 +82,10 @@ jQuery(document).ready(function ($) {
 		}
 		$(window).scroll(function(){
 		if(wallmoreAction==0 && $(window).scrollTop() == $(document).height() - $(window).height()){
-		    	get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
+		    	get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
 	        }
 		});
-		get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
+		get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag);
 	}
 	
 	get_noticeCount();
@@ -688,20 +688,28 @@ jQuery(document).ready(function ($) {
 			}
 		});		
 	}
-	function get_wall(profileID, start, onlyProfile, hashTag, keyword){
+	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
 		wallmoreAction=1;
 		
-		if(get_wall.arguments.length<5)
+		if(get_wall.arguments.length<7)
+		{
+			pos="bottom";
+		}
+		if(get_wall.arguments.length<6)
 		{
 			keyword="";
 		}
-		if(get_wall.arguments.length<4)
+		if(get_wall.arguments.length<5)
 		{
 			hashTag=0;
 		}
-		if(get_wall.arguments.length<3)
+		if(get_wall.arguments.length<4)
 		{
 			onlyProfile=0;
+		}
+		if(get_wall.arguments.length<3)
+		{
+			limit=20;	
 		}
 		if(get_wall.arguments.length<2)
 		{
@@ -711,7 +719,7 @@ jQuery(document).ready(function ($) {
 		{
 			profileID=0;
 		}
-		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
+		var post_data = {profileID:profileID, start:start, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		$.ajax({
@@ -724,8 +732,12 @@ jQuery(document).ready(function ($) {
 				if(response.status == "success")
 				{
 					firstVoice	= response.voices[0].ID;
-					lastVoiceID	= response.voices[response.voices.length-1].ID;;
-					$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+					lastVoiceID	= response.voices[response.voices.length-1].ID;
+					
+					if(pos=="bottom")
+						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+					else 
+						$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
 					$(".loading_bar").remove();
 					$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 					wallmoreAction=0;
