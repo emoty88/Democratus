@@ -1159,7 +1159,8 @@ jQuery(document).ready(function ($) {
                                 //alert(last);
                                 $('#before-messages').remove();
                                 $("#message-dialog-detail-tmpl").tmpl(response.dialogs).prependTo("#onceki_mesajlar");
-                                $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
+                                if(response.dialogs.length>=10)
+                                    $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
                                 
                                 
                                 if(x==1)

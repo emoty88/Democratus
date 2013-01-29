@@ -52,7 +52,7 @@
 			?>
 	
                         
-			<section class="satir padding20lr antiscroll-inner box-inner" id="onceki_mesajlar" style="height: 500px;">
+			<section class="satir padding20lr antiscroll-inner box-inner" id="onceki_mesajlar" style="max-height:  500px;">
                             	
 			</section>
 				
