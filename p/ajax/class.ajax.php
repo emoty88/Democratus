@@ -16,8 +16,8 @@ class ajax_plugin extends control{
 		$response = new stdClass;
 		
 		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
-        $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
-        $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
+                $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+                $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
 		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
 		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
 		

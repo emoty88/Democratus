@@ -55,7 +55,7 @@
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
 			{
-				return FALSE;
+				//return FALSE;
 			}
         	$SELECT = "SELECT DISTINCT 	di.*, 
         								sharer.image AS sharerimage, 
@@ -118,7 +118,7 @@
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
 			{
-				return FALSE;
+				//return FALSE;
 			}
         	$SELECT = "SELECT DISTINCT 	di.*, 
         								sharer.image AS sharerimage, 

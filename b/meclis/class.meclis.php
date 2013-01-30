@@ -3,7 +3,7 @@
         public function block(){
         	global $model;
         	
-        	$c_parliament=new parliament;
+                        $c_parliament=new parliament;
 			$type=0;
 			$parentID=0;
 			if($model->paths[0]=="t")
@@ -11,8 +11,12 @@
 				$type="hastagID";
 				$parentID=profile::change_perma2ID($model->paths[1]);
 			}
-            $agendasNonSort=$c_parliament->get_agenda($type, $parentID);
+                        $agendasNonSort=$c_parliament->get_agenda($type, $parentID);
 			$agendas = $c_parliament->short_agandaNew($agendasNonSort);
+                        if(!model::checkLogin(FALSE)){
+                            foreach ($agendas as $ag)
+                            $model->addScript("get_meclis_istatistik($ag->ID);");
+                        }
 			
         	?>
         		<!-- Kırmızı Bileşen -->
@@ -44,7 +48,7 @@
 								?>
 								<li>
 									<img src="<?=$model->getProfileImage($a->deputyimage,22,22,"cutout")?>" alt="profile-img">
-									<h5><a href="/profile/<?=$a->deputyID?>"><?=$a->deputyname?></a></h5>
+                                                                            <h5><a href="/<?=profile::change_ID2perma($a->deputyID)?>"><?=$a->deputyname?></a></h5>
 									<p style="height: 145px;"><?=$a->title?></p>
 									<div id="meclis-bottom-box-<?=$a->ID?>">
 									<? 

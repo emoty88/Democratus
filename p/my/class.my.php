@@ -2,6 +2,7 @@
     class my_plugin extends control{
     	public function main()
 		{
+                        model::checkLogin(1);
 			global $model, $db, $l;
 			$model->template="ala";
 			$model->view="my";
