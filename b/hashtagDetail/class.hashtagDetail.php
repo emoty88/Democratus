@@ -8,10 +8,10 @@
         	?>
         	<section class="satir" id="profil">
 				<article>
-					<img class="banner" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
+					<img class="banner" style="width: 640px; height: 206px;" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
 					<div class="asil_alan">
 						<a class="profil_resmi" href="#">
-							<img src="<?=$model->getprofileimage($p->image,105,130,"cutout");?>" alt="">
+							<img src="<?=$model->getprofileimage($p->image,105,130,"cutout");?>" alt="<?=$p->name?> Profil resmi" >
 						</a>
 						<header>
 							<address>
@@ -72,14 +72,40 @@
 								</div>
 							</div>
 							<div class="clearfix"></div>
+							
 							<!--
 							<a href="#" id="slider-prev" class="prev disabled" style="display: block;"><span>geri</span></a>
 							<a href="#" id="slider-next" class="next" style="display: block;"><span>ileri</span></a>
 							-->
 						</aside>	
+						
 					</div>
+						
 				</article>
 			</section>
+			<div class="satir" >
+				<div id="yeni_yazi_yaz" class="karakter_sayaci_tutucu htShareArea">
+					<textarea id="replyTextArea_0" name="yeni_yazi" class="karakteri_sayilacak_alan" placeholder="Fikrini paylaş..." rows="2">#<?=$userPerma?> </textarea>
+					<div class="kalan_karakter_mesaji"><span class="karakter_sayaci">200</span> karakter</div>
+					
+					<div class="kontroller">
+                                            <img id="voice-share-progress" style="position:absolute; width:20px; right:150px; margin-top: 3px; display: none" src="/t/ala/img/loading.gif" />
+						<button id="share_voice" class="btn btn-danger" onclick="share_voice(this)" data-randID="0" >Paylaş</button>
+						
+						<input type="hidden" name="replyer_0" id="replyer_0" value="0" />
+						
+						<a id="fine-uploader-btn_0" class="fineUploader" href="javascript:;" onclick="globalRandID=0;" data-randID="0">
+							<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
+						</a>
+						<div id="fine-uploader-msg_0"></div>	
+						
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+				<input type="hidden" id="initem_0" name="initem" value="0" />
+			    <input type="hidden" id="initem-name_0" name="initem-name" value="0" />
+			</div><!-- Yeni Yazı Yaz -->
         	<?
             }
     }
