@@ -1,7 +1,6 @@
 <?php
     class hashTag_plugin extends control{//HashTag Sayfası
         public $limit = 14;
-        
         public function main(){
 			global $model;
 			$model->template="ala";
@@ -16,6 +15,9 @@
 	        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 			
+			$model->addScript(TEMPLATEURL."ala/js/howtouse.js", "howtouse.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo.min.js", "jquery.scrollTo.min.js", 1);
+				
 			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
 			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
@@ -25,6 +27,13 @@
 			$c_profile 	= new profile($userPerma);
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
+			
+			
+			if($model->paths[1]=="startTour")
+			{
+				
+				$model->addScript("$(document).ready(function (){ show_step(0)});");
+			}
 		}
 		public function main_old(){
             global $model, $db,$dbez, $l;

@@ -57,7 +57,7 @@
 						<!-- Orta Alan -->
 						<section id="orta_alan" class="span8">
 							<div class="satirlar padding_yok">
-								<div id="orta_alan_container">
+								<div id="orta_alan_container_">
 									<section class="satir ilk_satir kirmizi_arkaplan" id="gelen_kutusu_baslik">
 										<div class="satir_ic">
 											<header>

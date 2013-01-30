@@ -49,12 +49,22 @@
 						<div class="span5 landscape-tablet-span6 tab prelative">
 							<nav>
 								<ul id="ana_menu">
+                                                                    <?php if($model->profileID>0): ?>
 									<li class="separator"></li>
 									<? $this->get_noticeIcon(); ?>
 									<li class="separator"></li>
 									<? $this->get_messageIcon(); ?>
 									<li class="separator"></li>
 									<? $this->get_userArea()?>
+                                                                    <?php else:?>
+                                                                        <li>
+                                                                            <button title="Giriş Yap" onclick="javascript:window.location='/welcome'" class="btn btn-danger" >Giriş Yap</button>
+                                                                        </li>
+                                                                        <li>
+                                                                            <button style="margin-left: 20px" title="Giriş Yap" onclick="javascript:window.location='/welcome?register'" class="btn btn-success" >Kayıt Ol</button>
+                                                                        </li>
+                                                                        
+                                                                    <?php endif; ?>
 								</ul>
 								<div class="clearfix"></div>
 							</nav>

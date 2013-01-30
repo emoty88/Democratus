@@ -1686,6 +1686,18 @@ a:hover {
 			$rows = $db->loadResult ();
 			return $rows;
 		}
+                
+                public static function checkLogin($redirect=false,$to='/welcome',$inverse=false){
+                    global $model;
+                    if($model->profileID>0 ^ $inverse){
+                        return TRUE;
+                    }else{
+                        if($redirect){
+                            $model->redirect($to);
+                        }
+                        return FALSE;
+                    }
+                }
              
     }
 ?>

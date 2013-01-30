@@ -2,23 +2,24 @@
     class my_plugin extends control{
     	public function main()
 		{
+                        model::checkLogin(1);
 			global $model, $db, $l;
 			$model->template="ala";
-			$model->view="default";
+			$model->view="my";
 			$model->title = 'Democratus';
 
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-          	$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-                        
-            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+                        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+
+                        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 			
 			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1); // düzenle
-            $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
-            $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
+                        $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
+                        $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
 			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
@@ -65,7 +66,7 @@
 				</header>
 				
 				<nav>
-					<ul class="alt_menu visible-desktop">
+					<ul class="alt_menu visible-desktop" id="tab-container">
 						<li class="active"><a href="#tab-profilA" rel="profilA" data-toggle="tab">PROFİL AYARLARI</a></li>
 						<li><a href="#tab-arkadasB" rel="arkadasB" data-toggle="tab">ARKADAŞ BUL</a></li>
 						<li><a href="#tab-gizlilik" rel="gizlilik" data-toggle="tab">GİZLİLİK</a></li>
@@ -189,7 +190,7 @@
 											</ul>
 										</div>
 									</div>
-								
+                                                                        
 								</div><!-- /.sol_form_bolumu -->
 
 								<div class="sag_form_bolumu span3">
@@ -218,6 +219,29 @@
 							</form>
 
 							<div class="clearfix"></div>
+                                                        
+                                                                  <br/>
+                                                                  <br/>
+                                                        <form id="sifre_degistirme_formu" name="sifre_degistirme_formu">
+                                                             <header>
+								<h1 class="sayfa_basligi">Şifre Değiştirme</h1>
+                                                            </header> 
+                                                            <div class="sol_form_bolumu span4" >
+                                                                <label for="password">Eski Şifre</label>
+                                                                <input type="password" placeholder="Eski Şifre" id="password" name="password" value="" />
+                                                                <i class="icon-exclamation-sign" id="password_i" style=" display: none; padding: 0"></i>	
+                                                                <label for="password_new">Yeni Şifre</label>
+                                                                <input type="password" placeholder="Yeni Şifre" id="password_new" name="password_new" value="" />
+                                                                <i class="icon-exclamation-sign" id="password_new_i" style="display: none;padding: 0"></i>	
+                                                                <label for="password_new2">Yeni Şifre Tekrar</label>
+                                                                <input type="password" placeholder="Yeni Şifre Tekrar" id="password_new2" name="password_new2" value="" />
+                                                                <i class="icon-exclamation-sign" id="password_new2_i" style="display: none;padding: 0"></i>	
+                                                                <div class="clearfix"></div>
+                                                                <button  style="float:left" class="btn btn-success pull-right" type="button" id="change_password_button">Değiştir</button>
+                                                                <i class="icon-exclamation-sign" id="button_i" style="display: none;padding: 0"></i>	
+                                                                
+                                                            </div>
+                                                        </form>
 						</div>
 					</section>
 					

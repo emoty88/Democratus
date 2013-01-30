@@ -17,7 +17,8 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 
 jQuery(document).ready(function ($) {
-
+    
+    var last = 0;
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
 	//});	
@@ -82,10 +83,10 @@ jQuery(document).ready(function ($) {
 		}
 		$(window).scroll(function(){
 		if(wallmoreAction==0 && $(window).scrollTop() == $(document).height() - $(window).height()){
-		    	get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
+		    	get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
 	        }
 		});
-		get_wall(profileID,lastVoiceID,onlyProfile, hashTag);
+		get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag);
 	}
 	
 	get_noticeCount();
@@ -355,7 +356,7 @@ jQuery(document).ready(function ($) {
     .data( "autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
             .data( "item.autocomplete", item )
-            .append( '<img class="search-r-img" src="'+item.pImage+'" /><a class="search-r-name">' + item.pName + '</a><a class="search-r-username">@' + item.pPerma + '</a>'+'<div class="clearfix"></div>' )
+            .append( '<img class="search-r-img" src="'+item.pImage+'" /><a href="/'+item.pPerma+'" class="search-r-name">' + item.pName + '</a><a href="/'+item.pPerma+'" class="search-r-username">@' + item.pPerma + '</a>'+'<div class="clearfix"></div>' )
             .appendTo( ul );
     };
 
@@ -370,6 +371,13 @@ jQuery(document).ready(function ($) {
 		var choice=$(this).attr("data-choice");
 		set_meclis_oy(agendaID, choice);
 	});
+        
+        $('#findMyFriend').keypress(function (){
+            var input = $(this);
+            if(input.val().length >=0){
+                get_myFollowing(input.val());
+            }
+        });
 });
 	// is_valid_data_attr
 	function set_meclis_oy(agendaID, choice)
@@ -688,20 +696,28 @@ jQuery(document).ready(function ($) {
 			}
 		});		
 	}
-	function get_wall(profileID, start, onlyProfile, hashTag, keyword){
+	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
 		wallmoreAction=1;
 		
-		if(get_wall.arguments.length<5)
+		if(get_wall.arguments.length<7)
+		{
+			pos="bottom";
+		}
+		if(get_wall.arguments.length<6)
 		{
 			keyword="";
 		}
-		if(get_wall.arguments.length<4)
+		if(get_wall.arguments.length<5)
 		{
 			hashTag=0;
 		}
-		if(get_wall.arguments.length<3)
+		if(get_wall.arguments.length<4)
 		{
 			onlyProfile=0;
+		}
+		if(get_wall.arguments.length<3)
+		{
+			limit=20;	
 		}
 		if(get_wall.arguments.length<2)
 		{
@@ -711,7 +727,7 @@ jQuery(document).ready(function ($) {
 		{
 			profileID=0;
 		}
-		var post_data = {profileID:profileID, start:start, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
+		var post_data = {profileID:profileID, start:start, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		$.ajax({
@@ -724,8 +740,12 @@ jQuery(document).ready(function ($) {
 				if(response.status == "success")
 				{
 					firstVoice	= response.voices[0].ID;
-					lastVoiceID	= response.voices[response.voices.length-1].ID;;
-					$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+					lastVoiceID	= response.voices[response.voices.length-1].ID;
+					
+					if(pos=="bottom")
+						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+					else 
+						$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
 					$(".loading_bar").remove();
 					$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 					wallmoreAction=0;
@@ -781,7 +801,7 @@ jQuery(document).ready(function ($) {
 						location.href="/message/dialog/"+friendPerma;
 					}
 					else if(callF=="messageSendBtn"){
-						get_dialog_details();
+						get_dialog_details('');
 						$("#new_message").val("");
 					}
 					
@@ -955,7 +975,28 @@ jQuery(document).ready(function ($) {
 		{
 			$("#replyArea_"+randID).addClass("replyAreaActive");
 		}	
+                
+                replyKarakterSay(voiceID,randNum);
 	}
+        
+        function replyKarakterSay(voiceID,randNum){
+            var textarea = $('#replyTextArea_'+voiceID+'-'+randNum);
+            
+            var sayici = $('#replyArea_'+voiceID+'-'+randNum+'Number');
+            
+            var say = function(textarea,sayici){
+                var kalan = 200-textarea.val().length;
+                sayici.html(kalan);
+                if( kalan < 0 )
+                        $(sayici).addClass('limit_asimi');
+                else
+                        $(sayici).removeClass('limit_asimi');
+            };
+            //textarea.keypress(function(){say(textarea,sayici)});
+            textarea.keyup(function(){say(textarea,sayici)});
+            textarea.change(function(){say(textarea,sayici)});
+            
+        }
 	function replyTextBlur(voiceID, randNum)
 	{
 		var randID= voiceID+"-"+randNum;
@@ -1030,13 +1071,16 @@ jQuery(document).ready(function ($) {
 	        }
 	    },'json');  
 	}
-	function get_myFollowing()
+	function get_myFollowing(search)
 	{
-		$.post("/ajax/get_myFollowing", {limit: 15}, function(response){ 
+		$.post("/ajax/get_myFollowing", {limit: 15,keyword:search}, function(response){ 
 	        if(response.status=="success")
 	        {
 	        	//$(".loading_bar").remove();
-	        	$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).appendTo("#arkadas_listesi_ul");
+                        
+                        $("#arkadas_listesi_ul").html("");
+	        	$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).prependTo("#arkadas_listesi_ul");
+                        //$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");
 	        }
 	    },'json');  
 	}
@@ -1110,22 +1154,49 @@ jQuery(document).ready(function ($) {
 	        }
 	    },'json');
 	}
-	function get_dialog_details()
+	function get_dialog_details(before,x)
 	{
-		$("#onceki_mesajlar").html("");
-		$("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
-		$.post("/ajax/get_messageDialogDetail", {fID: fID}, function(response){
-			if(response.status=="success")
-	        {
-	        	$("#message-dialog-detail-tmpl").tmpl(response.dialogs).appendTo("#onceki_mesajlar");
-	        	$(".loading_bar").remove();
-	        }
-	        else
-	        {
-	        	
-	        }
-	    },'json');
+                        $('#onceki_mesajlar').niceScroll();
+                        
+                        if(before.length<1)
+                                $("#onceki_mesajlar").html("");
+                                
+                        $("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
+                        $.post("/ajax/get_messageDialogDetail", {fID: fID,before:before}, function(response){
+                            if(response.status=="success")
+                            {
+                                if(response.last=='x')
+                                       $('#before-messages').hide();
+                                last = response.last;
+                                //alert(last);
+                                $('#before-messages').remove();
+                                $("#message-dialog-detail-tmpl").tmpl(response.dialogs).prependTo("#onceki_mesajlar");
+                                if(response.dialogs.length>=10)
+                                    $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
+                                
+                                
+                                if(x==1)
+                                    $('#onceki_mesajlar').scrollTo('#before-messages');
+                                else{
+                                    $('#onceki_mesajlar').append('<div id="focus"></div>');
+                                    $('#onceki_mesajlar').scrollTo('#focus');
+                                }
+                                $(".loading_bar").hide();
+                                //$.prependTo(content)
+                            }
+                            else
+                            {
+
+                            }
+                        },'json');
 	}
+        
+        function before(){
+            if(last.length>0)
+                get_dialog_details(last,1);
+            else
+                $('#before-messages').hide();
+        }
 	//sm functions 
 	function twitter_friendFind()
 	{
@@ -1213,7 +1284,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function message_dialog_page(){
-		get_dialog_details();
+		get_dialog_details('');
 		// ajax ile yeni mesajları kontrol et gelince  göster;
 		var myScroll;
 		function loaded() {
@@ -1227,7 +1298,7 @@ jQuery(document).ready(function ($) {
 		get_deputyList();
 		get_oldAgenda();
 		get_myDeputy();
-		get_myFollowing();
+		get_myFollowing('');
 		get_proposal();
 	}
 	function voice_page()

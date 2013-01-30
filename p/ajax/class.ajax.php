@@ -16,6 +16,7 @@ class ajax_plugin extends control{
 		$response = new stdClass;
 		
 		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$limit		= filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
 		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
@@ -23,7 +24,7 @@ class ajax_plugin extends control{
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, 20 ,$onlyProfile, $hashTag, $keyword);
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword);
         echo json_encode($response);
 	}
 	public function get_archiveSearch()
@@ -706,12 +707,12 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_parliament=new parliament;
 		$return["status"]	= "success";
 		$start = 0;
-		if($_REQUEST["start"]>0)
+		if(isset($_REQUEST["start"]) && $_REQUEST["start"]>0)
 		{
 			$start = $_REQUEST["start"];
 		}
 		$keyword="";
-		if($_REQUEST["keyword"]!="" && isset($_REQUEST["keyword"]))
+		if( isset($_REQUEST["keyword"])  && $_REQUEST["keyword"]!="")
 		{
 			$keyword = $_REQUEST["keyword"];
 		}
@@ -823,8 +824,15 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
 		$fID   	= filter_input(INPUT_POST, 'fID', FILTER_SANITIZE_NUMBER_INT );
-		$dialogs = $c_message->getDialog($model->profileID, $fID);
+                $before = filter_input(INPUT_POST, 'before',FILTER_SANITIZE_STRING);
+                if(empty($before))
+                    $before = NULL;
+		$dialogs = $c_message->getDialog($model->profileID, $fID,$before);
 		$return["dialogs"] = $c_message->getDialogDetailRObj($dialogs);
+                if(sizeof($dialogs)<1){
+                    $return['last']='x';
+                }
+                $return['last'] = (string)$dialogs[0]['_id'];
 		echo json_encode($return);
 	}
 	function send_message()
@@ -835,6 +843,22 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$fPerma   	= filter_input(INPUT_POST, 'friendPerma', FILTER_SANITIZE_STRING );
 		$message   	= filter_input(INPUT_POST, 'msgText', FILTER_SANITIZE_STRING );
 		$fID = profile::change_perma2ID($fPerma);
+                $profileClass = new profile;
+                $test = $profileClass->get_porfileObject($fID);
+                if(!isset($test->ID)){
+                    echo '{"result": "error"}';
+                    return;
+                }
+			
+                if(empty($message)){
+                        echo '{"result": "empty"}';
+                        return;
+                }
+                
+                if($fID == $model->profileID){
+                    echo '{"result": "error"}';
+                    return;
+                }
 		if($c_message->insertMessage($model->profileID, $fID, $message))
 		{
 			$return = array("status"=>"success");
@@ -1446,5 +1470,13 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
                 echo json_encode($response);
 	}
+        public function change_password(){
+            $inputArray['password']= filter_input(INPUT_POST, 'password',FILTER_SANITIZE_STRING);
+            $inputArray['password_new']=  filter_input(INPUT_POST, 'password_new');
+            $inputArray['password_new2']=  filter_input(INPUT_POST, 'password_new2');
+            //print_r($inputArray);
+            $returnArray=profile::change_password($inputArray);
+            echo json_encode($returnArray);
+        }
 }
 ?>
