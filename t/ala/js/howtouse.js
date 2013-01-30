@@ -1,6 +1,6 @@
 
 var steps = [
-				{placement:"bottom", domSelector: "#yeni_yazi_yaz",title:"test", content: "<p>test ilk kontent budur</p>", buttons: ["next_btn","stop_btn"]},
+				{placement:"bottom", domSelector: "#yeni_yazi_yaz",title:"test", content: "<p>200 Karaktere kadar yazacağın 'ses' lerle fikrini takipçilerine duyurabilirsin. Duvarında ise takip ettiğin kişilerin 'ses' lerini bulabilirsin.</p>", buttons: ["next_btn","stop_btn"]},
 				{placement:"right", domSelector: "#duvara_git", title:"test", content: "<p>test ikinci kontent budur</p>", buttons: ["prev_btn", "next_btn", "stop_btn"]},
 				{placement:"right", domSelector: "#meclis_gagget", title:"test", content: "<p>test ikinci kontent budur</p>", buttons: ["prev_btn", "next_btn", "stop_btn"]},
 				{placement:"right", domSelector: "#popularVoice_gadget", title:"test", content: "<p>test ikinci kontent budur</p>", buttons: ["prev_btn",  "stop_btn"]}
