@@ -38,12 +38,30 @@ var stepsHome = [
 					onAfterScrtip: "location.href='/democratus/startTour';"
 				}
 			];
+			/*
+			{
+					placement:"bottom", 
+					domSelector: ".asil_alan", 
+					title:"Konu kurum sayfaları", 
+					content: "<p style='font-size:10pt;'>Konu ve kurumları #linkler in özel bir sayfa haline gelmiş halidir. İlgilendiklerini takip ederek onlardan haberdar olabilir, sayfa duvarında ilgili tüm 'ses' leri görebilirsin</p>", 
+					buttons: ["next_btn", "stop_btn"]
+					
+				},
+				*/
 var stepsHashTag =[
+				{
+					placement:"bottom", 
+					domSelector: ".asil_alan", 
+					title:"Konu kurum sayfaları", 
+					content: "<p style='font-size:10pt;'>Konu ve kurumları #linkler in özel bir sayfa haline gelmiş halidir. İlgilendiklerini takip ederek onlardan haberdar olabilir, sayfa duvarında ilgili tüm 'ses' leri görebilirsin</p>", 
+					buttons: ["next_btn", "stop_btn"]
+					
+				},
 				{
 					placement:"bottom", 
 					domSelector: ".htShareArea", 
 					title:"Konu kurum sayfaları", 
-					content: "<p style='font-size:10pt;'>Konu ve kurumları $linkler haline getiriyoruz. İlgilendiklerini takip ederek onlardan haberdar olabilir, sayfa duvarında ilgili tüm 'ses' leri görebilirsin</p>", 
+					content: "<p style='font-size:10pt;'>Konu ve kurumlar hakkında görüşlerini içinde #linkler geçen seslerle ifade edebilirsin.</p>", 
 					buttons: ["next_btn", "stop_btn"]
 					
 				},
