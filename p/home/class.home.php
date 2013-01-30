@@ -25,7 +25,7 @@
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");
 			
-			$model->addScript("$(document).ready(function () { show_step(0); });");
+			//$model->addScript("$(document).ready(function () { show_step(0); });");
 			
 			//var_dump($model);
 		}
