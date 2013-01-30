@@ -2,6 +2,7 @@
     class message_plugin extends control{
     	public $msg;
 		public function main(){
+                        model::checkLogin(1);
 			global $model, $db, $l;
 		
 			$model->template="ala";
