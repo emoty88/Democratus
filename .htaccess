@@ -3,6 +3,8 @@
     RewriteEngine On
     RewriteBase /
 
+   
+
     # RewriteCond %{HTTP_HOST} ^democ.com [NC]
     # RewriteCond %{HTTP_HOST} !^democ.com [NC]
 
