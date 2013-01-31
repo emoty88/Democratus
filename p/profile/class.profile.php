@@ -6,7 +6,13 @@
 			$model->template="ala";
 			$model->view="profile";
 			$model->title = 'Democratus';
-			
+			if($model->paths[0]=="profile")
+			{
+				$c_profile = new profile($model->paths[1]);
+				
+				header ('HTTP/1.1 301 Moved Permanently');
+  				header ('Location: /'.$c_profile->profile->permalink);
+			}
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
 	        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);

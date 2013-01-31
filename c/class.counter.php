@@ -38,5 +38,28 @@ class counter {
 		
 		return $db->updateObject("di",  $di, "ID");
 	}
+	public function set_proposalCount($ppID=0, $choise="", $operation="+")
+	{ 
+		global $model, $db;
+
+		if($ppID==0 || $choise=="")
+		{
+			return false;
+		}
+		$cType="count_".$choise;
+		$db->setQuery("SELECT ".$cType." FROM proposal WHERE ID='".$ppID."' ");
+		$count=$db->loadResult();
+		
+		
+		$ppO		= new stdClass;
+		$ppO->ID	= $ppID;
+
+		if($operation=="-")
+			$ppO->$cType = $count-1;
+		else
+			$ppO->$cType = $count+1;
+
+		return $db->updateObject("proposal",  $ppO, "ID");
+	}
 }
 ?>

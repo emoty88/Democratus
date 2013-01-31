@@ -57,42 +57,88 @@
 			{
 				//return FALSE;
 			}
-        	$SELECT = "SELECT DISTINCT 	di.*, 
-        								sharer.image AS sharerimage, 
-        								sharer.name AS sharername, 
-        								redier.name AS rediername, 
-        								redier.image AS redierimage, 
-        								sharer.deputy AS deputy, 
-        								sharer.showdies,
-        								sharer.permalink as permalink";
-        	$FROM   = "\n FROM di";
-        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
-        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
-        	if(intval($profileID)<1){
-        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
-        		$WHERE  = "\n WHERE  ( ";
-        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
-        		$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
-        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
-        	} else {
-        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
-        	}
-			if($start>0){
-        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
-        	}  
-			if($hashTag != 0)
+			if($model->profileID == "10000" || true)
 			{
-				$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
+				$followin=$db->loadResultArray();
+				
+				//echo "<pre>";
+				//	var_dump($followin);
+				//echo "</pre>";
+				$SELECT = "SELECT DISTINCT 	di.*, 
+	        								sharer.image AS sharerimage, 
+	        								sharer.name AS sharername, 
+	        								redier.name AS rediername, 
+	        								redier.image AS redierimage, 
+	        								sharer.deputy AS deputy, 
+	        								sharer.showdies,
+	        								sharer.permalink as permalink";
+	        	$FROM   = "\n FROM di";
+	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
+	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
+	        	if(intval($profileID)<1){
+	        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+	        		$WHERE  = "\n WHERE  ( ";
+	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
+	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
+	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
+	        	} else {
+	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
+	        	}
+				if($start>0){
+	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+	        	}  
+				if($hashTag != 0)
+				{
+					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				}
+	        	
+	        	$WHERE .= "\n AND di.status>0";
+	        	if($onlyProfile==0)
+	        		$WHERE .= "\n AND onlyProfile='0'";
+				
+	        	$ORDER  = "\n ORDER BY di.ID DESC";
+	        	$LIMIT  = "\n LIMIT $limit";
 			}
-        	
-        	$WHERE .= "\n AND di.status>0";
-        	if($onlyProfile==0)
-        		$WHERE .= "\n AND onlyProfile='0'";
-			
-        	$ORDER  = "\n ORDER BY di.ID DESC";
-        	$LIMIT  = "\n LIMIT $limit";
-        	
-        	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+			else {
+	        	$SELECT = "SELECT DISTINCT 	di.*, 
+	        								sharer.image AS sharerimage, 
+	        								sharer.name AS sharername, 
+	        								redier.name AS rediername, 
+	        								redier.image AS redierimage, 
+	        								sharer.deputy AS deputy, 
+	        								sharer.showdies,
+	        								sharer.permalink as permalink";
+	        	$FROM   = "\n FROM di";
+	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
+	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
+	        	if(intval($profileID)<1){
+	        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+	        		$WHERE  = "\n WHERE  ( ";
+	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
+	        		$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
+	        	} else {
+	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
+	        	}
+				if($start>0){
+	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+	        	}  
+				if($hashTag != 0)
+				{
+					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				}
+	        	
+	        	$WHERE .= "\n AND di.status>0";
+	        	if($onlyProfile==0)
+	        		$WHERE .= "\n AND onlyProfile='0'";
+				
+	        	$ORDER  = "\n ORDER BY di.ID DESC";
+	        	$LIMIT  = "\n LIMIT $limit";
+        	}
+			if($model->profileID == "10000")
+        		echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 		
@@ -217,7 +263,7 @@
 		 * @param $start = hangin cevaptan sonrası isteniyorusa o voice ID si
 		 * @param $limit = kaç cevap bekleniyorsa 
 		 */
-		public function get_reply($voiceID=null, $start=0, $limit=7)
+		public function get_reply($voiceID=null, $start=0, $limit=3)
 		{
 			global $model, $db;
 			if($voiceID==null && $this->_cons==0)
@@ -228,7 +274,7 @@
 			{
  				$voiceID=$this->_ID;
  			}
-			
+
 			$SELECT = "SELECT DISTINCT 	di.*, 
 										sharer.image AS sharerimage, 
 										sharer.name AS sharername, 
@@ -245,6 +291,7 @@
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
 			$ORDER  = "\n ORDER BY di.ID DESC";
+			if($limit>0)
         	$LIMIT  = "\n LIMIT $limit";
 			
 			

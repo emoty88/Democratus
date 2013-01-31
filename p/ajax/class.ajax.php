@@ -268,7 +268,7 @@ class ajax_plugin extends control{
 		else if(@$_REQUEST["uploadType"]=="cover")
 		{
 			$uniqueP = date("y_m_d");
-			$upDir="cover/".$uniqueP;
+			$upDir="coverImage/".$uniqueP;
 		}
                 
                 else if(@$_REQUEST["uploadType"]=="profileImage")
@@ -799,6 +799,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return		= array();
 		$proposal	= $c_parliament->get_proposal();
 		$return["status"]	= $proposal['result'];
+		$return['message']= $proposal['message'];
                 if($return['status'] == 'success')
                     $return["proposals"] = $proposal['proposal'];
 		echo json_encode($return);
@@ -906,6 +907,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$returnA = array("status"=>"success");
 		$c_twitter = new twitterClass;
 		$friends = $c_twitter->get_friends($model->profile->fbID);
+		//var_dump($friends);
 		$dFriend = $c_twitter->get_friendSuggestion($friends);
 		
 		$c_profile = new profile();
@@ -1077,8 +1079,10 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
    		$response = array("status" => "success");
 	    try{
 	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+			$start = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+			$limit = filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
-			$voices =  $c_voice->get_reply();
+			$voices =  $c_voice->get_reply(null, $start, $limit);
 			$response["voice_count"] = count($voices);
 			foreach($voices as $v)
 			{
@@ -1362,6 +1366,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$uProfile = new stdClass;
 		$uProfile->ID = $model->profileID;
 		$uProfile->coverImage = $_REQUEST["imageData"]["uploadDir"].SLASH.$_REQUEST["imageData"]["fileName"];
+		
 		if($c_profile->update_profile($uProfile))
 		{
 			$response["status"] = "success";

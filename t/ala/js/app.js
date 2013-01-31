@@ -739,18 +739,26 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					firstVoice	= response.voices[0].ID;
-					lastVoiceID	= response.voices[response.voices.length-1].ID;
+					if(response.voices.length>0)
+					{
+						firstVoice	= response.voices[0].ID;
+						lastVoiceID	= response.voices[response.voices.length-1].ID;
+						
+						if(pos=="bottom")
+							$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+						else 
+							$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
+						$(".loading_bar").remove();
+						$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
+						wallmoreAction=0;
+						get_iconText(response.voices);
+						init_voice_details();
+					}
+					else{
+						$(".loading_bar").remove();
+						$("#voiceBulunamadı-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
+					}
 					
-					if(pos=="bottom")
-						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
-					else 
-						$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
-					$(".loading_bar").remove();
-					$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
-					wallmoreAction=0;
-					get_iconText(response.voices);
-					init_voice_details();
 				}
 				else
 				{
@@ -928,7 +936,13 @@ jQuery(document).ready(function ($) {
 			$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
 			return ;
 		}
-		$.post("/ajax/get_voiceReply", {voiceID: vID}, function(response){ 
+		limit=3;
+		if(plugin=="voice")
+		{
+			limit=0;
+		}
+		var post_data= {voiceID: vID, start:0, limit:limit}
+		$.post("/ajax/get_voiceReply", post_data, function(response){ 
 	        if(response.status=="success")
 	        {
 	        	if(response.voice_count>0)
@@ -1123,8 +1137,8 @@ jQuery(document).ready(function ($) {
 			{
 				get_proposal();
 				$("#tasari_textarea").val("");
-                                count++;
-                                check_proposal_count();
+                	count++;
+                    check_proposal_count();
 			}else{
                                 $('#message').html(response.message);
                                 $('#message').show();
@@ -1483,13 +1497,11 @@ jQuery(document).ready(function ($) {
 	}
 
         function set_proposal_vote(id,value){
-            
-            
             $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
                 if(response.status=='success'){
                     $('#v-'+id+'-'+value).addClass('btn-danger');
                     $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
-                    
+                    get_proposal();
                 }else{
                     alert('hata');
                 }
@@ -1532,19 +1544,7 @@ jQuery(document).ready(function ($) {
 			}
 	    },'json');
 	}
-    function set_proposal_vote(id,value){
-      
-        
-        $.post("/ajax/set_proposal_vote", {id: id, value: value}, function(response){ 
-            if(response.status=='success'){
-                $('#v-'+id+'-'+value).addClass('btn-danger');
-                $('#v-'+id+'-'+(value^1)).removeClass('btn-danger');
-                
-            }else{
-                alert('hata');
-            }
-        },'json');
-    }
+
     function proposal_delete(pID){
         $.post("/ajax/proposal_delete", {pID: pID}, function(data){ 
             if(data.status == 'success'){

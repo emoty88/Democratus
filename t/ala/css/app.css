@@ -732,7 +732,7 @@ body.atolye15_body { overflow-x: hidden; }
 .sadece_icerik_liste ul li {min-height: 130px; width: 230px; margin-bottom: 15px}
 .bilesen .list_carousel ul li img, .sadece_icerik_liste ul li img {float: left; margin: 0 15px 0 15px; border: 2px solid #fff}
 .bilesen .list_carousel ul li h5, .sadece_icerik_liste ul li h5 { float: left; margin-top: 0;}
-.bilesen .list_carousel ul li p, .sadece_icerik_liste ul li p {clear: both; padding-left: 15px}
+.bilesen .list_carousel ul li p, .sadece_icerik_liste ul li p {clear: both; padding-left: 15px; padding-right: 15px;}
 .sadece_icerik_liste ul li p,
 .bilesen .list_carousel ul li h5,
 .bilesen .list_carousel ul li img

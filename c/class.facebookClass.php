@@ -1,7 +1,7 @@
 <?php
 class facebookClass{
-		private $facebook_app_id        = '131574663563753';
-		private $facebook_app_secret    = '44c5a4a0d75c75f426c0a4560c66154b';  
+		private $facebook_app_id        = '272887782761960';
+		private $facebook_app_secret    = 'dd0f4c22abd2ff4d7f4dd7bd3518f86c';  
 		private $fbID = 0;
 		private $facebook;
 	
@@ -122,14 +122,14 @@ class facebookClass{
 	    
 		
 		$urlS=new urlshorter();
-		$response=$urlS->useBitly("http://democratus.com/di/".$ID);
+		$response=$urlS->useBitly("http://democratus.com/voice/".$ID);
 		if($response["url"]!="")
 		{
 			$link=$response["url"];
 		}
 		else 
 		{
-			$link="http://democratus.com/di/".$ID;
+			$link="http://democratus.com/voice/".$ID;
 		}
 		
 		$ret_obj = $this->facebook->api('/'.$fbID.'/feed', 'POST',

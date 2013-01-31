@@ -51,8 +51,12 @@
 								?>
 								<li>
 									<img src="<?=$model->getProfileImage($a->deputyimage,22,22,"cutout")?>" alt="profile-img">
-                                                                            <h5><a href="/<?=profile::change_ID2perma($a->deputyID)?>"><?=$a->deputyname?></a></h5>
-									<p style="height: 145px;"><?=$a->title?></p>
+                                    <h5><a href="/<?=profile::change_ID2perma($a->deputyID)?>"><?=$a->deputyname?></a></h5>
+									<p style="height: 145px;">
+										<a href="/voice/<?=$a->diID?>" style="text-decoration: none; font-weight: normal;">
+											<?=$a->title?>
+										</a>
+									</p>
 									<div id="meclis-bottom-box-<?=$a->ID?>">
 									<? 
 									if(!$a->myvote>0)

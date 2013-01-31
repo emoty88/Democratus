@@ -2,9 +2,16 @@
     class message_plugin extends control{
     	public $msg;
 		public function main(){
-                        model::checkLogin(1);
+			model::checkLogin(1);
 			global $model, $db, $l;
-		
+			if($model->profileID == "1734")
+			{
+				
+				$this->perma();
+				die;
+			}
+            
+			
 			$model->template="ala";
 			$model->view="message";
 			$model->title = 'Democratus';
@@ -279,6 +286,150 @@
        		
        		return date("d",$timeSt)." ".$tr_ay[date("n",$timeSt)]." ".$tr_gun[date("N",$timeSt)];
        }
+		
+		public function perma(){
+    
+        global $model, $db;
+        $QUERY = "SELECT permalink, name,ID FROM profile WHERE permalink IS NULL
+        ";
+       
+        echo $QUERY;
+        echo '<pre>';
+        $db->setQuery($QUERY);
+        
+        $result = $db->loadObjectList();
+        //print_r($result);
+       // die;
+        $perma = new stdClass();
+        $buffer = array();
+        $i = 0;
+        foreach ($result as $r){
+            $i++;
+            $new = $this->new_perma($r->name);
+
+            if(in_array($new, $buffer)){
+                $new = $new.rand(100, 999);
+            }
+
+            $perma->permalink = (string) $new;
+            $perma->ID = (int)$r->ID;
+
+            $buffer[$r->ID] = $new;
+            print_r($perma);
+            
+             $QUERY = "UPDATE profile SET permalink = '$perma->permalink' WHERE ID = $perma->ID";
+             $db->setQuery($QUERY);
+             echo $QUERY;
+             $result = $db->query();
+            
+        }
+        echo '<br>'.$i;
+        
+    }
+    
+function new_perma($r){
+        $new = '';
+        $r = mb_strtolower($r,'UTF-8');
+        $search = array('ğ','ü','ş','ı','ö','ç',' ');
+        $replace = array('g','u','s','i','o','c','_');
+        $r= str_replace($search, $replace, $r);
+        foreach (str_split($r) as $char){
+            if(ctype_alnum($char) or $char == '_' or $char == '.'){
+                $new .= $char;
+                $new = (string)$new;
+            }
+            
+            $new = urlencode($new);
+            $new = addslashes($new);
+        }
+        return $new;
+}
+function Y(){
+    global $model, $db;
+    
+    $QUERY = "
+        SELECT ID FROM di WHERE status = 1 ORDER BY ID DESC
+";
+    
+    $db->setQuery($QUERY);
+    
+    $result = $db->loadResultArray();
+    
+    foreach ($result as $r){
+        
+        $QUERY = "SELECT COUNT(*) FROM di WHERE di.rediID = $r AND status=1";
+        
+        $db->setQuery($QUERY);
+        
+        $dis = $db->loadResult();
+        
+        if($dis == 0)
+            continue;
+        $a = new stdClass();
+        
+        $a->ID = $r;
+        $a->count_reShare = $dis;
+        
+        $db->updateObject('di',$a,'ID');
+        var_dump($a);
+    }
+    //print_r($result);
+}
+
+
+function Z(){
+    global $model, $db;
+    
+    $QUERY = "
+        SELECT ID FROM di WHERE status = 1 ORDER BY ID DESC
+";
+    
+    $db->setQuery($QUERY);
+    
+    $result = $db->loadResultArray();
+    
+    foreach ($result as $r){
+        
+        $QUERY = "SELECT COUNT(*) FROM di WHERE di.replyID = $r AND status=1";
+        
+        $db->setQuery($QUERY);
+        
+        $dis = $db->loadResult();
+        
+        if($dis == 0)
+            continue;
+        $a = new stdClass();
+        
+        $a->ID = $r;
+        $a->count_reply = $dis;
+        
+        $db->updateObject('di',$a,'ID');
+        var_dump($a);
+    }
+    //print_r($result);
+}
+public function perma_fix()
+		{
+			global $model, $db;
+			
+			
+	        //$QUERY = "SELECT permalink, name,ID FROM profile WHERE permalink IS NULL";
+	        
+	        //$QUERY = "select ID, permalink,count(permalink) from profile group by permalink having count(permalink)>1";
+	        
+	        $QUERY = "select ID, permalink from profile 
+	        	where ID NOT IN (5931,5757,5864,6383,6019,6677,5789,6197,5816,6202,5780,5628,6380,5822,5571,6755,5715,5708,5506,5544,5492,2807,5860,5793,1998,6098,5977,6674,6495,1571,6466,6647,6465,6463,3512,6026,5592,6644,5653,5679,5498,5549,6097,6092,5711,6116,1071,5813,5565,4696)
+	        	AND permalink IN ('begum', 'behzat_h', 'berk', 'betul', 'busra', 'caglar', 'can', 'cenk', 'cigdem', 'deneme', 'deniz', 'dilan', 'dilek', 'elif', 'emin', 'emir', 'emre327', 'esra', 'faruk', 'fasttren', 'fatih174', 'fethi', 'furkan', 'gulcin', 'halil', 'hasan', 'ismail', 'kaan', 'kadir', 'kadriye', 'kubra', 'latife', 'mahmut', 'mehmet', 'muhammed', 'mustafa', 'nesrin', 'nur', 'osman', 'pinar', 'reyyan', 'serdar', 'seyma', 'tuba', 'tuna', 'yasin', 'yavuz', 'yildirim', 'yusuf', 'zehra', 'ZepAltinbas', 'zeynep')";
+			
+			$db->setQuery($QUERY);
+        
+       	 	$result = $db->loadObjectList();
+			foreach($result as $r)
+			{
+				echo "'".$r->permalink."', ";
+			}
+			
+		}
     }
 
 
