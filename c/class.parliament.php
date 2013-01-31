@@ -12,8 +12,8 @@
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
-            //$WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
-            $WHERE = "\n  WHERE a.status>0"; 
+            $WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
+            $WHERE .= "\n  AND a.status>0"; 
             
             if($type!="0")
 			{
@@ -29,10 +29,10 @@
 			if($type!="0")
 			{
 				$ORDER  = "\n ORDER BY a.$type DESC";
-				$ORDER  .= "\n , a.ID DESC";
+				$ORDER  .= "\n , a.ID asc";
 			}else
 			{
-				$ORDER  = "\n ORDER BY a.ID DESC";
+				$ORDER  = "\n ORDER BY a.ID asc	";
 			} 
             $LIMIT  = "\n  LIMIT 7";
             // Bu alanı sunucuya gönderme 
@@ -313,9 +313,8 @@
 			$SELECT = "\n SELECT count(*) ";
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
-            $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
-            //$WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
-            $WHERE = "\n  WHERE a.status>0"; 
+            $WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
+            $WHERE .= "\n  AND a.status>0"; 
             $WHERE .= "\n AND av.profileID = " . $db->quote($model->profileID);
             if($type!="0")
 			{

@@ -192,7 +192,7 @@ class ajax_plugin extends control{
 	                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
 	                	}
 					
-	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0)
+	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
 	                {
 	                	$fb = new facebookClass();
 						var_dump($fb->yazmaizniVarmi());
@@ -200,7 +200,7 @@ class ajax_plugin extends control{
 	                	$fb->send_post(strip_tags($share->di),$share->ID);
 	                }
 						
-                	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0) 
+                	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
 	                {
 	                	$tw=new twitter();
 	                	$tw->sendTweet(strip_tags($share->di),$share->ID);

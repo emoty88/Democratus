@@ -3,10 +3,12 @@
         
         public function block(){
         	global $model;
+			
 			$model->addScript("
 			jQuery(document).ready(function ($) {
 				get_who2follow();
 			});");
+			 
 		?>
 			<!-- Bileşen -->
 			<section class="bilesen beyaz padding_yok">

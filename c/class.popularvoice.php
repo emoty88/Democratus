@@ -23,8 +23,8 @@ class popularvoice extends voice
         $FROM   = "\n FROM dilike, di";
         $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
-        //$WHERE  = "\n WHERE di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; // public çalışmalı
-        $WHERE = "\n where di.ID = dilike.diID"; // AND
+        $WHERE  = "\n WHERE di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; // public çalışmalı
+        $WHERE .= "\n AND di.ID = dilike.diID"; // AND
         $WHERE .= "\n AND di.status>0";
         $WHERE .= "\n AND di.popularstatus>0";
         if($start>0){
