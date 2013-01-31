@@ -63,7 +63,7 @@ class parliament_plugin extends control {
 					<section class="kalan_zaman satir ilk_satir">
 						<div class="kalan_zaman_ic">
 							<p>Ses’lerini en çok beğendiğiniz arkadaşlarınızı vekil olarak önerin, halk onların ağzından dinlesin. Her hafta 10 vekil önerebilirsiniz. </p>
-							<ul class="dijital_saat">
+							<ul style="display: none" class="dijital_saat">
 								<li>
 									<span class="baslik">Gün</span>
 									<span class="sayi"><b>44</b><span class="cizgi"></span></span>
