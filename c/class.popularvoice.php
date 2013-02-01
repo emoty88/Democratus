@@ -42,10 +42,18 @@ class popularvoice extends voice
 		//die;
         $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT);
         $rows = $db->loadObjectList();
-		foreach($rows as $row)
+		if(count($rows))
 		{
-			//if(!profile::isallowed($row->profileID, $row->showdies)) continue; //seslerini gizledi ise bu özellik kaldırıldı 
-			$voices[]	= $this->get_return_object($row,22,22);
+			
+			foreach($rows as $row)
+			{
+				//if(!profile::isallowed($row->profileID, $row->showdies)) continue; //seslerini gizledi ise bu özellik kaldırıldı 
+				$voices[]	= $this->get_return_object($row,22,22);
+			}
+		}
+		else
+		{
+			$voices = false;
 		}
 		return $voices;
 	}
