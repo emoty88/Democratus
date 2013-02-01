@@ -12,8 +12,11 @@
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
-            $WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
-            $WHERE .= "\n  AND a.status>0"; 
+			$WHERE = "\n  WHERE a.status>0"; 
+			if($_SERVER['SERVER_NAME']=="democratus.com")
+            {
+				$WHERE  .= "\n AND ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime"; 
+			}    
             
             if($type!="0")
 			{
@@ -36,8 +39,6 @@
 			} 
             $LIMIT  = "\n  LIMIT 7";
             // Bu alanı sunucuya gönderme 
-            
-            
             $db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$GROUP.$ORDER.$LIMIT);
             //echo $db->_sql;
             
