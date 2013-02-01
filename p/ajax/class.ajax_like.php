@@ -145,14 +145,14 @@
         	if($like=="dilike1")
             {
             	$puanClass->puanIslem($di->profileID,"2",$di);
-				KM::identify($model->user->email);
-				KM::record('likevoice');
+				//KM::identify($model->user->email);
+				//KM::record('likevoice');
             }
             else 
             {
             	$puanClass->puanIslem($di->profileID,"3",$di);
-				KM::identify($model->user->email);
-				KM::record('dislikevoice');
+				//KM::identify($model->user->email);
+				//KM::record('dislikevoice');
             }
             echo json_encode($response);
             
