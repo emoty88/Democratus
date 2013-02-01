@@ -46,7 +46,7 @@
     		{{login}}
     		
     		<div class="clearfix"></div>
-    		
+    		<? /*
     		<ul class="features">
     			<li>
     				<div class="img"><img alt="" src="<?=TEMPLATEURL?>/ala/img/feature-1.jpg"></div>
@@ -65,7 +65,7 @@
     				<h3>Vekil seçilerek,<br>gündemleri sen belirle!</h3>
     			</li>
     		</ul>
-    		
+    		*/ ?>
     		<div class="clearfix"></div>
     		
     		<section class="signup">

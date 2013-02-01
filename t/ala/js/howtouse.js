@@ -14,7 +14,6 @@ var stepsHome = [
 					buttons: ["prev_btn", "next_btn", "stop_btn"],
 					onAfterScrtip: "loadDumyVoice(38750)"
 				},
-
 				{
 					placement:"right", 
 					domSelector: "#meclis_gagget", 

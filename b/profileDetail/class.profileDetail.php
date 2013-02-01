@@ -51,7 +51,7 @@
 									</tr>
 									<tr>
 										<td class="istatistik"><strong><?=$p->count_voice?></strong> SES</td>
-										<td class="istatistik"><strong><?=$p->count_like?></strong> TAKTİR</td>
+										<td class="istatistik"><strong><?=$p->count_like?></strong> TAKDİR</td>
 										<td class="istatistik"><strong><?=$p->count_dislike?></strong> SAYGI</td>
 									</tr>
 								</table>

@@ -3,20 +3,22 @@
         public function block(){
         	global $model;
         	
-                        $c_parliament=new parliament;
+            $c_parliament=new parliament;
 			$type=0;
 			$parentID=0;
-			if($model->paths[0]=="t")
+			if($model->paths[0]=="hashTag")//chech ed 
 			{
 				$type="hastagID";
-				$parentID=profile::change_perma2ID($model->paths[1]);
+				$c_profile = profile();
+				$parentID= $c_profile->change_perma2ID($model->paths[1]);
 			}
-                        $agendasNonSort=$c_parliament->get_agenda($type, $parentID);
+           	$agendasNonSort=$c_parliament->get_agenda($type, $parentID);
 			$agendas = $c_parliament->short_agandaNew($agendasNonSort);
-                        if(!model::checkLogin(FALSE)){
-                            foreach ($agendas as $ag)
-                            $model->addScript("get_meclis_istatistik($ag->ID);");
-                        }
+                        
+            if(!$model->checkLogin(FALSE)){
+                foreach ($agendas as $ag)
+                $model->addScript("get_meclis_istatistik($ag->ID);");
+            }
 			
         	?>
         		<!-- Kırmızı Bileşen -->
@@ -32,6 +34,7 @@
 						<a href="/parliament" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
 							<?
 							$new_agenda = $c_parliament->count_agenda($type, $parentID);
+							
 							if($new_agenda>0)
 							{?>
 								<span class="etiket"><?=$new_agenda?></span>
@@ -48,8 +51,12 @@
 								?>
 								<li>
 									<img src="<?=$model->getProfileImage($a->deputyimage,22,22,"cutout")?>" alt="profile-img">
-                                                                            <h5><a href="/<?=profile::change_ID2perma($a->deputyID)?>"><?=$a->deputyname?></a></h5>
-									<p style="height: 145px;"><?=$a->title?></p>
+                                    <h5><a href="/<?=profile::change_ID2perma($a->deputyID)?>"><?=$a->deputyname?></a></h5>
+									<p style="height: 145px;">
+										<a href="/voice/<?=$a->diID?>" style="text-decoration: none; font-weight: normal;">
+											<?=$a->title?>
+										</a>
+									</p>
 									<div id="meclis-bottom-box-<?=$a->ID?>">
 									<? 
 									if(!$a->myvote>0)
@@ -98,6 +105,8 @@
 					</div>
 				</section>
 			<?
+			
+			
         }
         public function block_old(){
         	global $model, $db, $l; 

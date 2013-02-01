@@ -12,8 +12,8 @@
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
-            //$WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
-            $WHERE = "\n  WHERE a.status>0"; 
+            $WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
+            $WHERE .= "\n  AND a.status>0"; 
             
             if($type!="0")
 			{
@@ -29,10 +29,10 @@
 			if($type!="0")
 			{
 				$ORDER  = "\n ORDER BY a.$type DESC";
-				$ORDER  .= "\n , a.ID DESC";
+				$ORDER  .= "\n , a.ID asc";
 			}else
 			{
-				$ORDER  = "\n ORDER BY a.ID DESC";
+				$ORDER  = "\n ORDER BY a.ID asc	";
 			} 
             $LIMIT  = "\n  LIMIT 7";
             // Bu alanı sunucuya gönderme 
@@ -200,9 +200,9 @@
 			global $model, $db;
         	$return = array();
         	try{
-              	if(strlen($porposalT)>200)
+              	if(mb_strlen($porposalT,'UTF-8')>200)
 				{
-					 throw new Exception('Tasarılar enfazla 200 karakter olmalı!');
+					 throw new Exception('Tasarılar enfazla 200 karakter olmalı!'.strlen(trim($porposalT)).'---'.$porposalT);
 				}
                 
                	//millet vekili mi?
@@ -237,65 +237,65 @@
 			global $model, $db;
                         $retunObj=array();
 			try { 
-                            if($model->profile->deputy<1) throw new Exception('Bu bölümü sadece vekiller görebilir.');  
-                            $SELECT = "SELECT pp.*, pr.name, pr.image, pr.permalink";
+                if($model->profile->deputy<1) throw new Exception('Bu bölümü sadece vekiller görebilir.');  
+                $SELECT = "SELECT pp.*, pr.name, pr.image, pr.permalink";
+                $SELECT .= "\n , (( pp.count_approve  - pp.count_reject) *  pp.count_approve ) AS points";
+                $FROM = "\n FROM proposal AS pp";
+                $JOIN = "\n LEFT JOIN profile AS pr ON pr.ID = pp.deputyID";
+				//$JOIN .= "\n LEFT JOIN proposalvote AS ppV ON ppV.proposalID=pp.ID AND ppV.deputyID='".$model->profileID."'";
+                $WHERE = "\n WHERE pp.datetime>" . $db->quote ( date ( 'Y-m-d H:i:s', LASTPROPOSAL ) );
+                $WHERE .= "\n AND pp.status>0";
+                $WHERE .= "\n AND pp.used<1";
+                $WHERE .= "\n AND pp.st=1";
+                // $GROUP = "\n GROUP BY ppv.proposalID";
+                $GROUP = "\n GROUP BY pp.ID";
+                $ORDER = "\n ORDER BY points DESC, pp.count_approve DESC, pp.ID ASC";
 
-                            $SELECT .= "\n , (( pp.count_approve  - pp.count_reject) *  pp.count_approve ) AS points";
-                            $FROM = "\n FROM proposal AS pp";
-                            $JOIN = "\n LEFT JOIN profile AS pr ON pr.ID = pp.deputyID";
-                            $WHERE = "\n WHERE pp.datetime>" . $db->quote ( date ( 'Y-m-d H:i:s', LASTPROPOSAL ) );
-                            $WHERE .= "\n AND pp.status>0";
-                            $WHERE .= "\n AND pp.used<1";
-                            $WHERE .= "\n AND pp.st=1";
-                                    // $GROUP = "\n GROUP BY ppv.proposalID";
-                            $GROUP = "\n GROUP BY pp.ID";
-                            $ORDER = "\n ORDER BY points DESC, pp.count_approve DESC, pp.ID ASC";
+                $LIMIT = "\n ";
+                $db->setQuery ( $SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT );
 
-                            $LIMIT = "\n ";
-                            $db->setQuery ( $SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT );
-
-                            $proposals = $db->loadObjectList ();
-                            $ids = array();
-                            foreach($proposals as $p){
-                                    $ro	= new stdClass;
-                                    $ro->ID = $p->ID;
-                                    $ro->text = $p->spot;
-                                    $ro->deputyID = $p->deputyID;
-                                    $ro->mecliseAlan = $p->mecliseAlan;
-                                    $ro->count_approve = $p->count_approve;
-                                    $ro->count_reject = $p->count_reject;
-                                    $ro->dName = $p->name;
-                                    $ro->dImage = $model->getProfileImage($p->image, 48,48, 'cutout');
-                                    $ro->dPerma = $p->permalink;
-                                    $ro->time = model::get_beforeTime( strtotime($p->datetime));
-                                    $ro->approve =0;
-                                    $ro->reject=0;
-                                    if($p->deputyID == $model->profileID)
-                                        $ro->isMine = TRUE;
-                                    else
-                                        $ro->isMine = FALSE;
-                                    $retunObj['proposal'][]=$ro;
-                                    $ids[] = $ro->ID;
-                            }
-                            
-                            $query='SELECT proposalID, approve, reject from proposalvote WHERE proposalID IN ('.implode(' , ', $ids).')';
-                            $db->setQuery($query);
-                            $votes = $db->loadObjectList ();
-                           
-                            foreach ($votes as $vote){
-                                foreach ($retunObj['proposal'] as $key=>$v){
-                                    if($v->ID == $vote->proposalID){
-                                        $retunObj['proposal'][$key]->approve = $vote->approve;
-                                        $retunObj['proposal'][$key]->reject = $vote->reject;
-                                    }
-                                }
-                            }
-                                                        
-                            $retunObj['result'] = 'success';
-                        }  catch (Exception $e){
-                                $retunObj['result'] = 'error';
-                                $retunObj['message'] = $e->getMessage();
+                $proposals = $db->loadObjectList ();
+                $ids = array();
+                foreach($proposals as $p){
+                        $ro	= new stdClass;
+                        $ro->ID = $p->ID;
+                        $ro->text = $p->spot;
+                        $ro->deputyID = $p->deputyID;
+                        $ro->mecliseAlan = $p->mecliseAlan;
+                        $ro->count_approve = $p->count_approve;
+                        $ro->count_reject = $p->count_reject;
+                        $ro->dName = $p->name;
+                        $ro->dImage = $model->getProfileImage($p->image, 48,48, 'cutout');
+                        $ro->dPerma = $p->permalink;
+                        $ro->time = model::get_beforeTime( strtotime($p->datetime));
+                        $ro->approve =0;
+                        $ro->reject=0;
+                        if($p->deputyID == $model->profileID)
+                            $ro->isMine = TRUE;
+                        else
+                            $ro->isMine = FALSE;
+                        $retunObj['proposal'][]=$ro;
+                        $ids[] = $ro->ID;
+                }
+                
+                $query='SELECT proposalID, approve, reject from proposalvote WHERE deputyID ="'.$model->profileID.'"  AND proposalID IN ('.implode(' , ', $ids).')';
+                $db->setQuery($query);
+                $votes = $db->loadObjectList ();
+               
+                foreach ($votes as $vote){
+                    foreach ($retunObj['proposal'] as $key=>$v){
+                        if($v->ID == $vote->proposalID){
+                            $retunObj['proposal'][$key]->approve = $vote->approve;
+                            $retunObj['proposal'][$key]->reject = $vote->reject;
                         }
+                    }
+                }
+                                            
+                $retunObj['result'] = 'success';
+            }  catch (Exception $e){
+                    $retunObj['result'] = 'error';
+                    $retunObj['message'] = $e->getMessage();
+            }
 			return $retunObj;
 		} 
 
@@ -313,9 +313,8 @@
 			$SELECT = "\n SELECT count(*) ";
             $FROM   = "\n FROM agenda AS a";
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
-            $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
-            //$WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
-            $WHERE = "\n  WHERE a.status>0"; 
+            $WHERE  = "\n WHERE ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime";            
+            $WHERE .= "\n  AND a.status>0"; 
             $WHERE .= "\n AND av.profileID = " . $db->quote($model->profileID);
             if($type!="0")
 			{
@@ -354,19 +353,24 @@
                     try{
                         if($model->profile->deputy!=1)
                             throw  new Exception('verkil degil');
-                        
+                        $c_counter = new counter();
                         $id = intval($id);
                         $value = intval($value);
                         $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING ) ;
-                        $QUERY  = 'SELECT count(ID) '. 
+                        $QUERY  = 'SELECT * '. 
                                   'FROM proposalvote '.
                                   'WHERE proposalID='.$id.' AND '.
                                   'deputyID='.$model->profileID.' AND '.
-                                  'status = 1  '.
+                                  'status = 1  LIMIT 1'.
                                   '';
                         $db->setQuery($QUERY);
-                        $count = $db->loadResult();
-                        if($value>0){
+						$sonucC = $db->loadObjectList();
+                        $count = count($sonucC);
+						if($sonucC[0]->approve==$value)
+						{
+							 return false;
+						}
+                       	if($value>0){
                             $approve = 1;
                             $reject = 0;
                             $q = ' approve=1, reject=0 ';
@@ -382,6 +386,13 @@
                             $db->setQuery($QUERY);
                             if(!$db->query()) throw new Exception('db error2');
                             
+                            if($approve == 1)
+							{
+								$c_counter->set_proposalCount($id, "approve", "+");
+							}
+							else {
+								$c_counter->set_proposalCount($id, "reject", "+");
+							}
                         }else{
                             //update
                             $QUERY = 'UPDATE proposalvote SET '.$q.', datetime = NOW(), '." ip = '$ip' ".
@@ -393,6 +404,17 @@
                             $db->setQuery($QUERY);
                             if(!$db->query()) 
                                 throw new Exception('db error2');
+                                
+							if($approve == 1)
+							{
+								$c_counter->set_proposalCount($id, "approve", "+");
+								$c_counter->set_proposalCount($id, "reject", "-");
+							}
+							else 
+							{
+								$c_counter->set_proposalCount($id, "reject", "+");
+								$c_counter->set_proposalCount($id, "approve", "-");
+							}
                         }
                     }  catch (Exception $e){
                         //echo $e->getMessage();

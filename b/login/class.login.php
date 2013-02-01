@@ -30,8 +30,8 @@
 	
 	    			<div class="social_connect">
 	    			
-	    				<a class="facebook_login" href="#">Facebook ile Bağlan</a>
-	    				<a class="twitter_login" href="#">Twitter ile Bağlan</a>
+	    				<a class="facebook_login" href="/oauth/facebook">Facebook ile Bağlan</a>
+	    				<a class="twitter_login" href="/oauth/twitter">Twitter ile Bağlan</a>
 	    			
 	    			</div>
     			</div>

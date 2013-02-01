@@ -2,7 +2,9 @@
     class di_plugin extends control{ 
         public function main(){
             global $model, $db, $l;
-            //die;
+			header ('HTTP/1.1 301 Moved Permanently');
+  			header ('Location: /voice/'.$model->paths[1]);
+			//die;
             //$model->newDesign=false;
             $model->addScript(TEMPLATEURL."beta/docs/assets/js/jquery.js","jquery.js",1);
             //$model->addScript(PLUGINURL . 'lib/combined.js', 'combined.js', 1);

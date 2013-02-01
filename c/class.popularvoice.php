@@ -19,12 +19,12 @@ class popularvoice extends voice
         $SELECT.= ", count(dilike.ID) AS toplamoy, sum(dilike.dilike1) AS takdir, sum(dilike.dilike2) AS saygi";
         //$SELECT.= ", (SELECT count(ID) FROM dicomplaint AS dc WHERE dc.diID=di.ID ) AS complaint";
         //$SELECT.= ",( sum(dilike.dilike1) - sum(dilike.dilike2) - ((SELECT count(ID) FROM dicomplaint AS dc WHERE dc.diID=di.ID )*2))  AS popularite";
-        $SELECT.= ", (sum(dilike.dilike1)*3+sum(dilike.dilike2)*1+(SELECT count(ID) FROM di AS diredi WHERE diredi.redi=di.ID )*10+(SELECT count(ID) FROM dicomment AS dicom WHERE dicom.diID=di.ID )*1) popularite";
+        $SELECT.= ", (sum(dilike.dilike1)*3+sum(dilike.dilike2)*1+(SELECT count(ID) FROM di AS diredi WHERE diredi.redi=di.ID )*10) popularite";
         $FROM   = "\n FROM dilike, di";
         $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
-        //$WHERE  = "\n WHERE di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; // public çalışmalı
-        $WHERE = "\n where di.ID = dilike.diID"; // AND
+        $WHERE  = "\n WHERE di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; // public çalışmalı
+        $WHERE .= "\n AND di.ID = dilike.diID"; // AND
         $WHERE .= "\n AND di.status>0";
         $WHERE .= "\n AND di.popularstatus>0";
         if($start>0){

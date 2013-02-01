@@ -18,7 +18,7 @@ class twitterClass{
     }
 	public function get_loginUrl()
 	{
-		$request_token = $this->twO->getRequestToken("http://democratusala.com/my/twitterReturn");
+		$request_token = $this->twO->getRequestToken("http://democratus.com/my/twitterReturn");
 		$_SESSION['oauth_token'] = $request_token['oauth_token'];
 		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 		$this->twO = new TwitterOAuth($this->twitter_key, $this->twitter_secret,$_SESSION['oauth_token'],$_SESSION['oauth_token_secret']);
@@ -33,14 +33,14 @@ class twitterClass{
 		$tweetTextFinal=substr ($tweetText, 0 , 110);
 		
 		$urlS=new urlshorter();
-		$response=$urlS->useBitly("http://democratus.com/di/".$ID);
+		$response=$urlS->useBitly("http://democratus.com/voice/".$ID);
 		if($response["url"]!="")
 		{
 			$link=$response["url"];
 		}
 		else 
 		{
-			$link="http://democratus.com/di/".$ID;
+			$link="http://democratus.com/voice/".$ID;
 		}
 		$tweetTextFinal.="... - ".$link;
 		$sonuc=$this->twO->post('statuses/update', array("status" => $tweetTextFinal));

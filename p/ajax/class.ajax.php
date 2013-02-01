@@ -192,13 +192,15 @@ class ajax_plugin extends control{
 	                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
 	                	}
 					
-	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0)
+	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
 	                {
-	                	$fb=new facebook();
-	                	$fb->facebookPost(strip_tags($share->di),$share->ID);
+	                	$fb = new facebookClass();
+						var_dump($fb->yazmaizniVarmi());
+						die;
+	                	$fb->send_post(strip_tags($share->di),$share->ID);
 	                }
 						
-                	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0) 
+                	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
 	                {
 	                	$tw=new twitter();
 	                	$tw->sendTweet(strip_tags($share->di),$share->ID);
@@ -266,7 +268,7 @@ class ajax_plugin extends control{
 		else if(@$_REQUEST["uploadType"]=="cover")
 		{
 			$uniqueP = date("y_m_d");
-			$upDir="cover/".$uniqueP;
+			$upDir="coverImage/".$uniqueP;
 		}
                 
                 else if(@$_REQUEST["uploadType"]=="profileImage")
@@ -797,6 +799,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return		= array();
 		$proposal	= $c_parliament->get_proposal();
 		$return["status"]	= $proposal['result'];
+		$return['message']= $proposal['message'];
                 if($return['status'] == 'success')
                     $return["proposals"] = $proposal['proposal'];
 		echo json_encode($return);
@@ -894,7 +897,8 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$friends = $c_facebook->get_friend($model->profile->fbID);
 		$dFriend = $c_facebook->get_friendSuggestion($friends);
 		
-		$returnA["friendList"] = profile::get_profileMultiReturtnObj($dFriend); 
+		$c_profile = new profile();
+		$returnA["friendList"] = $c_profile->get_profileMultiReturtnObj($dFriend); 
 		echo json_encode($returnA);
 	}
 	function twitter_get_friendSuggestion()
@@ -903,9 +907,11 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$returnA = array("status"=>"success");
 		$c_twitter = new twitterClass;
 		$friends = $c_twitter->get_friends($model->profile->fbID);
+		//var_dump($friends);
 		$dFriend = $c_twitter->get_friendSuggestion($friends);
 		
-		$returnA["friendList"] = profile::get_profileMultiReturtnObj($dFriend); 
+		$c_profile = new profile();
+		$returnA["friendList"] = $c_profile->get_profileMultiReturtnObj($dFriend); 
 		echo json_encode($returnA);
 	}
 	function check_settings(){
@@ -1073,8 +1079,10 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
    		$response = array("status" => "success");
 	    try{
 	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+			$start = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+			$limit = filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
-			$voices =  $c_voice->get_reply();
+			$voices =  $c_voice->get_reply(null, $start, $limit);
 			$response["voice_count"] = count($voices);
 			foreach($voices as $v)
 			{
@@ -1358,6 +1366,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$uProfile = new stdClass;
 		$uProfile->ID = $model->profileID;
 		$uProfile->coverImage = $_REQUEST["imageData"]["uploadDir"].SLASH.$_REQUEST["imageData"]["fileName"];
+		
 		if($c_profile->update_profile($uProfile))
 		{
 			$response["status"] = "success";

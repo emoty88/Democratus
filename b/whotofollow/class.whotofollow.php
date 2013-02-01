@@ -3,28 +3,32 @@
         
         public function block(){
         	global $model;
-			$model->addScript("
-			jQuery(document).ready(function ($) {
-				get_who2follow();
-			});");
-		?>
-			<!-- Bileşen -->
-			<section class="bilesen beyaz padding_yok">
-				<header>
-					<h1>Takip Önerileri</h1>
-				</header>
-				<div class="bilesen_icerigi">
-					<ul id="gaget_who2follow" class="profil_listesi">
-						
-					</ul>
-				</div>
-				<aside class="kontroller">
-					<a href="javascript:;" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
-						<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
-					</a>
-				</aside>
-			</section>
-		<?
+			if($model->checkLogin())
+			{
+				$model->addScript("
+				jQuery(document).ready(function ($) {
+					get_who2follow();
+				});");
+				 
+			?>
+				<!-- Bileşen -->
+				<section class="bilesen beyaz padding_yok">
+					<header>
+						<h1>Takip Önerileri</h1>
+					</header>
+					<div class="bilesen_icerigi">
+						<ul id="gaget_who2follow" class="profil_listesi">
+							
+						</ul>
+					</div>
+					<aside class="kontroller">
+						<a href="javascript:;" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
+							<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
+						</a>
+					</aside>
+				</section>
+			<?
+			}
 		}
         public function block_old(){
             global $model, $db, $l; //return;

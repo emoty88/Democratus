@@ -53,7 +53,7 @@ class jstemplates_block extends control{
 						</a>
 						<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 							<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
-							<span>Taktir Et</span>
+							<span>Takdir Et</span>
 						</a>
 						<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
@@ -209,7 +209,7 @@ class jstemplates_block extends control{
 						</a>
 						<address class="yazar">
 							<a title="${dName} Profilini Görüntüle" href="${dPerma}">${dName}</a> 
-							<span>2 gün, 2 saat</span>
+							<span></span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p>
@@ -259,7 +259,7 @@ class jstemplates_block extends control{
 					<aside class="istatistikler">
 						<ul class="istatistik_listesi">
 							<li><strong>${count_voice}</strong> SES</li>
-							<li><strong>${count_like}</strong> TAKTİR</li>
+							<li><strong>${count_like}</strong> TAKDİR</li>
 							<li><strong>${count_dislike}</strong> SAYGI</li>
 						</ul>
 					</aside>
@@ -338,16 +338,16 @@ class jstemplates_block extends control{
 							<p style="min-height: 48px;">${text}</p>
 						</div>
 						<aside class="cevaplar tasari_yaz_cevaplar">
-                                                    {{if approve>0}}
-                                                        <a onclick="set_proposal_vote(${ID},1)" href="javascript:;" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
-                                                    {{else}}
-							<a onclick="set_proposal_vote(${ID},1)" href="javascript:;" id="v-${ID}-1" class="btn">Tartışılsın</a>
-                                                    {{/if}}
-                                                    {{if reject>0}}
-                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript:;" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
-                                                    {{else}}
-                                                       <a onclick="set_proposal_vote(${ID},0)" href="javascript:;" id="v-${ID}-0" class="btn">Tartışılmasın</a>
-                                                    {{/if}}
+                            {{if approve>0}}
+                                <a href="javascript:;" id="v-${ID}-1" class="btn btn-danger">Tartışılsın</a>
+                            {{else}}
+								<a onclick="set_proposal_vote(${ID},1)" href="javascript:;" id="v-${ID}-1" class="btn">Tartışılsın</a>
+                            {{/if}}
+                            {{if reject>0}}
+                               <a  href="javascript:;" id="v-${ID}-0" class="btn btn-danger">Tartışılmasın</a>
+                            {{else}}
+                               <a onclick="set_proposal_vote(${ID},0)" href="javascript:;" id="v-${ID}-0" class="btn">Tartışılmasın</a>
+                            {{/if}}
 						</aside>
                                                 <aside class="komutlar" onclick="notOpen=1;">
 						
