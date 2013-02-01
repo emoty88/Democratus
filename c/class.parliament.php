@@ -366,7 +366,8 @@
                         $db->setQuery($QUERY);
 						$sonucC = $db->loadObjectList();
                         $count = count($sonucC);
-						if($sonucC[0]->approve==$value)
+						
+						if($count>0 && $sonucC[0]->approve==$value)
 						{
 							 return false;
 						}

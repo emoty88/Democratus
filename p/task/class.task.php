@@ -4,7 +4,8 @@
         public function main(){
             global $model, $db, $l;
             $model->mode=0;   
-
+			
+			error_reporting(e_all);
             if($model->paths[1]=="gundem56yn234rty")  
             {
             	$this->agenda();
@@ -65,7 +66,7 @@
 			$WHERE .= "\n AND pp.st=1";
             $GROUP  = "\n GROUP BY ppv.proposalID";
             $ORDER  = "\n ORDER BY points DESC, approvecount DESC, pp.ID ASC";
-            $LIMIT  = "\n LIMIT " . $proposalClass->get_agendaLimit();
+            $LIMIT  = "\n LIMIT 7";// . $proposalClass->get_agendaLimit();
             
             
             $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT);
