@@ -57,7 +57,7 @@
 											<?=$a->title?>
 										</a>
 									</p>
-									<div id="meclis-bottom-box-<?=$a->ID?>">
+									<div id="meclis-bottom-box-<?=$a->ID?>" class="meclis_bottom_box">
 									<? 
 									if(!$a->myvote>0)
 									{ ?>
