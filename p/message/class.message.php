@@ -4,13 +4,6 @@
 		public function main(){
 			model::checkLogin(1);
 			global $model, $db, $l;
-			if($model->profileID == "1734")
-			{
-				
-				$this->perma();
-				die;
-			}
-            
 			
 			$model->template="ala";
 			$model->view="message";
