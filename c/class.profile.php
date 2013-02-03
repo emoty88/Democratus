@@ -725,40 +725,60 @@
 			return $secilenler;
 		}
                 
-                public static function change_password($inputArray){
-                    global $model,$db;
-                    $returnArray = array();
-                    $returnArray['status'] = 'success';
-                    extract($inputArray);
-                    
-                    try{
-                        $QUERY = "SELECT count(ID) FROM user WHERE ID =".$db->quote($model->profileID)."AND pass='".md5(KEY . trim( $password ))."'";
-                        $db->setQuery($QUERY);
-                        
-                        if($db->loadResult()<1){
-                            $returnArray['element']='password';
-                            throw new Exception('Şifre yanlış. ');
-                        }
-                        if(strlen(trim($password_new))<6){
-                            $returnArray['element']='password_new';
-                            throw new Exception('Şifre kısa. ');
-                        }
-                        if($password_new != $password_new2){
-                            $returnArray['element']='password_new2';
-                            throw new Exception('Şifreler uyuşmuyor');
-                        }
-                        
-                        $QUERY = "UPDATE user SET pass='".md5(KEY . trim( $password_new ))."' WHERE ID =".$db->quote($model->profileID)." AND pass='".md5(KEY . trim( $password ))."'";
-                        $db->setQuery($QUERY);
-                        if(!$db->query()){
-                            throw new Exception('Bir sorun oluştu');
-                        }
-                    }catch(Exception $e){
-                        $returnArray['status'] = 'error';
-                        $returnArray['message'] = $e->getMessage();
-                    }
-                    
-                    return $returnArray;
+        public static function change_password($inputArray){
+            global $model,$db;
+            $returnArray = array();
+            $returnArray['status'] = 'success';
+            extract($inputArray);
+            
+            try{
+                $QUERY = "SELECT count(ID) FROM user WHERE ID =".$db->quote($model->profileID)."AND pass='".md5(KEY . trim( $password ))."'";
+                $db->setQuery($QUERY);
+                
+                if($db->loadResult()<1){
+                    $returnArray['element']='password';
+                    throw new Exception('Şifre yanlış. ');
                 }
+                if(strlen(trim($password_new))<6){
+                    $returnArray['element']='password_new';
+                    throw new Exception('Şifre kısa. ');
+                }
+                if($password_new != $password_new2){
+                    $returnArray['element']='password_new2';
+                    throw new Exception('Şifreler uyuşmuyor');
+                }
+                
+                $QUERY = "UPDATE user SET pass='".md5(KEY . trim( $password_new ))."' WHERE ID =".$db->quote($model->profileID)." AND pass='".md5(KEY . trim( $password ))."'";
+                $db->setQuery($QUERY);
+                if(!$db->query()){
+                    throw new Exception('Bir sorun oluştu');
+                }
+            }catch(Exception $e){
+                $returnArray['status'] = 'error';
+                $returnArray['message'] = $e->getMessage();
+            }
+            
+            return $returnArray;
+        }
+		function normalize_permalink($permalink=null, $element="profile")
+		{
+			global $model, $db;
+			if($permalink==null)
+			{
+				return false;
+			}
+			$query = "SELECT count(permalink) FROM $element WHERE permalink= '$permalink'";
+			$db->setQuery($query);
+			$sonuc = $db->loadResult();
+			if($sonuc>0)
+			{
+				$permalink = $permalink."_".rand(2,99);
+				return $this->normalize_permalink($permalink, $element);
+			}
+			else 
+			{
+				return $permalink;
+			}
+		}
     }
 ?>

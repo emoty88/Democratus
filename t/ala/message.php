@@ -51,7 +51,7 @@
 									{{whotofollow}}
 
 								</div>
-							</div>
+							</div>http://democ.com/my#arkadasB
 						</section><!-- // Yan Alan -->
 
 						<!-- Orta Alan -->
@@ -112,5 +112,6 @@
 
         <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
 		{{jstemplates}}
+		{{googleanalytics}}
     </body>
 </html>

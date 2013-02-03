@@ -2,8 +2,9 @@
 	class oauth_plugin extends control{
 		private $facebook_app_id        = '272887782761960';
 		private $facebook_app_secret    = 'dd0f4c22abd2ff4d7f4dd7bd3518f86c'; 
-		private $twitter_key            = 'm6Wxc0XrYoIpSI9Nfuhu6A';
-		private $twitter_secret         = 'NU2wI0SaFeJbEunfQhwxvB3q69XDtGur2cOcMpEI';
+		
+		private $twitter_key            = 'i0n7BGuUZ6xLXzs1ixg';
+		private $twitter_secret         = 'wMv4BGlmUyWc3pz4v8rwDZFMuOxWUtRFYtPSbYP03Y';
         
 		private $facebook;
 		private $twitter;
@@ -15,7 +16,7 @@
 				case 'facebook' : return $this->facebook() ; break;	
 				case 'twitter'	: return $this->twitter(); break;
 				case 'twitter2'	: return $this->twitter2(); break;
-				case 'twitter2'	: return $this->twitterSuggestion(); break;		
+				case 'twitter_sug'	: return $this->twitterSuggestion(); break;		
 			}
 			
 						/*
@@ -192,13 +193,19 @@
                     $uid         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['id'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                     $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['email'], FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                     $username        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['username'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                    
+                     if($_SERVER['REMOTE_ADDR']=='88.255.245.2522')
+						{
+							echo "<pre>";
+							var_dump($user_profile);
+							echo "</pre>";
+							die;
+						}
                     
                     
                     //oauth kaydı var mı?
                     
                     $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'facebook' AND oauth_uid = " . $db->quote($user_profile['id']) . "" );
-                    $oauth = null;
+                    $oauth = null; // bu alanı oauth kaydından değil profildeki userID den kontrol edeceğiz 
                     if($db->loadObject($oauth)){
                         //login ol ve çık
                         //die('oauth var');
@@ -265,12 +272,13 @@
                     
                     //hayır ise profil, user oluştur ve oauth kaydı yap
                     
-                    
+                   
                     
                     
                     
                     $profile = new stdClass;
                     $profile->name = $name;
+					$oauth->permalink  = $c_porfile->normalize_permalink($username);
                     $profile->status = 1;
                     $profile->fbID = $uid;
                     
@@ -373,12 +381,20 @@
                         
                         $name         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->name, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $uid         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->id, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+						$userName         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->screen_name, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                        
                         //$email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info['email'], FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $username        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->screen_name, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $motto        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->description, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $location        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         //$birth        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                        
+                        if($_SERVER['REMOTE_ADDR']=='88.255.245.2522')
+						{
+							echo "<pre>";
+							var_dump($user_info);
+							echo "</pre>";
+							die;
+						}
                         if (strlen($uid)<3) throw new Exception('id not valid');
                         
                         //oauth kaydı var mı?
@@ -406,12 +422,14 @@
                         
                         
                         
-                        
+                        $c_porfile = new profile;
                         
                         $profile = new stdClass;
                         $profile->name = $name;
-                        $profile->motto = $motto;
+						$profile->permalink = $c_porfile->normalize_permalink($userName);
+                  		$profile->motto = $motto;
                         $profile->hometown = $location;
+						$profile->twID 	= $uid;
                         $profile->status = 1;
                         
                         
@@ -437,7 +455,7 @@
                                 $oauth->datetime  = date('Y-m-d H:i:s');
                                 $oauth->status    = 1;
                                 if( $db->insertObject('oauth', $oauth ) ){
-                                    echo '<h2>Yaşasın başardık</h2>';
+                                    //echo '<h2>Yaşasın başardık</h2>';
                                     $model->login('ID='.intval($oauth->userID), 'twitter');
                                     return $model->redirect('/');
                                     

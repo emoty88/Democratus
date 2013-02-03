@@ -5,7 +5,7 @@
             global $model, $db, $l;
             $model->mode=0;   
 			
-			error_reporting(e_all);
+			
             if($model->paths[1]=="gundem56yn234rty")  
             {
             	$this->agenda();
@@ -71,7 +71,7 @@
             
             $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT);
             $rows = $db->loadObjectList();
-            
+           
             echo '<h3>Seçilen gündem sayısı: '.count($rows).'</h3>';
             //return;
             if(count($rows)){
@@ -163,14 +163,15 @@
         }
         
         private function deputy(){
-            global $model, $dbez, $db, $l;
+            global $model, $db, $l;
             
             ob_start();
-            
             //tüm vekilleri at
             //$db->setQuery("UPDATE profile SET deputy = 0");
             //$db->uquery();
-            $dbez->query("UPDATE profile SET deputy = 0");
+            //$dbez->query("UPDATE profile SET deputy = 0");
+            $db->setQuery("UPDATE profile SET deputy = 0");
+            $db->uquery();
 			
 		/*
             //oyu en yüksek olan ilk 100 kişiyi bul
@@ -198,8 +199,7 @@
             $WHERE .= "\n AND pr.type = 'person'";
             $GROUP  = "";            
             $ORDER  = "\n ORDER BY pr.puan DESC, pr.ID ASC";
-            $LIMIT  = "\n LIMIT " . config::$deputylimit;
-			
+            $LIMIT  = "\n LIMIT 50";		
             $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT);
             $rows = $db->loadObjectList(); 
             
@@ -273,7 +273,9 @@
             //mail('kadir@kadir.web.tr', 'deputy task run', $buffer);
             
             //$model->sendsystemmail('kadir@kadir.web.tr', 'Milletvekili seçimi', $buffer);
-			$dbez->query("update profile set puan='0' , temelPuanHesaplandi='0' ");
+			//$db->query("update profile set puan='0' , temelPuanHesaplandi='0' ");
+			$db->setQuery("update profile set puan='0' , temelPuanHesaplandi='0' ";
+            $db->uquery();
             $model->sendsystemmail('emoty88@gmail.com', 'Milletvekili seçimi', $buffer);
             $model->sendsystemmail('director@democratus.com', 'Milletvekili seçimi', $buffer);
             
