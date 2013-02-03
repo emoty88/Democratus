@@ -2,22 +2,29 @@
     class home_plugin extends control{
     	
         public function main(){
-                model::checkLogin(1);
+          
         	global $model, $db, $l;
+			$model->checkLogin(1);
+			$c_profile = new profile();
+			
+			$rt=$c_profile->check_userMin();
+			if(!$rt["success"])
+			{
+				$model->redirect("/my#profilA");
+			}
+
 			$model->template="ala";
 			$model->view="home";
 			$model->title = 'Democratus';
-			if($model->profileID<1){
-                $model->mode = 0;
-                return $model->redirect('/welcome', 1);
-            }
+			
+			
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 			
 			$model->addScript(TEMPLATEURL."ala/js/howtouse.js", "howtouse.js", 1);
 			$model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo.min.js", "jquery.scrollTo.min.js", 1);

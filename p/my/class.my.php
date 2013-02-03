@@ -9,22 +9,23 @@
 			$model->title = 'Democratus';
 
 			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-                        $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 
-                        $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 			
 			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1); // düzenle
-                        $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
-                        $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
+            $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
+            $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
 			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
 			
+			$c_profile = new profile ;
 			$profile= $model->profile;
 			if($model->paths[1]=="faceReturn")
 			{
@@ -41,24 +42,24 @@
 				$birth['day'] = '0'.$birth['day'];
 			}
 			$birth['month']=model::int2trMonth($birth['month']);
-                        
-                        $profileChecked[$profile->showprofile]=' checked="ture" ';
-                        $birthChecked[$profile->showbirth]=' checked="ture" ';
-                        $mottoChecked[$profile->showmotto]=' checked="ture" ';
-                        $showdiesChecked[$profile->showdies]=' checked="ture" ';
-                        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
-                        $hometownChecked[$profile->showhometown]=' checked="ture" ';
-                        $countryChecked[$profile->showcountry]=' checked="ture" ';
-                        $cityChecked[$profile->showcity]=' checked="ture" ';
-                        $materialChecked[$profile->showmarital]=' checked="ture" ';
-                        $educationChecked[$profile->showeducation]=' checked="ture" ';
-                        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
-
-                        $langChecked[$profile->showlanguages]=' checked="ture" ';
-                        $emailChecked[$profile->showemail]=' checked="ture" ';
-                        $followersChecked[$profile->showfollowers]=' checked="ture" ';
-                        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
-                        $photosChecked[$profile->showphotos]=' checked="ture" ';
+	                        
+	        $profileChecked[$profile->showprofile]=' checked="ture" ';
+	        $birthChecked[$profile->showbirth]=' checked="ture" ';
+	        $mottoChecked[$profile->showmotto]=' checked="ture" ';
+	        $showdiesChecked[$profile->showdies]=' checked="ture" ';
+	        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
+	        $hometownChecked[$profile->showhometown]=' checked="ture" ';
+	        $countryChecked[$profile->showcountry]=' checked="ture" ';
+	        $cityChecked[$profile->showcity]=' checked="ture" ';
+	        $materialChecked[$profile->showmarital]=' checked="ture" ';
+	        $educationChecked[$profile->showeducation]=' checked="ture" ';
+	        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
+	
+	        $langChecked[$profile->showlanguages]=' checked="ture" ';
+	        $emailChecked[$profile->showemail]=' checked="ture" ';
+	        $followersChecked[$profile->showfollowers]=' checked="ture" ';
+	        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
+	        $photosChecked[$profile->showphotos]=' checked="ture" ';
 			?>
 			<section class="banner">
 				<header>
@@ -73,11 +74,7 @@
 						<li><a href="#tab-engellemeler" rel="engellemeler" data-toggle="tab">ENGELLEMELER</a></li>
 					</ul>
 					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
-						<option value="http://atolye15.com">REFERANDUM</option>
-						<option value="http://atolye15.com">DÖNEM VEKİLLERİ</option>
-						<option value="http://atolye15.com">VEKİL SEÇİMLERİ</option>
-						<option selected="" value="http://atolye15.com">ADAYLARIM</option>
-						<option value="http://atolye15.com">ESKİ REFERANDUMLAR</option>
+						
 					</select>
 				</nav>
 				<div class="clearfix"></div>
@@ -91,9 +88,23 @@
 							<header>
 								<h1 class="sayfa_basligi">Profil Ayarlarım</h1>
 							</header>
-							
+							<?php
+								$rt=$c_profile->check_userMin();
+								if(!$rt["success"])
+								{
+									foreach($rt["errors"] as $e)
+									{
+										switch($e)
+										{
+											case "permalink" : $varningT[] = "Benzersiz kullanıcı Adınızı "; break;
+											case "email" : $varningT[] ="E-posta adresinizi "; break;
+										}
+									}
+									echo "<p> ".implode(" ve ", $varningT)." doğru ve eksizsiz şekilde girmelisiniz !</p>";
+								}
+							?>
 							<form  id="profil_bilgileri_formu" name="profil_bilgileri_formu" method="post">
-
+							
 								<div class="sol_form_bolumu span4">
 									<label for="kullanici_adi">Kullanıcı Adı</label>
 									<input type="text" placeholder="Kullanıcı Adı" id="kullanici_adi" name="kullanici_adi" value="<?=$profile->permalink?>">

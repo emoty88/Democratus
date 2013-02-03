@@ -14,9 +14,9 @@ jQuery(document).ready(function ($) {
 		        	}
 		            if(data.there == 'true'){
 		            	$('#usernameCheck').show();
-		            	$('#usernameCheck').tooltip();
+		            	$('#usernameCheck').tooltip();;
 		            	disable_save_button();
-		            	return;
+                        return;
 		            }else{
 		            	$('#usernameCheck').hide();
 		            	enable_save_button();
@@ -77,7 +77,8 @@ jQuery(document).ready(function ($) {
 		$.post("/ajax/save_settings", data, function(data){ 
 		        if(data.status == 'success'){
 		        	$('#kaydet_dgmesi').html('Kaydedildi');
-		           
+		        	$('a[href="#tab-arkadasB"]').tab("show");
+		           location.href="/my#arkadasB";
 		        }else{
 		        	$('#kaydet_dgmesi').html('Hata oluştu');
 		        }

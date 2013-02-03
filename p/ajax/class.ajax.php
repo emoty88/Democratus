@@ -923,14 +923,14 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		
 		switch($model->paths[2]){
 			case 'username': 
-				if(strlen($value)<5){
+				
+				if(!profile::valid_perma($value)){
 					$returnA['validate'] = 'false';
 					break;
 				}
 				$SELECT = "SELECT count(permalink) ";
 				$FROM 	= "\n FROM profile";
 				$WHERE 	= "\n WHERE ID <> " . $db->quote ( intval ( $model->profileID ) );
-				$WHERE .= "\n AND status>0 ";
 				$WHERE .= "\n AND permalink = '$value'";
 				$LIMIT 	= ' LIMIT 1';
 				$db->setQuery ( $SELECT . $FROM  . $WHERE  .	$LIMIT );
