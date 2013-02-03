@@ -747,6 +747,7 @@
                     $returnArray['element']='password_new2';
                     throw new Exception('Şifreler uyuşmuyor');
                 }
+
                 
                 $QUERY = "UPDATE user SET pass='".md5(KEY . trim( $password_new ))."' WHERE ID =".$db->quote($model->profileID)." AND pass='".md5(KEY . trim( $password ))."'";
                 $db->setQuery($QUERY);
@@ -760,7 +761,6 @@
             
             return $returnArray;
         }
-		
 		function check_userMin()
 		{
 			global $model, $db;
@@ -792,6 +792,28 @@
 			else
 			{
 				return FALSE;
+			}
+		}
+
+		function normalize_permalink($permalink=null, $element="profile")
+		{
+			global $model, $db;
+			if($permalink==null)
+			{
+				return false;
+			}
+			$query = "SELECT count(permalink) FROM $element WHERE permalink= '$permalink'";
+			$db->setQuery($query);
+			$sonuc = $db->loadResult();
+			if($sonuc>0)
+			{
+				$permalink = $permalink."_".rand(2,99);
+				return $this->normalize_permalink($permalink, $element);
+			}
+			else 
+			{
+				return $permalink;
+
 			}
 		}
     }

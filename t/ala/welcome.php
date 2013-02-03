@@ -78,5 +78,5 @@
        <!-- <script>window.jQuery || document.write('&lt;script src="js/jquery-1.8.2.min.js"&gt;&lt;\/script&gt;')</script><script src="js/jquery-1.8.2.min.js"></script>
 				<script src="js/login.js"></script>
     -->
-    
+    {{googleanalytics}}
 </body></html>
