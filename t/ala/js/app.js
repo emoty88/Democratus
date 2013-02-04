@@ -90,6 +90,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	get_noticeCount();
+	get_messageCount();
 	// mobile_menu
 	if( $('[data-benim-olayim="hedef_goster_gizle"]').length )
 	{
@@ -559,6 +560,30 @@ jQuery(document).ready(function ($) {
 			
 		});	
 	}
+	
+	function get_messageCount()
+	{
+		var post_data	= {ID:0};
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_messageCount",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response==null)
+				{
+					$("#messageCount").hide();
+				}
+				else
+				{
+					$("#messageCount").show().text(response);
+				}
+				//console.log(response);
+				setTimeout("get_messageCount()",3000);				
+			}
+		});	
+	}
 	function get_noticeCount()
 	{
 		var post_data	= {ID:0};
@@ -577,7 +602,8 @@ jQuery(document).ready(function ($) {
 				{
 					$("#noticeCount").show().text(response);
 				}
-				//console.log(response);				
+				//console.log(response);
+				setTimeout("get_noticeCount()",3000);				
 			}
 		});	
 	}

@@ -71,41 +71,41 @@
 	            	 switch ($row->type) {
 	                    case 'dilike':
 	                        if($row->subtype == 'dilike1') 
-	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi takdir etti.</a>';
+	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi takdir etti.</a>';
 	                        elseif($row->subtype == 'dilike2') 
-	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi saygı duydu.</a>';
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi saygı duydu.</a>';
 	                        else
-	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi oyladı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi oyladı.</a>';
 	                    
 	                    break;
 	                    case 'redi':
-	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
 	                    break;
 	                    case 'dicomment':
 	                    	$db->setQuery("SELECT DISTINCT fromID FROM notice WHERE TYPE = 'dicomment' AND ID3 = '".$row->ID3."'");
 		            		$kackisi = count($db->loadObjectList());
 		            		if($kackisi>1)
-	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha  sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
+	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha  sizin bir <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
 	                    	else 
-	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
+	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> paylaşımınıza yorum yaptı.</a>';
 	                    	break; 
 	                    case 'dicommentcomment':
 	                    	$db->setQuery("SELECT DISTINCT fromID FROM notice WHERE TYPE = 'dicommentcomment' AND ID3 = '".$row->ID3."'");
 		            		$kackisi = count($db->loadObjectList());
 		            		if($kackisi>1)
-	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
+	                        $message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> ve '.($kackisi-1).' kişi daha sizin yorum yaptığınız ses için  <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
 	                    	else
-	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin yorum yaptığınız ses için  <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
+	                    	$message = '<i class="icon-comment"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin yorum yaptığınız ses için  <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> yorum yaptı.</a>';
 	                  	break;
 	                    case 'dicommentlike':
 	                        //$message = $row->name . ' isimli kullanıcı sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> di yorumunuzu oyladı.</a>';                    
 	                        
 	                        if($row->subtype == 'dilike1') 
-	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu takdir etti.</a>';
+	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu takdir etti.</a>';
 	                        elseif($row->subtype == 'dilike2') 
-	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuza saygı duydu.</a>';
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> yorumunuza saygı duydu.</a>';
 	                        else
-	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu oyladı.</a>';
+	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID3.'#'.$row->ID2.'"> yorumunuzu oyladı.</a>';
 	                    break;
 	                    case 'follow':
 	                        $message = '<i class="icon-eye-open"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizi takip etmeye başladı.';                    
@@ -117,13 +117,13 @@
 	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir<a href="/proposal#pp'.$row->ID2.'"> tasarınıza </a> oy verdi.';                    
 	                    break;
 	                    case 'mentionDi':
-	                        $message = '<i class="icon-tag"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/di/'.$row->ID3.'"> Sesiniz </a>\'den bahseti.';                    
+	                        $message = '<i class="icon-tag"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID3.'"> Sesiniz </a>\'den bahseti.';                    
 	                    break;
 	                    case 'mentiontoReplied':
 	                        $message = '<i class="icon-tag"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin cevapladığınız bir <a href="/di/'.$row->ID3.'"> Ses </a>\'ten bahseti.';                    
 	                    break;
 	                    case 'mentionProfile':
-	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> bir <a href="/di/'.$row->ID2.'"> Sesinde </a> Sizden bahseti.';                    
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> bir <a href="/voice/'.$row->ID2.'"> Sesinde </a> Sizden bahseti.';                    
 	                    break;
 	                    default:
 	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> birşeyler yaptı.';                    
