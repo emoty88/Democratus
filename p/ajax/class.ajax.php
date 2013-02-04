@@ -113,7 +113,7 @@ class ajax_plugin extends control{
                 $share->di=  mb_substr($share->di , 0, 200 ) ; 
                 $share->onlyProfile=0;
         
-                if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek
+                if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek // linkler otomatik gelecek
             	{
             		$share->di=trim($share->di);
             		if(strpos($share->di, "+voice")===false)
@@ -161,31 +161,29 @@ class ajax_plugin extends control{
 					//KM::identify($model->user->email); // aktif edilince açılacak 
 				    //KM::record('writingvoice');
 				     
-                   if(@$_POST["linkli"]=="voice"){
-	                		$db->setQuery("select profileID from di where ID='".$_POST["sesHakkındaID"]."'");
+                   if($share->isReply == "1"){
+	                		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
 	                		$id = $db->loadResult();
-	                		$model->notice($id, 'mentionDi', $db->insertid(),$_POST["sesHakkındaID"]);
+	                		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
 	                		
 	                		//other commenters notice
 		                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
 			                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
 							
+							$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
+							$notNotice=$db->loadResultArray();
 		                   	if(count($notNotice))
-		                    $db->setQuery("SELECT profileID FROM di WHERE replyID=".$_POST["sesHakkındaID"]." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
+		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
 		                    else 
-		                    $db->setQuery("SELECT profileID FROM di WHERE replyID=".$_POST["sesHakkındaID"]." GROUP BY profileID");
+		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
 		                    
 		                    $dicc = $db->loadObjectList();
 			             	if(count($dicc)){
 			                	foreach($dicc as $dic){
 			                    	if($dic->profileID==$share->profileID) continue;
-			                            $model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $_POST["sesHakkındaID"]);
-			                            
-			                        }
+			                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
+			                  	}
 			             	}
-			                        
-							
-		                    
 	                	}
 	                	else if (@$_POST["linkli"]=="profile")
 	                	{
