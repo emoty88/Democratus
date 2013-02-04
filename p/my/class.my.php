@@ -2,7 +2,7 @@
     class my_plugin extends control{
     	public function main()
 		{
-                        model::checkLogin(1);
+           	model::checkLogin(1);
 			global $model, $db, $l;
 			$model->template="ala";
 			$model->view="my";
@@ -100,9 +100,12 @@
 											case "email" : $varningT[] ="E-posta adresinizi "; break;
 										}
 									}
-									echo "<p> ".implode(" ve ", $varningT)." doğru ve eksizsiz şekilde girmelisiniz !</p>";
+									echo '<div id="alertContent" class="alert alert-block alert-error fade in" style="width:90%; display:table; margin:0 auto 10px auto;">
+								        <p id="alert-textArea">'.implode(" ve ", $varningT).' doğru ve eksizsiz şekilde girmelisiniz !</p>
+							   		</div>';
 								}
 							?>
+							
 							<form  id="profil_bilgileri_formu" name="profil_bilgileri_formu" method="post">
 							
 								<div class="sol_form_bolumu span4">
