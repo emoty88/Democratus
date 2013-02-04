@@ -96,12 +96,12 @@
 									{
 										switch($e)
 										{
-											case "permalink" : $varningT[] = "Benzersiz kullanıcı Adınızı "; break;
+											case "permalink" : $varningT[] = "Benzersiz kullanıcı adınızı "; break;
 											case "email" : $varningT[] ="E-posta adresinizi "; break;
 										}
 									}
 									echo '<div id="alertContent" class="alert alert-block alert-error fade in" style="width:90%; display:table; margin:0 auto 10px auto;">
-								        <p id="alert-textArea">'.implode(" ve ", $varningT).' doğru ve eksizsiz şekilde girmelisiniz !</p>
+								        <p id="alert-textArea">'.implode(" ve ", $varningT).' doğru ve eksiksiz şekilde girmelisiniz !</p>
 							   		</div>';
 								}
 							?>
