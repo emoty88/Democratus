@@ -541,7 +541,7 @@ jQuery(document).ready(function ($) {
 						{
 							if(plugin != "parliament")
 							{
-								$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");	
+								$("#duvaryazisi-tmpl").tmpl(response.voice,make_link).prependTo("#orta_alan_container");	
 							}
 							$("#replyTextArea_"+randID).val("");
 						}	
@@ -707,7 +707,7 @@ jQuery(document).ready(function ($) {
 					{
 						firstVoice	= response.voices[0].ID;
 						lastVoiceID	= response.voices[response.voices.length-1].ID;;
-						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#sesler-container");
+						$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#sesler-container");
 						$(".loading_bar").remove();
 					}
 					else
@@ -745,7 +745,6 @@ jQuery(document).ready(function ($) {
 	    		meshClean = meshText.replace(start, "");
 	    		textFinal = text.replace(meshText, '<a href="/'+meshClean+'" >'+meshText+'</a>');	
 	    	}
-	    	//console.log(mesh);
     	}
 	    return textFinal;
 	}
@@ -1170,6 +1169,10 @@ jQuery(document).ready(function ($) {
 	        if(response.status=="success")
 	        {
 	        	//$(".loading_bar").remove();
+	        	if(plugin=="profile")
+	        	{
+	        		location.href="/parliament#vekilsecimleri";
+	        	}
 	        	get_myDeputy();
 	        	//$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).appendTo("#arkadas_listesi_ul");
 	        }
@@ -1371,7 +1374,7 @@ jQuery(document).ready(function ($) {
 	}
 	function voice_page()
 	{
-		$("#duvaryazisi-tmpl").tmpl(voiceObj).appendTo("#orta_alan_container");
+		$("#duvaryazisi-tmpl").tmpl(voiceObj,make_link).appendTo("#orta_alan_container");
 	}
 	function hashtag_page()
 	{
@@ -1393,7 +1396,7 @@ jQuery(document).ready(function ($) {
 		$.post("/ajax/get_popularVoice", {profileID: 0}, function(response){ 
 			if(response.status == "success")
 			{
-				$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#orta_alan_container");
 			}
 	    },'json');
 	}

@@ -321,7 +321,7 @@ class jstemplates_block extends control{
 					<img alt="" src="${pImage}" class="vekil_resmi">
 				</a>
 				<address style="height: 30px;"><a title="${pName}" href="/${pPerma}">${pName}</a></address>
-				<p><a class="btn" href="javascript:vekilOyu(${ID})">Oy Ver</a></p>
+				<p><a class="btn" onclick="vekilOyu(${ID})" href="javascript:;">Oy Ver</a></p>
 			</li>
 		</script>
 		
