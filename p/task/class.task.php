@@ -274,7 +274,7 @@
             
             //$model->sendsystemmail('kadir@kadir.web.tr', 'Milletvekili seçimi', $buffer);
 			//$db->query("update profile set puan='0' , temelPuanHesaplandi='0' ");
-			$db->setQuery("update profile set puan='0' , temelPuanHesaplandi='0' ";
+			$db->setQuery("update profile set puan='0' , temelPuanHesaplandi='0' ");
             $db->uquery();
             $model->sendsystemmail('emoty88@gmail.com', 'Milletvekili seçimi', $buffer);
             $model->sendsystemmail('director@democratus.com', 'Milletvekili seçimi', $buffer);
