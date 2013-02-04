@@ -527,6 +527,12 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		else
 			echo null;
 	}
+	public function get_messageCount()
+	{
+		global $model;
+		$c_message = new messageClass();
+		echo $c_message->getCount($model->profileIDr);
+	}
 	public function redi(){
     	global $model, $db;
     	$ID  = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
@@ -1473,13 +1479,23 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		}
                 echo json_encode($response);
 	}
-        public function change_password(){
-            $inputArray['password']= filter_input(INPUT_POST, 'password',FILTER_SANITIZE_STRING);
-            $inputArray['password_new']=  filter_input(INPUT_POST, 'password_new');
-            $inputArray['password_new2']=  filter_input(INPUT_POST, 'password_new2');
-            //print_r($inputArray);
-            $returnArray=profile::change_password($inputArray);
-            echo json_encode($returnArray);
-        }
+    public function change_password(){
+        $inputArray['password']= filter_input(INPUT_POST, 'password',FILTER_SANITIZE_STRING);
+        $inputArray['password_new']=  filter_input(INPUT_POST, 'password_new');
+        $inputArray['password_new2']=  filter_input(INPUT_POST, 'password_new2');
+        //print_r($inputArray);
+        $returnArray=profile::change_password($inputArray);
+        echo json_encode($returnArray);
+    }
+	public function get_popularVoice()
+	{
+		global $model, $db;
+		$c_pVoice = new popularvoice;
+		$voices=$c_pVoice->get_popularVoice();
+		$return = new stdClass;
+		$return->status = "success";
+		$return->voices = $voices;
+		echo json_encode($return);
+	}
 }
 ?>

@@ -70,19 +70,22 @@
 									<? 
 									if($p->ID != $model->profileID)
 									{ 
-										
-									
 										$followHide = "";
 										$unFollowHide = "display:none";
+										$vekilOBtn = "";
 										if($c_profile->isFollow($p->ID, $model->profileID)){
 											$followHide="display:none";
-											$unFollowHide ="";
+											$unFollowHide =""; 
+											$vekilOBtn = '<li><a class="btn" onclick="vekilOyu('.$p->ID.'); " href="/parliament#vekilsecimleri" style="width:95px;">Vekil Olsun</a></li>';
 										} 
 
 									?>
 									
-										<li><button type="button" class="btn btn follow follow-<?=$p->ID?>" style="<?=$followHide?>" onclick="follow(profileID);">Takip Et</button></li>
-										<li><button type="button" class="btn btn-info unfollow unfollow-<?=$p->ID?>" style="<?=$unFollowHide?>" onclick="follow(profileID);" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button></li>
+										<li>
+											<button type="button" class="btn btn follow follow-<?=$p->ID?>" style="<?=$followHide?>" onclick="follow(profileID);">Takip Et</button>
+											<button type="button" class="btn btn-info unfollow unfollow-<?=$p->ID?>" style="<?=$unFollowHide?>" onclick="follow(profileID);" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
+										</li>
+										<?=$vekilOBtn?>
 									<? 
 									}
 									?>

@@ -241,7 +241,8 @@
 			$v->sName	= $v_obj->sharername;
 			$v->sPerma	= $v_obj->permalink;
 			$v->sImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
-        	$v->voice	= make_clickable($v_obj->di);
+        	//$v->voice	= make_clickable($v_obj->di);
+        	$v->voice	= $v_obj->di;
 			$v->sTime	= time_since( strtotime( $v_obj->datetime ));
 			if($v_obj->initem=="1")
 			{

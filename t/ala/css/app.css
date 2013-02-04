@@ -99,7 +99,9 @@ body.atolye15_body { overflow-x: hidden; }
 #ust_kisim { 
 	min-height: 60px; 
 	border-bottom: 1px solid #fff;  
-	box-shadow: 0 0 20px #333333; 
+	box-shadow: 0 0 20px #333333; margin-left: -10px;
+    text-align: center;
+    width: 245px;
 	position: fixed; 
 	top: 0; 
 	width: 100%;
@@ -864,9 +866,9 @@ body.atolye15_body { overflow-x: hidden; }
 	text-align:center;
 }
 .meclis_bottom_box{
-	margin-left: -20px;
+	margin-left: -10px;
     text-align: center;
-    width: 265px;
+    width: 245px;
 }
 .img-slider-content {
 	margin-top: 15px;

@@ -23,9 +23,12 @@ class popularvoice extends voice
         $FROM   = "\n FROM dilike, di";
         $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
-        $WHERE  = "\n WHERE di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; // public çalışmalı
+        $WHERE = "\n WHERE di.status>0";
+        if($_SERVER['SERVER_NAME']=="democratus.com")
+            {
+				$WHERE  .= "\n AND di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; 
+			}  
         $WHERE .= "\n AND di.ID = dilike.diID"; // AND
-        $WHERE .= "\n AND di.status>0";
         $WHERE .= "\n AND di.popularstatus>0";
         if($start>0){
         	$WHERE .= "\n AND di.ID<" . $db->quote($start);

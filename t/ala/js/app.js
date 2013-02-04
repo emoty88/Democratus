@@ -69,6 +69,7 @@ jQuery(document).ready(function ($) {
    		case "voice" : voice_page(); break;
    		case "hashTag" : hashtag_page();break;
    		case "search" : search_page();break;
+   		case "popularvoice" : popularvoice_page();break;
    	}  	
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
@@ -90,6 +91,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	get_noticeCount();
+	//get_messageCount();
 	// mobile_menu
 	if( $('[data-benim-olayim="hedef_goster_gizle"]').length )
 	{
@@ -539,7 +541,7 @@ jQuery(document).ready(function ($) {
 						{
 							if(plugin != "parliament")
 							{
-								$("#duvaryazisi-tmpl").tmpl(response.voice).prependTo("#orta_alan_container");	
+								$("#duvaryazisi-tmpl").tmpl(response.voice,make_link).prependTo("#orta_alan_container");	
 							}
 							$("#replyTextArea_"+randID).val("");
 						}	
@@ -557,6 +559,30 @@ jQuery(document).ready(function ($) {
                                 $(shareBtn).removeAttr('disabled');
 			}
 			
+		});	
+	}
+	
+	function get_messageCount()
+	{
+		var post_data	= {ID:0};
+		$.ajax({
+			type: "POST",
+			url: "/ajax/get_messageCount",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response==null)
+				{
+					$("#messageCount").hide();
+				}
+				else
+				{
+					$("#messageCount").show().text(response);
+				}
+				//console.log(response);
+				setTimeout("get_messageCount()",3000);				
+			}
 		});	
 	}
 	function get_noticeCount()
@@ -577,7 +603,8 @@ jQuery(document).ready(function ($) {
 				{
 					$("#noticeCount").show().text(response);
 				}
-				//console.log(response);				
+				//console.log(response);
+				setTimeout("get_noticeCount()",3000);				
 			}
 		});	
 	}
@@ -680,7 +707,7 @@ jQuery(document).ready(function ($) {
 					{
 						firstVoice	= response.voices[0].ID;
 						lastVoiceID	= response.voices[response.voices.length-1].ID;;
-						$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#sesler-container");
+						$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#sesler-container");
 						$(".loading_bar").remove();
 					}
 					else
@@ -695,6 +722,31 @@ jQuery(document).ready(function ($) {
 				
 			}
 		});		
+	}
+	var make_link = { 
+	    mk: function(text) {
+	    	
+	    	text=meshReplace(text,"@");
+	    	text=meshReplace(text,"#");
+	        return  text ;
+	    }
+	};
+	function meshReplace(text, start)
+	{
+		var regEx = new RegExp(start+"[a-zA-Z0-9-.çÇöÖşŞıİğĞüÜ]+");
+    	var textFinal=text;
+    	mesh=text.match(regEx);
+    	if(mesh!=null)
+    	{
+    		meshClean = mesh.regEx
+    		for(var i=0; i<mesh.length; i++)
+	    	{
+	    		meshText = mesh[i];
+	    		meshClean = meshText.replace(start, "");
+	    		textFinal = text.replace(meshText, '<a href="/'+meshClean+'" >'+meshText+'</a>');	
+	    	}
+    	}
+	    return textFinal;
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
 		wallmoreAction=1;
@@ -744,10 +796,11 @@ jQuery(document).ready(function ($) {
 						firstVoice	= response.voices[0].ID;
 						lastVoiceID	= response.voices[response.voices.length-1].ID;
 						
+					
 						if(pos=="bottom")
-							$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+							$("#duvaryazisi-tmpl").tmpl(response.voices, make_link).appendTo("#orta_alan_container");
 						else 
-							$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
+							$("#duvaryazisi-tmpl").tmpl(response.voices, make_link).prependTo("#orta_alan_container");
 						$(".loading_bar").remove();
 						$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 						wallmoreAction=0;
@@ -1116,6 +1169,10 @@ jQuery(document).ready(function ($) {
 	        if(response.status=="success")
 	        {
 	        	//$(".loading_bar").remove();
+	        	if(plugin=="profile")
+	        	{
+	        		location.href="/parliament#vekilsecimleri";
+	        	}
 	        	get_myDeputy();
 	        	//$("#parliament-friendItem-tmpl").tmpl(response.myFollowing).appendTo("#arkadas_listesi_ul");
 	        }
@@ -1307,7 +1364,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function parliament_page(){
-                check_proposal_count();
+        check_proposal_count();
 		get_agendas();
 		get_deputyList();
 		get_oldAgenda();
@@ -1317,7 +1374,7 @@ jQuery(document).ready(function ($) {
 	}
 	function voice_page()
 	{
-		$("#duvaryazisi-tmpl").tmpl(voiceObj).appendTo("#orta_alan_container");
+		$("#duvaryazisi-tmpl").tmpl(voiceObj,make_link).appendTo("#orta_alan_container");
 	}
 	function hashtag_page()
 	{
@@ -1329,6 +1386,19 @@ jQuery(document).ready(function ($) {
 		get_voiceSearch(keyword);
 		get_userSearch(keyword);
 		get_archiveSearch(keyword);
+	}
+	function popularvoice_page()
+	{
+		get_popularVoice();
+	}
+	function get_popularVoice()
+	{
+		$.post("/ajax/get_popularVoice", {profileID: 0}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#orta_alan_container");
+			}
+	    },'json');
 	}
 	function get_imageGalery(profileID)
 	{
@@ -1559,6 +1629,5 @@ jQuery(document).ready(function ($) {
         $.post('/ajax/send_activationMail', null, function(response){ 
 			if(response.status=='success')
                             hide_alertBox("alert");
-	},'json');
+		},'json');
     }
-        

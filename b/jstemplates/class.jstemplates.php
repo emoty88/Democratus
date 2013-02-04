@@ -22,7 +22,7 @@ class jstemplates_block extends control{
                                                 <span>${sTime} Önce</span>
 					</address>
 					<div class="duvar_yazisi_icerigi">
-						<p>{{html voice}}</p>
+						<p>{{html $item.mk(voice)}}</p>
 					</div>
 					<aside class="komutlar" onclick="notOpen=1;">
 						{{if redierName}}
@@ -140,7 +140,7 @@ class jstemplates_block extends control{
 							</a>
 							<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 								<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
-								<span>Taktir Et</span>
+								<span>Takdir Et</span>
 							</a>
 							<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 								<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
@@ -218,8 +218,8 @@ class jstemplates_block extends control{
 						</div>
 						<aside class="cevaplar">
 							<a class="btn {{if myVote == 2}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-2" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 2);">Katılıyorum</a>
-							<a class="btn {{if myVote == 4}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-4" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 4);">Katılmıyorum</a>
 							<a class="btn {{if myVote == 3}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-3" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 3);">Kararsızım</a>
+							<a class="btn {{if myVote == 4}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-4" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 4);">Katılmıyorum</a>
 						</aside>
 						
 					</div>
@@ -288,12 +288,12 @@ class jstemplates_block extends control{
 						{{if percent.sonuc == "olumlu"}}
 						<aside class="cevaplar yuzde katiliyorum" style="cursor: pointer;" data-original-title="">
 							<span class="sonuc"><strong>%${percent.max}</strong> Katılıyorum</span>
-						{{else  percent.sonuc == "olumsuz"}}
-						<aside class="cevaplar yuzde katilmiyorum" style="cursor: pointer;" data-original-title="">
-							<span class="sonuc"><strong>%${percent.max}</strong> Katılmıyorum</span>
 						{{else percent.sonuc == "fikiryok"}}
 						<aside class="cevaplar yuzde kararsizim" style="cursor: pointer;" data-original-title="">
 							<span class="sonuc"><strong>%${percent.max}</strong> Kararsızım</span>
+						{{else  percent.sonuc == "olumsuz"}}
+						<aside class="cevaplar yuzde katilmiyorum" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Katılmıyorum</span>
 						{{/if}}
 							<div style="display:none">
 								<p class="yuzdeler olumlu" style="width: ${percent.olumlu}%">${percent.olumlu}</p>
@@ -321,7 +321,7 @@ class jstemplates_block extends control{
 					<img alt="" src="${pImage}" class="vekil_resmi">
 				</a>
 				<address style="height: 30px;"><a title="${pName}" href="/${pPerma}">${pName}</a></address>
-				<p><a class="btn" href="javascript:vekilOyu(${ID})">Oy Ver</a></p>
+				<p><a class="btn" onclick="vekilOyu(${ID})" href="javascript:;">Oy Ver</a></p>
 			</li>
 		</script>
 		
