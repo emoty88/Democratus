@@ -170,10 +170,12 @@ class ajax_plugin extends control{
 		                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
 			                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
 							
+							$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
+							$notNotice=$db->loadResultArray();
 		                   	if(count($notNotice))
-		                    $db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
+		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
 		                    else 
-		                    $db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
+		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
 		                    
 		                    $dicc = $db->loadObjectList();
 			             	if(count($dicc)){
