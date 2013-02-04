@@ -23,7 +23,11 @@
 									<li>
 										<img src="<?=$v->sImage?>" alt="<?=$v->sName?>-mini-profile-img">
 										<h5><a href="<?=$v->sPerma?>"><?=$v->sName?></a></h5>
-										<p><?=$v->voice?></p>
+										<p>
+											<a href="/voice/<?=$v->ID?>" style="text-decoration: none; font-weight: normal;">
+												<?=$v->voice?>
+											</a>
+										</p>
                                             <?php 
                                             
                                             if($model->profile->deputy>0 and proposal::get_p2PoroposalCount()<3 and proposal::check_popular2proposal($v->ID)):
@@ -41,7 +45,7 @@
 						</section>
 					</div>
 						<aside class="kontroller">
-						<a href="#" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
+						<a href="/popularvoice" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
 							<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
 						</a>
 					</aside>

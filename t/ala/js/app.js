@@ -69,6 +69,7 @@ jQuery(document).ready(function ($) {
    		case "voice" : voice_page(); break;
    		case "hashTag" : hashtag_page();break;
    		case "search" : search_page();break;
+   		case "popularvoice" : popularvoice_page();break;
    	}  	
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
@@ -90,7 +91,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	get_noticeCount();
-	get_messageCount();
+	//get_messageCount();
 	// mobile_menu
 	if( $('[data-benim-olayim="hedef_goster_gizle"]').length )
 	{
@@ -722,6 +723,32 @@ jQuery(document).ready(function ($) {
 			}
 		});		
 	}
+	var make_link = { 
+	    mk: function(text) {
+	    	
+	    	text=meshReplace(text,"@");
+	    	text=meshReplace(text,"#");
+	        return  text ;
+	    }
+	};
+	function meshReplace(text, start)
+	{
+		var regEx = new RegExp(start+"[a-zA-Z0-9-.çÇöÖşŞıİğĞüÜ]+");
+    	var textFinal=text;
+    	mesh=text.match(regEx);
+    	if(mesh!=null)
+    	{
+    		meshClean = mesh.regEx
+    		for(var i=0; i<mesh.length; i++)
+	    	{
+	    		meshText = mesh[i];
+	    		meshClean = meshText.replace(start, "");
+	    		textFinal = text.replace(meshText, '<a href="/'+meshClean+'" >'+meshText+'</a>');	
+	    	}
+	    	//console.log(mesh);
+    	}
+	    return textFinal;
+	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
 		wallmoreAction=1;
 		
@@ -770,10 +797,11 @@ jQuery(document).ready(function ($) {
 						firstVoice	= response.voices[0].ID;
 						lastVoiceID	= response.voices[response.voices.length-1].ID;
 						
+					
 						if(pos=="bottom")
-							$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+							$("#duvaryazisi-tmpl").tmpl(response.voices, make_link).appendTo("#orta_alan_container");
 						else 
-							$("#duvaryazisi-tmpl").tmpl(response.voices).prependTo("#orta_alan_container");
+							$("#duvaryazisi-tmpl").tmpl(response.voices, make_link).prependTo("#orta_alan_container");
 						$(".loading_bar").remove();
 						$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 						wallmoreAction=0;
@@ -1333,7 +1361,7 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function parliament_page(){
-                check_proposal_count();
+        check_proposal_count();
 		get_agendas();
 		get_deputyList();
 		get_oldAgenda();
@@ -1355,6 +1383,19 @@ jQuery(document).ready(function ($) {
 		get_voiceSearch(keyword);
 		get_userSearch(keyword);
 		get_archiveSearch(keyword);
+	}
+	function popularvoice_page()
+	{
+		get_popularVoice();
+	}
+	function get_popularVoice()
+	{
+		$.post("/ajax/get_popularVoice", {profileID: 0}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices).appendTo("#orta_alan_container");
+			}
+	    },'json');
 	}
 	function get_imageGalery(profileID)
 	{
@@ -1585,6 +1626,5 @@ jQuery(document).ready(function ($) {
         $.post('/ajax/send_activationMail', null, function(response){ 
 			if(response.status=='success')
                             hide_alertBox("alert");
-	},'json');
+		},'json');
     }
-        
