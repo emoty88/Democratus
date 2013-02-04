@@ -292,7 +292,9 @@
         	}  
 			$ORDER  = "\n ORDER BY di.ID DESC";
 			if($limit>0)
-        	$LIMIT  = "\n LIMIT $limit";
+        		$LIMIT  = "\n LIMIT $limit";
+			else
+				$LIMIT = "";
 			
 			
             $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
