@@ -296,7 +296,6 @@
 			else
 				$LIMIT = "";
 			
-			
             $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
             $voices = $db->loadObjectList();
 			return $voices;
