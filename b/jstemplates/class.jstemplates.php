@@ -184,6 +184,14 @@ class jstemplates_block extends control{
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
 		</script>
 		
+		<script id="loadNewVoice-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_yeni_ses">
+				<a href="javascript:;" onclick="${jsFunc}" >
+					<span class="newVoiceCount" >${count}</span> Yeni ses ...
+				</a>
+			</aside>
+		</script>
+		
 		<script id="voiceBulunamadı-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Hiç Voice Bulunamadı...</a></aside>
 		</script>

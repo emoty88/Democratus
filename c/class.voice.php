@@ -50,7 +50,26 @@
 			$db->loadObject($result);
 			return $result;
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="")
+		public function get_newVoiceCount($firstVoiceID)
+		{
+			global $model, $db;
+			
+			if($firstVoiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			
+			$SELECT = "SELECT count(*)";
+			$FROM 	= "\n FROM di";
+			$WHERE	= "\n WHERE ID>".$db->quote($firstVoiceID)." AND replyID!=".$db->quote($firstVoiceID)." AND status>0 ";
+			$db->setQuery($SELECT.$FROM.$WHERE);
+			return $db->loadResult();
+		}
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="", $pos="bottom")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
@@ -87,7 +106,11 @@
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
 				if($start>0){
-	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					if($pos=="bottom")
+	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					else 
+						$WHERE .= "\n AND di.ID>" . $db->quote($start);
+					
 	        	}  
 				if($hashTag != 0)
 				{
@@ -248,8 +271,8 @@
 			$v->sName	= $v_obj->sharername;
 			$v->sPerma	= $v_obj->permalink;
 			$v->sImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
-        	//$v->voice	= make_clickable($v_obj->di);
-        	$v->voice	= $v_obj->di;
+        	$v->voice	= make_clickable($v_obj->di);
+        	//$v->voice	= $v_obj->di;
 			$v->sTime	= time_since( strtotime( $v_obj->datetime ));
 			if($v_obj->initem=="1")
 			{

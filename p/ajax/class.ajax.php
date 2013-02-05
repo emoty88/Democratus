@@ -21,10 +21,11 @@ class ajax_plugin extends control{
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
 		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
 		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		$pos	 = filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword);
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos);
         echo json_encode($response);
 	}
 	public function get_archiveSearch()
@@ -1537,6 +1538,14 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return->status = "success";
 		$return->voices = $voices;
 		echo json_encode($return);
+	}
+	public function get_newWallCount()
+	{
+		global $model, $db;
+		$c_voice = new  voice();
+		$firstVoice		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		
+		echo  $c_voice->get_newVoiceCount($firstVoice);
 	}
 }
 ?>
