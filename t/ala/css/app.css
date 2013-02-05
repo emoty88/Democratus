@@ -869,6 +869,9 @@ body.atolye15_body { overflow-x: hidden; }
     text-align: center;
     width: 245px;
 }
+.meclis_bottom_box .btn{
+	margin-top:0px !important;
+}
 .img-slider-content {
 	margin-top: 15px;
 }
