@@ -39,25 +39,25 @@ class jstemplates_block extends control{
 						{{/if}}
 						<a id="soyles_btn_${ID}" href="/voice/${ID}">
 							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-							Söyleş {{if replyCount>0}}(${replyCount}){{/if}}
+							Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 						</a>
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
 							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
-							<span>Kaldır</span>
+							<span>Kaldır</span> 
 						</a>
 						{{else}}
 						<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
 							<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-							<span>Paylaş</span>
+							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}}(${reShareCount}){{/if}}</span>
 						</a>
 						<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 							<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
-							<span>Takdir Et</span>
+							<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
 						</a>
 						<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
-							<span>Saygı Duy</span>
+							<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
 						</a>
 						{{/if}}
 					</aside>
@@ -123,7 +123,7 @@ class jstemplates_block extends control{
 								<br />
 							{{/if}}
 							{{if initem>0}}
-								<a href="javascript:;" onclick="ac_kapa_manual(this);" data-tetikleyici="ac-kapa" data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
+								<a href="javascript:;"  data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
 									<i class="atolye15-ikon-gorsel atolye15-ikon-24"></i> <span>Fotoğrafı Göster</span>
 								</a>
 								<div id="fotograf_${ID}" style="display:none;">
@@ -132,20 +132,27 @@ class jstemplates_block extends control{
 							{{/if}}
 							<a id="soyles_btn_${ID}" href="/voice/${ID}">
 								<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-								Söyleş {{if replyCount>0}}(${replyCount}){{/if}}
+								Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 							</a>
+							{{if isMine}}
+							<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
+								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
+								<span>Kaldır</span> 
+							</a>
+							{{else}}
 							<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
 								<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-								<span>Paylaş</span>
+								<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}}(${reShareCount}){{/if}}</span>
 							</a>
 							<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 								<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
-								<span>Takdir Et</span>
+								<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
 							</a>
 							<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 								<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
-								<span>Saygı Duy</span>
+								<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
 							</a>
+							{{/if}}
 						</aside>
 					</div>
 				</div>
@@ -175,6 +182,14 @@ class jstemplates_block extends control{
 		
 		<script id="dahafazlases-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
+		</script>
+		
+		<script id="loadNewVoice-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_yeni_ses">
+				<a href="javascript:;" onclick="${jsFunc}" >
+					<span class="newVoiceCount" >${count}</span> Yeni ses ...
+				</a>
+			</aside>
 		</script>
 		
 		<script id="voiceBulunamadı-tmpl" type="text/x-jquery-tmpl">
