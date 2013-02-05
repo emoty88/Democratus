@@ -733,6 +733,8 @@ jQuery(document).ready(function ($) {
 	};
 	function meshReplace(text, start)
 	{
+		if(text==null)
+			return text;
 		var regEx = new RegExp(start+"[a-zA-Z0-9-.çÇöÖşŞıİğĞüÜ]+");
     	var textFinal=text;
     	mesh=text.match(regEx);

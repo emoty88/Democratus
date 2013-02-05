@@ -76,7 +76,7 @@
 										if($c_profile->isFollow($p->ID, $model->profileID)){
 											$followHide="display:none";
 											$unFollowHide =""; 
-											$vekilOBtn = '<li><a class="btn" onclick="vekilOyu('.$p->ID.'); " href="/parliament#vekilsecimleri" style="width:95px;">Vekil Olsun</a></li>';
+											$vekilOBtn = '<li><a class="btn" onclick="vekilOyu('.$p->ID.'); " href="javascript:;" style="width:95px;">Vekil Olsun</a></li>';
 										} 
 
 									?>

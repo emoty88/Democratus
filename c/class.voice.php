@@ -207,7 +207,10 @@
 					//var_dump($row->ID);
 					if($row == null)
 						continue;
+					$vTmp = $this->get_return_object($row, 48 , 48);
+					if($vTmp!=false)
 					$voices[]	= $this->get_return_object($row, 48 , 48);
+					
 				}
 				return $voices;
 			}
@@ -227,6 +230,10 @@
 				
 				$v->redierImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
 				$v_obj=$this->get_voiceObjec($v_obj->rediID);
+				if($v_obj==false)
+				{
+					return false; 
+				}
 			}
 			
         	$v->ID		= $v_obj->ID;
