@@ -261,6 +261,9 @@
 				$v->initem= 0;
 			}
 			$v->replyCount	= $v_obj->count_reply;
+			$v->likeCount	= $v_obj->count_like;
+			$v->dislikeCount	= $v_obj->count_dislike;
+			$v->reShareCount	= $v_obj->count_reShare;
 			$v->replyID		= $v_obj->replyID;
 			$v->randNum		= rand(1000,9999);
 			return $v;

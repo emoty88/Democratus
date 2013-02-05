@@ -2,6 +2,9 @@
 	@author	Caner Türkmen <caner.turkmen@democratus.com>
 	@date	24.10.2012
 */
+window.isActive = true
+$(window).focus(function() { this.isActive = true; });// Bu fonksiyonların tetiklenmesi için birkez sayfaya clicklenmeli.
+$(window).blur(function() { this.isActive = false; });
 var profileID 		= 0;
 var json_voices		= "";
 var firstVoice		= 0;
@@ -16,8 +19,17 @@ var currentTab		= 0;
 var voiceDControl 	= 0;
 var globalRandID	= 0;
 
+function starter()
+{
+	if(this.isActive)
+	{
+		get_noticeCount();
+		//get_messageCount();
+	}
+	setTimeout("starter()",3000);
+}
 jQuery(document).ready(function ($) {
-    
+    starter();
     var last = 0;
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
@@ -90,8 +102,7 @@ jQuery(document).ready(function ($) {
 		get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag);
 	}
 	
-	get_noticeCount();
-	//get_messageCount();
+	
 	// mobile_menu
 	if( $('[data-benim-olayim="hedef_goster_gizle"]').length )
 	{
@@ -603,8 +614,6 @@ jQuery(document).ready(function ($) {
 				{
 					$("#noticeCount").show().text(response);
 				}
-				//console.log(response);
-				setTimeout("get_noticeCount()",3000);				
 			}
 		});	
 	}
@@ -807,6 +816,7 @@ jQuery(document).ready(function ($) {
 						$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
 						wallmoreAction=0;
 						get_iconText(response.voices);
+						get_iconCount(response.voices);
 						init_voice_details();
 					}
 					else{
@@ -882,15 +892,18 @@ jQuery(document).ready(function ($) {
 	{
 		$.post("/ajax/voice_like", {voiceID: voiceID, likeType:type}, function(data){ 
 	        if(data.status == 'success'){
+	        	var voice = [{ID:voiceID}];
+	        	get_iconCount(voice);
+
 	        	if(type==1)
 	        	{
-	        		$("#taktir_btn_"+voiceID+" span").html(" Taktir Ettin");
-	        		$("#saygi_btn_"+voiceID+" span").html(" Saygı Duy");
+	        		$("#taktir_btn_"+voiceID+" span.text").html(" Taktir Ettin");
+	        		$("#saygi_btn_"+voiceID+" span.text").html(" Saygı Duy");
 	        	}
 	        	else
 	        	{
-	        		$("#taktir_btn_"+voiceID+" span").html(" Taktir Et");
-	        		$("#saygi_btn_"+voiceID+" span").html(" Saygı Duydun");
+	        		$("#taktir_btn_"+voiceID+" span.text").html(" Taktir Et");
+	        		$("#saygi_btn_"+voiceID+" span.text").html(" Saygı Duydun");
 	        	}
 	            
 	        }
@@ -922,17 +935,65 @@ jQuery(document).ready(function ($) {
 		$.each(dataS, function(index, value) { 
 			if(value.redi==true)
 			{
-				$("#paylas_btn_"+value.ID+" span").html(" Paylaştın");
+				$("#paylas_btn_"+value.ID+" span.text").html(" Paylaştın");
 			}
 			if(value.likeType)
 			{
 				if(value.likeType=="like1"){
-					$("#taktir_btn_"+value.ID+" span").html(" Taktir Ettin");
+					$("#taktir_btn_"+value.ID+" span.text").html(" Takdir Ettin");
 				}
 				else
 				{
-	        		$("#saygi_btn_"+value.ID+" span").html(" Saygı Duydun");
+	        		$("#saygi_btn_"+value.ID+" span.text").html(" Saygı Duydun");
 				}
+			}
+			
+		});
+	}
+	function get_iconCount(voices)
+	{
+		var IDs	= new Array();
+		$.each(voices, function(index, value) { 
+				IDs[index] = value.ID; 
+		});
+		$.post("/ajax/get_voiceIconCount", {voiceIDs: IDs}, function(response){ 
+	        set_iconCount(response);
+	    },'json');  
+	}
+	function set_iconCount(dataS)
+	{
+		$.each(dataS, function(index, value) { 
+			if(value.count_like>0)
+			{
+				$("#taktir_btn_"+value.ID+" span.count").html("("+value.count_like+")");
+			}
+			else
+			{
+				$("#taktir_btn_"+value.ID+" span.count").html("");
+			}
+			if(value.count_dislike>0)
+			{
+				$("#saygi_btn_"+value.ID+" span.count").html("("+value.count_dislike+")");
+			}
+			else
+			{
+				$("#saygi_btn_"+value.ID+" span.count").html("");
+			}
+			if(value.count_reShare>0)
+			{
+				$("#paylas_btn_"+value.ID+" span.count").html("("+value.count_reShare+")");
+			}
+			else
+			{
+				$("#paylas_btn_"+value.ID+" span.count").html("");
+			}
+			if(value.count_reply>0)
+			{
+				$("#soyles_btn_"+value.ID+" span.count").html("("+value.count_reply+")");
+			}
+			else
+			{
+				$("#paylas_btn_"+value.ID+" span.count").html("");
 			}
 			
 		});

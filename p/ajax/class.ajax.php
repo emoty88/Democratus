@@ -602,6 +602,21 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		
 		$sharelike = new stdClass;
         if($db->loadObject($sharelike)){
+        	$reverse = FALSE;
+       		if($likeType==1 && $sharelike->dilike2==1)
+        	{
+        		$reverse = TRUE;
+        	}
+			elseif($likeType==2 && $sharelike->dilike1==1) {
+				$reverse = TRUE;
+			}
+			else {
+				$response["status"]	= 'error';
+				$response["errors"] = "Zaten bu işlemi gerçekleştirdiniz";
+				echo json_encode($response);
+				return 0;
+			}
+			
         	
         	switch($likeType){
             	case 1: $sharelike->dilike1=1; $sharelike->dilike2=0; break;
@@ -618,11 +633,11 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
            	}
                     
      	} else {
-        	
+        	$reverse = FALSE;
            	switch($likeType){
             	case 1: $sharelike->dilike1=1; $sharelike->dilike2=0; break;
               	case 2: $sharelike->dilike1=0; $sharelike->dilike2=1; break;
-             	default: $sharelike->dilike1=0; $sharelike->dilike2=0;
+             	default: $sharelike->dilike1=1; $sharelike->dilike2=0;
          	}
          	
 			$sharelike->diID     	= intval($voiceID);
@@ -639,6 +654,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		
 		$int = new induction;
 		$sharelike->ID=$sharelike->diID; // puan class ına  id için element gönderiliyor;
+		$sharelike->reverse = $reverse; // like dislike sayarken aynı seste değilme varsa çıkartma yapılacak
 		
 		$c_voice = new voice($sharelike->diID);
 		$sharelike->voice = $c_voice->_voice;
@@ -663,6 +679,31 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			$response["status"] = "error";
 		}
 		echo json_encode($response);
+	}
+	function get_voiceIconCount()
+	{
+		global $model, $db;
+		$IDs=$_REQUEST["voiceIDs"];
+		$IDok=array();
+		$returnData=array();
+		$profileID	= $model->profileID;
+		foreach ($IDs as $id) {
+			if(!in_array($id, $IDok))
+			{
+				$IDok[]=$id;
+				$rt["ID"]=$id;
+				$c_voice	= new voice($id);
+				
+				$rt["count_like"]=$c_voice->_voice->count_like;
+				$rt["count_dislike"]=$c_voice->_voice->count_dislike;
+				$rt["count_reShare"]=$c_voice->_voice->count_reShare;
+				$rt["count_reply"]=$c_voice->_voice->count_reply;
+				
+				$returnData[]=$rt;
+			}
+			
+		}
+		echo json_encode($returnData);
 	}
 	function get_voiceIconText()
 	{

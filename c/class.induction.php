@@ -14,13 +14,14 @@ class induction {
 				{
 					$c_voice = new voice($voice->replyID);
 					$puanClass->puanIslem($c_voice->_voice->profileID,"5",$c_voice->_voice);
+					$c_counter->set_voiceCount($c_voice->_ID, "reply");
 				}
 				break;
 				
 			case 'redi_share':
                 $puanClass->puanIslem($voice->redi,"4",$voice);
 				$c_counter->set_profileCount($model->profileID, "voice");
-				$c_counter->set_voiceCount($voice->ID, "reShare");
+				$c_counter->set_voiceCount($voice->rediID , "reShare");
 				break;
 				
 			case 'like_voice':
@@ -28,16 +29,28 @@ class induction {
 	            {
 					if($puanClass->get_oyGecerlimi($voice->voice->profileID,"2",$voice))// bu eylenden puan almıyorsa count ta yok
 	            	{
-	            		$c_counter->set_profileCount($voice->voice->profileID, "like");
-						$puanClass->puanIslem($voice->voice->profileID,"2",$voice);
+	            		$puanClass->puanIslem($voice->voice->profileID,"2",$voice);
+					}
+					$c_counter->set_profileCount($voice->voice->profileID, "like");
+					$c_counter->set_voiceCount($voice->voice->ID, "like");
+					if($voice->reverse)
+					{
+						$c_counter->set_profileCount($voice->voice->profileID, "dislike", "-");
+						$c_counter->set_voiceCount($voice->voice->ID, "dislike", "-");
 					}
 	            }
 	            else if($voice->dilike2==1)
 	            {
 					if($puanClass->get_oyGecerlimi($voice->voice->profileID,"3",$voice)) // bu eylenden puan almıyorsa count ta yok
 					{
-						$c_counter->set_profileCount($voice->voice->profileID, "dislike");
 						$puanClass->puanIslem($voice->voice->profileID,"3",$voice);
+					}
+					$c_counter->set_profileCount($voice->voice->profileID, "dislike");
+					$c_counter->set_voiceCount($voice->voice->ID, "dislike");
+					if($voice->reverse)
+					{
+						$c_counter->set_profileCount($voice->voice->profileID, "like", "-");
+						$c_counter->set_voiceCount($voice->voice->ID, "like", "-");
 					}
 	            }
                	//$puanClass->puanIslem($voice->profileID,"4",$voice);
