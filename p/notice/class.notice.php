@@ -195,7 +195,7 @@
 						$model->mode=0;
 						echo '
 							<div class="noticeMini" style="">
-								<div class="" style="display:block;" >
+								<div class="" style="display:block ; max-height: 400px;  overflow: auto;" >
 									'.$yaz.'
 								</div>
 							</div>';
