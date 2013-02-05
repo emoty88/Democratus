@@ -593,8 +593,8 @@ body.atolye15_body { overflow-x: hidden; }
 }
 
 
-.daha_fazla_duvar_yazisi a { display: block; padding: 20px; text-align: center; color: #d04647; font-size: 15px; }
-.daha_fazla_duvar_yazisi a:hover { background-color: #d04647; color: #fff; text-decoration: none; }
+.daha_fazla_duvar_yazisi a, .daha_fazla_yeni_ses a { display: block; padding: 20px; text-align: center; color: #d04647; font-size: 15px; }
+.daha_fazla_duvar_yazisi a:hover, .daha_fazla_yeni_ses a:hover { background-color: #d04647; color: #fff; text-decoration: none; }
 
 .duvar_yazisi.yorum_var { padding-bottom: 0; }
 .yorumlar {

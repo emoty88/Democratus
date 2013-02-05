@@ -50,7 +50,26 @@
 			$db->loadObject($result);
 			return $result;
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="")
+		public function get_newVoiceCount($firstVoiceID)
+		{
+			global $model, $db;
+			
+			if($firstVoiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+			
+			$SELECT = "SELECT count(*)";
+			$FROM 	= "\n FROM di";
+			$WHERE	= "\n WHERE ID>".$db->quote($firstVoiceID)." AND replyID!=".$db->quote($firstVoiceID)." AND status>0 ";
+			$db->setQuery($SELECT.$FROM.$WHERE);
+			return $db->loadResult();
+		}
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="", $pos="bottom")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
@@ -87,7 +106,11 @@
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
 				if($start>0){
-	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					if($pos=="bottom")
+	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					else 
+						$WHERE .= "\n AND di.ID>" . $db->quote($start);
+					
 	        	}  
 				if($hashTag != 0)
 				{
@@ -261,6 +284,9 @@
 				$v->initem= 0;
 			}
 			$v->replyCount	= $v_obj->count_reply;
+			$v->likeCount	= $v_obj->count_like;
+			$v->dislikeCount	= $v_obj->count_dislike;
+			$v->reShareCount	= $v_obj->count_reShare;
 			$v->replyID		= $v_obj->replyID;
 			$v->randNum		= rand(1000,9999);
 			return $v;
