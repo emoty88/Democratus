@@ -1941,3 +1941,28 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
     opacity:0.50;
     display : none;
 }
+.tour_btn
+{
+	background-color:  #9D292A;
+   
+    font-size: 20pt;
+    height: 45px;
+    position: fixed;
+    right: 0;
+    top: 200px;
+    width: 45px;
+    border-bottom: 1px solid #FFFFFF;
+    box-shadow: 0 0 10px #333333;
+}
+.tour_btn div
+{
+	color: #FFFFFF;
+    margin-left: 12px;
+    margin-top: 12px;
+    position: fixed;
+}
+.tour_btn div:hover
+{
+	text-decoration: none;
+	color: #FFFFFF;
+}

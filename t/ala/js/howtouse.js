@@ -7,7 +7,7 @@ var stepsHome = [
 					buttons: ["next_btn","stop_btn"]
 				},
 				{
-					placement:"left", 
+					placement:"bottom", 
 					domSelector: "#sesozel", 
 					title:"Yazılmış Bir Ses", 
 					content: "<p style='font-size:10pt;'>Bir 'ses' i yanıtlamak istersen üzerine tıklaman yeterli +voice linki hangi 'ses' i yanıtladığını gösterecektir.</p>", 
@@ -174,7 +174,6 @@ function create_button(btn_key)
 }
 function loadDumyVoice()
 {
-	
 	 var ses = {
 	 			"ID":"38749",
 	 			"isMine":false,
@@ -182,10 +181,20 @@ function loadDumyVoice()
 	 			"sPerma":"Democratus",
 	 			"sImage":"http:\/\/democ.com\/u\/default-image\/default-profile-image_48x48cutout.png",
 	 			"voice": " Bir ses'e cevaben yazılan iletiler sadece yazarın duvarına düşmekte. Ancak +voice linkinin önüne bir karakter yahut yazı girilmesi durumunda bu ses, yazarın tüm takipçilerinin duvarı1na düşmektedir.", 
-	 			"sTime":"3 ay, 3 hafta","initem":0,"replyCount":"0","replyID":"0","randNum":4870};
+	 			"sTime":"3 ay, 3 hafta",
+	 			"initem":0,
+	 			"replyCount":"0",
+	 			"replyID":"0",
+	 			"randNum":4870,
+	 			"reShareCount": 0,
+	 			"likeCount":0,
+	 			"dislikeCount":0
+	 			};
 	 
 	 $("#orta_alan_container").prepend("<div id='sesozel' ></div>");			
-	 $("#duvaryazisi-tmpl").tmpl(ses).css("background-color", "#fff").prependTo("#sesozel");	
-	 voiceDetail($("div[data-randnum=4870]"));
+
+	 $("#duvaryazisi-tmpl").tmpl(ses,make_link).css("background-color", "#fff").prependTo("#sesozel");	
+	 //voiceDetail($("div[data-randnum=4870]"));
+	 
 	 init_step(1);
 }
