@@ -71,6 +71,13 @@
 					</div>
 				</div>
 			</div><!-- // İçerik -->
+			
+			<a href="/home/tour" class="tour_btn">
+				<div>
+					?
+				</div>
+			</a>
+			
 
 			{{footer}}
 
