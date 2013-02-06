@@ -265,7 +265,7 @@
 				<div class="tab-pane fade in" id="tab-arkadasB">
 					<section class="satir ilk_satir uste_cikar">
 						<div class="satir_ic">
-							<h4 class="">Twitterdaki ve Facebook taki democratus kullanan arkadaşlarını bulup takip edebilirsin.</h4>
+							<h4 class="">Twitter ve Facebook arkadaşlarından Democratus üyesi olanları bulup takip edebilirsin.</h4>
 							
 			    			
 							

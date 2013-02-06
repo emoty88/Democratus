@@ -35,7 +35,7 @@
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");
 			
-			if($model->profile->show_tour==0 || $model->paths[1]=="tour")
+			if(false && ($model->profile->show_tour==0 || $model->paths[1]=="tour"))
 			{
 				$uP	= new stdClass;
 				$uP->ID = $model->profileID;
@@ -43,7 +43,10 @@
 				profile::update_profile($uP);
 				$model->addScript("$(document).ready(function () { show_step(0); });");
 			}
-				
+				if($model->profileID == "1734")
+				{
+					$model->addScript("$(document).ready(function () { show_step(0); });");
+				}
 			
 			//var_dump($model);
 		}
