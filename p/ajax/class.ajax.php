@@ -28,6 +28,21 @@ class ajax_plugin extends control{
 		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos);
         echo json_encode($response);
 	}
+	public function get_newWallCount()
+	{
+		global $model, $db;
+		
+		$start		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		$limit		= filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
+        $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+        $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
+		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
+		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		$pos	 = filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
+
+		$c_voice = new  voice();
+		echo  $c_voice->get_newVoiceCount($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos);
+	}
 	public function get_archiveSearch()
 	{
 		global $model, $db;
@@ -1539,13 +1554,6 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return->voices = $voices;
 		echo json_encode($return);
 	}
-	public function get_newWallCount()
-	{
-		global $model, $db;
-		$c_voice = new  voice();
-		$firstVoice		= filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
-		
-		echo  $c_voice->get_newVoiceCount($firstVoice);
-	}
+
 }
 ?>

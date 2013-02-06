@@ -752,8 +752,7 @@ jQuery(document).ready(function ($) {
 	}
 	function get_newWallCount(profileID, start, limit, onlyProfile, hashTag, keyword, pos)
 	{
-		
-		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword};
+		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword,pos:pos};
 		//if(!this.isActive)
 		//return false;
 		$.ajax({
@@ -771,12 +770,19 @@ jQuery(document).ready(function ($) {
 					}
 					else
 					{
-						var data = {count:response, jsFunc: "newVoiceCount=0; firstVoice=0; $('.daha_fazla_yeni_ses').remove(); get_wall('"+profileID+"', '"+start+"', '"+limit+"', '"+onlyProfile+"', '"+hashTag+"', '"+keyword+"', 'top');"};
+						var jsText = "newVoiceCount=0; "; 
+						jsText = jsText+"newVoiceCount=0; "; 
+						jsText = jsText+"firstVoice=0; ";
+						jsText = jsText+"$('.daha_fazla_yeni_ses').remove(); ";
+						jsText = jsText+"get_wall('"+profileID+"', '"+start+"', '"+limit+"', '"+onlyProfile+"', '"+hashTag+"', '"+keyword+"', 'top'); ";
+						
+						
+						var data = {count:response, jsFunc:jsText};
 						$("#loadNewVoice-tmpl").tmpl(data).prependTo("#orta_alan_container");
 					}
 					newVoiceCount=response;
 				}
-				setTimeout("get_newWallCount('"+profileID+"', '"+firstVoice +"', '"+limit+"', '"+onlyProfile+"', '"+hashTag+"', '"+keyword+"', '"+pos+"');",5000);
+				setTimeout("get_newWallCount('"+profileID+"', '"+firstVoice +"', '"+limit+"', '"+onlyProfile+"', '"+hashTag+"', '"+keyword+"', 'top');",5000);
 				//get_newWallCount(profileID, start, limit, onlyProfile, hashTag, keyword, pos);
 			}
 		});	
@@ -789,8 +795,17 @@ jQuery(document).ready(function ($) {
 		}
 		if(voices.length>0)
 		{
-			if(firstVoice==0)
-				firstVoice	= voices[0].ID;
+			if(firstVoice==0){
+				if(voices[0].shareVoice)
+				{
+					firstVoice	= voices[0].originID;
+				}
+				else
+				{
+					firstVoice	= voices[0].ID;
+				}
+				
+			}
 			lastVoiceID	= voices[voices.length-1].ID;
 			
 		
@@ -857,7 +872,7 @@ jQuery(document).ready(function ($) {
 				if(response.status == "success")
 				{
 					load_voices(response.voices,pos);
-					get_newWallCount(profileID, firstVoice, limit, onlyProfile, hashTag, keyword, pos);
+					get_newWallCount(profileID, firstVoice, limit, onlyProfile, hashTag, keyword, "top");
 				}
 				else
 				{
