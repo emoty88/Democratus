@@ -50,11 +50,11 @@
 			$db->loadObject($result);
 			return $result;
 		}
-		public function get_newVoiceCount($firstVoiceID)
+		public function get_newVoiceCount($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="", $pos="top")
 		{
 			global $model, $db;
 			
-			if($firstVoiceID==null && $this->_cons==0)
+			if($start==null && $this->_cons==0)
 			{
 				return false;
 			}
@@ -63,9 +63,36 @@
 				$voiceID=$this->_ID;
 			}
 			
-			$SELECT = "SELECT count(*)";
-			$FROM 	= "\n FROM di";
-			$WHERE	= "\n WHERE ID>".$db->quote($firstVoiceID)." AND replyID!=".$db->quote($firstVoiceID)." AND status>0 ";
+				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
+				$followin=$db->loadResultArray();
+
+				$SELECT = "SELECT DISTINCT 	count(di.ID)";
+	        	$FROM   = "\n FROM di";
+	        	if(intval($profileID)<1){
+	        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+	        		$WHERE  = "\n WHERE  ( ";
+	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
+	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
+	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
+	        	} else {
+	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
+	        	}
+				if($start>0){
+					if($pos=="bottom")
+	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					else 
+						$WHERE .= "\n AND di.ID>" . $db->quote($start);
+	        	}  
+				if($hashTag != 0)
+				{
+					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				}
+	        	
+	        	$WHERE .= "\n AND di.status>0";
+	        	if($onlyProfile==0)
+	        		$WHERE .= "\n AND onlyProfile='0'";
+			
 			$db->setQuery($SELECT.$FROM.$WHERE);
 			return $db->loadResult();
 		}
@@ -160,8 +187,7 @@
 	        	$ORDER  = "\n ORDER BY di.ID DESC";
 	        	$LIMIT  = "\n LIMIT $limit";
         	}
-			if($model->profileID == "10000")
-        		echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 		
@@ -250,6 +276,8 @@
 			{
 				$v->redierName	= $v_obj->sharername;
 				$v->redierPerma	= $v_obj->permalink;
+				$v->originID	= $v_obj->ID;
+				$v->shareVoice	= true;
 				
 				$v->redierImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
 				$v_obj=$this->get_voiceObjec($v_obj->rediID);
