@@ -16,7 +16,10 @@
             $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
 
             $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
-			
+
+			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
+			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+						
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='search'");
 			$model->addScript("keyword='".$model->paths[1]."'");
