@@ -20,7 +20,7 @@
 			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1); // düzenle
             $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
             $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
