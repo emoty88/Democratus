@@ -545,9 +545,10 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	}
 	public function get_messageCount()
 	{
+            
 		global $model;
 		$c_message = new messageClass();
-		echo $c_message->getCount($model->profileIDr);
+		echo $c_message->getCount($model->profileID);
 	}
 	public function redi(){
     	global $model, $db;

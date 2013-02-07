@@ -103,13 +103,22 @@ class messageClass {
 	function getCount($userID){
 		$userID = intval($userID);
 		
+                
+               
 		$query = array(
 			'read' => FALSE,
 			'toID' => $userID,
 			'statusTo' => TRUE
 		);	
-		
-		return $this->collection->find($query)->count();
+                
+                $cmd =  array(
+                            "distinct" => "message",
+                            "key" => "fromID", 
+                            "query" => $query
+                        );
+		$result = $this->database->command($cmd);
+		return sizeof($result['values']);
+                
 	}
 	
 	//dialogda $before dan önceki mesajların sayısı (daha fazla yükle olayı)
