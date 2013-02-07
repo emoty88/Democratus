@@ -20,6 +20,26 @@ class parliament_plugin extends control {
                 
                 $model->addScript("var count=".parliament::count_poroposal().';');
                 
+                $tomorrow = mktime(0, 0, 0, date("m"), date("d")+1, date("y"));
+                $diff = $tomorrow-time();
+                if($diff<3600)
+                    $tasari = FALSE;
+                else
+                    $tasari = TRUE;
+                    
+                $kaldi =NEXTELECTION-time();
+                
+                $gun = floor($kaldi/86400);
+                $saat = floor(($kaldi-$gun*24*60*60)/3600);
+                $dakika = floor((($kaldi-$gun*24*60*60)-$saat*60*60)/60);
+                
+                if($gun < 10)
+                    $gun = '0'.$gun;
+                if($saat < 10)
+                    $saat = '0'.$saat;
+                if($dakika <10)
+                    $dakika = '0'.$dakika;
+                
 		?>
 			<section class="banner">
 				<header>
@@ -64,18 +84,18 @@ class parliament_plugin extends control {
 					<section class="kalan_zaman satir ilk_satir">
 						<div class="kalan_zaman_ic">
 							<p>Ses’lerini en çok beğendiğiniz arkadaşlarınızı vekil olarak önerin, halk onların ağzından dinlesin. Her hafta 10 vekil önerebilirsiniz. </p>
-							<ul style="display: none" class="dijital_saat">
+							<ul style="" class="dijital_saat">
 								<li>
 									<span class="baslik">Gün</span>
-									<span class="sayi"><b>44</b><span class="cizgi"></span></span>
+									<span class="sayi"><b><?=$gun?></b><span class="cizgi"></span></span>
 								</li>
 								<li>
 									<span class="baslik">Saat</span>
-									<span class="sayi"><b>22</b><span class="cizgi"></span></span>
+									<span class="sayi"><b><?=$saat?></b><span class="cizgi"></span></span>
 								</li>
 								<li>
 								<span class="baslik">Dakika</span>
-									<span class="sayi"><b>27</b><span class="cizgi"></span></span>
+									<span class="sayi"><b><?=$dakika?></b><span class="cizgi"></span></span>
 								</li>
 							</ul>
 							<div class="clearfix"></div>
@@ -148,17 +168,19 @@ class parliament_plugin extends control {
 					<!-- tasarı yaz textarea -->
 					<div class="satir">
 						<div class="karakter_sayaci_tutucu" id="yeni_yazi_yaz">
-                                                        <?php if($model->profile->deputy == 1) : ?>
-							<textarea rows="2" placeholder="Tasarı Yaz..." class="karakteri_sayilacak_alan" name="yeni_yazi" id="tasari_textarea"></textarea>
-							<div class="kalan_karakter_mesaji"><span data-limit="200" class="karakter_sayaci">200</span> karakter</div>
+                                                        <?php if($model->profile->deputy == 1 and $tasari ) : ?>
+                                                            <textarea rows="2" placeholder="Tasarı Yaz..." class="karakteri_sayilacak_alan" name="yeni_yazi" id="tasari_textarea"></textarea>
+                                                            <div class="kalan_karakter_mesaji"><span data-limit="200" class="karakter_sayaci">200</span> karakter</div>
 
-							<div class="kontroller">
-								<button class="btn btn-danger" onclick="set_proposal();" >Tasarı Ekle</button>
-								<!-- 
-								<a href="javascript:void(0)"><i class="atolye15-ikon-gorsel atolye15-ikon-24"></i></a>
-								<a href="javascript:void(0)"><i class="atolye15-ikon-atac atolye15-ikon-24"></i></a>
-								-->
-							</div>
+                                                            <div class="kontroller">
+                                                                    <button class="btn btn-danger" onclick="set_proposal();" >Tasarı Ekle</button>
+                                                                    <!-- 
+                                                                    <a href="javascript:void(0)"><i class="atolye15-ikon-gorsel atolye15-ikon-24"></i></a>
+                                                                    <a href="javascript:void(0)"><i class="atolye15-ikon-atac atolye15-ikon-24"></i></a>
+                                                                    -->
+                                                            </div>
+                                                        <?php elseif ($model->profile->deputy == 1): ?>
+                                                            Gündem tasarılarınızı her gün 23:00'a kadar sunabilirsiniz, oylama ise gece yarısına kadar devam edecektir.
                                                         <?php else: ?>
                                                             Tasarı yazabilmek için vekil olmalısınız.
                                                         <?php endif; ?>
