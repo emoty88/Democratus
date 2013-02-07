@@ -1479,6 +1479,7 @@ jQuery(document).ready(function ($) {
 	function message_dialog_page(){
 		get_dialog_details('');
 		// ajax ile yeni mesajları kontrol et gelince  göster;
+                $('#delete_dialog').show();
 		var myScroll;
 		function loaded() {
 			myScroll = new iScroll('wrapper');
@@ -1753,6 +1754,7 @@ jQuery(document).ready(function ($) {
                             hide_alertBox("alert");
 		},'json');
     }
+
     function get_promotedVoice(hashTag)
     {
     	 $.post('/ajax/get_promotedVoice', {hashTag:hashTag}, function(response){ 
@@ -1763,3 +1765,11 @@ jQuery(document).ready(function ($) {
              	}
 		},'json');
     }
+
+    function delete_dialog(perma){
+        $.post('/ajax/delete_dialog', {perma:perma}, function(response){ 
+			if(response.status=='success')
+                            $('#onceki_mesajlar').html('');
+        },'json');
+    }
+
