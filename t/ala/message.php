@@ -63,8 +63,11 @@
 											<header>
 												<h1>Gelen Kutusu</h1>
 												<div class="komut_tutucu">
+                                                                                                        <button id="delete_dialog" style="display: none" onclick="delete_dialog('<?=$model->paths[2]?>');" class="btn btn-medium fwbold">Konuşmayı Sil</button>
 													<button onclick="new_messageToggle();" class="btn btn-medium fwbold">Yeni Mesaj</button>
-												</div>
+                                                                                                       
+												
+                                                                                                </div>
 											</header>
 											<div class="clearfix"></div>
 										</div>

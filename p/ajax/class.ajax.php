@@ -1554,6 +1554,26 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return->voices = $voices;
 		echo json_encode($return);
 	}
+        
+        public function delete_dialog(){
+            global $model, $db;
+            $messageClass = new messageClass();
+            $r_array = array();
+            $r_array['status'] = 'success';
+            $userID = $model->profileID;
+            $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
+            $user2ID = profile::change_perma2ID($user2ID);
+            if($user2ID<2){
+                $r_array['status'] = 'error';
+                echo json_encode($r_array);
+                return;
+            }
+            if(!$messageClass->delete($userID, $user2ID, FALSE, TRUE)){
+                $r_array['status'] = 'error';
+            }
+            
+            echo json_encode($r_array);
+        }
 
 }
 ?>
