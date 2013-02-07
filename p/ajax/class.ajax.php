@@ -1554,6 +1554,16 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return->voices = $voices;
 		echo json_encode($return);
 	}
-
+	public function get_promotedVoice()
+	{
+		global $model, $db;
+		$hashTag	= filter_input(INPUT_POST, 'hashTag',FILTER_SANITIZE_STRING);
+		$c_voice = new voice;
+		$voice = $c_voice->get_voices_for_wall($hashTag ,  0 , 1 , 1, "" ,"", "bottom");
+		$response = new stdClass;
+		$response->status = "success";
+		$response->voice = $voice[0];
+		echo json_encode($response);
+	}
 }
 ?>

@@ -31,6 +31,7 @@ function starter()
 	setTimeout("starter()",3000);
 }
 jQuery(document).ready(function ($) {
+	//$(".fnc").fancybox();
     starter();
     var last = 0;
 	//$(".fineUploader").each(function (){
@@ -715,7 +716,7 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
-					load_voices(response.voices);
+					load_voices(response.voices,"bottom" , "#sesler-container");
 				}
 				else
 				{
@@ -790,8 +791,13 @@ jQuery(document).ready(function ($) {
 			}
 		});	
 	}
-	function load_voices(voices,pos)
+	function load_voices(voices, pos, container)
 	{
+		
+		if(load_voices.arguments.length<3)
+		{
+			container="#orta_alan_container";
+		}
 		if(load_voices.arguments.length<2)
 		{
 			pos="bottom";
@@ -813,12 +819,12 @@ jQuery(document).ready(function ($) {
 			
 		
 			if(pos=="bottom")
-				$("#duvaryazisi-tmpl").tmpl(voices, make_link).appendTo("#orta_alan_container");
+				$("#duvaryazisi-tmpl").tmpl(voices, make_link).appendTo(container);
 			else 
-				$("#duvaryazisi-tmpl").tmpl(voices, make_link).prependTo("#orta_alan_container");
+				$("#duvaryazisi-tmpl").tmpl(voices, make_link).prependTo(container);
 			$(".loading_bar").remove();
 			
-			$("#dahafazlases-tmpl").tmpl().appendTo("#orta_alan_container");
+			$("#dahafazlases-tmpl").tmpl().appendTo(container);
 			wallmoreAction=0;
 			get_iconText(voices);
 			get_iconCount(voices);
@@ -827,7 +833,7 @@ jQuery(document).ready(function ($) {
 		}
 		else{
 			$(".loading_bar").remove();
-			$("#voiceBulunamadı-tmpl").tmpl(voices).prependTo("#orta_alan_container");
+			$("#voiceBulunamadı-tmpl").tmpl(voices).prependTo(container);
 		}
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
@@ -1018,7 +1024,7 @@ jQuery(document).ready(function ($) {
 		$.each(dataS, function(index, value) { 
 			if(value.count_like>0)
 			{
-				$("#taktir_btn_"+value.ID+" span.count").html("("+value.count_like+")");
+				$("#taktir_btn_"+value.ID+" span.count").html(" ("+value.count_like+")");
 			}
 			else
 			{
@@ -1026,7 +1032,7 @@ jQuery(document).ready(function ($) {
 			}
 			if(value.count_dislike>0)
 			{
-				$("#saygi_btn_"+value.ID+" span.count").html("("+value.count_dislike+")");
+				$("#saygi_btn_"+value.ID+" span.count").html(" ("+value.count_dislike+")");
 			}
 			else
 			{
@@ -1034,7 +1040,7 @@ jQuery(document).ready(function ($) {
 			}
 			if(value.count_reShare>0)
 			{
-				$("#paylas_btn_"+value.ID+" span.count").html("("+value.count_reShare+")");
+				$("#paylas_btn_"+value.ID+" span.count").html(" ("+value.count_reShare+")");
 			}
 			else
 			{
@@ -1042,7 +1048,7 @@ jQuery(document).ready(function ($) {
 			}
 			if(value.count_reply>0)
 			{
-				$("#soyles_btn_"+value.ID+" span.count").html("("+value.count_reply+")");
+				$("#soyles_btn_"+value.ID+" span.count").html(" ("+value.count_reply+")");
 			}
 			else
 			{
@@ -1496,6 +1502,7 @@ jQuery(document).ready(function ($) {
 	{
 		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
 		get_imageGalery(profileID);
+		get_promotedVoice(profileID);
 	}
 	function search_page()
 	{
@@ -1744,5 +1751,15 @@ jQuery(document).ready(function ($) {
         $.post('/ajax/send_activationMail', null, function(response){ 
 			if(response.status=='success')
                             hide_alertBox("alert");
+		},'json');
+    }
+    function get_promotedVoice(hashTag)
+    {
+    	 $.post('/ajax/get_promotedVoice', {hashTag:hashTag}, function(response){ 
+			if(response.status=='success')
+             	{
+             		$("#duvaryazisi-tmpl").tmpl(response.voice, make_link).css("background-color", "#ecf7fb").prependTo("#pormotedVoice");
+             		//hide_alertBox("alert");
+             	}
 		},'json');
     }

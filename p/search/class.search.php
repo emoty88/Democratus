@@ -52,6 +52,7 @@
 					</section>
 					<!-- Referandumlar Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-sesler">
 					<!-- Kişiler Tab -->
 					<section id="sesler-container" class="duvar_yazilari">
@@ -59,6 +60,7 @@
 					</section>
 					<!-- Kişiler Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-arsivler">
 					<!-- Arşiv Tab -->
 					<section id="arsivler-container" class="duvar_yazilari">

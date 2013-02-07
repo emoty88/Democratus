@@ -47,10 +47,7 @@ class jstemplates_block extends control{
 							<span>Kaldır</span> 
 						</a>
 						{{else}}
-						<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
-							<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}}(${reShareCount}){{/if}}</span>
-						</a>
+						
 						<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 							<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
 							<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
@@ -58,6 +55,10 @@ class jstemplates_block extends control{
 						<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
 							<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
+						</a>
+						<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
+							<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
+							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 						</a>
 						{{/if}}
 					</aside>
@@ -140,10 +141,6 @@ class jstemplates_block extends control{
 								<span>Kaldır</span> 
 							</a>
 							{{else}}
-							<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
-								<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-								<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}}(${reShareCount}){{/if}}</span>
-							</a>
 							<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 								<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
 								<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
@@ -151,6 +148,10 @@ class jstemplates_block extends control{
 							<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
 								<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
 								<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
+							</a>
+							<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
+								<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
+								<span class="text">Paylaş</span><span class="count">{{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 							</a>
 							{{/if}}
 						</aside>
@@ -457,7 +458,9 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
-			<img alt="" src="${small}">
+			<a href="${big}" class="fnc" >
+				<img alt="" src="${small}" class="fnc" />
+			</a>
 		</script> 
 		
 	<?	

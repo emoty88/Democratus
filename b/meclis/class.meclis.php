@@ -6,12 +6,16 @@
             $c_parliament=new parliament;
 			$type=0;
 			$parentID=0;
-			if($model->paths[0]=="hashTag")//chech ed 
+			
+
+			if($model->page->permalink=="hashTag")//chech ed 
 			{
+				
 				$type="hastagID";
-				$c_profile = profile();
-				$parentID= $c_profile->change_perma2ID($model->paths[1]);
+				$c_profile = new profile();
+				$parentID= $c_profile->change_perma2ID($model->paths[0]);
 			}
+	
            	$agendasNonSort=$c_parliament->get_agenda($type, $parentID);
 			$agendas = $c_parliament->short_agandaNew($agendasNonSort);
                         
@@ -31,7 +35,7 @@
 					</header>
 					
 					<aside class="kontroller">
-						<a href="/parliament" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
+						<a href="/parliament" class="sayfaya_git fnc" title="Tümünü görüntüle &rarr;">
 							<?
 							$new_agenda = $c_parliament->count_agenda($type, $parentID);
 							

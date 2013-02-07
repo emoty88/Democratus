@@ -96,7 +96,7 @@
 			$db->setQuery($SELECT.$FROM.$WHERE);
 			return $db->loadResult();
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="", $pos="bottom")
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
@@ -132,17 +132,17 @@
 	        	} else {
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
+	        	if($hashTag != "")
+				{
+					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				}
 				if($start>0){
 					if($pos=="bottom")
 	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
 					else 
 						$WHERE .= "\n AND di.ID>" . $db->quote($start);
-					
 	        	}  
-				if($hashTag != 0)
-				{
-					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
-				}
+				
 	        	
 	        	$WHERE .= "\n AND di.status>0";
 	        	if($onlyProfile==0)
@@ -187,10 +187,10 @@
 	        	$ORDER  = "\n ORDER BY di.ID DESC";
 	        	$LIMIT  = "\n LIMIT $limit";
         	}
-
+			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-		
+			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)
