@@ -61,7 +61,7 @@
 									<section class="satir ilk_satir kirmizi_arkaplan" id="gelen_kutusu_baslik">
 										<div class="satir_ic">
 											<header>
-                                                                                            <a href="/message" style="text-decoration: none;"><h1>Gelen Kutusu</h1></a>
+                                                                                            <a href="/message" style="text-decoration: none;"><h1>Mesajlar</h1></a>
 												<div class="komut_tutucu">
                                                                                                         <button id="delete_dialog" style="display: none" onclick="delete_dialog('<?=$model->paths[2]?>');" class="btn btn-medium fwbold">Konuşmayı Sil</button>
 													<button onclick="new_messageToggle();" class="btn btn-medium fwbold">Yeni Mesaj</button>
