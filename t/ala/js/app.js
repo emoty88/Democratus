@@ -1735,6 +1735,10 @@ jQuery(document).ready(function ($) {
 				$("#gaget-w2f-tmpl").tmpl(response.persons).appendTo("#gaget_who2follow");
 				//$("#profileCoverImage").attr("src",response.imageUrl);
 			}
+			else
+			{
+				$("#whotofollow").remove();
+			}
 	    },'json');
 	}
 
