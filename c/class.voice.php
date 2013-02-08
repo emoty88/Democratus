@@ -104,8 +104,7 @@
 				//return FALSE;
 			}
 
-			if(false)
-
+			if(true)
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
