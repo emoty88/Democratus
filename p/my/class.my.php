@@ -8,20 +8,9 @@
 			$model->view="my";
 			$model->title = 'Democratus';
 
-			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-
-            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+			$model->addHeaderElement();
 			
-			$model->addScript("http://democratus.com/t/beta/docs/assets/js/checkbox.js","checkbox.js",1); // düzenle
-            $model->addScript(PLUGINURL."my/my.js", "my.js", 1);
-            $model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
-			
+			$model->addScript(PLUGINURL."my/my.js", "my.js", 1);
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
 			
