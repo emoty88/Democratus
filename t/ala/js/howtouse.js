@@ -86,10 +86,12 @@ $(document).ready(function () {
 	$("BODY").prepend('<div class="overlay" ></div>');
 	switch(plugin)
    	{
-   		case "hashTag" : steps = stepsHashTag; break;
-   		case "home" : steps = stepsHome; break;
+   		case "hashTag" : op:true; steps = stepsHashTag; break;
+   		case "home" : op:true; steps = stepsHome; break;
+   		default : op = false;
    		
    	}  	
+   	if(op)
 	for(var i=0; i<steps.length; i++)
 	{
 		init_step(i);
