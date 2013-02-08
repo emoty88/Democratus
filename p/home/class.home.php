@@ -35,7 +35,7 @@
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");
 			
-			if(false && ($model->profile->show_tour==0 || $model->paths[1]=="tour"))
+			if($model->profile->show_tour==0 || $model->paths[1]=="tour")
 			{
 				$uP	= new stdClass;
 				$uP->ID = $model->profileID;
