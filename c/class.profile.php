@@ -717,7 +717,8 @@
 			$don = 4;
 			if(count($rows)<4)
 				$don = count($rows);
-			if($don>1)
+		
+			if($don<1)
 			{
 				return false;
 			}

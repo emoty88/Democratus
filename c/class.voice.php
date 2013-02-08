@@ -103,7 +103,9 @@
 			{
 				//return FALSE;
 			}
-			if(true)
+
+			if(false)
+
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
@@ -120,27 +122,26 @@
 	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
 	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
 	        	if(intval($profileID)<1){
-	        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+	        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
 	        		$WHERE  = "\n WHERE  ( ";
 	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
 	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
-	        		if(count($followin)>0)
+					if(count($followin)>0)
 	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
-	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
+	        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
 	        	} else {
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
-	        	if($hashTag != "")
-				{
-					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
-				}
 				if($start>0){
 					if($pos=="bottom")
 	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
 					else 
 						$WHERE .= "\n AND di.ID>" . $db->quote($start);
 	        	}  
-				
+				if($hashTag != "0")
+				{
+					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+				}
 	        	
 	        	$WHERE .= "\n AND di.status>0";
 	        	if($onlyProfile==0)
@@ -171,9 +172,12 @@
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
 				if($start>0){
-	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					if($pos=="bottom")
+	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					else 
+						$WHERE .= "\n AND di.ID>" . $db->quote($start);
 	        	}  
-				if($hashTag != 0)
+				if($hashTag != "0")
 				{
 					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
 				}
@@ -188,7 +192,13 @@
 			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-			echo $db->_sql;
+
+        	if($model->profileID == "1734")
+        	{
+        		//echo $db->_sql;
+       		}
+			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)
