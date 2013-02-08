@@ -44,7 +44,7 @@
             
             //$db->setQuery('SELECT a.* FROM agenda AS a WHERE '.$db->quote(date('Y-m-d H:i:s')).' BETWEEN a.starttime AND a.endtime ORDER BY ID desc');
             $agendas = $db->loadObjectList();
-
+	
 			return $agendas;
 		}
 		public function short_agandaNew($agendas)

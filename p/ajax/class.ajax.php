@@ -1446,8 +1446,17 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$response = new stdClass;
 		$response->status	= "success";
 		$persons	= $c_profile->get_who2follow();
-		$personsObj = $c_profile->get_porfileObject($persons);
-		$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
+		if($persons==false)
+		{
+			$response->status = "error";
+			$response->error  = "Kimse Takip edilmiyor";
+			
+		}
+		else
+		{
+			$personsObj = $c_profile->get_porfileObject($persons);
+			$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
+		}
 		echo json_encode($response);
 	}
     public function set_profileImage()

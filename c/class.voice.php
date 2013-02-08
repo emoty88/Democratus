@@ -127,6 +127,7 @@
 	        		$WHERE  = "\n WHERE  ( ";
 	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
 	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+	        		if(count($followin)>0)
 	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
 	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
 	        	} else {
