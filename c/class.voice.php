@@ -103,14 +103,11 @@
 			{
 				//return FALSE;
 			}
-			if($model->profileID == "10000" || true)
+			if(true)
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
 				
-				//echo "<pre>";
-				//	var_dump($followin);
-				//echo "</pre>";
 				$SELECT = "SELECT DISTINCT 	di.*, 
 	        								sharer.image AS sharerimage, 
 	        								sharer.name AS sharername, 
@@ -191,7 +188,7 @@
 			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+			echo $db->_sql;
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)
