@@ -133,6 +133,8 @@
 	        	} else {
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
+				if($onlyProfile==0)
+	        		$WHERE .= "\n AND onlyProfile='0'";
 	        	if($hashTag != "")
 				{
 					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
@@ -191,6 +193,10 @@
 			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+        	if($model->profileID == "1734")
+        	{
+        		//echo $db->_sql;
+       		}
 			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
 			$rows = $db->loadObjectList();
 			$voices	=array();

@@ -11,8 +11,7 @@
 			
 			$this->msg = new messageClass;
 
-			$model->addScript(TEMPLATEURL."ala/js/fancy/jquery.fancybox.js", "jquery.fancybox.js", 1);
-			$model->addStyle(TEMPLATEURL ."ala/js/fancy/jquery.fancybox.css", "jquery.fancybox.css", 1 );
+			$model->addHeaderElement();
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='message'");
