@@ -341,8 +341,9 @@
                 {
                         $profile=$this->profile;
                 }
-                $db->setQuery("SELECT ht.* FROM profile ht, follow f WHERE ht.ID=f.followingID and f.followerID='".$profile->ID."' and f.status=1 and ht.status=1 and ht.type='hashTag'  ORDER BY ID desc LIMIT 10 ");
-                return $tagList="ezSql düzelt";
+                $db->setQuery("SELECT ht.name, ht.permalink, ht.ID FROM profile ht, follow f WHERE ht.ID=f.followingID and f.followerID='".$profile->ID."' and f.status=1 and ht.status=1 and ht.type='hashTag'  ORDER BY ID desc LIMIT 10 ");
+                
+                return $db->loadObjectList();
        	}
        	public static function change_perma2ID($permalink)
        	{

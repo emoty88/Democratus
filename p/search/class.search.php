@@ -18,7 +18,7 @@
             $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
 
 			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 						
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='search'");
@@ -52,6 +52,7 @@
 					</section>
 					<!-- Referandumlar Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-sesler">
 					<!-- Kişiler Tab -->
 					<section id="sesler-container" class="duvar_yazilari">
@@ -59,6 +60,7 @@
 					</section>
 					<!-- Kişiler Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-arsivler">
 					<!-- Arşiv Tab -->
 					<section id="arsivler-container" class="duvar_yazilari">

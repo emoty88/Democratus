@@ -40,7 +40,7 @@
             
             //$model->addScript(PLUGINURL . 'lib/ajaxupload/ajaxupload.js', 'ajaxupload.js', 1 );
             $model->addScript(PLUGINURL . 'lib/fileuploader/fileuploader.js', 'fileuploader.js', 1 );
-            $model->addStyle(PLUGINURL . 'lib/fileuploader/fileuploader.css', 'fileuploader.css', 1 );
+            //$model->addStyle(PLUGINURL . 'lib/fileuploader/fileuploader.css', 'fileuploader.css', 1 );
             
             $model->addScript(PLUGINURL . 'lib/democratus.js', 'democratus.js', 1 );
             $model->addScript($model->pluginurl . 'agendaadmin.js', 'agendaadmin.js', 1 );

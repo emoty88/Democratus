@@ -30,7 +30,7 @@
 			$model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo.min.js", "jquery.scrollTo.min.js", 1);
 			
 			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");

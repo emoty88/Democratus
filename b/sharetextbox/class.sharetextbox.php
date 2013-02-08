@@ -40,7 +40,7 @@
 				$defaultValue="#".$model->paths[1]." ";
 			}
 			$model->addScript(PLUGINURL . 'lib/fineuploader/fileuploader.js', 'fileuploader.js', 1 );
-			$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
         	?>
         		<div class="roundedcontent shareidea">
 					<div class="textarea">

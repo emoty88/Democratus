@@ -58,6 +58,7 @@
 						<section id="orta_alan" class="span8">
 							<div class="satirlar padding_yok">
 								{{hashtagDetail}}
+								<div id="pormotedVoice"></div>
 								<div id="orta_alan_container">
 									{{main}}
 								</div>

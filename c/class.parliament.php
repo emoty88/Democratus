@@ -17,7 +17,7 @@
             {
 				$WHERE  .= "\n AND ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime"; 
 			}    
-            
+
             if($type!="0")
 			{
 				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	

@@ -41,12 +41,12 @@
 									<tr>
 										<td colspan="3" class="rutbe meclis_uyeligi"><i class="atolye15-rutbe-meclis-uyeligi"></i> <?=$p->count_deputy?> dönem mecliste yer aldı.</td>
 										<td rowspan="2" class="etiketler">
-											<!--
-											<a href="#">#MecnununYolu</a>, 
-											<a href="#">#TürkAskeriDemek</a>, 
-											<a href="#">#kardeşlikicin</a>, 
-											<a href="#">#Devrimiyidiriyi</a>
-											-->
+                                                                                    <?php //print_r(profile::get_hastagInterest($p)); ?>
+                                                                                    <?php foreach (profile::get_hastagInterest($p) as $hs) : ?>
+											
+											<a href="/<?=$hs->permalink?>"><?=$hs->name?></a>  
+											
+                                                                                    <?php endforeach; ?>
 										</td>
 									</tr>
 									<tr>
