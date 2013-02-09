@@ -275,7 +275,7 @@
 							{
 								?>
 								<div class="social_connect">
-				    				<a class="facebook_login" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
+				    				<a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
 				    			</div>
 								<?
 							}
@@ -283,7 +283,7 @@
 							{
 								?>
 								<div class="social_connect">
-				    				<a class="facebook_login" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
+				    				<a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
 				    			</div>
 								<?
 							}
@@ -294,19 +294,26 @@
 							{
 							?>
 								<div class="social_connect">
-			    					<a class="twitter_login" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
+                                                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
 			    				</div>
 							<? 
 							}
 							else {
 							?>
 								<div class="social_connect">
-			    					<a class="twitter_login" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
+			    					<a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
 			    				</div>
 							<? 	
 							}
 								
 						?>
+                                                        <div class="social_connect">
+                                                            <h4>Democratus'u arkadaşlarınla paylaş.</h4>
+                                                            <textarea class="textarea">democratus metini</textarea>
+                                                            <div style="clear: both;"></div>
+                                                            <button id="share-with-twitter" class="btn btn-info" >Twitter'da paylaş</button>
+                                                            <button id="share-with-facebook" class="btn btn-info" >Facebook'ta paylaş</button>
+                                                        </div>
 						</div>
 						<div style="clear: both;"></div>
 						<div id="socialListArea">

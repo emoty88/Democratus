@@ -1966,3 +1966,29 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 	text-decoration: none;
 	color: #FFFFFF;
 }
+
+#face_button{
+	background: url(http://democ.com/t/ala/img/facebook_button.png);
+	background-repeat: no-repeat;
+	display: block;
+	height: 32px;
+	padding-left: 38px;
+	padding-top: 5px;
+	color: white;
+}
+#twit_buton{
+	background: url(http://democ.com/t/ala/img/twitter_button.png);
+	height: 179px;
+	background-repeat: no-repeat;
+	display: block;
+	height: 32px;
+	padding-left: 39px;
+	padding-top: 12px;
+	color: white;
+}
+
+.textarea{
+        resize: none;
+        height: 50px;
+        width: 272px;
+}
