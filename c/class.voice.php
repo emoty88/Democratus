@@ -103,13 +103,7 @@
 			{
 				//return FALSE;
 			}
-<<<<<<< HEAD
 			if(true)
-=======
-
-			if(false)
-
->>>>>>> 94643f8ca1d5cf2b860b1b1156820196a4779223
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
@@ -198,13 +192,11 @@
 			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-
         	if($model->profileID == "1734")
         	{
         		//echo $db->_sql;
        		}
 			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
-
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)
