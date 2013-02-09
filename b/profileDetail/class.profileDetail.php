@@ -41,12 +41,15 @@
 									<tr>
 										<td colspan="3" class="rutbe meclis_uyeligi"><i class="atolye15-rutbe-meclis-uyeligi"></i> <?=$p->count_deputy?> dönem mecliste yer aldı.</td>
 										<td rowspan="2" class="etiketler">
-                                                                                    <?php //print_r(profile::get_hastagInterest($p)); ?>
-                                                                                    <?php foreach (profile::get_hastagInterest($p) as $hs) : ?>
+                                            <?php //print_r(profile::get_hastagInterest($p)); ?>
+                                            <?php foreach (profile::get_hastagInterest($p) as $hs) : ?>
 											
 											<a href="/<?=$hs->permalink?>"><?=$hs->name?></a>  
 											
-                                                                                    <?php endforeach; ?>
+                                            <?php endforeach; ?>
+                                            <div class="show-all-tags">
+												<a href="javascript:;">İlgi Alanları</a>
+											</div>
 										</td>
 									</tr>
 									<tr>

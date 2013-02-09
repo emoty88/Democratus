@@ -1079,8 +1079,8 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$sex = trim(filter_input(INPUT_POST, 'cinsiyet', FILTER_SANITIZE_STRING));
 		
 		$obj->birth = date('Y-m-d',mktime(0,0,0,$ay,$gun,$yil));
-		
-		$obj->sex = model::trSex2sex($sex);
+		$obj->motto = trim(strip_tags(filter_input(INPUT_POST, 'motto', FILTER_SANITIZE_STRING)));
+		$obj->sex = model::trSex2sex(filter_input(INPUT_POST, 'cinsiyet', FILTER_SANITIZE_STRING));
 		
 		$objusr->ID = $model->profileID;
 		$objusr->email = trim(filter_input(INPUT_POST, 'eposta', FILTER_SANITIZE_STRING));
@@ -1570,10 +1570,13 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		global $model, $db;
 		$hashTag	= filter_input(INPUT_POST, 'hashTag',FILTER_SANITIZE_STRING);
 		$c_voice = new voice;
-		$voice = $c_voice->get_voices_for_wall($hashTag ,  0 , 1 , 1, "" ,"", "bottom");
+		$response = new stdClass;
+		
+		$voice = $c_voice->get_promotedVoice($hashTag);
+		
 		$response = new stdClass;
 		$response->status = "success";
-		$response->voice = $voice[0];
+		$response->voice = $c_voice-> get_return_object($voice);
 		echo json_encode($response);
 	}
  

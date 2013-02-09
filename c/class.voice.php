@@ -103,14 +103,11 @@
 			{
 				//return FALSE;
 			}
-			if(false)
+			if(true)
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
 				
-				//echo "<pre>";
-				//	var_dump($followin);
-				//echo "</pre>";
 				$SELECT = "SELECT DISTINCT 	di.*, 
 	        								sharer.image AS sharerimage, 
 	        								sharer.name AS sharername, 
@@ -131,19 +128,21 @@
 	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
 	        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
 	        	} else {
-	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
+	        		$WHERE  = "\n WHERE (di.profileID = " . $db->quote(intval( $profileID ));
+					if(@$hashTag != "0")
+					{
+						$WHERE .= "\n  OR di.di  LIKE '%". $db->escape( "#".$hashTag )."%'";
+					}
+					$WHERE .=")";
 	        	}
+				
 				if($start>0){
 					if($pos=="bottom")
 	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
 					else 
 						$WHERE .= "\n AND di.ID>" . $db->quote($start);
 	        	}  
-				if($hashTag != "0")
-				{
-					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
-				}
-	        	
+				
 	        	$WHERE .= "\n AND di.status>0";
 	        	if($onlyProfile==0)
 	        		$WHERE .= "\n AND onlyProfile='0'";
@@ -483,6 +482,28 @@
 			return $db->updateObject("di", $dVoice, "ID");
 			
        	}
+		public function get_promotedVoice($ID='')
+		{
+			global $model, $db;
 		
+			$SELECT = "SELECT DISTINCT 	di.*, 
+        								sharer.image AS sharerimage, 
+        								sharer.name AS sharername, 
+        							
+        								sharer.deputy AS deputy, 
+        								sharer.showdies,
+        								sharer.permalink as permalink";
+        	$FROM   = "\n FROM di";
+        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID ";
+			$WHERE	= "\n WHERE di.status>0 AND di.profileID = '".$ID."' AND di.redi=0 ";
+			$ORDER	= "\n ORDER BY ID desc ";
+			$LIMIT	= "\n LIMIT 1";
+			
+			$db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$ORDER.$LIMIT);
+			
+			$db->loadObject($result);
+			//$voice	= $this->get_return_object($voice[0]);
+			return $result;
+		}
 	}
 ?>

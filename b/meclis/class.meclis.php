@@ -7,13 +7,14 @@
 			$type=0;
 			$parentID=0;
 			
-
+			$meclisName = "Türkiye Meclisi";
 			if($model->page->permalink=="hashTag")//chech ed 
 			{
 				
 				$type="hastagID";
 				$c_profile = new profile();
 				$parentID= $c_profile->change_perma2ID($model->paths[0]);
+				$meclisName = $model->paths[0]." Meclisi";
 			}
 	
            	$agendasNonSort=$c_parliament->get_agenda($type, $parentID);
@@ -29,7 +30,7 @@
 				<section class="bilesen kirmizi kontroller_var" id="meclis_gagget">
 					<header>
 						<hgroup>
-							<h1>Türkiye Meclisi</h1>
+							<h1><?=$meclisName?></h1>
 							<h2>(Referandum)</h6>
 						</hgroup>
 					</header>
