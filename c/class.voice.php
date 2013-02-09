@@ -96,21 +96,19 @@
 			$db->setQuery($SELECT.$FROM.$WHERE);
 			return $db->loadResult();
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = 0,$keyword="", $pos="bottom")
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			if($model->profileID < 1)
 			{
 				//return FALSE;
 			}
-			if($model->profileID == "10000" || true)
+
+			if(true)
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
 				$followin=$db->loadResultArray();
 				
-				//echo "<pre>";
-				//	var_dump($followin);
-				//echo "</pre>";
 				$SELECT = "SELECT DISTINCT 	di.*, 
 	        								sharer.image AS sharerimage, 
 	        								sharer.name AS sharername, 
@@ -123,12 +121,13 @@
 	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
 	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
 	        	if(intval($profileID)<1){
-	        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+	        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
 	        		$WHERE  = "\n WHERE  ( ";
 	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
 	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+					if(count($followin)>0)
 	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
-	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
+	        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
 	        	} else {
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
@@ -137,9 +136,8 @@
 	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
 					else 
 						$WHERE .= "\n AND di.ID>" . $db->quote($start);
-					
 	        	}  
-				if($hashTag != 0)
+				if($hashTag != "0")
 				{
 					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
 				}
@@ -173,9 +171,12 @@
 	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
 	        	}
 				if($start>0){
-	        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					if($pos=="bottom")
+	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+					else 
+						$WHERE .= "\n AND di.ID>" . $db->quote($start);
 	        	}  
-				if($hashTag != 0)
+				if($hashTag != "0")
 				{
 					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
 				}
@@ -187,10 +188,16 @@
 	        	$ORDER  = "\n ORDER BY di.ID DESC";
 	        	$LIMIT  = "\n LIMIT $limit";
         	}
-
+			
    
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-		
+
+        	if($model->profileID == "1734")
+        	{
+        		//echo $db->_sql;
+       		}
+			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+
 			$rows = $db->loadObjectList();
 			$voices	=array();
 			if(count($rows)>0)

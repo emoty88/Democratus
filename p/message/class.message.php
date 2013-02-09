@@ -11,17 +11,7 @@
 			
 			$this->msg = new messageClass;
 
-			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-	   	 	$model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
-			$model->addScript(TEMPLATEURL."ala/js/jquery.nicescroll.min.js", "jquery.nicescroll.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.scrollTo-1.4.3.1-min.js", "jquery.scrollTo-1.4.3.1-min.js", 1);
-			//$model->addScript(PLUGINURL . 'lib/jquery-ui/jquery-ui.js', 'jquery-ui.js', 1);
-			//$model->addStyle( 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css', 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css', 1 );
+			$model->addHeaderElement();
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='message'");

@@ -717,6 +717,11 @@
 			$don = 4;
 			if(count($rows)<4)
 				$don = count($rows);
+		
+			if($don<1)
+			{
+				return false;
+			}
 			for($i=0; $i<$don; $i++)
 			{
 				$secim = array_rand($rows);

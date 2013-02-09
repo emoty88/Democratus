@@ -6,39 +6,32 @@ class parliament_plugin extends control {
 		$model->view		= "default";
 		$model->title 		= 'Democratus - Parliament';
 		
-		$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-                $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-                $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-                $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-                $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-                $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-
-                $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
+		$model->addHeaderElement();
 		
 		$model->addScript("paths=".json_encode($model->paths));
 		$model->addScript("plugin='parliament'");
                 
-                $model->addScript("var count=".parliament::count_poroposal().';');
-                
-                $tomorrow = mktime(0, 0, 0, date("m"), date("d")+1, date("y"));
-                $diff = $tomorrow-time();
-                if($diff<3600)
-                    $tasari = FALSE;
-                else
-                    $tasari = TRUE;
-                    
-                $kaldi =NEXTELECTION-time();
-                
-                $gun = floor($kaldi/86400);
-                $saat = floor(($kaldi-$gun*24*60*60)/3600);
-                $dakika = floor((($kaldi-$gun*24*60*60)-$saat*60*60)/60);
-                
-                if($gun < 10)
-                    $gun = '0'.$gun;
-                if($saat < 10)
-                    $saat = '0'.$saat;
-                if($dakika <10)
-                    $dakika = '0'.$dakika;
+        $model->addScript("var count=".parliament::count_poroposal().';');
+        
+        $tomorrow = mktime(0, 0, 0, date("m"), date("d")+1, date("y"));
+        $diff = $tomorrow-time();
+        if($diff<3600)
+            $tasari = FALSE;
+        else
+            $tasari = TRUE;
+            
+        $kaldi =NEXTELECTION-time();
+        
+        $gun = floor($kaldi/86400);
+        $saat = floor(($kaldi-$gun*24*60*60)/3600);
+        $dakika = floor((($kaldi-$gun*24*60*60)-$saat*60*60)/60);
+        
+        if($gun < 10)
+            $gun = '0'.$gun;
+        if($saat < 10)
+            $saat = '0'.$saat;
+        if($dakika <10)
+            $dakika = '0'.$dakika;
                 
 		?>
 			<section class="banner">

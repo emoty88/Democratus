@@ -12,7 +12,7 @@
 				 
 			?>
 				<!-- Bileşen -->
-				<section class="bilesen beyaz padding_yok">
+				<section class="bilesen beyaz padding_yok" id="whotofollow">
 					<header>
 						<h1>Takip Önerileri</h1>
 					</header>

@@ -2,15 +2,15 @@ var stepsHome = [
 				{
 					placement:"bottom", 
 					domSelector: "#yeni_yazi_yaz",
-					title:"Fikrini Paylaş.", 
-					content: "<p style='font-size:10pt;'>200 Karaktere kadar yazacağın 'ses' lerle fikrini takipçilerine duyurabilirsin. Duvarında ise takip ettiğin kişilerin 'ses' lerini bulabilirsin.</p>", 
+					title:"Fikrini Paylaş", 
+					content: "<p style='font-size:10pt;'>200 karaktere kadar yazacağın \"ses\"lerle fikrini takipçilerine duyurabilirsin. Duvarında da takip ettiğin kişilerin \"ses\"lerini bulabilirsin.</p>", 
 					buttons: ["next_btn","stop_btn"]
 				},
 				{
 					placement:"bottom", 
 					domSelector: "#sesozel", 
 					title:"Yazılmış Bir Ses", 
-					content: "<p style='font-size:10pt;'>Bir 'ses' i yanıtlamak istersen üzerine tıklaman yeterli +voice linki hangi 'ses' i yanıtladığını gösterecektir.</p>", 
+					content: "<p style='font-size:10pt;'>Bir \"ses\"i yanıtlamak istersen üzerine tıklaman yeterli. +voice linki hangi \"ses\"i yanıtladığını gösterecektir.</p>", 
 					buttons: ["prev_btn", "next_btn", "stop_btn"],
 					onAfterScrtip: "loadDumyVoice(38750)"
 				},
@@ -18,14 +18,14 @@ var stepsHome = [
 					placement:"right", 
 					domSelector: "#meclis_gagget", 
 					title:"Ülke Meclisi", 
-					content: "<p style='font-size:10pt;'>Haftalık seçimlerle iş başına gelen vekillerin her gün hazırladığı referandumları oylayabilir, fikrini tüm ülkeyle paylaşabilirsin. Böylece ülke gündemini her gün belirleyebilirsin</p>", 
+					content: "<p style='font-size:10pt;'>Haftalık seçimlerle iş başına gelen vekillerin her gün hazırladığı referandumları oylayarak fikrini tüm ülkeyle paylaşabilirsin. Böylece ülke gündemini her gün belirlersin.</p>", 
 					buttons: ["prev_btn", "next_btn", "stop_btn"]
 				},
 				{
 					placement:"right", 
 					domSelector: "#popularVoice_gadget", 
 					title:"Ses Getirenler", 
-					content: "<p style='font-size:10pt;'>Son 24 saat içerisinde ülke genelinde en çok ses getirmiş paylaşımları bu alanda bulacaksın. Daha Fazlası için ses getirenler sayfasını ziyaret edebilirsin.</p>", 
+					content: "<p style='font-size:10pt;'>Son 24 saat içerisinde ülke genelinde en çok etki oluşturan paylaşımları bu alanda bulacaksın. Daha fazlası için \"Ses Getirenler\" sayfasını ziyaret edebilirsin.</p>", 
 					buttons: ["prev_btn", "next_btn", "stop_btn"]
 				},
 				{
@@ -52,16 +52,16 @@ var stepsHashTag =[
 				{
 					placement:"bottom", 
 					domSelector: ".htShareArea", 
-					title:"Konu kurum sayfaları", 
-					content: "<p style='font-size:10pt;'>Konu ve kurumları #link haline getiriyoruz. İlgilendiklerini takip ederek onlardan haberdar olabilir, sayfa duvarında ilgili tüm sesleri görebilirsin.</p>", 
+					title:"Konu - Kurum Sayfaları", 
+					content: "<p style='font-size:10pt;'>Konu ve kurumları, #link haline getiriyoruz. İlgilendiklerini takip ederek onlardan haberdar olabilir, sayfa duvarında ilgili tüm sesleri görebilirsin.</p>", 
 					buttons: ["next_btn", "stop_btn"]
 					
 				},
 				{
 					placement:"right", 
 					domSelector: ".hashTag_slide", 
-					title:"Konu Kurum Sayfası Gündem ve Ses getirenler", 
-					content: "<p style='font-size:10pt;'>Gündemler Sayfa yöneticileri-sahipleri tarafından hazırlanıyor. onları oylarınla şekillendirebilir ve kararı belirleyebilirsin. Ayrıca son 24 saatte en çok reaksiyon alan 'ses' leri Ses getirenler alanında bulacaksın.</p>", 
+					title:"Konu - Kurum Sayfasının Gündem ve Ses Getirenleri", 
+					content: "<p style='font-size:10pt;'>Gündemler sayfa yöneticileri tarafından hazırlanır. Bu gündemleri oylarınla sen şekillendirirsin. Ayrıca son 24 saatte en çok reaksiyon alan \"ses\"leri Ses Getirenler alanında bulacaksın.</p>", 
 					buttons: ["prev_btn", "next_btn", "stop_btn"]
 					
 				}
@@ -86,10 +86,12 @@ $(document).ready(function () {
 	$("BODY").prepend('<div class="overlay" ></div>');
 	switch(plugin)
    	{
-   		case "hashTag" : steps = stepsHashTag; break;
-   		case "home" : steps = stepsHome; break;
+   		case "hashTag" : op=true; steps = stepsHashTag; break;
+   		case "home" : op=true; steps = stepsHome; break;
+   		default : op = false;
    		
    	}  	
+   	if(op)
 	for(var i=0; i<steps.length; i++)
 	{
 		init_step(i);

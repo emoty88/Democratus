@@ -8,17 +8,7 @@
 			$model->view="default";
 			$model->title = 'Democratus';
 			
-			$model->addScript(TEMPLATEURL."ala/js/modernizr-2.6.2.min.js", "modernizr-2.6.2.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-1.8.3.min.js", "jquery-1.8.3.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery-ui-1.9.1.custom.min.js", "jquery-ui-1.9.1.custom.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/jquery.caroufredsel.js", "jquery.caroufredsel.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/bootstrap.min.js", "bootstrap.min.js", 1);
-            $model->addScript(TEMPLATEURL."ala/js/app.js", "app.js", 1);
-
-            $model->addScript(TEMPLATEURL."ala/js/jquery.tmpl.js", "jquery.tmpl.js", 1);
-
-			$model->addScript(PLUGINURL . 'lib/fineuploader/jquery.fineuploader-3.0.js', 'fileuploader-3.0.js', 1 );
-			//$model->addStyle(PLUGINURL . 'lib/fineuploader/fileuploader.css', 'fileuploader.css', 1 );
+			$model->addHeaderElement();
 						
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='search'");
@@ -52,6 +42,7 @@
 					</section>
 					<!-- Referandumlar Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-sesler">
 					<!-- Kişiler Tab -->
 					<section id="sesler-container" class="duvar_yazilari">
@@ -59,6 +50,7 @@
 					</section>
 					<!-- Kişiler Tab Son -->
 				</div>
+				
 				<div class="tab-pane fade in" id="tab-arsivler">
 					<!-- Arşiv Tab -->
 					<section id="arsivler-container" class="duvar_yazilari">

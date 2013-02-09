@@ -1447,8 +1447,17 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$response = new stdClass;
 		$response->status	= "success";
 		$persons	= $c_profile->get_who2follow();
-		$personsObj = $c_profile->get_porfileObject($persons);
-		$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
+		if($persons==false)
+		{
+			$response->status = "error";
+			$response->error  = "Kimse Takip edilmiyor";
+			
+		}
+		else
+		{
+			$personsObj = $c_profile->get_porfileObject($persons);
+			$response->persons = $c_profile->get_profileMultiReturtnObj($personsObj);
+		}
 		echo json_encode($response);
 	}
     public function set_profileImage()
@@ -1555,26 +1564,38 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return->voices = $voices;
 		echo json_encode($return);
 	}
-        
-        public function delete_dialog(){
-            global $model, $db;
-            $messageClass = new messageClass();
-            $r_array = array();
-            $r_array['status'] = 'success';
-            $userID = $model->profileID;
-            $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
-            $user2ID = profile::change_perma2ID($user2ID);
-            if($user2ID<2){
-                $r_array['status'] = 'error';
-                echo json_encode($r_array);
-                return;
-            }
-            if(!$messageClass->delete($userID, $user2ID, FALSE, TRUE)){
-                $r_array['status'] = 'error';
-            }
-            
+
+	public function get_promotedVoice()
+	{
+		global $model, $db;
+		$hashTag	= filter_input(INPUT_POST, 'hashTag',FILTER_SANITIZE_STRING);
+		$c_voice = new voice;
+		$voice = $c_voice->get_voices_for_wall($hashTag ,  0 , 1 , 1, "" ,"", "bottom");
+		$response = new stdClass;
+		$response->status = "success";
+		$response->voice = $voice[0];
+		echo json_encode($response);
+	}
+ 
+    public function delete_dialog(){
+        global $model, $db;
+        $messageClass = new messageClass();
+        $r_array = array();
+        $r_array['status'] = 'success';
+        $userID = $model->profileID;
+        $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
+        $user2ID = profile::change_perma2ID($user2ID);
+        if($user2ID<2){
+            $r_array['status'] = 'error';
             echo json_encode($r_array);
+            return;
         }
+        if(!$messageClass->delete($userID, $user2ID, FALSE, TRUE)){
+            $r_array['status'] = 'error';
+        }
+        
+        echo json_encode($r_array);
+    }
 
 }
 ?>
