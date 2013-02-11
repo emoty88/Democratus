@@ -23,6 +23,7 @@
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
 			//$model->addScript('');
+			echo $c_profile->profile->showdies;
 		}
         public function main_old(){
             global $model, $db, $l;
