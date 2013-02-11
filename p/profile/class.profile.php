@@ -23,8 +23,15 @@
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
 			
-			echo $c_profile->profile->showdies;
-			//$model->addScript('');
+			
+			if($c_profile->profile->showdies=="1")
+			{
+				if(!$c_profile->isFollow($model->profileID))
+				{
+					$model->addScript('notLoadVoice=true;');
+					$model->addScript('$().ready(function(){$("#sadeceTakipci-tmpl").tmpl().prependTo("#orta_alan_container");});');
+				}
+			}
 		}
         public function main_old(){
             global $model, $db, $l;
