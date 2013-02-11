@@ -596,7 +596,7 @@ jQuery(document).ready(function ($) {
 					$("#messageCount").show().text(response);
 				}
 				//console.log(response);
-				setTimeout("get_messageCount()",3000);				
+				//setTimeout("get_messageCount()",3000);				
 			}
 		});	
 	}
@@ -757,8 +757,8 @@ jQuery(document).ready(function ($) {
 	{
 		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword,pos:pos};
 		loadNewProsses=1;
-		//if(!this.isActive)
-		//return false;
+		if(!this.isActive)
+			return false;
 		$.ajax({
 			type: "POST",
 			url: "/ajax/get_newWallCount",

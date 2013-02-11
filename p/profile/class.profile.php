@@ -22,6 +22,8 @@
 			$c_profile 	= new profile($userPerma);
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
+			
+			echo $c_profile->profile->showdies;
 			//$model->addScript('');
 		}
         public function main_old(){
