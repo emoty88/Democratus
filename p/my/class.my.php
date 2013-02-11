@@ -362,8 +362,9 @@
 			                            </tr>
 			                            <tr>
 			                                    <td>Paylaşımlarım</td>
-			                                <td><label class="radio">
-			                                    <input type="radio" name="showdies" id="showdies0" value="0" <?=@$showdiesChecked[0]?>></label></td>
+			                                	<td>
+			                                		
+			                                    </td>
 			                                    <td><label class="radio">
 			                                    <input type="radio" name="showdies" id="showdies1" value="1" <?=@$showdiesChecked[1]?>></label></td>
 			                                    <td><label class="radio">
