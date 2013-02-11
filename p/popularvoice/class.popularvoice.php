@@ -10,6 +10,17 @@ class popularvoice_plugin extends control{
 		
 		$model->addScript("paths=".json_encode($model->paths));
 		$model->addScript("plugin='popularvoice'");
+		//echo "Popular sesler";
+		?>
+		<section class="banner">
+				<header>
+					<h1>Ses Getirenler</h1>
+				</header>
+				<!-- <img alt="" src="img/banner-adaylarim.png"> -->
+		
+				<div class="clearfix"></div>
+			</section>
+		<?
     }
 }
 ?>

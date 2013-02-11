@@ -26,7 +26,7 @@ function starter()
 	if(this.isActive)
 	{
 		get_noticeCount();
-		//get_messageCount();
+		get_messageCount();
 	}
 	setTimeout("starter()",3000);
 }
@@ -587,7 +587,7 @@ jQuery(document).ready(function ($) {
 			dataType:"json",
 			success: function(response)
 			{
-				if(response==null)
+				if(response<1)
 				{
 					$("#messageCount").hide();
 				}

@@ -278,7 +278,8 @@
                     
                     $profile = new stdClass;
                     $profile->name = $name;
-					$oauth->permalink  = $c_porfile->normalize_permalink($username);
+					$c_profile = new profile();
+					$oauth->permalink  = $c_profile->normalize_permalink($username);
                     $profile->status = 1;
                     $profile->fbID = $uid;
                     

@@ -8,8 +8,21 @@
         	?>
         	<section class="satir" id="profil">
 				<article>
+				<? 
+					if($c_profile->_isAdmin)
+					{
+						?>
+						<div style="float:right; margin:15px 15px -50px 15px; z-index: 9999; position: relative; ">
+							<div class="pImageUpload" data-upload="cover">
+								<button data-ftext="Resmi Güncelle"  style="" class="btn btn-info "  type="button">Resmi Güncelle</button>
+							</div>
+						</div>
+						<?				
+					} 
+					?>
 					<img class="banner" style="width: 640px; height: 206px;" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
 					<div class="asil_alan">
+						
 						<a class="profil_resmi" href="#">
 							<img src="<?=$model->getprofileimage($p->image,105,130,"cutout");?>" alt="<?=$p->name?> Profil resmi" >
 						</a>
@@ -66,13 +79,14 @@
 							</ul>
 						</aside>
 						<aside style="padding-left: 33px">
+							<!--
 							<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; z-index: auto; width: 534px; height: 54px; margin: 15px 0px 0px; overflow: hidden;">
 								<div id="imageGaleryArea" class="img-slider-content image_carousel" style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 2670px; height: 54px;">
 									
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							
+							-->
 							<!--
 							<a href="#" id="slider-prev" class="prev disabled" style="display: block;"><span>geri</span></a>
 							<a href="#" id="slider-next" class="next" style="display: block;"><span>ileri</span></a>
