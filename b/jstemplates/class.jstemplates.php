@@ -165,7 +165,7 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="sadeceTakipci-tmpl" type="text/x-jquery-tmpl">
-			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Bu Kişinin sesleriniz sadece takipçileri görebilir.</a></aside>
+			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Bu Kişinin seslerini sadece takipçileri görebilir.</a></aside>
 		</script>
 		
 		<script id="loadNewVoice-tmpl" type="text/x-jquery-tmpl">
