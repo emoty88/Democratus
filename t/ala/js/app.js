@@ -20,6 +20,8 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 var newVoiceCount	= 0;
 var loadNewProsses	= 0;
+var notLoadVoice	= false;
+
 
 function starter()
 {
@@ -837,6 +839,10 @@ jQuery(document).ready(function ($) {
 		}
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
+		if(notLoadVoice)
+		{
+			return false;
+		}
 		wallmoreAction=1;
 		
 		if(get_wall.arguments.length<7)
