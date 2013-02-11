@@ -103,6 +103,7 @@
 			{
 				//return FALSE;
 			}
+
 			if(true)
 			{
 				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");

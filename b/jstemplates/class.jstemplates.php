@@ -160,29 +160,12 @@ class jstemplates_block extends control{
 			</article>
 		</script>
 		
-		<script id="duvaryazisianket-tmpl" type="text/x-jquery-tmpl">
-			<!-- Duvar Yazısı Anket -->
-			<article class="duvar_yazisi anket">
-				<div class="anket_tutucu_arkaplan">
-					<div class="anket_tutucu">
-						<img class="profil_resmi" src="http://lorempixel.com/48/48/people/1/" alt="Sedef Kul Profil Fotoğrafı">
-						<address class="yazar"><a href="#" title="Sedef Kul'un Profilini Görüntüle">Derya Baykal</a> <span>2 gün, 2 saat</span></address>
-						<div class="duvar_yazisi_icerigi">
-							<p>Petrol konusunda ülkeler arasında olan karşılıklı bağımlılık yüzünden fiyatlar diken üstünde olabiliyor. Mesela bugün olacak olan Venezuella seçimleri. Her şeyin ne olacağı meçhul.</p>
-						</div>
-						<aside class="cevaplar">
-							<a href="#" class="btn">Katılıyorum</a>
-							<a href="#" class="btn">Kararsızım</a>
-							<a href="#" class="btn">Katılmıyorum</a>
-						</aside>
-					</div>
-				</div>
-			</article>
-			<!-- Duvar Yazısı Anket Son -->
-		</script>
-		
 		<script id="dahafazlases-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
+		</script>
+		
+		<script id="sadeceTakipci-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Bu Kişinin sesleriniz sadece takipçileri görebilir.</a></aside>
 		</script>
 		
 		<script id="loadNewVoice-tmpl" type="text/x-jquery-tmpl">

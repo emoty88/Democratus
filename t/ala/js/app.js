@@ -20,6 +20,8 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 var newVoiceCount	= 0;
 var loadNewProsses	= 0;
+var notLoadVoice	= false;
+
 
 function starter()
 {
@@ -596,7 +598,7 @@ jQuery(document).ready(function ($) {
 					$("#messageCount").show().text(response);
 				}
 				//console.log(response);
-				setTimeout("get_messageCount()",3000);				
+				//setTimeout("get_messageCount()",3000);				
 			}
 		});	
 	}
@@ -757,8 +759,8 @@ jQuery(document).ready(function ($) {
 	{
 		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword,pos:pos};
 		loadNewProsses=1;
-		//if(!this.isActive)
-		//return false;
+		if(!this.isActive)
+			return false;
 		$.ajax({
 			type: "POST",
 			url: "/ajax/get_newWallCount",
@@ -837,6 +839,10 @@ jQuery(document).ready(function ($) {
 		}
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
+		if(notLoadVoice)
+		{
+			return false;
+		}
 		wallmoreAction=1;
 		
 		if(get_wall.arguments.length<7)
