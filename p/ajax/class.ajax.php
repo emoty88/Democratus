@@ -19,9 +19,9 @@ class ajax_plugin extends control{
 		$limit		= filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
-		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
-		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
-		$pos	 = filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
+		$hashTag 	= filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
+		$keyword 	= filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		$pos	 	= filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
@@ -587,9 +587,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
              	$share->ID=$db->insertid();
             	$response['status'] = 'success';
                 
-                $model->notice($voice->profileID, 'redi', $share->ID, $voice->ID);
+                $model->notice($voice->profileID, 'redi', $voice->ID, $share->ID);
                 if($profile->emailperms>0)
-                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/profile/'.$model->profileID.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                 
 				$int = new induction;
 				$int->set_voice_intduction("redi_share",$share);
