@@ -298,10 +298,10 @@
 						?>
                                                         <div class="social_connect">
                                                             <h4>Democratus'u arkadaşlarınla paylaş.</h4>
-                                                            <textarea class="textarea">democratus metini</textarea>
+                                                            <textarea id="share-with-social-text" class="textarea">test</textarea>
                                                             <div style="clear: both;"></div>
-                                                            <button id="share-with-twitter" class="btn btn-info" >Twitter'da paylaş</button>
-                                                            <button id="share-with-facebook" class="btn btn-info" >Facebook'ta paylaş</button>
+                                                            <button onclick="javascript:share_totwit();" class="btn btn-info" >Twitter'da paylaş</button>
+                                                            <button onclick="javascript:share_tofacebook();" id="share-with-facebook" class="btn btn-info" >Facebook'ta paylaş</button>
                                                         </div>
 						</div>
 						<div style="clear: both;"></div>

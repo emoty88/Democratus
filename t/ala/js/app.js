@@ -394,7 +394,40 @@ jQuery(document).ready(function ($) {
                 get_myFollowing(input.val());
             }
         });
+        
+        $('#share-with-twitter').live('click',function(){
+            //paylaşma izni var mı diye bak
+            
+        });
+        
+       
 });
+        function share_tofacebook(){
+             var text = $('#share-with-social-text').val();
+             var signinWin;
+             signinWin = window.open("http://democ.com/ajax/facebookta_paylas?text="+text, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+                    
+            $.get('/ajax/facebookta_paylas', {text:text,f:'false'}, function(response){
+                if(response.durum.length && (response.durum== 'izinal' || response.durum == 'login')){
+
+                    signinWin = window.open(response.loginUrl, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+                    signinWin.focus();
+
+
+                }else{
+                    signinWin.close();
+
+                }
+            }, 'json');
+            
+        }
+        
+        function share_totwit(){
+            var signinWinn;
+            var text = $('#share-with-social-text').val();
+            signinWinn = window.open("http://democ.com/ajax/twitterda_paylas?text="+text, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+            
+        }
 	// is_valid_data_attr
 	function set_meclis_oy(agendaID, choice)
 	{
