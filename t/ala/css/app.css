@@ -1847,7 +1847,8 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 .atolye15-ikon-taktir { background-position: -72px -32px; }
 .atolye15-ikon-saygi { background-position: -96px -32px; }
 .atolye15-ikon-kaldir { background-position: -224px -32px; }
-.atolye15-ikon-paylas { background-position: -120px -32px; }
+.atolye15-ikon-paylas { background-position: -242px -32px; }
+.atolye15-ikon-yanitla { background-position: -120px -32px; }
 .atolye15-ikon-ok { background-position: -144px -32px; }
 :hover > .atolye15-ikon-atac, .aktif > .atolye15-ikon-atac { background-position: 0px -56px; }
 :hover > .atolye15-ikon-gorsel, .aktif > .atolye15-ikon-gorsel { background-position: -24px -56px; }
@@ -1855,7 +1856,8 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 :hover > .atolye15-ikon-taktir, .aktif > .atolye15-ikon-taktir { background-position: -72px -56px; }
 :hover > .atolye15-ikon-saygi, .aktif > .atolye15-ikon-saygi { background-position: -96px -56px; }
 :hover > .atolye15-ikon-kaldir, .aktif > .atolye15-ikon-kaldir { background-position: -224px -56px; }
-:hover > .atolye15-ikon-paylas, .aktif > .atolye15-ikon-paylas { background-position: -120px -56px; }
+:hover > .atolye15-ikon-paylas, .aktif > .atolye15-ikon-paylas { background-position: -242px -56px; }
+:hover > .atolye15-ikon-yanitla, .aktif > .atolye15-ikon-yanitla { background-position: -120px -56px; }
 :hover > .atolye15-ikon-ok, .aktif > .atolye15-ikon-ok { background-position: -144px -56px; }
 
 /* 48px */

@@ -223,8 +223,13 @@ class ajax_plugin extends control{
 					 
 					$share->sharerimage = $model->profile->image;
 					$share->sharername = $model->profile->name;
+					$share->sharerDeputy = $model->profile->deputy;
 					$share->permalink = $model->profile->permalink;
 					$share->count_reply = 0;
+					$share->count_like = 0;
+					$share->count_dislike = 0;
+					$share->count_reShare = 0;
+					
                     $response['voice'] 	= $c_voice->get_return_object($share);
 					
 					if($share->initem=="1")
@@ -555,6 +560,18 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
     	$ID  = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
      	$response = array();
         try{
+        	$db->setQuery('SELECT * FROM di WHERE rediID  = ' . $db->quote($ID) . ' AND profileID= '. $db->quote($model->profileID) . ' AND status=1');
+			$paylasildi = null;
+           	if($db->loadObject($paylasildi))
+			{
+				$response["status"]="success";
+				$response["type"]="removed";
+				$paylasildi->status = 0;
+				$db->updateObject("di", $paylasildi, "ID");
+				echo json_encode($response);
+				die;
+			}
+        	
         	$db->setQuery('SELECT * FROM di WHERE ID = ' . $db->quote($ID) . ' AND status > 0');
          	$voice = null;
            	if(!$db->loadObject($voice)) throw new Exception('voice bulunamadı');
@@ -1164,10 +1181,12 @@ else
 			$limit = filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
 			$voices =  $c_voice->get_reply(null, $start, $limit);
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
 			$response["voice_count"] = count($voices);
 			foreach($voices as $v)
 			{
 				$response["voices"][] = $c_voice->get_return_object($v, 32, 32);	
+				$response["lastID"] = $v->ID;
 			}
 	    } catch (Exception $e){
 	        $response['status'] = 'error';
@@ -1176,7 +1195,26 @@ else
 	    
 	    echo json_encode($response);
 	}
-
+	public function get_countVoiceReply()
+	{
+		global $model, $db;
+    	$model->mode = 0;
+   		$response = array("status" => "success");
+	    try{
+	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+			$start = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		   	$c_voice = new voice($vID);
+			
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
+			$response["count"] = $c_voice->get_replyCount(null, $start);
+			
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
 	public function get_parentVoice()
 	{
 		global $model, $db;

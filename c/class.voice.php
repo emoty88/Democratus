@@ -35,6 +35,7 @@
 			$SELECT = "SELECT DISTINCT 	di.*, 
 										sharer.image AS sharerimage, 
 										sharer.name AS sharername, 
+										sharer.deputy AS sharerDeputy, 
 										redier.name AS rediername, 
 										redier.image AS redierimage, 
 										sharer.deputy AS deputy, 
@@ -112,6 +113,7 @@
 				$SELECT = "SELECT DISTINCT 	di.*, 
 	        								sharer.image AS sharerimage, 
 	        								sharer.name AS sharername, 
+	        								sharer.deputy AS sharerDeputy, 
 	        								redier.name AS rediername, 
 	        								redier.image AS redierimage, 
 	        								sharer.deputy AS deputy, 
@@ -155,6 +157,7 @@
 	        	$SELECT = "SELECT DISTINCT 	di.*, 
 	        								sharer.image AS sharerimage, 
 	        								sharer.name AS sharername, 
+	        								sharer.deputy AS sharerDeputy, 
 	        								redier.name AS rediername, 
 	        								redier.image AS redierimage, 
 	        								sharer.deputy AS deputy, 
@@ -227,6 +230,7 @@
         	$SELECT = "SELECT DISTINCT 	di.*, 
         								sharer.image AS sharerimage, 
         								sharer.name AS sharername, 
+        								sharer.deputy AS sharerDeputy, 
         								redier.name AS rediername, 
         								redier.image AS redierimage, 
         								sharer.deputy AS deputy, 
@@ -304,6 +308,15 @@
 				$v->isMine = false;
 			}
 			$v->sName	= $v_obj->sharername;
+			if($v_obj->sharerDeputy=="1")
+			{
+				$v->sDeputy = true;
+			}
+			else
+			{
+				$v->sDeputy = false;
+			}
+			
 			$v->sPerma	= $v_obj->permalink;
 			$v->sImage	= $model->getProfileImage($v_obj->sharerimage, $iW,$iH, 'cutout');
         	$v->voice	= make_clickable($v_obj->di); 
@@ -347,6 +360,7 @@
 			$SELECT = "SELECT DISTINCT 	di.*, 
 										sharer.image AS sharerimage, 
 										sharer.name AS sharername, 
+										sharer.deputy AS sharerDeputy, 
 										redier.name AS rediername, 
 										redier.image AS redierimage, 
 										sharer.deputy AS deputy, 
@@ -369,6 +383,28 @@
             $voices = $db->loadObjectList();
 			return $voices;
 		}
+		public function get_replyCount($voiceID=null,$start=0)
+		{
+			global $model, $db;
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+ 				$voiceID=$this->_ID;
+ 			}
+
+			$SELECT = "SELECT DISTINCT 	count(*) ";
+        	$FROM   = "\n FROM di as di";
+			$WHERE	="\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+		 	if($start>0){
+        		$WHERE .= "\n AND di.ID<" . $db->quote($start);
+        	}  
+            $db->setQuery($SELECT . $FROM .  $WHERE );
+            $voicesC = $db->loadResult();
+			return $voicesC;
+		}
 		public function get_parent($voiceID=null)
 		{
 			global $model, $db;
@@ -383,6 +419,7 @@
 			$SELECT = "SELECT DISTINCT 	di.*, 
 										sharer.image AS sharerimage, 
 										sharer.name AS sharername, 
+										sharer.deputy AS sharerDeputy, 
 										redier.name AS rediername, 
 										redier.image AS redierimage, 
 										sharer.deputy AS deputy, 
@@ -398,33 +435,6 @@
             $db->loadObject($voices);
 			return $voices;
 		}
-		public function get_replyCount($voiceID)
-		{
-            global $model, $db;
-			if($voiceID==null && $this->_cons==0)
-			{
-				return false;
-			}
-			else if($this->_cons==1)
-			{
-				$voiceID=$this->_ID;
-			}
-			
-            //kendi tablosundan gelsin	
-            $SELECT = "SELECT count_(*)";
-            $FROM   = "\n FROM di AS di";
-            $JOIN   = "\n ";
-            
-            $WHERE  = "\n WHERE di.replyID = " . $db->quote($voiceID);
-            $WHERE .= "\n AND di.status>0";
-            
-            $ORDER  = "\n ";
-            $LIMIT  = "\n ";
-            
-            
-            $db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-            return intval( $db->loadResult() );
-        }
 		public function get_ismyRedi($voiceID)
 		{
 			global $model, $db;
@@ -490,8 +500,7 @@
 			$SELECT = "SELECT DISTINCT 	di.*, 
         								sharer.image AS sharerimage, 
         								sharer.name AS sharername, 
-        							
-        								sharer.deputy AS deputy, 
+        								sharer.deputy AS sharerDeputy, 
         								sharer.showdies,
         								sharer.permalink as permalink";
         	$FROM   = "\n FROM di";
