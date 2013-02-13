@@ -22,19 +22,17 @@
 									?>
 									<li>
 										<img src="<?=$v->sImage?>" alt="<?=$v->sName?>-mini-profile-img">
-										<h5><a href="<?=$v->sPerma?>"><?=$v->sName?></a></h5>
+                                                                                <h5><a href="<?=$v->sPerma?>"><?=$v->sName?></a> </h5>
+                                                                                    <?php if($model->profile->deputy>0 and proposal::get_p2PoroposalCount()<3 and proposal::check_popular2proposal($v->ID)): ?>
+                                                                                        
+                                                                                    <i title="Tasarı olarak ata"  class="atolye15-ikon-yanitla atolye15-ikon-24 tasari-ata" onclick="populardiToPopular(<?=$v->ID?>,this)"></i>
+                                                                                     <?php endif; ?></h5>
 										<p>
 											<a href="/voice/<?=$v->ID?>" style="text-decoration: none; font-weight: normal;">
 												<?=$v->voice?>
 											</a>
 										</p>
-                                            <?php 
                                             
-                                            if($model->profile->deputy>0 and proposal::get_p2PoroposalCount()<3 and proposal::check_popular2proposal($v->ID)):
-                                               
-                                            ?>
-                                            <button style="float:right" onclick="populardiToPopular(<?=$v->ID?>,this)"class="button">Tasarı olarak öner</button>
-                                            <?php endif; ?>
                                     </li>
 									<?
 								}

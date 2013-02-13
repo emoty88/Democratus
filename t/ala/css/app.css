@@ -2005,3 +2005,9 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 .share_with_friends{
     padding: 4.5px;
 }
+
+.tasari-ata{
+    margin-top: -3px;
+    float: right;
+    
+}
