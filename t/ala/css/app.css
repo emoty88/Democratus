@@ -1970,7 +1970,7 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 }
 
 #face_button{
-	background: url(http://democ.com/t/ala/img/facebook_button.png);
+	background: url(../img/facebook_button.png);
 	background-repeat: no-repeat;
 	display: block;
 	height: 32px;
@@ -1979,18 +1979,27 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 	color: white;
 }
 #twit_buton{
-	background: url(http://democ.com/t/ala/img/twitter_button.png);
+	background: url(../img/twitter_button.png);
 	height: 179px;
 	background-repeat: no-repeat;
 	display: block;
 	height: 32px;
 	padding-left: 39px;
-	padding-top: 12px;
+	padding-top: 5px;
 	color: white;
 }
 
 .textarea{
         resize: none;
         height: 50px;
-        width: 272px;
+        width: 366px;
+}
+
+.social_connect{
+    float: left;
+    width: 200px;
+}
+
+.share_with_friends{
+    padding: 4.5px;
 }

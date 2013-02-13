@@ -401,9 +401,23 @@ jQuery(document).ready(function ($) {
             //paylaşma izni var mı diye bak
             
         });
-        
+        $('.share_with_friends').live('click',function(){
+            show_social_connect2();
+            
+        });
+       
+        if(share == 1)
+         show_social_connect2();
        
 });
+    
+    
+        function show_social_connect2(){
+            $('.social_connect2').fadeIn(500,function(){
+                $('.textarea').focus();
+            });
+           
+        }
         function share_tofacebook(){
              var text = $('#share-with-social-text').val();
              var signinWin;

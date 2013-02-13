@@ -17,7 +17,7 @@
 						<h1>Arkadaşlarını Davet Et</h1>
 					</header>
 					<div class="bilesen_icerigi">
-                                            <address style="padding: 10px;">Arkadaşlarını da fikirleriyle gündemi şekillendirmeye <a href="/my#arkadasB" >davet et.</a></address>
+                                            <address style="padding: 10px;">Arkadaşlarını da fikirleriyle gündemi şekillendirmeye <a href="/my?share#arkadasB" >davet et.</a></address>
 					</div>
 					
 				</section>
