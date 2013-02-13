@@ -48,6 +48,7 @@
 
 									{{populardies}}
 									</div>
+                                                                        {{smsuggestion}}
 									{{whotofollow}}
 
 								</div>

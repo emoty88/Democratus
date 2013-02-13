@@ -301,7 +301,7 @@
 						?>
                                                         <div class="social_connect">
                                                             <h4>Democratus'u arkadaşlarınla paylaş.</h4>
-                                                            <textarea id="share-with-social-text" class="textarea">test</textarea>
+                                                            <textarea id="share-with-social-text" class="textarea">Democratus'ta fikrimi paylaşıyorum gündemi değiştiriyorum!</textarea>
                                                             <div style="clear: both;"></div>
                                                             <button onclick="javascript:share_totwit();" class="btn btn-info" >Twitter'da paylaş</button>
                                                             <button onclick="javascript:share_tofacebook();" id="share-with-facebook" class="btn btn-info" >Facebook'ta paylaş</button>
