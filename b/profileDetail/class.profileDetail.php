@@ -31,6 +31,11 @@
 							<header>
 								<address>
 									<h1>
+										<?php if($c_profile->profile->deputy == "1")
+											  {
+											  	echo '<i class="atolye15-rutbe-" style="width:30px; height:30px; background-size:30px;"></i>';
+											  }
+										?>
 										<a href="javascript:;" title="<?=$p->name?>"><?=$p->name?></a>
 									</h1>
 								</address>
@@ -41,12 +46,15 @@
 									<tr>
 										<td colspan="3" class="rutbe meclis_uyeligi"><i class="atolye15-rutbe-meclis-uyeligi"></i> <?=$p->count_deputy?> dönem mecliste yer aldı.</td>
 										<td rowspan="2" class="etiketler">
-                                                                                    <?php //print_r(profile::get_hastagInterest($p)); ?>
-                                                                                    <?php foreach (profile::get_hastagInterest($p) as $hs) : ?>
+                                            <?php //print_r(profile::get_hastagInterest($p)); ?>
+                                            <?php foreach (profile::get_hastagInterest($p) as $hs) : ?>
 											
 											<a href="/<?=$hs->permalink?>"><?=$hs->name?></a>  
 											
-                                                                                    <?php endforeach; ?>
+                                            <?php endforeach; ?>
+                                            <div class="show-all-tags">
+												<a href="javascript:;">İlgi Alanları</a>
+											</div>
 										</td>
 									</tr>
 									<tr>

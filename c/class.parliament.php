@@ -17,7 +17,7 @@
             {
 				$WHERE  .= "\n AND ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime"; 
 			}    
-
+			
             if($type!="0")
 			{
 				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	
@@ -40,8 +40,13 @@
             $LIMIT  = "\n  LIMIT 7";
             // Bu alanı sunucuya gönderme 
             $db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$GROUP.$ORDER.$LIMIT);
-            //echo $db->_sql;
-            
+			/*
+            if($model->profileID == "1734")
+			{
+				echo $db->_sql;
+			}    
+			*
+			 */         
             //$db->setQuery('SELECT a.* FROM agenda AS a WHERE '.$db->quote(date('Y-m-d H:i:s')).' BETWEEN a.starttime AND a.endtime ORDER BY ID desc');
             $agendas = $db->loadObjectList();
 	

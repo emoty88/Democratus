@@ -20,6 +20,8 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 var newVoiceCount	= 0;
 var loadNewProsses	= 0;
+var notLoadVoice	= false;
+
 
 function starter()
 {
@@ -629,7 +631,7 @@ jQuery(document).ready(function ($) {
 					$("#messageCount").show().text(response);
 				}
 				//console.log(response);
-				setTimeout("get_messageCount()",3000);				
+				//setTimeout("get_messageCount()",3000);				
 			}
 		});	
 	}
@@ -790,8 +792,8 @@ jQuery(document).ready(function ($) {
 	{
 		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword,pos:pos};
 		loadNewProsses=1;
-		//if(!this.isActive)
-		//return false;
+		if(!this.isActive)
+			return false;
 		$.ajax({
 			type: "POST",
 			url: "/ajax/get_newWallCount",
@@ -870,6 +872,10 @@ jQuery(document).ready(function ($) {
 		}
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos){
+		if(notLoadVoice)
+		{
+			return false;
+		}
 		wallmoreAction=1;
 		
 		if(get_wall.arguments.length<7)
@@ -937,7 +943,15 @@ jQuery(document).ready(function ($) {
 	function redi(ID){
 	    $.post("/ajax/redi", {ID: ID}, function(data){ 
 	        if(data.status == 'success'){
-	            $("#paylas_btn_"+ID+" span").html(" Paylaştın");
+	        	if(data.type == 'removed')
+	            {
+	            	$("#duvar_yazisi-content-"+ID).remove();
+	            	$("#paylas_btn_"+ID+" span.text").html(" Paylaş");	
+	            }
+	            else
+	            {
+	            	$("#paylas_btn_"+ID+" span.text").html(" Paylaştın");
+	            }
 	        }
 	    },'json');    
 	}
@@ -1007,8 +1021,11 @@ jQuery(document).ready(function ($) {
 	        if(data.status == 'success'){
 	        	$("#duvar_yazisi-content-"+voiceID).slideUp("400", function (){
 	        		$("#duvar_yazisi-content-"+voiceID).remove();
+	        		
 	        	});
-	        	
+	        	$("#duvar_yazisi-sub-content-"+voiceID).slideUp("400", function (){
+	        		$("#duvar_yazisi-sub-content-"+voiceID).remove();
+	        	});
 	        }
 	    },'json');  
 	}
@@ -1090,10 +1107,14 @@ jQuery(document).ready(function ($) {
 			
 		});
 	}
-	function voiceDetail(voice)
+	function voiceDetail(voice, focusR)
 	{
-                var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
-                ac_kapa_manual($tetik);
+		if(voiceDetail.arguments.length<2)
+		{
+			focusR= false;
+		}
+        var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
+        ac_kapa_manual($tetik);
 		if(plugin=="voice")
 		{	
 			if(voiceDControl==1)
@@ -1118,6 +1139,11 @@ jQuery(document).ready(function ($) {
 				$("#voice_detailArea_"+randID).slideDown();
 				get_voiceReply(vID, randNum);
 				get_parentVoice(vID, randNum);
+				if(focusR)
+				{
+					setTimeout('$("#replyTextArea_'+randID+'").focus();',450);
+					
+				}
 				
 			}
 			else
@@ -1135,21 +1161,35 @@ jQuery(document).ready(function ($) {
 		
 	}
 	
-	function get_voiceReply(vID, randNum)
+	function get_voiceReply(vID, randNum, start, limit, onlyLoad) //as
 	{
 		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
 		//$("#voiceReplyArea_"+vID+"-"+randNum).show();
-		if($("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload")==1)
+		if(get_voiceReply.arguments.length<5)
 		{
-			$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
-			return ;
+			onlyLoad=false;
 		}
-		limit=3;
-		if(plugin=="voice")
+		if(get_voiceReply.arguments.length<4)
 		{
-			limit=0;
+			if(plugin=="voice")
+				limit = 7;
+			else
+				limit = 3;
 		}
-		var post_data= {voiceID: vID, start:0, limit:limit}
+		if(get_voiceReply.arguments.length<3)
+		{
+			start = 0;
+		}
+		if(!onlyLoad)
+		{
+			if($("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload")==1)
+			{
+				$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
+				return ;
+			}
+		}
+		var post_data= {voiceID: vID, start:start, limit:limit}
+		
 		$.post("/ajax/get_voiceReply", post_data, function(response){ 
 	        if(response.status=="success")
 	        {
@@ -1158,11 +1198,38 @@ jQuery(document).ready(function ($) {
 	        		$("#voice-reply-tmpl").tmpl(response.voices).appendTo("#voiceReplyArea_"+vID+"-"+randNum);
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).show();
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload", "1");
+	        		get_countVoiceReply(vID, randNum, response.lastID);
 	        	}
 	        }
 	    },'json');  
 	}
-	
+	function get_moreVoiceReply(voiceID, randNum, lastID)
+	{
+		
+		if(plugin=="voice")
+		{
+			$(".daha_fazla_cevap").remove();
+			get_voiceReply(voiceID, randNum, lastID, 7, true);
+		}
+		else
+		{
+			location.href = "/voice/"+voiceID;
+		}
+	}
+	function get_countVoiceReply(voiceID, randNum, lastID)
+	{
+		var post_data= {voiceID: voiceID, start:lastID}
+		$.post("/ajax/get_countVoiceReply", post_data, function(response){ 
+	        if(response.status=="success")
+	        {
+	        	if(response.count>0)
+	        	{
+	        		var data = {voiceID:voiceID, randNum:randNum, lastID:lastID};
+	        		$("#dahafazlacevap-tmpl").tmpl(data).appendTo("#voiceReplyArea_"+voiceID+"-"+randNum);
+	        	}
+	        }
+	    },'json');  
+	}
 	function get_parentVoice(vID, randNum)
 	{
 		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
@@ -1698,11 +1765,21 @@ jQuery(document).ready(function ($) {
 			},
 			callbacks: {
 				onComplete: function(id, fileName, responseJSON) {
+					$("#share_voice").removeAttr("disabled");
 					if(responseJSON.success==true)
 					{
 						$("#initem_"+globalRandID).val("1");
 						$("#initem-name_"+globalRandID).val(responseJSON.fileName);
+						$(".fineUploader").html('<img src="/t/ala/img/check.png" />');
 					}
+					else
+					{
+						$(".fineUploader").html('<img src="/t/ala/img/error.gif" />');
+					}
+				}, 
+				onSubmit: function(id, fileName) {
+					$(".fineUploader").html('<img src="/t/ala/img/loading.gif" />');
+					$("#share_voice").attr("disabled", "true");
 				}
 			},
 			debug:false

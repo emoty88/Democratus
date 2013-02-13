@@ -112,6 +112,9 @@
 									<i class="icon-exclamation-sign" id="emailCheck" data-original-title="Bu mail adresi kullanılıyor" style="display: none;padding: 0"></i>
 									<i class="icon-exclamation-sign"id="emailValidate" data-original-title="Geçersiz email adresi." style="display: none;padding: 0"></i>
 									
+									<label for="motto">Motto</label>
+									<textarea  placeholder="motto" id="motto" name="motto" style="width: 300px; height: 65px"><?=$model->profile->motto?></textarea>
+									
 									<label for="gun">Doğum Tarihi</label>
 									<div class="yatayda_siralanacaklar">
 										
@@ -366,8 +369,9 @@
 			                            </tr>
 			                            <tr>
 			                                    <td>Paylaşımlarım</td>
-			                                <td><label class="radio">
-			                                    <input type="radio" name="showdies" id="showdies0" value="0" <?=@$showdiesChecked[0]?>></label></td>
+			                                	<td>
+			                                		
+			                                    </td>
 			                                    <td><label class="radio">
 			                                    <input type="radio" name="showdies" id="showdies1" value="1" <?=@$showdiesChecked[1]?>></label></td>
 			                                    <td><label class="radio">

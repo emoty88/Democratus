@@ -13,6 +13,7 @@ class popularvoice extends voice
      								sharer.ID AS sharerID, 
      								sharer.image AS sharerimage, 
      								sharer.name AS sharername, 
+     								sharer.deputy AS sharerDeputy, 
      								redier.name AS rediername, 
      								sharer.deputy AS deputy,
         							sharer.permalink as permalink";

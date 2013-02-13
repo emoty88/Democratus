@@ -894,7 +894,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 return 0;
             }
             else if ($isFile){
-            	$rand = rand(0,100);
+            	$rand = rand(100,9999);
                 $s = '<script type="text/javascript" src="'.$script.'?v='.$rand.'"></script>'; 
             }
             else {

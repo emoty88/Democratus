@@ -79,7 +79,7 @@
 	                    
 	                    break;
 	                    case 'redi':
-	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
+							$message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi yeniden paylaştı.</a>';
 	                    break;
 	                    case 'dicomment':
 	                    	$db->setQuery("SELECT DISTINCT fromID FROM notice WHERE TYPE = 'dicomment' AND ID3 = '".$row->ID3."'");

@@ -18,8 +18,13 @@ class jstemplates_block extends control{
 				<div class="voice_hover_area" style="" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}" >
 					<img class="profil_resmi" src="${sImage}" alt="${sName}">
 					<address class="yazar">
-						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
-                                                <span>${sTime} Önce</span>
+						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+							{{if sDeputy}}
+								<i class="atolye15-rutbe-"></i>
+							{{/if}}
+							${sName}
+						</a> 
+                        <span>${sTime} Önce</span>
 					</address>
 					<div class="duvar_yazisi_icerigi">
 						<p>{{html $item.mk(voice)}}</p>
@@ -37,9 +42,9 @@ class jstemplates_block extends control{
 								<img id="voice_resim_${ID}" class="duvar_fotografi" src="" alt="">
 							</div>
 						{{/if}}
-						<a id="soyles_btn_${ID}" href="/voice/${ID}">
-							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-							Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+						<a id="yanitla_btn_${ID}" href="javascript:;" onclick="voiceDetail(this,true);" data-voiceID="${ID}" data-randNum="${randNum}">
+							<i class="atolye15-ikon-yanitla atolye15-ikon-24"></i> 
+							Yanıtla <span class="count"></span>
 						</a>
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
@@ -61,6 +66,10 @@ class jstemplates_block extends control{
 							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 						</a>
 						{{/if}}
+						<a id="soyles_btn_${ID}" href="/voice/${ID}">
+							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
+							Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+						</a>
 					</aside>
 				</div>
 				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar replyAreaFix" data-isload="0" style="display: none;" onclick="notOpen=1;" >
@@ -107,12 +116,17 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="voice-reply-tmpl" type="text/x-jquery-tmpl">
-			<article style="display: block;" class="yorum">
+			<article style="display: block;" class="yorum" id="duvar_yazisi-sub-content-${ID}">
 				<div class="yorum_tutucu_arkaplan">
 					<div class="yorum_tutucu">
 						<img class="profil_resmi" src="${sImage}" alt="${sName}" style="position: absolute;">
 						<address class="yazar" style="margin:0;">
-							<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
+							<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+								{{if sDeputy}}
+									<i class="atolye15-rutbe-"></i>
+								{{/if}}
+								${sName}
+							</a> 
 							<span>${sTime} önce</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
@@ -160,29 +174,18 @@ class jstemplates_block extends control{
 			</article>
 		</script>
 		
-		<script id="duvaryazisianket-tmpl" type="text/x-jquery-tmpl">
-			<!-- Duvar Yazısı Anket -->
-			<article class="duvar_yazisi anket">
-				<div class="anket_tutucu_arkaplan">
-					<div class="anket_tutucu">
-						<img class="profil_resmi" src="http://lorempixel.com/48/48/people/1/" alt="Sedef Kul Profil Fotoğrafı">
-						<address class="yazar"><a href="#" title="Sedef Kul'un Profilini Görüntüle">Derya Baykal</a> <span>2 gün, 2 saat</span></address>
-						<div class="duvar_yazisi_icerigi">
-							<p>Petrol konusunda ülkeler arasında olan karşılıklı bağımlılık yüzünden fiyatlar diken üstünde olabiliyor. Mesela bugün olacak olan Venezuella seçimleri. Her şeyin ne olacağı meçhul.</p>
-						</div>
-						<aside class="cevaplar">
-							<a href="#" class="btn">Katılıyorum</a>
-							<a href="#" class="btn">Kararsızım</a>
-							<a href="#" class="btn">Katılmıyorum</a>
-						</aside>
-					</div>
-				</div>
-			</article>
-			<!-- Duvar Yazısı Anket Son -->
-		</script>
-		
 		<script id="dahafazlases-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
+		</script>
+		
+		<script id="dahafazlacevap-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi daha_fazla_cevap">
+				<a href="javascript:;" onclick="get_moreVoiceReply(${voiceID},${randNum}, ${lastID});">Deha fazla cevap göster...</a>
+			</aside>
+		</script>
+		
+		<script id="sadeceTakipci-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Bu Kişinin seslerini sadece takipçileri görebilir.</a></aside>
 		</script>
 		
 		<script id="loadNewVoice-tmpl" type="text/x-jquery-tmpl">

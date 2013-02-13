@@ -19,9 +19,9 @@ class ajax_plugin extends control{
 		$limit		= filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
         $profileID	= filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
         $onlyProfile= filter_input(INPUT_POST, 'onlyProfile', FILTER_SANITIZE_NUMBER_INT);
-		$hashTag = filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
-		$keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
-		$pos	 = filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
+		$hashTag 	= filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
+		$keyword 	= filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+		$pos	 	= filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
@@ -223,8 +223,13 @@ class ajax_plugin extends control{
 					 
 					$share->sharerimage = $model->profile->image;
 					$share->sharername = $model->profile->name;
+					$share->sharerDeputy = $model->profile->deputy;
 					$share->permalink = $model->profile->permalink;
 					$share->count_reply = 0;
+					$share->count_like = 0;
+					$share->count_dislike = 0;
+					$share->count_reShare = 0;
+					
                     $response['voice'] 	= $c_voice->get_return_object($share);
 					
                                         if($share->initem=="1")
@@ -555,6 +560,18 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
     	$ID  = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
      	$response = array();
         try{
+        	$db->setQuery('SELECT * FROM di WHERE rediID  = ' . $db->quote($ID) . ' AND profileID= '. $db->quote($model->profileID) . ' AND status=1');
+			$paylasildi = null;
+           	if($db->loadObject($paylasildi))
+			{
+				$response["status"]="success";
+				$response["type"]="removed";
+				$paylasildi->status = 0;
+				$db->updateObject("di", $paylasildi, "ID");
+				echo json_encode($response);
+				die;
+			}
+        	
         	$db->setQuery('SELECT * FROM di WHERE ID = ' . $db->quote($ID) . ' AND status > 0');
          	$voice = null;
            	if(!$db->loadObject($voice)) throw new Exception('voice bulunamadı');
@@ -587,9 +604,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
              	$share->ID=$db->insertid();
             	$response['status'] = 'success';
                 
-                $model->notice($voice->profileID, 'redi', $share->ID, $voice->ID);
+                $model->notice($voice->profileID, 'redi', $voice->ID, $share->ID);
                 if($profile->emailperms>0)
-                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/profile/'.$model->profileID.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                 
 				$int = new induction;
 				$int->set_voice_intduction("redi_share",$share);
@@ -1048,6 +1065,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			return;
 		}
 		
+
 		if(model::checkPermalink($obj->permalink)>0){
 			$returnA['status'] = 'error';
 			echo json_encode($returnA);
@@ -1068,20 +1086,26 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$yil = trim(filter_input(INPUT_POST, 'yil', FILTER_SANITIZE_NUMBER_INT));
 		
 		$ay = model::trMonth2int($ay);
-		
-		if(!checkdate(intval($ay),intval($gun),intval($yil))){
+		/*
+		if(false and !checkdate(intval($ay),intval($gun),intval($yil))){
 		
 			$returnA['status'] = 'errorr';
 			echo json_encode($returnA);
 			return;
 		}
+*/
 		
+
 		$sex = trim(filter_input(INPUT_POST, 'cinsiyet', FILTER_SANITIZE_STRING));
 		
 		$obj->birth = date('Y-m-d',mktime(0,0,0,$ay,$gun,$yil));
-		
-		$obj->sex = model::trSex2sex($sex);
-		
+		$obj->motto = trim(strip_tags(filter_input(INPUT_POST, 'motto', FILTER_SANITIZE_STRING)));
+/*
+if(strlen($obj->sex)>1)
+		$obj->sex = model::trSex2sex(filter_input(INPUT_POST, 'cinsiyet', FILTER_SANITIZE_STRING));
+else
+*/
+		$obj->sex = 1;
 		$objusr->ID = $model->profileID;
 		$objusr->email = trim(filter_input(INPUT_POST, 'eposta', FILTER_SANITIZE_STRING));
 		
@@ -1099,11 +1123,23 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			return;	
 		}
 		
-		
+	
+		try{
 		
 		$re1 = $db->updateObject('profile', $obj, 'ID', 0);
 		$re2 = $db->updateObject('user', $objusr, 'ID', 0);
+}catch(Exception $e){
+	if(in_array( $_SERVER['REMOTE_ADDR'], array('193.255.28.251'))){
+			error_reporting(E_ALL); ini_set("display_errors", 1);
+			//echo '{"status":"success"}';
+//print_r($e);
+			return ;
+			
+		}
+}
 		
+	
+
 		if(!($re1 && $re2)){
 			$returnA['status'] = 'err';
 		}
@@ -1145,10 +1181,12 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			$limit = filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
 			$voices =  $c_voice->get_reply(null, $start, $limit);
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
 			$response["voice_count"] = count($voices);
 			foreach($voices as $v)
 			{
 				$response["voices"][] = $c_voice->get_return_object($v, 32, 32);	
+				$response["lastID"] = $v->ID;
 			}
 	    } catch (Exception $e){
 	        $response['status'] = 'error';
@@ -1157,7 +1195,26 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	    
 	    echo json_encode($response);
 	}
-
+	public function get_countVoiceReply()
+	{
+		global $model, $db;
+    	$model->mode = 0;
+   		$response = array("status" => "success");
+	    try{
+	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+			$start = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		   	$c_voice = new voice($vID);
+			
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
+			$response["count"] = $c_voice->get_replyCount(null, $start);
+			
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
 	public function get_parentVoice()
 	{
 		global $model, $db;
@@ -1570,10 +1627,13 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		global $model, $db;
 		$hashTag	= filter_input(INPUT_POST, 'hashTag',FILTER_SANITIZE_STRING);
 		$c_voice = new voice;
-		$voice = $c_voice->get_voices_for_wall($hashTag ,  0 , 1 , 1, "" ,"", "bottom");
+		$response = new stdClass;
+		
+		$voice = $c_voice->get_promotedVoice($hashTag);
+		
 		$response = new stdClass;
 		$response->status = "success";
-		$response->voice = $voice[0];
+		$response->voice = $c_voice-> get_return_object($voice);
 		echo json_encode($response);
 	}
  
