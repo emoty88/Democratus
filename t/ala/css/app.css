@@ -1977,6 +1977,7 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 	padding-left: 38px;
 	padding-top: 5px;
 	color: white;
+        cursor: pointer;
 }
 #twit_buton{
 	background: url(../img/twitter_button.png);
@@ -1987,6 +1988,7 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 	padding-left: 39px;
 	padding-top: 5px;
 	color: white;
+        cursor: pointer;
 }
 
 .textarea{
