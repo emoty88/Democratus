@@ -8,7 +8,7 @@
 			$parentID=0;
 			
 			$meclisName = "Türkiye Meclisi";
-			if($model->page->permalink=="hashTag")//chech ed 
+			if(isset($model->page->permalink) && $model->page->permalink=="hashTag")//chech ed 
 			{
 				
 				$type="hastagID";

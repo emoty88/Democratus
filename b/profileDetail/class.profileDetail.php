@@ -31,6 +31,11 @@
 							<header>
 								<address>
 									<h1>
+										<?php if($c_profile->profile->deputy == "1")
+											  {
+											  	echo '<i class="atolye15-rutbe-" style="width:30px; height:30px; background-size:30px;"></i>';
+											  }
+										?>
 										<a href="javascript:;" title="<?=$p->name?>"><?=$p->name?></a>
 									</h1>
 								</address>
