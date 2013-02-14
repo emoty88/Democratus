@@ -2050,3 +2050,6 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
     float: right;
     
 }
+#follow{
+    cursor: pointer;
+}
