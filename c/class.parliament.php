@@ -13,14 +13,14 @@
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
 			$WHERE = "\n  WHERE a.status>0"; 
-			if($_SERVER['SERVER_NAME']=="democratus.com")
+			if($_SERVER['SERVER_NAME']=="democratus.com" && $type=="0")
             {
 				$WHERE  .= "\n AND ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime"; 
 			}    
 			
             if($type!="0")
 			{
-				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	
+				$WHERE .= "\n  AND (a.".$type."='".$parentID."')";	
 			}
 			else
 			{
