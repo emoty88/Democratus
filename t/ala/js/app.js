@@ -414,16 +414,55 @@ jQuery(document).ready(function ($) {
          var button = $(this);
          var wall = $('#orta_alan_container');
          var profileID = button.attr('data-id');
-         wall.fadeOut(500, function(){
+         var clear = button.attr('data-clear');
+        
+         
+         
+         if(clear=="true")
+             start = 0;
+          if(start<1)
+         wall.html("");
+         wall.fadeOut(200, function(){
+             $("#loadingbar-tmpl").tmpl().appendTo(wall);
+             wall.fadeIn(200);
              if(button.attr('data-follow') == 'follows'){
-                $.post("/ajax/get_follows",{profileID:profileID});
+                $.post("/ajax/get_follows",{profileID:profileID,start:start},function(response){
+                    if(response.status=="success"){
+                        
+                        $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
+                        $("#orta_alan_container").append('<a href="javascript:;" id="follow" class="daha" data-follow="follows" data-id="<?=$p->ID?>" data-start="'+start+'" >Daha fazla</a>');
+                        $(".loading_bar").remove();
+                        start = start + response.profiles.length;
+                        
+                        if(start % 20 > 0){
+                            $(".daha").remove();
+                        }
+                    }
+                   /* $("#meclis-istatistik-tmpl").tmpl(oranlar).appendTo("#");
+                    $("#social-friendList-tmpl").tmpl(response.friendList).appendTo("#socialListArea");*/
+                },"json");
              }else{
-                 
+                 $.post("/ajax/get_followers",{profileID:profileID},function(response){
+                 if(response.status=="success"){
+                        
+                        $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
+                        $("#orta_alan_container").append('<a href="javascript:;" id="follow" class="daha" data-follow="followers" data-id="<?=$p->ID?>" data-start="'+start+'" >Daha fazla</a>');
+                        $(".loading_bar").remove();
+                        
+                        
+                        start = start + response.profiles.length;
+                        if(start % 20 > 0){
+                            $(".daha").remove();
+                        }
+                 }
+                 },"json");
              }
          });
      });
        
 });
+
+        
     
     
         function show_social_connect2(){

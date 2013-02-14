@@ -22,7 +22,7 @@
 			$c_profile 	= new profile($userPerma);
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
-			
+			$model->addScript('start=0;');
 			
 			if($c_profile->profile->showdies=="1")
 			{

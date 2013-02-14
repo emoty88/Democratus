@@ -1804,6 +1804,31 @@ else
         }
         
     }
+    
+    public function get_follows(){
+        $profileID = intval(filter_input(INPUT_POST, 'profileID',FILTER_SANITIZE_STRING));
+        $start = intval(filter_input(INPUT_POST, 'start',FILTER_SANITIZE_STRING));
+        $c_profile = new profile();
+        $profiles = $c_profile->get_following(20, $start, $c_profile->get_porfileObject($profileID));
+        $profiles = $c_profile->get_profileMultiReturtnObj($profiles);
+        $return['profiles'] = $profiles;
+        //$return['profiles'] = $c_profile->get_following(20, $start, $c_profile->get_porfileObject($profileID));
+        $return['status'] = 'success';
+        echo json_encode($return);
+    }
+    
+    public function get_followers(){
+        $profileID = intval(filter_input(INPUT_POST, 'profileID',FILTER_SANITIZE_STRING));
+        $start = intval(filter_input(INPUT_POST, 'start',FILTER_SANITIZE_STRING));
+        $c_profile = new profile();
+        $profiles = $c_profile->get_follower(20, $start, $c_profile->get_porfileObject($profileID));
+       
+        $profiles = $c_profile->get_profileMultiReturtnObj($profiles);
+        
+        $return['profiles'] = $profiles;//$c_profile->get_follower(20, $start, $c_profile->get_porfileObject($profileID));
+        $return['status'] = 'success';
+        echo json_encode($return);
+    }
 
 }
 ?>
