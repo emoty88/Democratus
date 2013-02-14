@@ -137,7 +137,19 @@ class facebookClass{
 				'message' => $postIcerik
 			));
 	}
-	public function yazmaizniVarmi()
+        
+        public function share_democratus_with_friends($postIcerik){
+            $ret_obj = $this->facebook->api('/feed', 'POST',
+			array(
+				'message' => $postIcerik,
+                                'link' => 'http://democratus.com',
+                                'name' => 'Democratus',
+                                'picture' => 'http://democratus.com/t/ala/img/login-logo2.png'
+			));
+            
+        }
+
+        public function yazmaizniVarmi()
     {
     	global $model, $db;
 	   	$user = $this->facebook->getUser(); 
@@ -155,6 +167,7 @@ class facebookClass{
 			} else {
 				$return["durum"]="izinal";
 				$return["izinUrl"]=$this->facebook->getLoginUrl(array("scope" => "publish_stream"));
+                                $return["loginUrl"]=$this->facebook->getLoginUrl(array("scope" => "publish_stream"));
 				//header( "Location: " . $facebook->getLoginUrl(array("scope" => "publish_stream")) );
 			}
 		}

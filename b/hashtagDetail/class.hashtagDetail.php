@@ -76,6 +76,14 @@
 								?>
 								
 								<li><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
+								<?php
+								if($c_profile->_isAdmin)
+								{ 
+								?>
+									<li><a href="/<?=$p->permalink?>/manage">Gündemleri Yönet</a></li>
+								<?	
+								}
+								?>
 							</ul>
 						</aside>
 						<aside style="padding-left: 33px">
@@ -103,7 +111,8 @@
 					<div class="kalan_karakter_mesaji"><span class="karakter_sayaci">200</span> karakter</div>
 					
 					<div class="kontroller">
-                                            <img id="voice-share-progress" style="position:absolute; width:20px; right:150px; margin-top: 3px; display: none" src="/t/ala/img/loading.gif" />
+						
+                     	<img id="voice-share-progress" style="position:absolute; width:20px; right:150px; margin-top: 3px; display: none" src="/t/ala/img/loading.gif" />
 						<button id="share_voice" class="btn btn-danger" onclick="share_voice(this)" data-randID="0" >Paylaş</button>
 						
 						<input type="hidden" name="replyer_0" id="replyer_0" value="0" />
@@ -111,6 +120,15 @@
 						<a id="fine-uploader-btn_0" class="fineUploader" href="javascript:;" onclick="globalRandID=0;" data-randID="0">
 							<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
 						</a>
+						<?
+						if($c_profile->_isAdmin)
+						{
+						?>
+							<label for="make_agenda" style="float: right; margin-right: 10px; margin-top: 5px;">Gündeme Ekle</label>
+							<input type="checkbox" id="make_agenda" name="make_agenda" value="true" style="float:right; margin-right: 5px; margin-top: 8px;"/>
+						<?
+						}
+						?>
 						<div id="fine-uploader-msg_0"></div>	
 						
 					</div>

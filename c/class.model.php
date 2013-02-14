@@ -866,7 +866,8 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 return 0;
             }
             else if ($isFile){
-                $s = '<link href="'.$style.'" rel="stylesheet" type="text/css" />'; 
+            	$rand = rand(100,9999);
+                $s = '<link href="'.$style.'?v='.$rand.'" rel="stylesheet" type="text/css" />'; 
             }
             else {
                 $s = '<style type="text/css">'."\n";

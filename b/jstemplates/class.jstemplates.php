@@ -18,8 +18,13 @@ class jstemplates_block extends control{
 				<div class="voice_hover_area" style="" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}" >
 					<img class="profil_resmi" src="${sImage}" alt="${sName}">
 					<address class="yazar">
-						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
-                                                <span>${sTime} Önce</span>
+						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+							{{if sDeputy}}
+								<i class="atolye15-rutbe-"></i>
+							{{/if}}
+							${sName}
+						</a> 
+                        <span>${sTime} Önce</span>
 					</address>
 					<div class="duvar_yazisi_icerigi">
 						<p>{{html $item.mk(voice)}}</p>
@@ -37,9 +42,9 @@ class jstemplates_block extends control{
 								<img id="voice_resim_${ID}" class="duvar_fotografi" src="" alt="">
 							</div>
 						{{/if}}
-						<a id="soyles_btn_${ID}" href="/voice/${ID}">
-							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-							Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+						<a id="yanitla_btn_${ID}" href="javascript:;" onclick="voiceDetail(this,true);" data-voiceID="${ID}" data-randNum="${randNum}">
+							<i class="atolye15-ikon-yanitla atolye15-ikon-24"></i> 
+							Yanıtla <span class="count"></span>
 						</a>
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
@@ -61,6 +66,10 @@ class jstemplates_block extends control{
 							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 						</a>
 						{{/if}}
+						<a id="soyles_btn_${ID}" href="/voice/${ID}">
+							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
+							Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+						</a>
 					</aside>
 				</div>
 				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar replyAreaFix" data-isload="0" style="display: none;" onclick="notOpen=1;" >
@@ -107,12 +116,17 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="voice-reply-tmpl" type="text/x-jquery-tmpl">
-			<article style="display: block;" class="yorum">
+			<article style="display: block;" class="yorum" id="duvar_yazisi-sub-content-${ID}">
 				<div class="yorum_tutucu_arkaplan">
 					<div class="yorum_tutucu">
 						<img class="profil_resmi" src="${sImage}" alt="${sName}" style="position: absolute;">
 						<address class="yazar" style="margin:0;">
-							<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">${sName}</a> 
+							<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+								{{if sDeputy}}
+									<i class="atolye15-rutbe-"></i>
+								{{/if}}
+								${sName}
+							</a> 
 							<span>${sTime} önce</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
@@ -162,6 +176,12 @@ class jstemplates_block extends control{
 		
 		<script id="dahafazlases-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi"><a href="javascript:;">Daha fazla Voice yükle...</a></aside>
+		</script>
+		
+		<script id="dahafazlacevap-tmpl" type="text/x-jquery-tmpl">
+			<aside class="daha_fazla_duvar_yazisi daha_fazla_cevap">
+				<a href="javascript:;" onclick="get_moreVoiceReply(${voiceID},${randNum}, ${lastID});">Deha fazla cevap göster...</a>
+			</aside>
 		</script>
 		
 		<script id="sadeceTakipci-tmpl" type="text/x-jquery-tmpl">
@@ -273,7 +293,7 @@ class jstemplates_block extends control{
 						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
 						<address class="yazar">
 							<a title="${dName}'un Profilini Görüntüle" href="#">${dName}</a> 
-							<span>2 gün, 2 saat</span>
+							<span>${sTime}</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p>
@@ -284,6 +304,49 @@ class jstemplates_block extends control{
 							<a href="#"><i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> Söyleş</a>
 							<a href="#"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> Paylaş</a>
 						</aside>
+						{{if percent.sonuc == "olumlu"}}
+						<aside class="cevaplar yuzde katiliyorum" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Katılıyorum</span>
+						{{else percent.sonuc == "fikiryok"}}
+						<aside class="cevaplar yuzde kararsizim" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Kararsızım</span>
+						{{else  percent.sonuc == "olumsuz"}}
+						<aside class="cevaplar yuzde katilmiyorum" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Katılmıyorum</span>
+						{{/if}}
+							<div style="display:none">
+								<p class="yuzdeler olumlu" style="width: ${percent.olumlu}%">${percent.olumlu}</p>
+								<p class="yuzdeler olumsuz" style="width: ${percent.olumsuz}%">${percent.olumsuz}</p>
+								<p class="yuzdeler fikir-yok" style="width: ${percent.fikiryok}%">${percent.fikiryok}</p>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</article>
+		</script>
+		
+		<script id="hashtag-agenda-tmpl" type="text/x-jquery-tmpl">
+			<article class="duvar_yazisi anket referandum tamamlanmis ">
+				<div class="anket_tutucu_arkaplan">
+					<div class="anket_tutucu">
+						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						<address class="yazar">
+							<a title="${dName}'un Profilini Görüntüle" href="#">${dName}</a> 
+							<span>${sTime}</span>
+						</address>
+						<div class="duvar_yazisi_icerigi">
+							<p style="min-height: 48px;">
+								${agendaT}
+							</p>
+						</div>
+						<aside class="komutlar">
+							{{if status == "1"}}
+								<a href="javascript:;" onclick="toggle_agenda(${ID})"><i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> Kaldır</a>
+							{{else}}
+								<a href="javascript:;" onclick="toggle_agenda(${ID})"><i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> Aktive et</a>
+							{{/if}}
+							
+						</aside>	
 						{{if percent.sonuc == "olumlu"}}
 						<aside class="cevaplar yuzde katiliyorum" style="cursor: pointer;" data-original-title="">
 							<span class="sonuc"><strong>%${percent.max}</strong> Katılıyorum</span>
@@ -445,6 +508,19 @@ class jstemplates_block extends control{
 				<img alt="" src="${small}" class="fnc" />
 			</a>
 		</script> 
+		
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Pop Up Başlığı</h3>
+			</div>
+			<div class="modal-body">
+				<p>Pop Up İçerik</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Kapat</button>
+			</div>
+		</div>
 		
 	<?	
 	}

@@ -85,6 +85,7 @@ jQuery(document).ready(function ($) {
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
    		case "hashTag" : hashtag_page();break;
+   		case "hashTag_manage" : hashtagManage_page();break;
    		case "search" : search_page();break;
    		case "popularvoice" : popularvoice_page();break;
    	}  	
@@ -396,7 +397,110 @@ jQuery(document).ready(function ($) {
                 get_myFollowing(input.val());
             }
         });
+        
+        $('#share-with-twitter').live('click',function(){
+            //paylaşma izni var mı diye bak
+            
+        });
+        $('.share_with_friends').live('click',function(){
+            show_social_connect2();
+            
+        });
+       
+        if(plugin=="my" && share == 1)
+         show_social_connect2();
+     
+     $('#follow').live('click',function(){
+     	wallmoreAction=1;
+         var button = $(this);
+         var wall = $('#orta_alan_container');
+         var profileID = button.attr('data-id');
+         var clear = button.attr('data-clear');
+        
+         
+         
+         if(clear=="true")
+             start = 0;
+          if(start<1)
+         wall.html("");
+        
+             $("#loadingbar-tmpl").tmpl().appendTo(wall);
+             
+             if(button.attr('data-follow') == 'follows'){
+             	 $(".daha_parent").remove();
+                $.post("/ajax/get_follows",{profileID:profileID,start:start},function(response){
+                    if(response.status=="success"){
+                        
+                        $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
+						
+                        $("#orta_alan_container").append('<aside class="daha_fazla_duvar_yazisi daha_parent"><a href="javascript:;" id="follow" class="daha" data-follow="follows" data-id="'+profileID+'" data-start="'+start+'" >Daha fazla</a></aside>');
+                        $(".loading_bar").remove();
+                        start = start + response.profiles.length;
+                        
+                        if(start % 20 > 0){
+                            $(".daha_parent").remove();
+                        }
+                    }
+                   /* $("#meclis-istatistik-tmpl").tmpl(oranlar).appendTo("#");
+                    $("#social-friendList-tmpl").tmpl(response.friendList).appendTo("#socialListArea");*/
+                },"json");
+             }else{
+             	 $(".daha_parent").remove();
+                 $.post("/ajax/get_followers",{profileID:profileID,start:start},function(response){
+                 if(response.status=="success"){
+                        
+                        $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
+                        $("#orta_alan_container").append('<aside class="daha_fazla_duvar_yazisi daha_parent"><a href="javascript:;" id="follow" class="daha" data-follow="followers" data-id="'+profileID+'" data-start="'+start+'" >Daha fazla</a></aside>');
+                        $(".loading_bar").remove();
+                        
+                        
+                        start = start + response.profiles.length;
+                        if(start % 20 > 0){
+                            $(".daha_parent").remove();
+                        }
+                 }
+                 },"json");
+             }
+        
+     });
+       
 });
+
+        
+    
+    
+        function show_social_connect2(){
+            $('.social_connect2').fadeIn(500,function(){
+                $('.textarea').focus();
+            });
+           
+        }
+        function share_tofacebook(){
+             var text = $('#share-with-social-text').val();
+             var signinWin;
+             signinWin = window.open("http://democratus.com/ajax/facebookta_paylas?text="+text, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+                    
+            $.get('/ajax/facebookta_paylas', {text:text,f:'false'}, function(response){
+                if(response.durum.length && (response.durum== 'izinal' || response.durum == 'login')){
+
+                    signinWin = window.open(response.loginUrl, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+                    signinWin.focus();
+
+
+                }else{
+                    signinWin.close();
+
+                }
+            }, 'json');
+            
+        }
+        
+        function share_totwit(){
+            var signinWinn;
+            var text = $('#share-with-social-text').val();
+            signinWinn = window.open("http://democratus.com/ajax/twitterda_paylas?text="+text, "SignIn", "width=500,height=300,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+            
+        }
 	// is_valid_data_attr
 	function set_meclis_oy(agendaID, choice)
 	{
@@ -537,6 +641,11 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
+					if($("#make_agenda").is(":checked"))
+					{
+						console.log("sadasa");
+						set_agendaHashtag(response.voice);
+					}
 					$(".daha_fazla_yeni_ses").remove();
 					if(response.voice.replyID>0)
 					{
@@ -578,7 +687,20 @@ jQuery(document).ready(function ($) {
 			
 		});	
 	}
-	
+	function set_agendaHashtag(voice)
+	{
+		post_data = {voice:voice};
+		$.ajax({
+			type: "POST",
+			url: "/ajax/set_agendaHashtag",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+					
+			}
+		});	
+	}
 	function get_messageCount()
 	{
 		var post_data	= {ID:0};
@@ -910,7 +1032,15 @@ jQuery(document).ready(function ($) {
 	function redi(ID){
 	    $.post("/ajax/redi", {ID: ID}, function(data){ 
 	        if(data.status == 'success'){
-	            $("#paylas_btn_"+ID+" span").html(" Paylaştın");
+	        	if(data.type == 'removed')
+	            {
+	            	$("#duvar_yazisi-content-"+ID).remove();
+	            	$("#paylas_btn_"+ID+" span.text").html(" Paylaş");	
+	            }
+	            else
+	            {
+	            	$("#paylas_btn_"+ID+" span.text").html(" Paylaştın");
+	            }
 	        }
 	    },'json');    
 	}
@@ -980,8 +1110,11 @@ jQuery(document).ready(function ($) {
 	        if(data.status == 'success'){
 	        	$("#duvar_yazisi-content-"+voiceID).slideUp("400", function (){
 	        		$("#duvar_yazisi-content-"+voiceID).remove();
+	        		
 	        	});
-	        	
+	        	$("#duvar_yazisi-sub-content-"+voiceID).slideUp("400", function (){
+	        		$("#duvar_yazisi-sub-content-"+voiceID).remove();
+	        	});
 	        }
 	    },'json');  
 	}
@@ -1063,10 +1196,14 @@ jQuery(document).ready(function ($) {
 			
 		});
 	}
-	function voiceDetail(voice)
+	function voiceDetail(voice, focusR)
 	{
-                var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
-                ac_kapa_manual($tetik);
+		if(voiceDetail.arguments.length<2)
+		{
+			focusR= false;
+		}
+        var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
+        ac_kapa_manual($tetik);
 		if(plugin=="voice")
 		{	
 			if(voiceDControl==1)
@@ -1091,6 +1228,11 @@ jQuery(document).ready(function ($) {
 				$("#voice_detailArea_"+randID).slideDown();
 				get_voiceReply(vID, randNum);
 				get_parentVoice(vID, randNum);
+				if(focusR)
+				{
+					setTimeout('$("#replyTextArea_'+randID+'").focus();',450);
+					
+				}
 				
 			}
 			else
@@ -1108,21 +1250,35 @@ jQuery(document).ready(function ($) {
 		
 	}
 	
-	function get_voiceReply(vID, randNum)
+	function get_voiceReply(vID, randNum, start, limit, onlyLoad) //as
 	{
 		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
 		//$("#voiceReplyArea_"+vID+"-"+randNum).show();
-		if($("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload")==1)
+		if(get_voiceReply.arguments.length<5)
 		{
-			$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
-			return ;
+			onlyLoad=false;
 		}
-		limit=3;
-		if(plugin=="voice")
+		if(get_voiceReply.arguments.length<4)
 		{
-			limit=0;
+			if(plugin=="voice")
+				limit = 7;
+			else
+				limit = 3;
 		}
-		var post_data= {voiceID: vID, start:0, limit:limit}
+		if(get_voiceReply.arguments.length<3)
+		{
+			start = 0;
+		}
+		if(!onlyLoad)
+		{
+			if($("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload")==1)
+			{
+				$("#voiceReplyArea_"+vID+"-"+randNum).slideDown();
+				return ;
+			}
+		}
+		var post_data= {voiceID: vID, start:start, limit:limit}
+		
 		$.post("/ajax/get_voiceReply", post_data, function(response){ 
 	        if(response.status=="success")
 	        {
@@ -1131,11 +1287,38 @@ jQuery(document).ready(function ($) {
 	        		$("#voice-reply-tmpl").tmpl(response.voices).appendTo("#voiceReplyArea_"+vID+"-"+randNum);
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).show();
 	        		$("#voiceReplyArea_"+vID+"-"+randNum).attr("data-isload", "1");
+	        		get_countVoiceReply(vID, randNum, response.lastID);
 	        	}
 	        }
 	    },'json');  
 	}
-	
+	function get_moreVoiceReply(voiceID, randNum, lastID)
+	{
+		
+		if(plugin=="voice")
+		{
+			$(".daha_fazla_cevap").remove();
+			get_voiceReply(voiceID, randNum, lastID, 7, true);
+		}
+		else
+		{
+			location.href = "/voice/"+voiceID;
+		}
+	}
+	function get_countVoiceReply(voiceID, randNum, lastID)
+	{
+		var post_data= {voiceID: voiceID, start:lastID}
+		$.post("/ajax/get_countVoiceReply", post_data, function(response){ 
+	        if(response.status=="success")
+	        {
+	        	if(response.count>0)
+	        	{
+	        		var data = {voiceID:voiceID, randNum:randNum, lastID:lastID};
+	        		$("#dahafazlacevap-tmpl").tmpl(data).appendTo("#voiceReplyArea_"+voiceID+"-"+randNum);
+	        	}
+	        }
+	    },'json');  
+	}
 	function get_parentVoice(vID, randNum)
 	{
 		//$("#loadingbar-tmpl").appendTo("#voiceReplyArea_"+vID+"-"+randNum);
@@ -1508,8 +1691,14 @@ jQuery(document).ready(function ($) {
 	function hashtag_page()
 	{
 		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
+
 		get_imageGalery(profileID);
 		get_promotedVoice(profileID);
+	}
+	function hashtagManage_page()
+	{
+		get_hashtagAgenda();
+		get_hashtagAgenda(0);
 	}
 	function search_page()
 	{
@@ -1539,6 +1728,34 @@ jQuery(document).ready(function ($) {
 				$("#hashtag-image-tmpl").tmpl(response.images).appendTo("#imageGaleryArea");
 				//$(".unfollow-" + profileID).toggle();
 	        	//$(".follow-" + profileID).toggle();	
+			}
+	    },'json');
+	}
+	function get_hashtagAgenda(active)
+	{
+		if(get_hashtagAgenda.arguments.length<1)
+		{
+			active=1;
+		}
+		$.post("/ajax/get_hashtagAgenda", {active: active}, function(response){ 
+			if(response.status == "success")
+			{
+				if(active=="1")
+					$("#hashtag-agenda-tmpl").tmpl(response.agendas,make_link).appendTo("#activeAgenda");
+				else
+					$("#hashtag-agenda-tmpl").tmpl(response.agendas,make_link).appendTo("#pasiveAgenda");
+				init_oldAgenda();
+			}
+	    },'json');
+	}
+	function toggle_agenda(ID)
+	{
+		$.post("/ajax/toggle_agenda", {ID: ID}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#activeAgenda").html("");
+				$("#passiveAgenda").html("");
+				hashtagManage_page();
 			}
 	    },'json');
 	}
@@ -1604,7 +1821,7 @@ jQuery(document).ready(function ($) {
 	}
         
         
-        function init_profileImageUploader(dom)
+	function init_profileImageUploader(dom)
 	{
 		$fub = $(dom);
 		uploadData = $fub.attr("data-upload");
@@ -1671,11 +1888,21 @@ jQuery(document).ready(function ($) {
 			},
 			callbacks: {
 				onComplete: function(id, fileName, responseJSON) {
+					$("#share_voice").removeAttr("disabled");
 					if(responseJSON.success==true)
 					{
 						$("#initem_"+globalRandID).val("1");
 						$("#initem-name_"+globalRandID).val(responseJSON.fileName);
+						$(".fineUploader").html('<img src="/t/ala/img/check.png" />');
 					}
+					else
+					{
+						$(".fineUploader").html('<img src="/t/ala/img/error.gif" />');
+					}
+				}, 
+				onSubmit: function(id, fileName) {
+					$(".fineUploader").html('<img src="/t/ala/img/loading.gif" />');
+					$("#share_voice").attr("disabled", "true");
 				}
 			},
 			debug:false
@@ -1712,7 +1939,12 @@ jQuery(document).ready(function ($) {
             $.post('/ajax/set_popularToProposal', data,  
                 function(response){ 
                     if(response.status=="success"){
-                        $(button).html("Tasarı olarak kaydedildi.");
+                        //$(button).html("Tasarı olarak kaydedildi.");
+                        $(button).removeClass('atolye15-ikon-yanitla');
+                        $(button).addClass('atolye15-ikon-taktir');
+                        $(button).attr('title', 'Tasarı olarak atandı');
+                       
+                        //$(button).removeClass('atolye15-ikon-24');
                         $(button).removeAttr('onclick');
                     }else{
                         $(button).html("En fazla 3 tasarı gönderbilirsiniz.");
@@ -1781,5 +2013,11 @@ jQuery(document).ready(function ($) {
 			if(response.status=='success')
                             $('#onceki_mesajlar').html('');
         },'json');
+    }
+    function get_modal(title,url)
+    {
+    	$("#myModalLabel").text(title);
+    	var options = {remote:url};    	
+    	$('#myModal').modal(options);
     }
 
