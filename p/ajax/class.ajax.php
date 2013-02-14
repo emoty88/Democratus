@@ -1656,7 +1656,6 @@ else
         
         echo json_encode($r_array);
     }
-
 	function get_hashtagAgenda()
 	{
 		global $model, $db;
@@ -1700,8 +1699,6 @@ else
 		}
 		echo json_encode($r);
 	}
-
-
     public function facebookta_paylas(){
         
         $fb = new facebookClass();
@@ -1737,7 +1734,6 @@ else
         
        
     }
-    
    public function twitterda_paylas1(){
        global $model,$db;
         $tw = new twitterClass();
@@ -1785,7 +1781,6 @@ else
         //print_r($tw->sendTweet('test lfsdlşkf',40000));
         
     }
-    
     public function twitterda_paylas(){
         global $model,$db;
         $tw = new twitterClass();
