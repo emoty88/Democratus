@@ -411,6 +411,7 @@ jQuery(document).ready(function ($) {
          show_social_connect2();
      
      $('#follow').live('click',function(){
+     	wallmoreAction=1;
          var button = $(this);
          var wall = $('#orta_alan_container');
          var profileID = button.attr('data-id');
@@ -422,42 +423,45 @@ jQuery(document).ready(function ($) {
              start = 0;
           if(start<1)
          wall.html("");
-         wall.fadeOut(200, function(){
+        
              $("#loadingbar-tmpl").tmpl().appendTo(wall);
-             wall.fadeIn(200);
+             
              if(button.attr('data-follow') == 'follows'){
+             	 $(".daha_parent").remove();
                 $.post("/ajax/get_follows",{profileID:profileID,start:start},function(response){
                     if(response.status=="success"){
                         
                         $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
-                        $("#orta_alan_container").append('<a href="javascript:;" id="follow" class="daha" data-follow="follows" data-id="<?=$p->ID?>" data-start="'+start+'" >Daha fazla</a>');
+						
+                        $("#orta_alan_container").append('<aside class="daha_fazla_duvar_yazisi daha_parent"><a href="javascript:;" id="follow" class="daha" data-follow="follows" data-id="'+profileID+'" data-start="'+start+'" >Daha fazla</a></aside>');
                         $(".loading_bar").remove();
                         start = start + response.profiles.length;
                         
                         if(start % 20 > 0){
-                            $(".daha").remove();
+                            $(".daha_parent").remove();
                         }
                     }
                    /* $("#meclis-istatistik-tmpl").tmpl(oranlar).appendTo("#");
                     $("#social-friendList-tmpl").tmpl(response.friendList).appendTo("#socialListArea");*/
                 },"json");
              }else{
+             	 $(".daha_parent").remove();
                  $.post("/ajax/get_followers",{profileID:profileID},function(response){
                  if(response.status=="success"){
                         
                         $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
-                        $("#orta_alan_container").append('<a href="javascript:;" id="follow" class="daha" data-follow="followers" data-id="<?=$p->ID?>" data-start="'+start+'" >Daha fazla</a>');
+                        $("#orta_alan_container").append('<aside class="daha_fazla_duvar_yazisi daha_parent"><a href="javascript:;" id="follow" class="daha" data-follow="followers" data-id="'+profileID+'" data-start="'+start+'" >Daha fazla</a></aside>');
                         $(".loading_bar").remove();
                         
                         
                         start = start + response.profiles.length;
                         if(start % 20 > 0){
-                            $(".daha").remove();
+                            $(".daha_parent").remove();
                         }
                  }
                  },"json");
              }
-         });
+        
      });
        
 });
