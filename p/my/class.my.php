@@ -7,12 +7,19 @@
 			$model->template="ala";
 			$model->view="my";
 			$model->title = 'Democratus';
-
+                        $model->addScript('var share = 0');
+                        if(isset($_GET['share']))
+                            $model->addScript('share =1');
+                        
+                            
+                    
 			$model->addHeaderElement();
 			
 			$model->addScript(PLUGINURL."my/my.js", "my.js", 1);
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='my'");
+                       
+                        
 			
 			$c_profile = new profile ;
 			$profile= $model->profile;
@@ -32,23 +39,24 @@
 			}
 			$birth['month']=model::int2trMonth($birth['month']);
 	                        
-	        $profileChecked[$profile->showprofile]=' checked="ture" ';
-	        $birthChecked[$profile->showbirth]=' checked="ture" ';
-	        $mottoChecked[$profile->showmotto]=' checked="ture" ';
-	        $showdiesChecked[$profile->showdies]=' checked="ture" ';
-	        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
-	        $hometownChecked[$profile->showhometown]=' checked="ture" ';
-	        $countryChecked[$profile->showcountry]=' checked="ture" ';
-	        $cityChecked[$profile->showcity]=' checked="ture" ';
-	        $materialChecked[$profile->showmarital]=' checked="ture" ';
-	        $educationChecked[$profile->showeducation]=' checked="ture" ';
-	        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
-	
-	        $langChecked[$profile->showlanguages]=' checked="ture" ';
-	        $emailChecked[$profile->showemail]=' checked="ture" ';
-	        $followersChecked[$profile->showfollowers]=' checked="ture" ';
-	        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
-	        $photosChecked[$profile->showphotos]=' checked="ture" ';
+                        $profileChecked[$profile->showprofile]=' checked="ture" ';
+                        $birthChecked[$profile->showbirth]=' checked="ture" ';
+                        $mottoChecked[$profile->showmotto]=' checked="ture" ';
+                        $showdiesChecked[$profile->showdies]=' checked="ture" ';
+                        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
+                        $hometownChecked[$profile->showhometown]=' checked="ture" ';
+                        $countryChecked[$profile->showcountry]=' checked="ture" ';
+                        $cityChecked[$profile->showcity]=' checked="ture" ';
+                        $materialChecked[$profile->showmarital]=' checked="ture" ';
+                        $educationChecked[$profile->showeducation]=' checked="ture" ';
+                        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
+
+                        $langChecked[$profile->showlanguages]=' checked="ture" ';
+                        $emailChecked[$profile->showemail]=' checked="ture" ';
+                        $followersChecked[$profile->showfollowers]=' checked="ture" ';
+                        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
+                        $photosChecked[$profile->showphotos]=' checked="ture" ';
+                        
 			?>
 			<section class="banner">
 				<header>
@@ -267,16 +275,16 @@
 							{
 								?>
 								<div class="social_connect">
-				    				<a class="facebook_login" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
-				    			</div>
+                                                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
+                                                                </div>
 								<?
 							}
 							else 
 							{
 								?>
 								<div class="social_connect">
-				    				<a class="facebook_login" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
-				    			</div>
+                                                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
+                                                                </div>
 								<?
 							}
 							
@@ -286,26 +294,41 @@
 							{
 							?>
 								<div class="social_connect">
-			    					<a class="twitter_login" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
-			    				</div>
+                                                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
+                                                                </div>
 							<? 
 							}
 							else {
 							?>
 								<div class="social_connect">
-			    					<a class="twitter_login" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
-			    				</div>
+                                                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
+                                                                </div>
 							<? 	
 							}
 								
 						?>
+                                                        <div class="social_connect">
+                                                            <button class="btn share_with_friends ">Arakadaşlarınla Paylaş</button>
+                                                        </div>
+                                                        <div style="clear: both;"></div>
+                                                        <div class="social_connect2" style="display: none;">
+                                                            <h4>Democratus'u arkadaşlarınla paylaş.</h4>
+                                                            <textarea id="share-with-social-text" class="textarea">Democratus'ta fikrimi paylaşıyorum gündemi değiştiriyorum!</textarea>
+                                                            <div style="clear: both;"></div>
+                                                            <div class="social_connect">
+                                                                <a class="twitter_login" onclick="javascript:share_totwit();" id="twit_buton" >Twitter'da paylaş</a>
+                                                            </div>
+                                                            <div class="social_connect">
+                                                                <a class="facebook_login" onclick="javascript:share_tofacebook();" id="face_button" >Facebook'ta paylaş</a>
+                                                            </div>
+                                                            </div>
 						</div>
 						<div style="clear: both;"></div>
 						<div id="socialListArea">
 							
 						</div>
 					</section>
-					
+                                   
                 </div><!-- Profile arkadaş Tab  Sonu -->
                 <!-- Gizlilik Tab -->
                 <div class="tab-pane fade in" id="tab-gizlilik">
