@@ -408,6 +408,19 @@ jQuery(document).ready(function ($) {
        
         if(plugin=="my" && share == 1)
          show_social_connect2();
+     
+     $('#follow').live('click',function(){
+         var button = $(this);
+         var wall = $('#orta_alan_container');
+         var profileID = button.attr('data-id');
+         wall.fadeOut(500, function(){
+             if(button.attr('data-follow') == 'follows'){
+                $.post("/ajax/get_follows",{profileID:profileID});
+             }else{
+                 
+             }
+         });
+     });
        
 });
     
