@@ -31,6 +31,11 @@
 							<header>
 								<address>
 									<h1>
+										<?php if($c_profile->profile->deputy == "1")
+											  {
+											  	echo '<i class="atolye15-rutbe-" style="width:30px; height:30px; background-size:30px;"></i>';
+											  }
+										?>
 										<a href="javascript:;" title="<?=$p->name?>"><?=$p->name?></a>
 									</h1>
 								</address>
@@ -93,8 +98,8 @@
 									}
 									?>
 									<li><span class="puan"><strong><?=$p->puan?></strong> PUAN</span></li>
-									<li><strong><?=$p->count_following?></strong> TAKİP ETTİĞİ</li>
-									<li><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
+									<li id="follow" data-follow="follows" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_following?></strong> TAKİP ETTİĞİ</li>
+									<li id="follow" data-follow="followers" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
 								</ul>
 							</aside>
 						</div>

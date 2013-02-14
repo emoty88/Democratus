@@ -1847,7 +1847,8 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 .atolye15-ikon-taktir { background-position: -72px -32px; }
 .atolye15-ikon-saygi { background-position: -96px -32px; }
 .atolye15-ikon-kaldir { background-position: -224px -32px; }
-.atolye15-ikon-paylas { background-position: -120px -32px; }
+.atolye15-ikon-paylas { background-position: -242px -32px; }
+.atolye15-ikon-yanitla { background-position: -120px -32px; }
 .atolye15-ikon-ok { background-position: -144px -32px; }
 :hover > .atolye15-ikon-atac, .aktif > .atolye15-ikon-atac { background-position: 0px -56px; }
 :hover > .atolye15-ikon-gorsel, .aktif > .atolye15-ikon-gorsel { background-position: -24px -56px; }
@@ -1855,7 +1856,8 @@ body .atolye15-ikon-48 { width: 48px; height: 48px; line-height: 48px; }
 :hover > .atolye15-ikon-taktir, .aktif > .atolye15-ikon-taktir { background-position: -72px -56px; }
 :hover > .atolye15-ikon-saygi, .aktif > .atolye15-ikon-saygi { background-position: -96px -56px; }
 :hover > .atolye15-ikon-kaldir, .aktif > .atolye15-ikon-kaldir { background-position: -224px -56px; }
-:hover > .atolye15-ikon-paylas, .aktif > .atolye15-ikon-paylas { background-position: -120px -56px; }
+:hover > .atolye15-ikon-paylas, .aktif > .atolye15-ikon-paylas { background-position: -242px -56px; }
+:hover > .atolye15-ikon-yanitla, .aktif > .atolye15-ikon-yanitla { background-position: -120px -56px; }
 :hover > .atolye15-ikon-ok, .aktif > .atolye15-ikon-ok { background-position: -144px -56px; }
 
 /* 48px */
@@ -1925,6 +1927,45 @@ ul.sutunlar_4_sutun > li { display: block; float: left; margin-left: 2%; width: 
 
 ul.sutunlar_2_sutun.fix > li { margin-left: 2%; width: 49%;  }
 ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
+
+
+/****************************
+ * 404
+ */
+
+.container.not-found {
+	background: #ffffff !important;
+}
+
+#not-found-content {
+	width: 600px;
+	margin: 100px auto;
+	text-align: center;
+}
+
+#not-found-content h1 {
+	font-size: 100px;
+}
+
+#not-found-content p {
+	color: #444;
+	margin: 25px;
+	line-height: 21px;
+}
+
+
+/****************************
+ * Pop Up
+ */
+
+ .modal-header {
+ 	background: #962627;
+ }
+
+ .modal-header h3 {
+ 	color: #ffffff !important;
+ }
+ 	
 .overlay
 {
 	  position: fixed;
@@ -1965,4 +2006,50 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 {
 	text-decoration: none;
 	color: #FFFFFF;
+}
+
+#face_button{
+	background: url(../img/facebook_button.png);
+	background-repeat: no-repeat;
+	display: block;
+	height: 32px;
+	padding-left: 38px;
+	padding-top: 5px;
+	color: white;
+        cursor: pointer;
+}
+#twit_buton{
+	background: url(../img/twitter_button.png);
+	height: 179px;
+	background-repeat: no-repeat;
+	display: block;
+	height: 32px;
+	padding-left: 39px;
+	padding-top: 5px;
+	color: white;
+        cursor: pointer;
+}
+
+.textarea{
+        resize: none;
+        height: 50px;
+        width: 366px;
+}
+
+.social_connect{
+    float: left;
+    width: 200px;
+}
+
+.share_with_friends{
+    padding: 4.5px;
+}
+
+.tasari-ata{
+    margin-top: -3px;
+    float: right;
+    
+}
+#follow{
+    cursor: pointer;
 }

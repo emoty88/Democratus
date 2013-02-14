@@ -389,11 +389,16 @@
                         $motto        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->description, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $location        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         //$birth        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                        if($_SERVER['REMOTE_ADDR']=='88.255.245.2522')
+                        if($_SERVER['REMOTE_ADDR']=='127.0.0.11')
 						{
 							echo "<pre>";
 							var_dump($user_info);
 							echo "</pre>";
+                                                        $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'twitter' AND oauth_uid = " . $db->quote($uid) . "" );
+                                                        $oauth = null;
+                                                        if($db->loadObject($oauth)){
+                                                            print_r($oauth);
+                                                        }
 							die;
 						}
                         if (strlen($uid)<3) throw new Exception('id not valid');

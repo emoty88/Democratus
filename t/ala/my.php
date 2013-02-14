@@ -48,7 +48,7 @@
 									{{meclis}}
 
 									{{populardies}}
-
+                                                                        {{smsuggestion}}
 									{{whotofollow}}
 
 								</div>

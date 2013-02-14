@@ -63,6 +63,10 @@ class induction {
 			case 'delete':
 				$puanClass->puanIslem($voice->profileID,"7",$voice);
 				$c_counter->set_profileCount($voice->profileID, "voice","-");
+				if($voice->isReply=="1")
+				{
+					$c_counter->set_voiceCount($voice->replyID, "reply", "-");
+				}
 				break;
 		}
 		

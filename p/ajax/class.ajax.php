@@ -223,11 +223,16 @@ class ajax_plugin extends control{
 					 
 					$share->sharerimage = $model->profile->image;
 					$share->sharername = $model->profile->name;
+					$share->sharerDeputy = $model->profile->deputy;
 					$share->permalink = $model->profile->permalink;
 					$share->count_reply = 0;
+					$share->count_like = 0;
+					$share->count_dislike = 0;
+					$share->count_reShare = 0;
+					
                     $response['voice'] 	= $c_voice->get_return_object($share);
 					
-					if($share->initem=="1")
+                                        if($share->initem=="1")
 					{
 						$shareimage=new stdClass;
 						$shareimage->ID=null;
@@ -555,6 +560,18 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
     	$ID  = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
      	$response = array();
         try{
+        	$db->setQuery('SELECT * FROM di WHERE rediID  = ' . $db->quote($ID) . ' AND profileID= '. $db->quote($model->profileID) . ' AND status=1');
+			$paylasildi = null;
+           	if($db->loadObject($paylasildi))
+			{
+				$response["status"]="success";
+				$response["type"]="removed";
+				$paylasildi->status = 0;
+				$db->updateObject("di", $paylasildi, "ID");
+				echo json_encode($response);
+				die;
+			}
+        	
         	$db->setQuery('SELECT * FROM di WHERE ID = ' . $db->quote($ID) . ' AND status > 0');
          	$voice = null;
            	if(!$db->loadObject($voice)) throw new Exception('voice bulunamadı');
@@ -1164,10 +1181,12 @@ else
 			$limit = filter_input(INPUT_POST, 'limit', FILTER_SANITIZE_NUMBER_INT);
 		   	$c_voice = new voice($vID);
 			$voices =  $c_voice->get_reply(null, $start, $limit);
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
 			$response["voice_count"] = count($voices);
 			foreach($voices as $v)
 			{
 				$response["voices"][] = $c_voice->get_return_object($v, 32, 32);	
+				$response["lastID"] = $v->ID;
 			}
 	    } catch (Exception $e){
 	        $response['status'] = 'error';
@@ -1176,7 +1195,26 @@ else
 	    
 	    echo json_encode($response);
 	}
-
+	public function get_countVoiceReply()
+	{
+		global $model, $db;
+    	$model->mode = 0;
+   		$response = array("status" => "success");
+	    try{
+	       	$vID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT);
+			$start = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_NUMBER_INT);
+		   	$c_voice = new voice($vID);
+			
+			//$response["voice_totalCount"] = $c_voice->get_replyCount();
+			$response["count"] = $c_voice->get_replyCount(null, $start);
+			
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
 	public function get_parentVoice()
 	{
 		global $model, $db;
@@ -1617,6 +1655,174 @@ else
         }
         
         echo json_encode($r_array);
+    }
+	function get_hashtagAgenda()
+	{
+		global $model, $db;
+		$rt = new stdClass;
+		$rt->status = "success";
+		$c_parliament = new parliament;
+		$active = filter_input(INPUT_POST, 'active', FILTER_SANITIZE_NUMBER_INT);
+		$agendas = $c_parliament->get_hastagAgenda($active);
+		$rt->agendas = $c_parliament->get_agendaReturnObject($agendas);
+		
+		echo json_encode($rt);
+	}
+	function toggle_agenda()
+	{
+		global $model, $db;
+		$ID = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
+		$c_parliament = new parliament;
+		if($c_parliament->toggle_agenda($ID))
+		{
+			$r->status = "success";
+		}
+		else
+		{
+			$r->status = "error";
+		}
+		echo json_encode($r);
+	}
+	public function set_agendaHashtag()
+	{
+		global $model;
+		$voice = $_POST["voice"];
+		$r = new stdClass;
+		$c_parliament = new parliament;
+		if($c_parliament->set_agendaHashtag($voice))
+		{
+			$r->status = "success";
+		}
+		else
+		{
+			$r->status = "error";
+		}
+		echo json_encode($r);
+	}
+    public function facebookta_paylas(){
+        
+        $fb = new facebookClass();
+        $izin =  $fb->yazmaizniVarmi();
+        $postIcerik = filter_input(INPUT_GET, 'text',FILTER_SANITIZE_STRING);
+        $f = filter_input(INPUT_GET, 'f',FILTER_SANITIZE_STRING);
+        //$izin['durum']='login';
+                    
+
+        if($izin['durum']=='login'){
+            echo json_encode($izin);
+            
+       }  elseif($izin['durum']=='izinVar' and $f == 'false') {
+           $fb->share_democratus_with_friends($postIcerik);
+           global  $model;
+           $model->mode = 1;
+           echo '<script>window.close();</script>';
+          echo json_encode($izin);
+           //die;
+       } elseif($f == 'false') {
+           
+           global  $model;
+           $model->mode = 1;
+           echo '<script>window.close();</script>';
+           echo json_encode($izin);
+       }  else {
+           global  $model;
+           $model->mode = 1;
+           echo '<script>window.close();</script>';
+           echo json_encode($izin);
+       }
+       
+        
+       
+    }
+   public function twitterda_paylas1(){
+       global $model,$db;
+        $tw = new twitterClass();
+        require_once CLASSPATH.'/smclass/twitter/twitteroauth.php';
+        $tk = array();
+        if($tw->user_tokens_check()){
+            $access_token = $tw->get_user_tokens();
+            $tk['oauth_token'] = $access_token->user_oauth_token;
+            $tk['oauth_token_secret'] = $access_token->user_oauth_token_secret; 
+            $_SESSION['access_token'] = $access_token;
+        }  else {
+            $twitteroauth = new TwitterOAuth($tw->twitter_key, $tw->twitter_secret,$_SESSION['oauth_token'],$_SESSION['oauth_token_secret']);
+            $tk = $twitteroauth->getAccessToken($_GET['oauth_verifier']);
+            $_SESSION['access_token'] = $access_token;
+        }
+        
+        //print_r($tk);
+        $twitteroauth = new TwitterOAuth($tw->twitter_key, $tw->twitter_secret, $tk['oauth_token'], $tk['oauth_token_secret']);
+       
+                // Save it in a session var
+       
+        if(!$tw->user_tokens_check()){
+            $oauth = new stdClass;
+            $oauth->userID  = $model->profileID;
+            $oauth->oauth_provider  = 'twitter';
+            $oauth->oauth_uid       = $model->profileID;
+            $oauth->username       = $model->profile->permalink;
+            $oauth->oauth_token       = $_SESSION['oauth_token'];
+            $oauth->oauth_token_secret       = $_SESSION['oauth_token_secret'];
+            $oauth->user_oauth_token = $tk['oauth_token'];
+            $oauth->user_oauth_token_secret = $tk['oauth_token_secret'];
+            $oauth->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+            $oauth->datetime  = date('Y-m-d H:i:s');
+            $oauth->status    = 1;
+
+            //print_r($);
+
+            $db->insertObject('oauth', $oauth );
+        }
+               
+        $text = filter_input(INPUT_GET, 'text',FILTER_SANITIZE_STRING);
+        $sonuc=$twitteroauth->post('statuses/update', array("status" => substr($text,0,115).'... http://democratus.com'));
+        print_r($sonuc);
+        echo '<script>window.close();</script>';
+        //print_r($tw->sendTweet('test lfsdlşkf',40000));
+        
+    }
+    public function twitterda_paylas(){
+        global $model,$db;
+        $tw = new twitterClass();
+        $text = filter_input(INPUT_GET, 'text',FILTER_SANITIZE_STRING);
+        $token = $tw->twO->getRequestToken('http://democ.com/ajax/twitterda_paylas1?text='.urlencode($text));
+        $_SESSION['oauth_token'] = $token['oauth_token'];
+        $_SESSION['oauth_token_secret'] = $token['oauth_token_secret'];
+         if($tw->user_tokens_check()){
+        
+            $this->twitterda_paylas1(0);
+            
+        }else{
+            
+            $url = $tw->twO->getAuthorizeURL($token['oauth_token'],FALSE);
+            header('Location: '.$url);
+        }
+        
+    }
+    
+    public function get_follows(){
+        $profileID = intval(filter_input(INPUT_POST, 'profileID',FILTER_SANITIZE_STRING));
+        $start = intval(filter_input(INPUT_POST, 'start',FILTER_SANITIZE_STRING));
+        $c_profile = new profile();
+        $profiles = $c_profile->get_following(20, $start, $c_profile->get_porfileObject($profileID));
+        $profiles = $c_profile->get_profileMultiReturtnObj($profiles);
+        $return['profiles'] = $profiles;
+        //$return['profiles'] = $c_profile->get_following(20, $start, $c_profile->get_porfileObject($profileID));
+        $return['status'] = 'success';
+        echo json_encode($return);
+    }
+    
+    public function get_followers(){
+        $profileID = intval(filter_input(INPUT_POST, 'profileID',FILTER_SANITIZE_STRING));
+        $start = intval(filter_input(INPUT_POST, 'start',FILTER_SANITIZE_STRING));
+        $c_profile = new profile();
+        $profiles = $c_profile->get_follower(20, $start, $c_profile->get_porfileObject($profileID));
+       
+        $profiles = $c_profile->get_profileMultiReturtnObj($profiles);
+        
+        $return['profiles'] = $profiles;//$c_profile->get_follower(20, $start, $c_profile->get_porfileObject($profileID));
+        $return['status'] = 'success';
+        echo json_encode($return);
     }
 
 }
