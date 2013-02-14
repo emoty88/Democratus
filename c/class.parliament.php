@@ -13,14 +13,14 @@
             $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
             $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
 			$WHERE = "\n  WHERE a.status>0"; 
-			if($_SERVER['SERVER_NAME']=="democratus.com")
+			if($_SERVER['SERVER_NAME']=="democratus.com" && $type=="0")
             {
 				$WHERE  .= "\n AND ".$db->quote(date('Y-m-d H:i:s'))." BETWEEN a.starttime AND a.endtime"; 
 			}    
 			
             if($type!="0")
 			{
-				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	
+				$WHERE .= "\n  AND (a.".$type."='".$parentID."')";	
 			}
 			else
 			{
@@ -31,8 +31,7 @@
       
 			if($type!="0")
 			{
-				$ORDER  = "\n ORDER BY a.$type DESC";
-				$ORDER  .= "\n , a.ID asc";
+				$ORDER  = "\n ORDER BY a.ID DESC	";
 			}else
 			{
 				$ORDER  = "\n ORDER BY a.ID asc	";
@@ -110,7 +109,6 @@
 		public function get_agendaReturnObject($agendas)
 		{
 			global $model;
-			
 			$return		= array();
 			foreach($agendas as $a)
 			{
@@ -121,6 +119,8 @@
 				$r_obj->dPerma	= $a->deputyPerma;
 				$r_obj->agendaT	= $a->title;
 				$r_obj->myVote	= $a->myvote;
+				$r_obj->status	= $a->status;
+				$r_obj->sTime	= time_since( strtotime( $a->starttime ));
 				$r_obj->percent	= $this->get_agendaPercent($a->ID);
 				
 				$return[]=$r_obj;
@@ -324,7 +324,7 @@
             $WHERE .= "\n AND av.profileID = " . $db->quote($model->profileID);
             if($type!="0")
 			{
-				$WHERE .= "\n  AND (a.".$type."='0' or a.".$type."='".$parentID."')";	
+				$WHERE .= "\n  AND (a.".$type."='".$parentID."')";	
 			}
 			else
 			{
@@ -444,5 +444,75 @@
                     
                     return TRUE;
                 }
+		public function get_hastagAgenda($active=1)
+		{
+			
+			global $model,$db;
+			$SELECT = "\n SELECT a.* , av.vote AS myvote, p.image AS deputyimage, p.name AS deputyname, p.permalink AS deputyPerma, p.ID as deputyID";
+            $FROM   = "\n FROM agenda AS a";
+            $JOIN   = "\n LEFT JOIN agendavote AS av ON av.agendaID=a.ID AND av.profileID= " . $db->quote($model->profileID);
+            $JOIN  .= "\n LEFT JOIN profile AS p ON p.ID=a.deputyID";
+			$WHERE = "\n  WHERE a.status=".$active; 
+        	$WHERE .= "\n  AND (a.hastagID='".$model->profileID."')";	
+			//hastag sayfalarının gündemi yok ve gündemi yoksa  alan boş geliyor tagin gündemi yoksa gerçek meclis gelsin 
+      		$ORDER  = "\n ORDER BY a.ID DESC	";
+			 
+            $LIMIT  = "\n  LIMIT 7";
+            // Bu alanı sunucuya gönderme 
+            $db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$ORDER.$LIMIT);
+			
+			//echo $db->_sql;
+			
+			$agendas = $db->loadObjectList();
+	
+			return $agendas;
+		}
+		public function toggle_agenda($aID)
+		{
+			global $model,$db;
+			$sql = "SELECT ID, status FROM agenda WHERE ID=".$db->quote($aID)." AND hastagID=".$db->quote($model->profileID);
+			$db->setQuery($sql);
+			$db->loadObject($agenda);
+			if($agenda->status==1)
+			{
+				$agenda->status=0;
+			}
+			else {
+				$agenda->status=1;
+			}
+			return $db->updateObject("agenda", $agenda, "ID");
+			
+		}
+		public function set_agendaHashtag($voice)
+		{
+			global $model, $db;
+			$c_profile = new profile($voice["sPerma"]);
+			if($c_profile->profile->type!="hashTag")
+			{
+				return false;
+			}
+			if($c_profile->profileID!=$model->profileID)
+			{
+				return false;
+			}
+			$agenda = new stdClass;
+			$agenda->title = $voice["voice"];
+			$agenda->class = 1;
+			$agenda->hastagID = $model->profileID;
+			$agenda->starttime =date('Y-m-d H:i:s');
+			$agenda->endtime = date('Y-m-d H:i:s');
+			$agenda->proposalID = 25;
+			$agenda->deputyID = $model->profileID;
+			$agenda->diID = $voice["ID"];
+			$agenda->status = 1;
+			
+			if($db->insertObject("agenda", $agenda))
+			{
+				return true;
+			}
+			else {
+				return false;	
+			}
+		}
 	}
 ?>
