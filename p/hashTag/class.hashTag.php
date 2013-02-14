@@ -16,12 +16,31 @@
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
 			
-			
+			if($model->paths[1]=="manage")
+			{
+				$this->manage();
+				//die;
+			}
 			if($model->paths[1]=="startTour")
 			{
 				
 				$model->addScript("$(document).ready(function (){ show_step(0)});");
 			}
+		}
+		public function manage()
+		{
+			global $model, $db;
+			$model->addScript("plugin='hashTag_manage'");
+			//echo "manage";
+			?>
+			<div id="activeAgenda">
+				
+			</div>
+			<hr />
+			<div id="pasiveAgenda">
+				
+			</div>
+			<?
 		}
 		public function main_old(){
             global $model, $db,$dbez, $l;

@@ -85,6 +85,7 @@ jQuery(document).ready(function ($) {
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
    		case "hashTag" : hashtag_page();break;
+   		case "hashTag_manage" : hashtagManage_page();break;
    		case "search" : search_page();break;
    		case "popularvoice" : popularvoice_page();break;
    	}  	
@@ -537,6 +538,11 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
+					if($("#make_agenda").is(":checked"))
+					{
+						console.log("sadasa");
+						set_agendaHashtag(response.voice);
+					}
 					$(".daha_fazla_yeni_ses").remove();
 					if(response.voice.replyID>0)
 					{
@@ -578,7 +584,20 @@ jQuery(document).ready(function ($) {
 			
 		});	
 	}
-	
+	function set_agendaHashtag(voice)
+	{
+		post_data = {voice:voice};
+		$.ajax({
+			type: "POST",
+			url: "/ajax/set_agendaHashtag",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+					
+			}
+		});	
+	}
 	function get_messageCount()
 	{
 		var post_data	= {ID:0};
@@ -1569,8 +1588,14 @@ jQuery(document).ready(function ($) {
 	function hashtag_page()
 	{
 		//get_wall(profileID,lastVoiceID,onlyProfile,profilePerma);//sadece hashtagin yazzdıkları gelio arama yapıcak gale getir 
+
 		get_imageGalery(profileID);
 		get_promotedVoice(profileID);
+	}
+	function hashtagManage_page()
+	{
+		get_hashtagAgenda();
+		get_hashtagAgenda(0);
 	}
 	function search_page()
 	{
@@ -1600,6 +1625,34 @@ jQuery(document).ready(function ($) {
 				$("#hashtag-image-tmpl").tmpl(response.images).appendTo("#imageGaleryArea");
 				//$(".unfollow-" + profileID).toggle();
 	        	//$(".follow-" + profileID).toggle();	
+			}
+	    },'json');
+	}
+	function get_hashtagAgenda(active)
+	{
+		if(get_hashtagAgenda.arguments.length<1)
+		{
+			active=1;
+		}
+		$.post("/ajax/get_hashtagAgenda", {active: active}, function(response){ 
+			if(response.status == "success")
+			{
+				if(active=="1")
+					$("#hashtag-agenda-tmpl").tmpl(response.agendas,make_link).appendTo("#activeAgenda");
+				else
+					$("#hashtag-agenda-tmpl").tmpl(response.agendas,make_link).appendTo("#pasiveAgenda");
+				init_oldAgenda();
+			}
+	    },'json');
+	}
+	function toggle_agenda(ID)
+	{
+		$.post("/ajax/toggle_agenda", {ID: ID}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#activeAgenda").html("");
+				$("#passiveAgenda").html("");
+				hashtagManage_page();
 			}
 	    },'json');
 	}
@@ -1665,7 +1718,7 @@ jQuery(document).ready(function ($) {
 	}
         
         
-        function init_profileImageUploader(dom)
+	function init_profileImageUploader(dom)
 	{
 		$fub = $(dom);
 		uploadData = $fub.attr("data-upload");
@@ -1852,5 +1905,11 @@ jQuery(document).ready(function ($) {
 			if(response.status=='success')
                             $('#onceki_mesajlar').html('');
         },'json');
+    }
+    function get_modal(title,url)
+    {
+    	$("#myModalLabel").text(title);
+    	var options = {remote:url};    	
+    	$('#myModal').modal(options);
     }
 

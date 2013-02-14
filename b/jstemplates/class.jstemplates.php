@@ -293,7 +293,7 @@ class jstemplates_block extends control{
 						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
 						<address class="yazar">
 							<a title="${dName}'un Profilini Görüntüle" href="#">${dName}</a> 
-							<span>2 gün, 2 saat</span>
+							<span>${sTime}</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p>
@@ -304,6 +304,49 @@ class jstemplates_block extends control{
 							<a href="#"><i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> Söyleş</a>
 							<a href="#"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> Paylaş</a>
 						</aside>
+						{{if percent.sonuc == "olumlu"}}
+						<aside class="cevaplar yuzde katiliyorum" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Katılıyorum</span>
+						{{else percent.sonuc == "fikiryok"}}
+						<aside class="cevaplar yuzde kararsizim" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Kararsızım</span>
+						{{else  percent.sonuc == "olumsuz"}}
+						<aside class="cevaplar yuzde katilmiyorum" style="cursor: pointer;" data-original-title="">
+							<span class="sonuc"><strong>%${percent.max}</strong> Katılmıyorum</span>
+						{{/if}}
+							<div style="display:none">
+								<p class="yuzdeler olumlu" style="width: ${percent.olumlu}%">${percent.olumlu}</p>
+								<p class="yuzdeler olumsuz" style="width: ${percent.olumsuz}%">${percent.olumsuz}</p>
+								<p class="yuzdeler fikir-yok" style="width: ${percent.fikiryok}%">${percent.fikiryok}</p>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</article>
+		</script>
+		
+		<script id="hashtag-agenda-tmpl" type="text/x-jquery-tmpl">
+			<article class="duvar_yazisi anket referandum tamamlanmis ">
+				<div class="anket_tutucu_arkaplan">
+					<div class="anket_tutucu">
+						<img alt="${dName} Profil Fotoğrafı" src="${dImage}" class="profil_resmi">
+						<address class="yazar">
+							<a title="${dName}'un Profilini Görüntüle" href="#">${dName}</a> 
+							<span>${sTime}</span>
+						</address>
+						<div class="duvar_yazisi_icerigi">
+							<p style="min-height: 48px;">
+								${agendaT}
+							</p>
+						</div>
+						<aside class="komutlar">
+							{{if status == "1"}}
+								<a href="javascript:;" onclick="toggle_agenda(${ID})"><i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> Kaldır</a>
+							{{else}}
+								<a href="javascript:;" onclick="toggle_agenda(${ID})"><i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> Aktive et</a>
+							{{/if}}
+							
+						</aside>	
 						{{if percent.sonuc == "olumlu"}}
 						<aside class="cevaplar yuzde katiliyorum" style="cursor: pointer;" data-original-title="">
 							<span class="sonuc"><strong>%${percent.max}</strong> Katılıyorum</span>
@@ -465,6 +508,19 @@ class jstemplates_block extends control{
 				<img alt="" src="${small}" class="fnc" />
 			</a>
 		</script> 
+		
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Pop Up Başlığı</h3>
+			</div>
+			<div class="modal-body">
+				<p>Pop Up İçerik</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Kapat</button>
+			</div>
+		</div>
 		
 	<?	
 	}

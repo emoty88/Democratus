@@ -1927,6 +1927,45 @@ ul.sutunlar_4_sutun > li { display: block; float: left; margin-left: 2%; width: 
 
 ul.sutunlar_2_sutun.fix > li { margin-left: 2%; width: 49%;  }
 ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
+
+
+/****************************
+ * 404
+ */
+
+.container.not-found {
+	background: #ffffff !important;
+}
+
+#not-found-content {
+	width: 600px;
+	margin: 100px auto;
+	text-align: center;
+}
+
+#not-found-content h1 {
+	font-size: 100px;
+}
+
+#not-found-content p {
+	color: #444;
+	margin: 25px;
+	line-height: 21px;
+}
+
+
+/****************************
+ * Pop Up
+ */
+
+ .modal-header {
+ 	background: #962627;
+ }
+
+ .modal-header h3 {
+ 	color: #ffffff !important;
+ }
+ 	
 .overlay
 {
 	  position: fixed;

@@ -1656,6 +1656,48 @@ else
         
         echo json_encode($r_array);
     }
-
+	function get_hashtagAgenda()
+	{
+		global $model, $db;
+		$rt = new stdClass;
+		$rt->status = "success";
+		$c_parliament = new parliament;
+		$active = filter_input(INPUT_POST, 'active', FILTER_SANITIZE_NUMBER_INT);
+		$agendas = $c_parliament->get_hastagAgenda($active);
+		$rt->agendas = $c_parliament->get_agendaReturnObject($agendas);
+		
+		echo json_encode($rt);
+	}
+	function toggle_agenda()
+	{
+		global $model, $db;
+		$ID = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
+		$c_parliament = new parliament;
+		if($c_parliament->toggle_agenda($ID))
+		{
+			$r->status = "success";
+		}
+		else
+		{
+			$r->status = "error";
+		}
+		echo json_encode($r);
+	}
+	public function set_agendaHashtag()
+	{
+		global $model;
+		$voice = $_POST["voice"];
+		$r = new stdClass;
+		$c_parliament = new parliament;
+		if($c_parliament->set_agendaHashtag($voice))
+		{
+			$r->status = "success";
+		}
+		else
+		{
+			$r->status = "error";
+		}
+		echo json_encode($r);
+	}
 }
 ?>
