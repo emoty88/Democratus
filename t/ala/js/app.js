@@ -446,7 +446,7 @@ jQuery(document).ready(function ($) {
                 },"json");
              }else{
              	 $(".daha_parent").remove();
-                 $.post("/ajax/get_followers",{profileID:profileID},function(response){
+                 $.post("/ajax/get_followers",{profileID:profileID,start:start},function(response){
                  if(response.status=="success"){
                         
                         $("#social-friendList-tmpl").tmpl(response.profiles).appendTo("#orta_alan_container");
