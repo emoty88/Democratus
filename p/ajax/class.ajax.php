@@ -1656,7 +1656,6 @@ else
         
         echo json_encode($r_array);
     }
-<<<<<<< HEAD
 	function get_hashtagAgenda()
 	{
 		global $model, $db;
@@ -1700,7 +1699,6 @@ else
 		}
 		echo json_encode($r);
 	}
-=======
 
     public function facebookta_paylas(){
         
@@ -1804,6 +1802,6 @@ else
         }
         
     }
->>>>>>> 78e914ab2263235fb17a9585c863d8025ad72fc3
+
 }
 ?>
