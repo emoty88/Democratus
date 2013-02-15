@@ -72,6 +72,37 @@ class jstemplates_block extends control{
 						</a>
 					</aside>
 				</div>
+				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
+					<div id="replyArea_${ID}-${randNum}" class="replyArea">
+						<textarea id="replyTextArea_${ID}-${randNum}" class="karakteri_sayilacak_alan" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
+						<div class="reply_bottom">
+							<div class="kalan_karakter_mesaji">
+								<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci" data-limit="200">200</span> karakter
+							</div>
+							
+							<div class="kontroller_voice">
+							
+								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
+								
+								
+								
+								<a id="fine-uploader-btn_${ID}-${randNum}" class="fineUploader" href="javascript:;" data-randID="${ID}-${randNum}">
+									<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
+								</a>
+								<div id="fine-uploader-msg_${ID}-${randNum}"></div>	
+								
+								
+								<input type="hidden" id="replying_${ID}-${randNum}" value="${ID}" />
+	
+							</div>
+							<div style="clear: both;"> </div>
+							
+							<input type="hidden" id="initem_${ID}-${randNum}" name="initem" value="0" />
+				    		<input type="hidden" id="initem-name_${ID}-${randNum}" name="initem-name" value="0" />
+						</div>
+						
+					</div>
+				</aside>
 				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar replyAreaFix" data-isload="0" style="display: none;" onclick="notOpen=1;" >
 					<!-- İnce Ayar -->
 					<span class="ust_golge"></span>
@@ -79,38 +110,8 @@ class jstemplates_block extends control{
 					<span class="asagi_ok"><span></span></span>
 				</aside>
 			</article>
-			<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
-				<div id="replyArea_${ID}-${randNum}" class="replyArea">
-					<textarea id="replyTextArea_${ID}-${randNum}" class="karakteri_sayilacak_alan" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
-					<div class="reply_bottom">
-						<div class="kalan_karakter_mesaji">
-							<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci" data-limit="200">200</span> karakter
-						</div>
-						
-						<div class="kontroller_voice">
-						
-							<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
-							
-							
-							
-							<a id="fine-uploader-btn_${ID}-${randNum}" class="fineUploader" href="javascript:;" data-randID="${ID}-${randNum}">
-								<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
-							</a>
-							<div id="fine-uploader-msg_${ID}-${randNum}"></div>	
-							
-							
-							<input type="hidden" id="replying_${ID}-${randNum}" value="${ID}" />
-
-						</div>
-						<div style="clear: both;"> </div>
-						
-						<input type="hidden" id="initem_${ID}-${randNum}" name="initem" value="0" />
-			    		<input type="hidden" id="initem-name_${ID}-${randNum}" name="initem-name" value="0" />
-					</div>
-					
-				</div>
-			</aside>
-			<div id="voiceSliceBottom_${ID}-${randNum}" class="dyazi_bottom_slice" ></div>
+			
+			<!-- <div id="voiceSliceBottom_${ID}-${randNum}" class="dyazi_bottom_slice" ></div> -->
 			<!-- Duvar Yazısı Son -->
 			</div>
 		</script>
