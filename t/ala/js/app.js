@@ -1709,13 +1709,27 @@ jQuery(document).ready(function ($) {
 	function popularvoice_page()
 	{
 		get_popularVoice();
+		
 	}
 	function get_popularVoice()
 	{
-		$.post("/ajax/get_popularVoice", {profileID: 0}, function(response){ 
+		console.log("asdsad");
+		$.post("/ajax/get_popularVoice", {type: "popular"}, function(response){ 
 			if(response.status == "success")
 			{
-				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#orta_alan_container");
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#sesgetirenler-content");
+			}
+	    },'json');
+	    $.post("/ajax/get_popularVoice", {type: "raise"}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#yukselenler-content");
+			}
+	    },'json');
+	    $.post("/ajax/get_popularVoice", {type: "all"}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#ulkeduvari-content");
 			}
 	    },'json');
 	}

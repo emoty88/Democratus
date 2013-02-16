@@ -1614,8 +1614,35 @@ else
 	public function get_popularVoice()
 	{
 		global $model, $db;
+		$type = filter_input(INPUT_POST, 'type',FILTER_SANITIZE_STRING);
 		$c_pVoice = new popularvoice;
-		$voices=$c_pVoice->get_popularVoice();
+		switch ($type) {
+			case 'popular':
+				$start = 0 ;
+				$limit = 7 ;
+				$sLimit = 0 ;
+				$onlyProfile = 0;
+				$zeroCond = false;
+			break;
+			case 'raise':
+				$start = 0 ;
+				$limit = 7 ;
+				$sLimit = 7 ;
+				$onlyProfile = 0;
+				$zeroCond = false;
+			break;
+			case 'all':
+				$start = 0 ;
+				$limit = 7 ;
+				$sLimit = 0 ;
+				$onlyProfile = 0;
+				$zeroCond = TRUE;
+			break;
+			default:
+				
+				break;
+		}
+		$voices=$c_pVoice->get_popularVoice($start , $limit , $sLimit, $onlyProfile, $zeroCond);
 		$return = new stdClass;
 		$return->status = "success";
 		$return->voices = $voices;
