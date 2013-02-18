@@ -117,6 +117,15 @@
 				$r_obj->dImage	= $model->getProfileImage($a->deputyimage, 48,48, 'cutout');
 				$r_obj->dName	= $a->deputyname;
 				$r_obj->dPerma	= $a->deputyPerma;
+                                if($a->mecliseAlan>0){
+                                    $r_obj->mecliseAlan = $a->mecliseAlan;
+                                    $r_obj->mecliseAlanPerma = profile::change_ID2perma($a->mecliseAlan);
+                                    $r_obj->mecliseAlanName = profile::get_name($r_obj);
+                                }else{
+                                    $r_obj->mecliseAlan = '';
+                                    $r_obj->mecliseAlanPerma = '';
+                                    $r_obj->mecliseAlanName = '';
+                                }
 				$r_obj->agendaT	= $a->title;
 				$r_obj->myVote	= $a->myvote;
 				$r_obj->status	= $a->status;
@@ -240,8 +249,11 @@
 		}
 		public function get_proposal()
 		{
+                    $c_profile = new profile();
+                   
 			global $model, $db;
                         $retunObj=array();
+                        $retunObj['message'] = "";
 			try { 
                 if($model->profile->deputy<1) throw new Exception('Bu bölümü sadece vekiller görebilir.');  
                 $SELECT = "SELECT pp.*, pr.name, pr.image, pr.permalink";
@@ -268,6 +280,13 @@
                         $ro->text = $p->spot;
                         $ro->deputyID = $p->deputyID;
                         $ro->mecliseAlan = $p->mecliseAlan;
+                        if($ro->mecliseAlan>0){
+                            $ro->mecliseAlanName =  $c_profile->get_name($ro->mecliseAlan);
+                            $ro->mecliseAlanPerma = $c_profile->change_ID2perma($ro->mecliseAlan);
+                        }  else {
+                            $ro->mecliseAlanName = "";
+                            $ro->mecliseAlanPerma = "";
+                        }
                         $ro->count_approve = $p->count_approve;
                         $ro->count_reject = $p->count_reject;
                         $ro->dName = $p->name;
@@ -276,7 +295,7 @@
                         $ro->time = model::get_beforeTime( strtotime($p->datetime));
                         $ro->approve =0;
                         $ro->reject=0;
-                        if($p->deputyID == $model->profileID)
+                        if($p->deputyID == $model->profileID or $ro->mecliseAlan == $model->profileID)
                             $ro->isMine = TRUE;
                         else
                             $ro->isMine = FALSE;
@@ -286,6 +305,7 @@
                 
                 $query='SELECT proposalID, approve, reject from proposalvote WHERE deputyID ="'.$model->profileID.'"  AND proposalID IN ('.implode(' , ', $ids).')';
                 $db->setQuery($query);
+                //die($db->_sql);
                 $votes = $db->loadObjectList ();
                
                 foreach ($votes as $vote){
@@ -434,7 +454,7 @@
                     global $model,$db;
                     try {
                         $uID = $model->profileID;
-                        $QUERY = "UPDATE proposal SET status = 0 WHERE ID=$ID AND deputyID = $uID AND status>0";
+                        $QUERY = "UPDATE proposal SET status = 0 WHERE ID=$ID AND (deputyID = $uID or mecliseAlan = $uID) AND status>0";
                         $db->setQuery($QUERY);
                         if(!$db->query())
                             throw new Exception('hata');

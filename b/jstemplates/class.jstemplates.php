@@ -241,8 +241,14 @@ class jstemplates_block extends control{
 							<a class="btn {{if myVote == 3}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-3" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 3);">Kararsızım</a>
 							<a class="btn {{if myVote == 4}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-4" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 4);">Katılmıyorum</a>
 						</aside>
+                                            <aside class="komutlar" onclick="notOpen=1;">
+                                                {{if mecliseAlan>0 }}
+                                                    <a href="/${mecliseAlanPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${mecliseAlanName} Tarafından atandı</a> 
+                                                {{/if}}
+                                            </aside>
 						
 					</div>
+                                    
 					
 				</div>
 				{{if myVote == null}}
@@ -394,7 +400,8 @@ class jstemplates_block extends control{
 					<div class="anket_tutucu">
 						<img class="profil_resmi" src="${dImage}" alt="${dName} Profil Fotoğrafı">
 						<address class="yazar">
-							<a href="/${dPerma}" title="${dName} Profilini Görüntüle">${dName}</a> 
+							<a href="/${dPerma}" title="${dName} Profilini Görüntüle">${dName}</a>, 
+                                                        
 							<span> ${time}</span>
 						</address>
 						<div class="duvar_yazisi_icerigi">
@@ -413,7 +420,9 @@ class jstemplates_block extends control{
                             {{/if}}
 						</aside>
                                                 <aside class="komutlar" onclick="notOpen=1;">
-						
+                                                {{if mecliseAlan>0 }}
+                                                    <a href="/${mecliseAlanPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${mecliseAlanName} Tarafından atandı</a> 
+                                                {{/if}}
 						{{if isMine}}
 						<a id="kaldir_${ID}" href="javascript:proposal_delete(${ID});">
 							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 

@@ -135,6 +135,42 @@ jQuery(document).ready(function ($) {
 		$(".popoverContent-noticeIcon").load("/notice/mini");
 	}); 
 	
+	$('#profilecomplaint').live("click",function(){
+        var ID = $(this).attr('rel');
+        $("#uygulaBtnProfile").attr("rel",ID);
+        var url = "/ajax/profilecomplaintmenu?ID="+ID;
+        
+        $.post("/ajax/profilecomplaintmenu", { ID: ID }, function(data){ 
+            if(data && data.result=='success'){
+            	
+            	$('.myModalLabel').html("Şikayet");
+            	$('.modal-body').html(data.html);
+            	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnProfile" rel="0" class="btn btn-primary">Uygula</a>');
+				$('#myModal').modal('show'); 
+				 
+				
+            } else {
+                alert(data.message);
+            }
+        },'json');
+    });
+    $("#uygulaBtnProfile").live("click", function (){
+    	
+    	var formData=$(".dialogform").serialize();
+    	$('.modal-bodyProfile').html("Şikayetiniz İletiliyor Lütfen Bekleyiniz");
+    	$.post('/ajax/profilecomplaint/', formData, 
+    	function(data){
+    		//$('#sikayetModal').modal('hide');
+    		$('.modal-body').html(data);
+    		if(data.status=="success")
+    		{
+    			$("#uygulaBtnProfile").remove();
+    			$('#myModal').modal('hide');
+    			//$("#voice-"+ID).fadeOut(750); // sedece silmede bu çalışıcak diğerinde çalışmayacak
+    		}
+        },'json');
+    }); 
+    
 	// CarouFredSel
     if ($().carouFredSel) {
    		
@@ -1709,13 +1745,27 @@ jQuery(document).ready(function ($) {
 	function popularvoice_page()
 	{
 		get_popularVoice();
+		
 	}
 	function get_popularVoice()
 	{
-		$.post("/ajax/get_popularVoice", {profileID: 0}, function(response){ 
+		console.log("asdsad");
+		$.post("/ajax/get_popularVoice", {type: "popular"}, function(response){ 
 			if(response.status == "success")
 			{
-				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#orta_alan_container");
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#sesgetirenler-content");
+			}
+	    },'json');
+	    $.post("/ajax/get_popularVoice", {type: "raise"}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#yukselenler-content");
+			}
+	    },'json');
+	    $.post("/ajax/get_popularVoice", {type: "all"}, function(response){ 
+			if(response.status == "success")
+			{
+				$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#ulkeduvari-content");
 			}
 	    },'json');
 	}
