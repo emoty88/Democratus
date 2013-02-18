@@ -100,6 +100,7 @@
 									<li><span class="puan"><strong><?=$p->puan?></strong> PUAN</span></li>
 									<li id="follow" data-follow="follows" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_following?></strong> TAKİP ETTİĞİ</li>
 									<li id="follow" data-follow="followers" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
+									<li ><a href="javascript:;" id="profilecomplaint" rel="<?=$p->ID?>" style="text-decoration:none;color:#584C43"> Şikayet Et ! </a></li>
 								</ul>
 							</aside>
 						</div>

@@ -106,167 +106,168 @@ class ajax_plugin extends control{
 		
 		echo json_encode($response);
 	}
-	public function set_share_voice(){
-            global $model, $db;
-            $response = array();
+	public function set_share_voice()
+	{
+        global $model, $db;
+        $response = array();
+		
+        try{
+        	
+            if($model->profile->status==5) // yeni versiyonda düzenlenecek;
+			{
+				$response["status"]="error";
+				$response["message"]="Hesabınızı aktive etmeden paylaşım yapamazsınız.";
+				$response["eval"]="warninShow_notActivateWriteVoice();";
+				echo json_encode($response);
+				die;
+			}
 			
-            try{
-            	
-                if($model->profile->status==5) // yeni versiyonda düzenlenecek;
+            $share 	= new stdClass;
+			$urlS	= new urlshorter;
+			$c_voice= new voice;
+			$share->di=strip_tags( html_entity_decode( htmlspecialchars_decode(filter_input(INPUT_POST, 'voice_text', FILTER_SANITIZE_STRING), ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
+			$share->di=$urlS->changeUrlShort($share->di); 
+            $share->di=  mb_substr($share->di , 0, 200 ) ; 
+            $share->onlyProfile=0;
+    
+            if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek // linkler otomatik gelecek
+        	{
+        		$share->di=trim($share->di);
+        		if(strpos($share->di, "+voice")===false)
 				{
-					$response["status"]="error";
-					$response["message"]="Hesabınızı aktive etmeden paylaşım yapamazsınız.";
-					$response["eval"]="warninShow_notActivateWriteVoice();";
-					echo json_encode($response);
+					$share->di="+voice ".$share->di;	
+				}
+				if(strpos($share->di, "+voice")==0)
+				$share->onlyProfile=1;
+        		$share->di=str_replace("+voice", '<a href="/voice/'.$_POST["replying"].'">+voice</a>', $share->di);
+				$share->isReply="1";
+				$share->replyID=$_POST["replying"];
+			}
+			else
+			{
+				$share->isReply="0";
+				$share->replyID="0";
+			}
+			if (@$_POST["linkli"]=="profile")// yeni versiyonda düzenlenicek 
+        	{
+        		$share->di=str_replace("@".$_POST["profileName"], '<a href="/profile/'.$_POST["profileID"].'">@'.$_POST["profileName"].'</a>', $share->di);
+        	}
+            
+            $user->ID = NULL;
+        	$share->datetime    = date('Y-m-d H:i:s');
+            $share->rediID   	= 0;
+            $share->ip          = $_SERVER['REMOTE_ADDR'];
+			$share->initem		= @$_POST["initem"];
+			
+			if(!isset($_POST["otherPID"]))
+			{
+				$_POST["otherPID"]="default";
+			}
+			if(@$_POST["otherPID"]=="default")
+			{
+				$share->profileID   = intval( $model->profileID );
+			}
+			else
+			{
+				$share->profileID   = intval( $_POST["otherPID"] );
+				$share->profileType	= "tagPage";
+			}	
+			
+            if( $db->insertObject('di', $share,"ID") ){
+            	$share->ID=$db->insertid();
+				//KM::identify($model->user->email); // aktif edilince açılacak 
+			    //KM::record('writingvoice');
+			     
+               if($share->isReply == "1"){
+                		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
+                		$id = $db->loadResult();
+                		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
+                		
+                		//other commenters notice
+	                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+		                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+						
+						$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
+						$notNotice=$db->loadResultArray();
+	                   	if(count($notNotice))
+	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
+	                    else 
+	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
+	                    
+	                    $dicc = $db->loadObjectList();
+		             	if(count($dicc)){
+		                	foreach($dicc as $dic){
+		                    	if($dic->profileID==$share->profileID) continue;
+		                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
+		                  	}
+		             	}
+                	}
+                	else if (@$_POST["linkli"]=="profile")
+                	{
+                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
+                	}
+				
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
+                {
+                	$fb = new facebookClass();
+					var_dump($fb->yazmaizniVarmi());
 					die;
-				}
-				
-                $share 	= new stdClass;
-				$urlS	= new urlshorter;
-				$c_voice= new voice;
-				$share->di=strip_tags( html_entity_decode( htmlspecialchars_decode(filter_input(INPUT_POST, 'voice_text', FILTER_SANITIZE_STRING), ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
-				$share->di=$urlS->changeUrlShort($share->di); 
-                $share->di=  mb_substr($share->di , 0, 200 ) ; 
-                $share->onlyProfile=0;
-        
-                if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek // linkler otomatik gelecek
-            	{
-            		$share->di=trim($share->di);
-            		if(strpos($share->di, "+voice")===false)
-					{
-						$share->di="+voice ".$share->di;	
-					}
-					if(strpos($share->di, "+voice")==0)
-					$share->onlyProfile=1;
-            		$share->di=str_replace("+voice", '<a href="/voice/'.$_POST["replying"].'">+voice</a>', $share->di);
-					$share->isReply="1";
-					$share->replyID=$_POST["replying"];
-				}
-				else
-				{
-					$share->isReply="0";
-					$share->replyID="0";
-				}
-				if (@$_POST["linkli"]=="profile")// yeni versiyonda düzenlenicek 
-            	{
-            		$share->di=str_replace("@".$_POST["profileName"], '<a href="/profile/'.$_POST["profileID"].'">@'.$_POST["profileName"].'</a>', $share->di);
-            	}
-                
-                $user->ID = NULL;
-            	$share->datetime    = date('Y-m-d H:i:s');
-                $share->rediID   	= 0;
-                $share->ip          = $_SERVER['REMOTE_ADDR'];
-				$share->initem		= @$_POST["initem"];
-				
-				if(!isset($_POST["otherPID"]))
-				{
-					$_POST["otherPID"]="default";
-				}
-				if(@$_POST["otherPID"]=="default")
-				{
-					$share->profileID   = intval( $model->profileID );
-				}
-				else
-				{
-					$share->profileID   = intval( $_POST["otherPID"] );
-					$share->profileType	= "tagPage";
-				}	
-				
-                if( $db->insertObject('di', $share,"ID") ){
-                	$share->ID=$db->insertid();
-					//KM::identify($model->user->email); // aktif edilince açılacak 
-				    //KM::record('writingvoice');
-				     
-                   if($share->isReply == "1"){
-	                		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
-	                		$id = $db->loadResult();
-	                		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
-	                		
-	                		//other commenters notice
-		                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-			                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-							
-							$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
-							$notNotice=$db->loadResultArray();
-		                   	if(count($notNotice))
-		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
-		                    else 
-		                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
-		                    
-		                    $dicc = $db->loadObjectList();
-			             	if(count($dicc)){
-			                	foreach($dicc as $dic){
-			                    	if($dic->profileID==$share->profileID) continue;
-			                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
-			                  	}
-			             	}
-	                	}
-	                	else if (@$_POST["linkli"]=="profile")
-	                	{
-	                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
-	                	}
-					
-	                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
-	                {
-	                	$fb = new facebookClass();
-						var_dump($fb->yazmaizniVarmi());
-						die;
-	                	$fb->send_post(strip_tags($share->di),$share->ID);
-	                }
-						
-                	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
-	                {
-	                	$tw=new twitter();
-	                	$tw->sendTweet(strip_tags($share->di),$share->ID);
-	                }
-                    $response['status'] = 'success';
-					 
-					$share->sharerimage = $model->profile->image;
-					$share->sharername = $model->profile->name;
-					$share->sharerDeputy = $model->profile->deputy;
-					$share->permalink = $model->profile->permalink;
-					$share->count_reply = 0;
-					$share->count_like = 0;
-					$share->count_dislike = 0;
-					$share->count_reShare = 0;
-					
-                    $response['voice'] 	= $c_voice->get_return_object($share);
-					
-                                        if($share->initem=="1")
-					{
-						$shareimage=new stdClass;
-						$shareimage->ID=null;
-						$shareimage->shareID = $share->ID;
-						$shareimag->profileID = $model->profileID;
-						$shareimage->imagepath = "voiceImage/".$_POST["initemName"];
-						
-						 if( $db->insertObject('shareimage', $shareimage,"ID") ){
-						 	
-						 }
-						 else {
-							 throw new Exception('Resim Kaydedilemedi');
-						 }
-						
-					}
-					//prosesler classını yaz  bir kişi ses yazınca notification lar  puanlar  counlar  o clas içerisinde  tetiklensin
-					$int = new induction;
-					//var_dump($int);
-					$int->set_voice_intduction("new_share",$share);
-					
-					
-                } else {
-                    throw new Exception('record error');
+                	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
-                
-              
-            } catch(Exception $e){
-                //share error
-                $response['status'] = 'error'; 
-                $response['message'] = $e->getMessage();
-				//var_dump($e);
+					
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
+                {
+                	$tw=new twitter();
+                	$tw->sendTweet(strip_tags($share->di),$share->ID);
+                }
+                $response['status'] = 'success';
+				 
+				$share->sharerimage = $model->profile->image;
+				$share->sharername = $model->profile->name;
+				$share->sharerDeputy = $model->profile->deputy;
+				$share->permalink = $model->profile->permalink;
+				$share->count_reply = 0;
+				$share->count_like = 0;
+				$share->count_dislike = 0;
+				$share->count_reShare = 0;
+				
+                $response['voice'] 	= $c_voice->get_return_object($share);
+				
+                                    if($share->initem=="1")
+				{
+					$shareimage=new stdClass;
+					$shareimage->ID=null;
+					$shareimage->shareID = $share->ID;
+					$shareimag->profileID = $model->profileID;
+					$shareimage->imagepath = "voiceImage/".$_POST["initemName"];
+					
+					 if( $db->insertObject('shareimage', $shareimage,"ID") ){
+					 	
+					 }
+					 else {
+						 throw new Exception('Resim Kaydedilemedi');
+					 }
+					
+				}
+				//prosesler classını yaz  bir kişi ses yazınca notification lar  puanlar  counlar  o clas içerisinde  tetiklensin
+				$int = new induction;
+				//var_dump($int);
+				$int->set_voice_intduction("new_share",$share);
+				
+				
+            } else {
+                throw new Exception('record error');
             }
-            echo json_encode($response);
-            die;
+            
+          
+        } catch(Exception $e){
+            //share error
+            $response['status'] = 'error'; 
+            $response['message'] = $e->getMessage();
+			//var_dump($e);
+        }
+        echo json_encode($response);
+        die;
 	}
 	public function upload_image()
 	{
@@ -308,7 +309,8 @@ class ajax_plugin extends control{
 	}
 
 
- 	public function login(){// yeniden düzenlenicek 
+ 	public function login()
+ 	{// yeniden düzenlenicek 
             global $model, $db;
             $model->mode = 0;
             header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -448,7 +450,8 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			KM::record('login');
             echo json_encode($response);
         }
-	public function agendavote(){
+	public function agendavote()
+	{
     	global $model, $db, $l;
 		//$agendaID = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
 		$vote = filter_input(INPUT_POST, 'vote', FILTER_SANITIZE_STRING);
@@ -1850,6 +1853,136 @@ else
         $return['profiles'] = $profiles;//$c_profile->get_follower(20, $start, $c_profile->get_porfileObject($profileID));
         $return['status'] = 'success';
         echo json_encode($return);
+    }
+	
+	public function profilecomplaintmenu()
+	{
+        global $model, $db;
+        $model->mode = 0;
+        $response = array();
+        try{
+            $response['height'] = 320;
+            $html = '';
+            $ID          = intval( filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT ) );
+            
+            if($ID<=0) throw new Exception('bi sorun var!');
+            //profili bul
+            $db->setQuery('SELECT * FROM profile WHERE ID = ' . $db->quote($ID).' AND status>0');
+            $profile = null;
+            if(!$db->loadObject($profile)) throw new Exception('profil bulunamadı!');
+            
+            //takip ediyor musun? bul
+            $db->setQuery('SELECT * FROM follow WHERE followerID = ' . $db->quote($model->profileID).' AND followingID = ' . $db->quote( $profile->ID));
+            $follow = null;
+            if($db->loadObject($follow)){
+                //evet onu takip ediyorsun
+                if($follow->followerstatus >0 && $follow->followingstatus>0)
+                
+                //takipten çıkar
+                $html .= '<p><input type="checkbox" name="unfollow" value="1" />'. $profile->name . ' ı takip listemden çıkar</p>';
+                
+            } else {
+                
+            }
+            
+                            
+            //o seni takip ediyor mu? bul
+            $db->setQuery('SELECT * FROM follow WHERE followerID = ' . $db->quote($profile->ID).' AND followingID = ' . $db->quote( $model->profileID));
+            $follow2 = null;
+            if($db->loadObject($follow2)){
+                //evet seni takip ediyor
+                
+                //öyleyse engelleyebilirsin
+                //$html .= '<p><input type="checkbox" name="block" value="1" />'. $profile->name . ' ı engelle</p>';
+                
+            } else {
+                
+            }
+            /*
+            //kaldır
+            if($di->profileID==$model->profileID){
+                //throw new Exception('bu senin di\'n :)');
+                $html .= '<p><input type="checkbox" name="remove" value="1" />Bu di\'yi kaldır</p>';
+                $response['height'] = 120;
+            }
+            */
+            
+            //takip etme
+            
+            
+            
+            //engelle
+            
+            
+            //şikayet et
+            if($profile->ID!=$model->profileID){
+                $html .= '<p><input type="checkbox" name="complaint" value="1" />Şikayet et</p>';
+                $html .= '<div class="complaintbox" style="margin: 0 0 0 30px;">';
+                
+                $html .= '<p><strong>Gerekçeniz:</strong></p>';
+                $html .= '<p>'.$model->array_to_select(config::$prreasons, 'reason').'</p>';
+                $html .= '<p><strong>Notunuz:</strong><br />
+                            <textarea maxlength="200" name="message"></textarea>
+                          </p>';
+                          
+                $html .= '</div>';
+            }
+            
+            $html .= '<input type="hidden" name="ID" value="'.$ID.'" />';
+            
+            $html = '<form id="pxmenuform'.$ID.'" class="dialogform">'.$html.'</form>';
+            $html = '<div id="pxmenu'.$ID.'">'.$html.'</div>';
+            
+            $response['html'] = $html;
+            $response['result'] = 'success';
+            $response['message'] = 'ok';
+            
+
+        } catch (Exception $e){
+            $response['result'] = 'error';
+            $response['message'] = $e->getMessage();
+        }
+       
+        echo json_encode($response);
+    } 
+	public function profilecomplaint(){
+        global $model, $db;
+        $model->mode = 0;
+        $response = array();
+        try{
+            $ID          = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT );
+            $complaint   = filter_input(INPUT_POST, 'complaint', FILTER_SANITIZE_NUMBER_INT );
+            $reason   = filter_input(INPUT_POST, 'reason', FILTER_SANITIZE_NUMBER_INT );
+            $message   	 = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_SPECIAL_CHARS );
+            
+            $db->setQuery('SELECT * FROM profile WHERE ID = ' . $db->quote($ID).' AND status>0');
+            
+            if(!$db->loadObject($pr)) throw new Exception('profil bulunamadı');
+            
+            //ekle
+            
+            $pc = new stdClass;
+            
+            //$pc->diID        = $ID;
+            $pc->profileID   = $pr->ID;
+            $pc->fromID      = $model->profileID;
+            $pc->message     = $message;
+            $pc->reason      = $reason;
+            $pc->status      = 1;
+            $pc->datetime    = date('Y-m-d H:i:s');
+            $pc->ip          = $_SERVER['REMOTE_ADDR'];
+            
+            if($db->insertObject('profilecomplaint', $pc)) {
+                $response['status'] = 'success';
+            } else 
+                throw new Exception('kayıt hatası oluştu');
+
+        } catch (Exception $e){
+            $response['status'] = 'error';
+            $response['message'] = $e->getMessage();
+        }
+        
+        echo json_encode($response);
     }
 
 }
