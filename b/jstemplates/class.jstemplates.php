@@ -47,7 +47,7 @@ class jstemplates_block extends control{
 							Yanıtla <span class="count"></span>
 						</a>
 						{{if isMine}}
-						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
+						<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
 							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 							<span>Kaldır</span> 
 						</a>
@@ -151,7 +151,7 @@ class jstemplates_block extends control{
 								Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 							</a>
 							{{if isMine}}
-							<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
+							<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
 								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 								<span>Kaldır</span> 
 							</a>
@@ -511,6 +511,7 @@ class jstemplates_block extends control{
 				<a onclick="follow(${ID})" class="follow-${ID}" href="javascript:;">Takip Et!</a>
                                 <a onclick="follow(${ID})" class="unfollow-${ID}" style="display:none;" href="javascript:;">Takibi Bırak!</a>
 			</li>
+							
 		</script>
 		
 		<script id="hashtag-image-tmpl" type="text/x-jquery-tmpl">
@@ -519,6 +520,15 @@ class jstemplates_block extends control{
 			</a>
 		</script> 
 		
+		<script id="dropdown-listitem-tmpl" type="text/x-jquery-tmpl">
+			<li id="a" role="presentation">
+		  		<a role="menuitem" tabindex="1" onclick="alert('tsada');" href="#">
+		  			<img  src="" />
+		  			Caner Türkmen - @caner.turkmen
+		  		</a>
+		   	</li>
+	   </script>
+	   
 		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -530,6 +540,13 @@ class jstemplates_block extends control{
 			<div class="modal-footer">
 				<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Kapat</button>
 			</div>
+		</div>
+		
+		<div class="dropdown">
+		  <span class="dropdown-toggle" data-toggle="dropdown" ></span>
+		  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+		  	
+		  </ul>
 		</div>
 		
 	<?	
