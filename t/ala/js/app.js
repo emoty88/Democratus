@@ -1768,7 +1768,6 @@ jQuery(document).ready(function ($) {
 	}
 	function get_popularVoice()
 	{
-		console.log("asdsad");
 		$.post("/ajax/get_popularVoice", {type: "popular"}, function(response){ 
 			if(response.status == "success")
 			{
