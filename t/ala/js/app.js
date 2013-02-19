@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
 	//	init_fineUploader(this);
 	//});	
 
-	$('.dropdown-toggle').dropdown("toggle");
+	//$('.dropdown-toggle').dropdown("toggle");
 	
 	
 	$(".fnc").fancybox();
