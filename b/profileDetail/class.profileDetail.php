@@ -37,10 +37,13 @@
 											  }
 										?>
 										<a href="javascript:;" class="profilename" title="<?=$p->name?>"><?=$p->name?></a>
+										
+										
 									</h1>
 								</address>
 								<h2><?=$p->motto?></h2>
 							</header>
+							
 							<aside class="tablo_tutucu">
 								<table class="table table-bordered">
 									<tr>
@@ -72,6 +75,26 @@
 									-->
 								</div>
 							</aside>
+							<div class="dropdown">
+							  <span class="dropdown-toggle" data-toggle="dropdown" ></span>
+							  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							  	<li id="a" role="presentation">
+							  		<a role="menuitem" tabindex="1" onclick="alert('tsada');" href="#">
+							  			<img  src="<?=$model->getprofileimage($p->image,22,22,"cutout");?>" />
+							  			Caner Türkmen - @caner.turkmen
+							  		</a>
+							   	</li>
+							   	<li role="presentation">
+							  		<a role="menuitem" tabindex="2" onclick="alert('tsada');" href="#">Another action</a>
+							   	</li>
+							   	<li role="presentation">
+							  		<a role="menuitem" tabindex="3" onclick="alert('tsada');" href="#">Another action</a>
+							   	</li>
+							    <li role="presentation">
+							  		<a role="menuitem" tabindex="4" onclick="alert('tsada');" href="#">Another action</a>
+							   	</li>
+							  </ul>
+							</div>
 							<aside class="takip_bilgileri">
 								<ul class="istatistik_listesi_2">
 									
