@@ -47,7 +47,7 @@ class jstemplates_block extends control{
 							Yanıtla <span class="count"></span>
 						</a>
 						{{if isMine}}
-						<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
+						<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
 							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 							<span>Kaldır</span> 
 						</a>
@@ -151,7 +151,7 @@ class jstemplates_block extends control{
 								Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 							</a>
 							{{if isMine}}
-							<a id="kaldir_${ID}" href="javascript:voice_delete(${ID});">
+							<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
 								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 								<span>Kaldır</span> 
 							</a>

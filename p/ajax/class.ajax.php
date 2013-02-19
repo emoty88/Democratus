@@ -888,7 +888,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	}
 	function set_proposal(){
 		$c_parliament	= new parliament;
-		$proposalTxt   	= filter_input(INPUT_POST, 'proposalTxt', FILTER_SANITIZE_STRING );
+		$proposalTxt   	= strip_tags( html_entity_decode( htmlspecialchars_decode(filter_input(INPUT_POST, 'proposalTxt', FILTER_SANITIZE_STRING), ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
 		$poroposalRt	= $c_parliament->set_proposal($proposalTxt);
 		echo json_encode($poroposalRt);
 	}
@@ -907,9 +907,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
 		$fID   	= filter_input(INPUT_POST, 'fID', FILTER_SANITIZE_NUMBER_INT );
-                $before = filter_input(INPUT_POST, 'before',FILTER_SANITIZE_STRING);
-                if(empty($before))
-                    $before = NULL;
+        $before = filter_input(INPUT_POST, 'before',FILTER_SANITIZE_STRING);
+        if(empty($before))
+            $before = NULL;
 		$dialogs = $c_message->getDialog($model->profileID, $fID,$before);
 		$return["dialogs"] = $c_message->getDialogDetailRObj($dialogs);
                 if(sizeof($dialogs)<1){

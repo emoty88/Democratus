@@ -115,7 +115,6 @@
                 $ID          = intval( filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT ) );
                 $remove      = intval( filter_input(INPUT_POST, 'remove', FILTER_SANITIZE_NUMBER_INT ) );
                 $unfollow    = intval( filter_input(INPUT_POST, 'unfollow', FILTER_SANITIZE_NUMBER_INT ) );
-                
                 $complaint   = intval( filter_input(INPUT_POST, 'complaint', FILTER_SANITIZE_NUMBER_INT ) );
                 $reason      = intval( filter_input(INPUT_POST, 'reason', FILTER_SANITIZE_NUMBER_INT ) );
                 $note        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'note', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );

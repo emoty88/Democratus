@@ -40,6 +40,8 @@ jQuery(document).ready(function ($) {
 	//	init_fineUploader(this);
 	//});	
 
+	$(".fnc").fancybox();
+
 	$(".pImageUpload").each(function (){
 		init_userfUploader(this);
 	});
@@ -1139,6 +1141,20 @@ jQuery(document).ready(function ($) {
 	            
 	        }
 	    },'json');  
+	}
+	function voice_delete_confirm(voiceID)
+	{
+		var content =  "Kaldırmak istediğinize eminmisiniz:<br/> ";
+		content += '<button data-ftext="Kaldır" onclick="voice_delete('+voiceID+')" class="btn btn-info btn-mini" type="button">Evet</button> &nbsp;&nbsp;&nbsp;' ;
+		content += '<button data-ftext="Kaldır" onclick="voice_delete_confirm_c('+voiceID+')" class="btn btn-danger btn-mini" type="button">Hayır</button> <br /> ' ;
+		var op = {trigger:"manual", html:true, title:content };
+		$("#kaldir_"+voiceID).tooltip(op);
+		$("#kaldir_"+voiceID).tooltip("show");
+		var t = setTimeout("voice_delete_confirm_c("+voiceID+")", 10000);
+	}
+	function voice_delete_confirm_c(voiceID)
+	{
+		$("#kaldir_"+voiceID).tooltip("hide");
 	}
 	function voice_delete(voiceID)
 	{
