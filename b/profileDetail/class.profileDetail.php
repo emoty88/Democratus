@@ -25,7 +25,7 @@
 						?>
 						<img id="profileCoverImage" class="banner" src="<?=$model->getcoverimage($p->coverImage,640,206,"cutout");?>" alt="">
 						<div class="asil_alan">
-							<a class="profil_resmi" href="#">
+							<a class="profil_resmi fnc" href="<?=$model->getprofileimage($p->image,525,650,"cutout")?>">
 								<img src="<?=$model->getprofileimage($p->image,105,130,"cutout");?>" alt="">
 							</a>
 							<header>
@@ -36,7 +36,7 @@
 											  	echo '<i class="atolye15-rutbe-" style="width:30px; height:30px; background-size:30px;"></i>';
 											  }
 										?>
-										<a href="javascript:;" title="<?=$p->name?>"><?=$p->name?></a>
+										<a href="javascript:;" class="profilename" title="<?=$p->name?>"><?=$p->name?></a>
 									</h1>
 								</address>
 								<h2><?=$p->motto?></h2>
@@ -100,6 +100,7 @@
 									<li><span class="puan"><strong><?=$p->puan?></strong> PUAN</span></li>
 									<li id="follow" data-follow="follows" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_following?></strong> TAKİP ETTİĞİ</li>
 									<li id="follow" data-follow="followers" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
+									<li ><a href="javascript:;" id="profilecomplaint" rel="<?=$p->ID?>" style="text-decoration:none;color:#584C43"> Şikayet Et ! </a></li>
 								</ul>
 							</aside>
 						</div>
