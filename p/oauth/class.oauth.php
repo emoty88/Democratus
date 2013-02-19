@@ -163,7 +163,11 @@
 
 	public function facebook(){
             global $model, $db;
-
+            if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
+                $this->facebook_app_id = '142184682596814';
+                $this->facebook_app_secret = '44c5a4a0d75c75f426c0a4560c66154b';
+            }
+                
             
             require_once( $model->pluginpath.'facebook/facebook.php' );
             
@@ -179,6 +183,8 @@
             try {
                 // Proceed knowing you have a logged in user who's authenticated.
                 $user_profile = $facebook->api('/me');
+                print_r($user_profile);
+                
             } catch (FacebookApiException $e) {
                 error_log($e);
                 $user = null;
@@ -221,6 +227,29 @@
                         return $model->redirect('/');    
                     }
                     
+                    //profil resmini alma olayı
+                    $url = 'http://graph.facebook.com/'.$username.'/picture?type=large';
+                    $headers = get_headers($url,1);
+                    $img = file_get_contents($url);
+                    print_r($headers);
+                    if(is_array($headers['Content-Type']))
+                        $type = $headers['Content-Type'][0];
+                    else
+                        $type = $headers['Content-Type'];
+                    
+                    if($type == 'image/jpeg'){
+                        $uniqueP = date("y_m_d");
+                        $upDir="p_image/".$uniqueP;
+                        if(!file_exists(UPLOADPATH.$upDir)){
+                                $olustur = mkdir(UPLOADPATH.$upDir, 0777);
+                        }
+                        $file = $upDir.'/'.$username.uniqid().'.jpg';
+                        file_put_contents(UPLOADPATH.$file, $img);
+                        
+                    }  else {
+                        $file = '';
+                    }
+                    //bitti-profil resmini alma olayı
                     $email = strtolower( trim( $user_profile['email'] ) );
                     
                     $db->setQuery("SELECT * FROM user WHERE email = " . $db->quote($email));
@@ -282,6 +311,7 @@
 					$oauth->permalink  = $c_profile->normalize_permalink($username);
                     $profile->status = 1;
                     $profile->fbID = $uid;
+                    $profile->image =  $file;
                     
                     
                     if( $db->insertObject('profile', $profile ) ){
@@ -426,7 +456,31 @@
                         
                         //hayır ise profil, user oluştur ve oauth kaydı yap
                         
-                        
+                        //profil resmini alma olayı
+                        $url = 'http://api.twitter.com/1/users/profile_image/'.$username.'?size=bigger';
+                                   
+                        $headers = get_headers($url,1);
+                        $img = file_get_contents($url);
+                        print_r($headers);
+
+                        if(is_array($headers['Content-Type']))
+                            $type = $headers['Content-Type'][1];
+                        else
+                            $type = $headers['Content-Type'];
+
+                        if($type == 'image/jpeg'){
+                            $uniqueP = date("y_m_d");
+                            $upDir="p_image/".$uniqueP;
+                            if(!file_exists(UPLOADPATH.$upDir)){
+                                    $olustur = mkdir(UPLOADPATH.$upDir, 0777);
+                            }
+                            $file = $upDir.'/'.$username.uniqid().'.jpg';
+                            file_put_contents(UPLOADPATH.$file, $img);
+
+                        }  else {
+                            $file = '';
+                        }
+                        //bitti-profil resmini alma olayı
                         
                         $c_porfile = new profile;
                         
@@ -436,6 +490,7 @@
                   		$profile->motto = $motto;
                         $profile->hometown = $location;
 						$profile->twID 	= $uid;
+                                                $profile->image = $file;
                         $profile->status = 1;
                         
                         

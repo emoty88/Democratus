@@ -313,7 +313,7 @@
                                                         <div style="clear: both;"></div>
                                                         <div class="social_connect2" style="display: none;">
                                                             <h4>Democratus'u arkadaşlarınla paylaş.</h4>
-                                                            <textarea id="share-with-social-text" class="textarea">Democratus'ta fikrimi paylaşıyorum gündemi değiştiriyorum!</textarea>
+                                                            <textarea id="share-with-social-text" class="textarea">Siz de davetlisiniz; ulke gundemini fikirlerinizle sekillendirebileceginiz online meclis, demokratik sosyal ag</textarea>
                                                             <div style="clear: both;"></div>
                                                             <div class="social_connect">
                                                                 <a class="twitter_login" onclick="javascript:share_totwit();" id="twit_buton" >Twitter'da paylaş</a>
