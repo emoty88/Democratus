@@ -609,7 +609,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 
                 $model->notice($voice->profileID, 'redi', $voice->ID, $share->ID);
                 if($profile->emailperms>0)
-                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->profile->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                 
 				$int = new induction;
 				$int->set_voice_intduction("redi_share",$share);
@@ -724,7 +724,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$IDok=array();
 		$returnData=array();
 		$profileID	= $model->profileID;
+		
 		foreach ($IDs as $id) {
+			
 			if(!in_array($id, $IDok))
 			{
 				$IDok[]=$id;

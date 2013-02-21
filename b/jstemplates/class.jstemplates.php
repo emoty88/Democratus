@@ -166,7 +166,8 @@ class jstemplates_block extends control{
 							</a>
 							<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
 								<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-								<span class="text">Paylaş</span><span class="count">{{if reShareCount>0}} (${reShareCount}){{/if}}</span>
+								<span class="text">Paylaş</span>
+								<span class="count">{{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 							</a>
 							{{/if}}
 						</aside>
