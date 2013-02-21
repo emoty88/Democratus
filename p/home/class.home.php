@@ -12,7 +12,7 @@
 			{
 				$model->redirect("/my#profilA");
 			}
-
+                        
 			$model->template="ala";
 			$model->view="home";
 			$model->title = 'Democratus';
@@ -21,7 +21,9 @@
 			
 			$model->addScript("paths=".json_encode($model->paths));
 			$model->addScript("plugin='home'");
-
+                        if(isset($_SESSION['from_sm']) and !empty($_SESSION['from_sm'])){
+                            $model->addScript("from_sm();");
+                        }
 			if($model->profile->show_tour==0 || $model->paths[1]=="tour")
 			{
 				$uP	= new stdClass;

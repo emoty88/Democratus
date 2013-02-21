@@ -227,29 +227,7 @@
                         return $model->redirect('/');    
                     }
                     
-                    //profil resmini alma olayı
-                    $url = 'http://graph.facebook.com/'.$username.'/picture?type=large';
-                    $headers = get_headers($url,1);
-                    $img = file_get_contents($url);
-                    print_r($headers);
-                    if(is_array($headers['Content-Type']))
-                        $type = $headers['Content-Type'][0];
-                    else
-                        $type = $headers['Content-Type'];
                     
-                    if($type == 'image/jpeg'){
-                        $uniqueP = date("y_m_d");
-                        $upDir="p_image/".$uniqueP;
-                        if(!file_exists(UPLOADPATH.$upDir)){
-                                $olustur = mkdir(UPLOADPATH.$upDir, 0777);
-                        }
-                        $file = $upDir.'/'.$username.uniqid().'.jpg';
-                        file_put_contents(UPLOADPATH.$file, $img);
-                        
-                    }  else {
-                        $file = '';
-                    }
-                    //bitti-profil resmini alma olayı
                     $email = strtolower( trim( $user_profile['email'] ) );
                     
                     $db->setQuery("SELECT * FROM user WHERE email = " . $db->quote($email));
@@ -288,19 +266,35 @@
                             
                         }
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         return;    
                     }
                     
                     
                     //hayır ise profil, user oluştur ve oauth kaydı yap
                     
+                    //profil resmini alma olayı
+                    $url = 'http://graph.facebook.com/'.$username.'/picture?type=large';
+                    $headers = get_headers($url,1);
+                    $img = file_get_contents($url);
+                    print_r($headers);
+                    if(is_array($headers['Content-Type']))
+                        $type = $headers['Content-Type'][0];
+                    else
+                        $type = $headers['Content-Type'];
+                    
+                    if($type == 'image/jpeg'){
+                        $uniqueP = date("y_m_d");
+                        $upDir="p_image/".$uniqueP;
+                        if(!file_exists(UPLOADPATH.$upDir)){
+                                $olustur = mkdir(UPLOADPATH.$upDir, 0777);
+                        }
+                        $file = $upDir.'/'.$username.uniqid().'.jpg';
+                        file_put_contents(UPLOADPATH.$file, $img);
+                        
+                    }  else {
+                        $file = '';
+                    }
+                    //bitti-profil resmini alma olayı
                    
                     
                     
@@ -336,6 +330,7 @@
                             if( $db->insertObject('oauth', $oauth ) ){
                                 echo '<h2>Yaşasın başardık</h2>';
                                 $model->login('ID='.intval($oauth->userID), 'facebook');
+                                $_SESSION['from_sm'] = 'facebook';
                                 return $model->redirect('/');
                                 
                             } else throw new Exception('oauth insert');
@@ -518,6 +513,7 @@
                                 if( $db->insertObject('oauth', $oauth ) ){
                                     //echo '<h2>Yaşasın başardık</h2>';
                                     $model->login('ID='.intval($oauth->userID), 'twitter');
+                                    $_SESSION['from_sm'] = 'twitter';
                                     return $model->redirect('/');
                                     
                                 } else throw new Exception('oauth insert');
