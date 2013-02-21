@@ -207,18 +207,18 @@ class ajax_plugin extends control{
                 		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
                 	}
 				
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
+                        
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 ) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
-					var_dump($fb->yazmaizniVarmi());
-					die;
+					
                 	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
 					
-            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 )  // twitter app düzeltilince false kalkacak 
                 {
                 	$tw=new twitter();
-                	$tw->sendTweet(strip_tags($share->di),$share->ID);
+                	print_r($tw->sendTweet(strip_tags($share->di),$share->ID));
                 }
                 $response['status'] = 'success';
 				 
@@ -1983,6 +1983,36 @@ else
         }
         
         echo json_encode($response);
+    }
+    
+    function from_sm(){
+        global $model, $db;
+        $returnA = array("status"=>"success");
+        if($_SESSION['from_sm'] == 'facebook' or TRUE ){
+            $c_facebook = new facebookClass;
+            $friends = $c_facebook->get_friend($model->profile->fbID);
+            $dFriend = $c_facebook->get_friendSuggestion($friends);
+            $type = 'facebook';
+            
+        }elseif($_SESSION['from_sm'] == 'twitter'){
+            $c_twitter = new twitterClass;
+            $friends = $c_twitter->get_friends($model->profile->fbID);            
+            $dFriend = $c_twitter->get_friendSuggestion($friends);
+            $type = 'twitter';
+        }else{
+            $_SESSION['from_sm'] = '';
+            unset($_SESSION['from_sm']);
+            return;
+        }
+        $_SESSION['from_sm'] = '';
+        unset($_SESSION['from_sm']);
+       // e($profileID, $type, $ID2, $ID3 = null, $subtype = null)
+       $result = array();
+       foreach ($dFriend as $d){
+           $model->notice($d->ID,'friendFromSm',NULL,NULL,$type);
+          
+       }
+         
     }
 
 }

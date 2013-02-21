@@ -2089,3 +2089,8 @@ jQuery(document).ready(function ($) {
     	$('#myModal').modal(options);
     }
 
+    function from_sm(){
+        $.post('/ajax/from_sm',null,function(){
+            
+        });
+    }

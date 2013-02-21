@@ -3,6 +3,12 @@ class twitter{
         public $twitter_key             = 'i0n7BGuUZ6xLXzs1ixg';
         public $twitter_secret          = 'wMv4BGlmUyWc3pz4v8rwDZFMuOxWUtRFYtPSbYP03Y'; 
         
+        public function __construct() {
+            if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
+                    $this->twitter_key = 'm6Wxc0XrYoIpSI9Nfuhu6A';
+                    $this->twitter_secret = 'NU2wI0SaFeJbEunfQhwxvB3q69XDtGur2cOcMpEI';
+            }
+        }
 	 static public function main(){
         global $model, $db;
         
