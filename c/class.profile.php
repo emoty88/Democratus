@@ -292,8 +292,9 @@
 		{
 			global $db,$model;
 
-			if(!is_int($userID))
-				$userID=$model->profileID;
+			if($userID==null)
+				$userID=$model->profileID; 
+			
 			$db->setQuery("SELECT name FROM profile WHERE ID='".$userID."'");
 			return $db->loadResult();
 		}
