@@ -22,7 +22,7 @@ class popularvoice extends voice
 				$FROM   = "\n FROM di";
 				$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
 	       		$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";   
-				$WHERE = "\n WHERE di.status>0";
+				$WHERE  = "\n WHERE di.status>0";
 				$GROUP  = "\n"; 
 	        	$ORDER  = "\n ORDER BY ID DESC";
 	        	$LIMIT  = "\n LIMIT $sLimit, $limit";

@@ -1205,6 +1205,7 @@ jQuery(document).ready(function ($) {
 	}
 	function get_iconCount(voices)
 	{
+		
 		var IDs	= new Array();
 		$.each(voices, function(index, value) { 
 				IDs[index] = value.ID; 
@@ -1216,6 +1217,7 @@ jQuery(document).ready(function ($) {
 	function set_iconCount(dataS)
 	{
 		$.each(dataS, function(index, value) { 
+			//console.log(value.ID);
 			if(value.count_like>0)
 			{
 				$("#taktir_btn_"+value.ID+" span.count").html(" ("+value.count_like+")");
@@ -1234,19 +1236,22 @@ jQuery(document).ready(function ($) {
 			}
 			if(value.count_reShare>0)
 			{
-				$("#paylas_btn_"+value.ID+" span.count").html(" ("+value.count_reShare+")");
+				console.log("var "+value.ID);
+				$("#paylas_btn_"+value.ID+" span.count").text(" ("+value.count_reShare+")");
 			}
 			else
 			{
+				console.log("yok "+value.ID);
 				$("#paylas_btn_"+value.ID+" span.count").html("");
 			}
+			
 			if(value.count_reply>0)
 			{
 				$("#soyles_btn_"+value.ID+" span.count").html(" ("+value.count_reply+")");
 			}
 			else
 			{
-				$("#paylas_btn_"+value.ID+" span.count").html("");
+				$("#soyles_btn_"+value.ID+" span.count").html("");
 			}
 			
 		});
@@ -2089,3 +2094,8 @@ jQuery(document).ready(function ($) {
     	$('#myModal').modal(options);
     }
 
+    function from_sm(){
+        $.post('/ajax/from_sm',null,function(){
+            
+        });
+    }

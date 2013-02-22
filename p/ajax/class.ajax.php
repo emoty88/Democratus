@@ -207,18 +207,18 @@ class ajax_plugin extends control{
                 		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
                 	}
 				
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 && False) //facebook app düzeltilince false kalkıcak
+                        
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 ) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
-					var_dump($fb->yazmaizniVarmi());
-					die;
+					
                 	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
 					
-            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 && false )  // twitter app düzeltilince false kalkacak 
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 )  // twitter app düzeltilince false kalkacak 
                 {
                 	$tw=new twitter();
-                	$tw->sendTweet(strip_tags($share->di),$share->ID);
+                	print_r($tw->sendTweet(strip_tags($share->di),$share->ID));
                 }
                 $response['status'] = 'success';
 				 
@@ -609,7 +609,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 
                 $model->notice($voice->profileID, 'redi', $voice->ID, $share->ID);
                 if($profile->emailperms>0)
-                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
+                	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->profile->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                 
 				$int = new induction;
 				$int->set_voice_intduction("redi_share",$share);
@@ -724,7 +724,9 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$IDok=array();
 		$returnData=array();
 		$profileID	= $model->profileID;
+		
 		foreach ($IDs as $id) {
+			
 			if(!in_array($id, $IDok))
 			{
 				$IDok[]=$id;
@@ -1983,6 +1985,36 @@ else
         }
         
         echo json_encode($response);
+    }
+    
+    function from_sm(){
+        global $model, $db;
+        $returnA = array("status"=>"success");
+        if($_SESSION['from_sm'] == 'facebook' or TRUE ){
+            $c_facebook = new facebookClass;
+            $friends = $c_facebook->get_friend($model->profile->fbID);
+            $dFriend = $c_facebook->get_friendSuggestion($friends);
+            $type = 'facebook';
+            
+        }elseif($_SESSION['from_sm'] == 'twitter'){
+            $c_twitter = new twitterClass;
+            $friends = $c_twitter->get_friends($model->profile->fbID);            
+            $dFriend = $c_twitter->get_friendSuggestion($friends);
+            $type = 'twitter';
+        }else{
+            $_SESSION['from_sm'] = '';
+            unset($_SESSION['from_sm']);
+            return;
+        }
+        $_SESSION['from_sm'] = '';
+        unset($_SESSION['from_sm']);
+       // e($profileID, $type, $ID2, $ID3 = null, $subtype = null)
+       $result = array();
+       foreach ($dFriend as $d){
+           $model->notice($d->ID,'friendFromSm',NULL,NULL,$type);
+          
+       }
+         
     }
 
 }

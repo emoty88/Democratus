@@ -125,6 +125,10 @@
 	                    case 'mentionProfile':
 	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> bir <a href="/voice/'.$row->ID2.'"> Sesinde </a> Sizden bahseti.';                    
 	                    break;
+                        
+                            case 'friendFromSm':
+                                $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> artık Democratus\'ta! '; 
+                            break;
 	                    default:
 	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> birşeyler yaptı.';                    
 	                  }
