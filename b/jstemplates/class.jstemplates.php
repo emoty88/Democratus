@@ -211,14 +211,15 @@ class jstemplates_block extends control{
 		
 		<script id="meclis-istatistik-tmpl" type="text/x-jquery-tmpl">
 			{{if olumlu>0}}
-			<div class="bar yuzdeler_meclis olumlu" style="width: ${olumlu}%;">${olumlu}</div>
-			{{/if}}
-			{{if olumsuz>0}}
-			<div class="bar yuzdeler_meclis olumsuz" style="width: ${olumsuz}%;">${olumsuz}</div>
+				<div class="bar yuzdeler_meclis olumlu" style="width: ${olumlu}%;">${olumlu}</div>
 			{{/if}}
 			{{if fikiryok>0}}
-			<div class="bar yuzdeler_meclis fikir-yok" style="width: ${fikiryok}%;">${fikiryok}</div>
+				<div class="bar yuzdeler_meclis fikir-yok" style="width: ${fikiryok}%;">${fikiryok}</div>
 			{{/if}}
+			{{if olumsuz>0}}
+				<div class="bar yuzdeler_meclis olumsuz" style="width: ${olumsuz}%;">${olumsuz}</div>
+			{{/if}}
+			
 		</script>
 		
 		<script id="parliament-agenda-tmpl" type="text/x-jquery-tmpl">
