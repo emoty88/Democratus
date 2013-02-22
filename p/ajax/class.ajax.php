@@ -8,7 +8,7 @@ class ajax_plugin extends control{
 		if(method_exists($this, $method )){
 			$this->$method();
 			die();
-		}
+		} 
 	}
 	public function get_wall(){
 		global $model, $db;
