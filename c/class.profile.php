@@ -290,10 +290,10 @@
 
 		public static function get_name($userID=null)
 		{
-			global $db;
+			global $db,$model;
 
-			if($userID==null)
-				$userID=$this->profileID;
+			if(!is_int($userID))
+				$userID=$model->profileID;
 			$db->setQuery("SELECT name FROM profile WHERE ID='".$userID."'");
 			return $db->loadResult();
 		}
