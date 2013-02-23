@@ -8,13 +8,15 @@
 			$parentID=0;
 			
 			$meclisName = "Türkiye Meclisi";
+			$is_hashTag = false;
 			if(isset($model->page->permalink) && $model->page->permalink=="hashTag")//chech ed 
 			{
 				
 				$type="hastagID";
 				$c_profile = new profile();
 				$parentID= $c_profile->change_perma2ID($model->paths[0]);
-				$meclisName = $model->paths[0]." Meclisi";
+				$meclisName = $model->paths[0]."";
+				$is_hashTag=true;
 			}
 	
            	$agendasNonSort=$c_parliament->get_agenda($type, $parentID);
@@ -31,11 +33,18 @@
 					<header>
 						<hgroup>
 							<h1><?=$meclisName?></h1>
-							<h2>(Referandum)</h6>
+							<? if($is_hashTag) {?>
+								<h2>Gündemi</h6>
+							<? } else { ?>
+								<h2>(Referandum)</h6>
+							<? } ?>
 						</hgroup>
 					</header>
 					
 					<aside class="kontroller">
+						<?php 
+						if(!$is_hashTag)
+						{ ?>
 						<a href="/parliament" class="sayfaya_git fnc" title="Tümünü görüntüle &rarr;">
 							<?
 							$new_agenda = $c_parliament->count_agenda($type, $parentID);
@@ -47,6 +56,7 @@
 							?>
 							<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
 						</a>
+						<? } ?>
 					</aside>
 					<div class="bilesen_icerigi dolgu_1 list_carousel">
 						<ul id="kirmizi-bilesen">

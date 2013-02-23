@@ -73,7 +73,7 @@
 	                        if($row->subtype == 'dilike1') 
 	                        $message = '<i class="icon-thumbs-up"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi takdir etti.</a>';
 	                        elseif($row->subtype == 'dilike2') 
-	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi saygı duydu.</a>';
+	                        $message = '<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinize saygı duydu.</a>';
 	                        else
 	                        $message ='<i class="icon-user"></i> <a href="/'.$row->permalink.'">'.$row->name.'</a> sizin bir <a href="/voice/'.$row->ID2.'"> sesinizi oyladı.</a>';
 	                    

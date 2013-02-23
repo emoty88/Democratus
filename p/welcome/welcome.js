@@ -15,8 +15,9 @@ $(document).ready(function() {
                 //alert('success');
                 window.location = "/";
             } else {
-                $('#message').show();
-                $('#message').text(data.message);
+                
+                $('#welcomeMessage-textArea').text(data.message);
+                $('#welcomeMessage').show();
                                 
             }
             
@@ -30,10 +31,10 @@ $(document).ready(function() {
         
         if($(this).html()=='Giriş Yap'){
         	$(this).html('Hemen Kayıt Ol');
-                $('#message').hide();
+                $('#welcomeMessage').hide();
         }else{
         	$(this).html('Giriş Yap');
-                $('#message').hide();
+                $('#welcomeMessage').hide();
         }
         return false;
     });
@@ -54,8 +55,8 @@ $(document).ready(function() {
         try{
             if(!$("#agree").is(":checked"))
             {
-            	$('#message').text("Lütfen kullanım sözleşmesini onaylayınız.");
-            	$('#message').show();
+            	$('#welcomeMessage-textArea').text("Lütfen kullanım sözleşmesini onaylayınız.");
+            	$('#welcomeMessage').show();
             	return false;
             }
             	
@@ -86,19 +87,19 @@ $(document).ready(function() {
             $.post( '/ajax/register/', { name: name, userName:userName, email: email, password: password, password2: password2,male:male }, function(data){
                
                 if(data.status=='success'){
-                    $('#message').text(data.message);
+                    $('#welcomeMessage-textArea').text(data.message);
                     $('#registerBtn').text('Kayıt Başarılı');
                     $('#registerBtn').attr('id','registerBtn2');
                     $('#registerBtn2').attr('disabled','disabled');
                     
                 } else if (data.status=='error') {
-                    $('#message').text(data.message);
+                    $('#welcomeMessage-textArea').text(data.message);
                     $('#message').show();
                     $('#'+data.field).focus();
                     //$('#applyform [name=name]').focus();
                 } else {
-                    $('#message').text('bir hata oluştu!');
-                    $('#message').show();
+                    $('#welcomeMessage-textArea').text('bir hata oluştu!');
+                    $('#welcomeMessage').show();
                     $('#applyform [name=name]').focus();
                 }
                 
@@ -132,18 +133,18 @@ $(document).ready(function() {
                                 if(email.length<3) return false;
                                 
                                 $.post("/ajax/resetpassword", {  
-                                                            email: $("#dialog input[name=email]").val()
-                                                            
-                                                            }, function(data){ 
-                                                                if(data.status=='success'){
-                                                                    $('#message').text(data.message);;
-                                                                    //window.location = "/";
-                                                                } else {
-                                                                    $('#message').text(data.message);
-                                                                }
-                                                            
-                                                                //eval(data); 
-                                                            }, 'json');
+                                email: $("#dialog input[name=email]").val()
+                                
+                                }, function(data){ 
+                                    if(data.status=='success'){
+                                        $('#welcomeMessage-textArea').text(data.message);;
+                                        //window.location = "/";
+                                    } else {
+                                        $('#welcomeMessage-textArea').text(data.message);
+                                    }
+                                
+                                    //eval(data); 
+                                }, 'json');
                                                             
                                                             
                                 $( this ).dialog( "close" );

@@ -691,7 +691,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		
 		$int = new induction;
 		$sharelike->ID=$sharelike->diID; // puan class ına  id için element gönderiliyor;
-		$sharelike->reverse = $reverse; // like dislike sayarken aynı seste değilme varsa çıkartma yapılacak
+		$sharelike->reverse = $reverse; // like dislike sayarken aynı seste değişme varsa çıkartma yapılacak
 		
 		$c_voice = new voice($sharelike->diID);
 		$sharelike->voice = $c_voice->_voice;
@@ -1354,7 +1354,7 @@ else
                             
                             if($db->insertObject('userrequest', $request)){
                                 $response['status'] = 'success';
-                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol edin. Onay maili birkaç dakika içerisinde ulaşacaktır.';
+                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol ediniz. Mailler bazen <b>spam</b> kutunuza da düşebilir unutmayınız. Onay maili kısa süre içerisinde ulaşacaktır.';
                                 
                                 $model->sendsystemmail($request->email, 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$request->key.'"> http://democratus.com/user/activate/'.$request->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                                 
@@ -2016,6 +2016,21 @@ else
        }
          
     }
+
+	function staticContent()
+	{
+		global $model, $db;
+		$cID = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT );
+		$db->setQuery("SELECT * FROM pagecontent WHERE pageID=".$db->quote($cID)."");
+		$page = $return = new stdClass;
+		if($db->loadObject($page))
+		{
+			$return->status = "success";
+			$return->title	= $page->title;
+			$return->content= $page->content;
+		}
+		echo json_encode($return);
+	}
 
 }
 ?>

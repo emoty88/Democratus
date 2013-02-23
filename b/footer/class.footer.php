@@ -10,11 +10,11 @@
 						<div class="row">
 							<div class="span6">
 								<ul>
-									<li><a href="#">Hakkımızda</a></li>
-									<li><a href="#">Yardım</a></li>
-									<li><a href="#">Koşullar</a></li>
-									<li><a href="gizlilik.html">Gizlilik</a></li>
-									<li><a href="#">İletişim</a></li>	
+									<li><a onclick="static_content(104);" href="javascript:;">Hakkımızda</a></li>
+									<li><a href="javascript:;">Yardım</a></li>
+									<li><a href="javascript:;">Koşullar</a></li>
+									<li><a onclick="static_content(101);" href="javascript:;">Gizlilik</a></li>
+									<li><a onclick="static_content(103);" href="javascript:;">İletişim</a></li>	
 								</ul>
 							</div>
 							<div class="span6">
