@@ -208,14 +208,14 @@ class ajax_plugin extends control{
                 	}
 				
                         
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0 ) //facebook app düzeltilince false kalkıcak
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0  && false) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
 					
                 	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
 					
-            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0 )  // twitter app düzeltilince false kalkacak 
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0  && false)  // twitter app düzeltilince false kalkacak 
                 {
                 	$tw=new twitter();
                 	print_r($tw->sendTweet(strip_tags($share->di),$share->ID));
