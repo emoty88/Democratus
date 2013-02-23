@@ -772,7 +772,7 @@
 		{
 			global $model, $db;
 			
-			if(!$this->valid_perma($model->profile->permalink))
+			if(!$this->valid_perma($model->profile->permalink) && $model->profile->type=="profile")
 			{
 				$eL[] = "permalink";
 			}

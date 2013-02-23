@@ -4,6 +4,13 @@
 		{
 			global $model;
 			?>
+				<div id="welcomeMessage" class="alert alert-info" style="width:600px; display:table; margin:0 auto 10px auto; display:none;">
+			    	<button type="button" id="alertClose" class="close" data-dismiss="alert">×</button>
+			        
+			        <p id="welcomeMessage-textArea" style="margin: 0"></p>
+			        <!--<a class="btn btn-danger" href="#">Take this action</a>-->
+		   		</div>
+		   		<br />
                     <div id="dialog" class="dialog" style="display: none">
                         <form class="dialogform" id="dialog">
                             <p>

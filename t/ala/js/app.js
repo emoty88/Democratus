@@ -684,7 +684,6 @@ jQuery(document).ready(function ($) {
 				{
 					if($("#make_agenda").is(":checked"))
 					{
-						console.log("sadasa");
 						set_agendaHashtag(response.voice);
 					}
 					$(".daha_fazla_yeni_ses").remove();
@@ -1236,12 +1235,10 @@ jQuery(document).ready(function ($) {
 			}
 			if(value.count_reShare>0)
 			{
-				console.log("var "+value.ID);
 				$("#paylas_btn_"+value.ID+" span.count").text(" ("+value.count_reShare+")");
 			}
 			else
 			{
-				console.log("yok "+value.ID);
 				$("#paylas_btn_"+value.ID+" span.count").html("");
 			}
 			
@@ -2093,9 +2090,28 @@ jQuery(document).ready(function ($) {
     	var options = {remote:url};    	
     	$('#myModal').modal(options);
     }
+	
+	function get_modalTxt(title,text)
 
+    {
+    	$('#myModalLabel').html(title);
+    	$('.modal-body').html(text);
+    	//$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnProfile" rel="0" class="btn btn-primary">Uygula</a>');
+		$('#myModal').modal('show'); 
+    }
+    
     function from_sm(){
         $.post('/ajax/from_sm',null,function(){
             
         });
+    }
+    
+    function static_content($ID)
+    {
+    	var title="";
+    	$.post('/ajax/staticContent', {ID:$ID}, function(response){ 
+			if(response.status=='success')
+             	get_modalTxt(response.title, response.content);
+        },'json');
+    	
     }

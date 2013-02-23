@@ -33,6 +33,8 @@ class induction {
 					}
 					$c_counter->set_profileCount($voice->voice->profileID, "like");
 					$c_counter->set_voiceCount($voice->voice->ID, "like");
+					
+					$model->notice($voice->voice->profileID, 'dilike', $voice->voice->ID, null, "dilike1");
 					if($voice->reverse)
 					{
 						$c_counter->set_profileCount($voice->voice->profileID, "dislike", "-");
@@ -47,6 +49,8 @@ class induction {
 					}
 					$c_counter->set_profileCount($voice->voice->profileID, "dislike");
 					$c_counter->set_voiceCount($voice->voice->ID, "dislike");
+					
+					$model->notice($voice->voice->profileID, 'dilike', $voice->voice->ID, null, "dilike2");
 					if($voice->reverse)
 					{
 						$c_counter->set_profileCount($voice->voice->profileID, "like", "-");

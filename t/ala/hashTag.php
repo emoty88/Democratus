@@ -48,7 +48,10 @@
 
 									{{populardies}}
 									</div>
-                                                                        {{smsuggestion}}
+									
+                                  	{{democratustv}}
+                                  	
+                                  	{{smsuggestion}}
 									{{whotofollow}}
 
 								</div>
