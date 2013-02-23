@@ -382,7 +382,8 @@
 			                                    <input type="radio" name="showmotto" id="showmotto2" value="2" <?=@$mottoChecked[2]?>></label></td>
 			                                    <td><label class="radio">
 			                                    <input type="radio" name="showmotto" id="showmotto5" value="5" <?=@$mottoChecked[5]?>></label></td>
-			                            </tr>
+			                            </tr>   
+			                            <?php /* ?>
 			                            <tr>
 			                                    <td>Paylaşımlarım</td>
 			                                	<td>
@@ -395,7 +396,7 @@
 			                                    <td><label class="radio">
 			                                    <input type="radio" name="showdies" id="showdies5" value="5" <?=@$showdiesChecked[5]?>></label></td>
 			                            </tr>
-			                            <?php /* ?>
+			                         
 			                            <tr>
 			                                    <td nowrap>Yorum Görünürlüğü</td>
 			                                <td><label class="radio">
