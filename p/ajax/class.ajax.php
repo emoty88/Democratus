@@ -863,6 +863,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			if($a["status"]=="success")
 			{
 				$return["status"]="success";
+				
 			}
 			else
 			{

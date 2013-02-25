@@ -176,6 +176,7 @@
 					$vekilOy->ID = $db->insertid() ;
 					$c_puan = new puan;
 					$c_puan->puanIslem($deputyID,"70",$vekilOy);
+					$model->notice($deputyID, 'deputy', $vekilOy->ID);
 				   	$return["status"]="success";
 				}
 				else{
