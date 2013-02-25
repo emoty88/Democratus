@@ -547,10 +547,9 @@
 	             <div class="tab-pane fade" id="tab-engellemeler">
 	
 	        			<div class="roundedcontent shareidea">
-							<h1>
-								<img src="<?=TEMPLATEURL?>beta/img/democratus_icon.png"> 
+							<h2>
 								Bu Modül Test Aşamasındadır.
-							</h1>
+							</h2>
 							<div class="clear"></div>
 							<p>Kullanıcılarımıza kusursuz bir deneyim sunmak için bu modülü kapalı olarak test ediyoruz.</p>
 							<br>
