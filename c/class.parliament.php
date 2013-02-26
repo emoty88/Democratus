@@ -110,6 +110,7 @@
 		{
 			global $model;
 			$return		= array();
+			$c_profile = new profile;
 			foreach($agendas as $a)
 			{
 				$r_obj= new stdClass;
@@ -117,15 +118,15 @@
 				$r_obj->dImage	= $model->getProfileImage($a->deputyimage, 48,48, 'cutout');
 				$r_obj->dName	= $a->deputyname;
 				$r_obj->dPerma	= $a->deputyPerma;
-                                if($a->mecliseAlan>0){
-                                    $r_obj->mecliseAlan = $a->mecliseAlan;
-                                    $r_obj->mecliseAlanPerma = profile::change_ID2perma($a->mecliseAlan);
-                                    $r_obj->mecliseAlanName = profile::get_name($r_obj);
-                                }else{
-                                    $r_obj->mecliseAlan = '';
-                                    $r_obj->mecliseAlanPerma = '';
-                                    $r_obj->mecliseAlanName = '';
-                                }
+                if($a->mecliseAlan>0){
+                    $r_obj->mecliseAlan = $a->mecliseAlan;
+                    $r_obj->mecliseAlanPerma = $c_profile->change_ID2perma($a->mecliseAlan);
+					$r_obj->mecliseAlanName = $c_profile->get_name($a->mecliseAlan);
+                }else{
+                    $r_obj->mecliseAlan = '';
+                    $r_obj->mecliseAlanPerma = '';
+                    $r_obj->mecliseAlanName = '';
+                }
 				$r_obj->agendaT	= $a->title;
 				$r_obj->myVote	= $a->myvote;
 				$r_obj->status	= $a->status;
