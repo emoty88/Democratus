@@ -39,23 +39,23 @@
 			}
 			$birth['month']=model::int2trMonth($birth['month']);
 	                        
-                        $profileChecked[$profile->showprofile]=' checked="ture" ';
-                        $birthChecked[$profile->showbirth]=' checked="ture" ';
-                        $mottoChecked[$profile->showmotto]=' checked="ture" ';
-                        $showdiesChecked[$profile->showdies]=' checked="ture" ';
-                        $dicommentChecked[$profile->dicomment]=' checked="ture" ';
-                        $hometownChecked[$profile->showhometown]=' checked="ture" ';
-                        $countryChecked[$profile->showcountry]=' checked="ture" ';
-                        $cityChecked[$profile->showcity]=' checked="ture" ';
-                        $materialChecked[$profile->showmarital]=' checked="ture" ';
-                        $educationChecked[$profile->showeducation]=' checked="ture" ';
-                        $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
+            $profileChecked[$profile->showprofile]=' checked="ture" ';
+            $birthChecked[$profile->showbirth]=' checked="ture" ';
+            $mottoChecked[$profile->showmotto]=' checked="ture" ';
+            $showdiesChecked[$profile->showdies]=' checked="ture" ';
+            $dicommentChecked[$profile->dicomment]=' checked="ture" ';
+            $hometownChecked[$profile->showhometown]=' checked="ture" ';
+            $countryChecked[$profile->showcountry]=' checked="ture" ';
+            $cityChecked[$profile->showcity]=' checked="ture" ';
+            $materialChecked[$profile->showmarital]=' checked="ture" ';
+            $educationChecked[$profile->showeducation]=' checked="ture" ';
+            $hobbiesChecked[$profile->showhobbies]=' checked="ture" ';
 
-                        $langChecked[$profile->showlanguages]=' checked="ture" ';
-                        $emailChecked[$profile->showemail]=' checked="ture" ';
-                        $followersChecked[$profile->showfollowers]=' checked="ture" ';
-                        $followingsChecked[$profile->showfollowings]=' checked="ture" ';
-                        $photosChecked[$profile->showphotos]=' checked="ture" ';
+            $langChecked[$profile->showlanguages]=' checked="ture" ';
+            $emailChecked[$profile->showemail]=' checked="ture" ';
+            $followersChecked[$profile->showfollowers]=' checked="ture" ';
+            $followingsChecked[$profile->showfollowings]=' checked="ture" ';
+            $photosChecked[$profile->showphotos]=' checked="ture" ';
                         
 			?>
 			<section class="banner">
@@ -231,7 +231,128 @@
 								</div>
 
 							</form>
-
+							<?php 
+							/*-----*/
+							if($model->profileID==1734)
+							{
+								?>
+					<div style="clear:both"	></div>	
+              	<div style="float:left; width:250px; height:60px; display:block">
+              	<label class="checkbox formlabelsshort">
+              		
+              		<div class="facebook" style="float:left;">
+              			<span class="fb-user">
+              				<a id="facebookProfileLink" href="" target="_blank">
+              					<img style="width: 30px;" id="facebookProfilePicture" src="">
+              					<em id="facebookProfileName"></em>
+              				</a>
+              			</span>
+              		</div>
+              		<div style="clear:both;"></div>
+              	<?php 
+					
+					if($model->profile->fbID!="0") 
+					{
+						
+						?>
+						<script>
+							var fbID=<?=$model->profile->fbID?>;
+							$(document).ready(function(){
+								$.ajax({
+									url:"https://graph.facebook.com/"+fbID,
+									type:"GET",
+									dataType:"json",
+									success:function(data){
+										//console.log(data);
+										$("#facebookProfilePicture").attr("src","https://graph.facebook.com/"+data.username+"/picture");
+										$("#facebookProfileName").html(data.name);
+										$("#facebookProfileLink").attr("href","https://www.facebook.com/"+data.username);
+									}
+								});
+							});
+						</script>
+						
+						<?
+						$che="";
+						//var_dump($model->profile->facebookPaylasizin==1);
+						if($model->profile->facebookPaylasizin=="1")
+							$che='checked="true"';
+						?>
+							Ses'lerimi Facebook'ta paylaş<input type="checkbox" value="option1" align="right" <?=$che?> onchange="fbPaylasimTogle();">
+						<? 
+					}
+					else
+					{
+						$fbn= new facebooknew();
+						$response=$fbn->yazmaizniVarmi();
+						if($_GET){
+							if($model->profile->fbID=="")
+							{
+								$pro = new stdClass();
+								$pro->fbID=$db->quote($fbn->get_fbID());
+								$pro->ID=$model->profileID;
+					            $db->updateObject("profile", $pro, "ID");
+					            echo "<script>location.href=location.href;</script>";
+							}
+						}
+						
+						if($response["durum"]=="login")
+						{ 	?>
+							<a href="<?=$response["loginUrl"]?>"><img src="/t/beta/img/facebook_icon.png"/> Facebook'ta Oturum Açın..</a>
+						<?php }
+						else if($response["durum"]=="izinal"){?>
+							<a href="<?=$response["izinUrl"]?>"><img src="/t/beta/img/facebook_icon.png"/> Facebook Uygulamasına İzin verin.</a>
+						<? }
+						else if($response["durum"]=="izinVar"){
+							$che="";
+							if($model->profile->facebookPaylasizin==1)
+							$che='checked="true"';
+							?>
+							Ses'lerimi Facebook'ta paylaş<input type="checkbox" value="option1" align="right" <?=$che?> onchange="fbPaylasimTogle();">
+						<? } 
+						
+					}//son else 
+              	?>
+              	</label>
+              
+              </div>
+              <div style="float:left; width:250px; height:60px; display:block; text-align:left">
+              	<label class="checkbox formlabelsshort">
+              	<?php 
+              	//if($model->profile->)
+              	$che="";
+				if($model->profile->twitterPaylasizin=="1")
+					$che='checked="true"';
+				$tw= new twitter();
+				$response=$tw->user_tokens_check();
+				
+				//var_dump($response);
+				if($response=="0"){?>
+					<a href="/oauth/twitterPaylasimOnayi">
+						<img src="/t/beta/img/twitter_mini-icon.jpg"/> Twitter uygulamasına izin veriniz.</a>
+				<? }else { 
+					$twitterP=$tw->user_profile_get();	
+				?>
+					<div class="twitter" style="float:left;">
+              			<span class="tw-user">
+              				<a id="twitterProfileLink" href="https://twitter.com/<?=$twitterP->screen_name?>" target="_blank">
+              					<img style="width: 30px;" id="twitterProfilePicture" src="<?=$twitterP->profile_image_url?>">
+              					<em id="twitterProfileName"><?=$twitterP->name?></em>
+              				</a>
+              			</span>
+              		</div>
+              		<div style="clear: both;"></div>
+					Ses'lerimi Twitter'da paylaş<input type="checkbox" value="option1" align="right" <?=$che?> onchange="twPaylasimTogle();">
+				<? } ?>
+              		
+              	</label>
+              </div>
+              <?
+							}
+							
+							/*-----*/
+							?>
+							
 							<div class="clearfix"></div>
                                                         
                                                                   <br/>
