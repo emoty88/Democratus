@@ -1344,6 +1344,7 @@ else
                         $user->ID = $db->insertid();
                         $user->registertime = date('Y-m-d H:i:s');
                         
+						
                         if( $db->insertObject('user', $user ) ){
                             $request = new stdClass;
                     
@@ -1352,14 +1353,13 @@ else
                             $request->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
                             $request->datetime  = date('Y-m-d H:i:s');
                             $request->status    = 0;
-                            
+                            $model->login('ID='.intval($user->ID),'register');
                             if($db->insertObject('userrequest', $request)){
                                 $response['status'] = 'success';
-                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol ediniz. Mailler bazen <b>spam</b> kutunuza da düşebilir unutmayınız. Onay maili kısa süre içerisinde ulaşacaktır.';
+								$response["action"] = 'redirect';
+                                $response['message'] = 'Üyeliğinizi aktive etmek için lütfen mail kutunuzu kontrol ediniz. Mailler bazen spam kutunuza da düşebilir unutmayınız. Onay maili kısa süre içerisinde ulaşacaktır.';
                                 
                                 $model->sendsystemmail($request->email, 'democratus hesabınızı onaylayın', 'Merhaba, <br /> democratus hesabınızı aktif hale getirmenize sadece bir adım kaldı. Aşağıdaki linke tıklamanız yahut tarayıcınızın adres çubuğuna yapıştırmanız yeterli:<br /><a href="http://democratus.com/user/activate/'.$request->key.'"> http://democratus.com/user/activate/'.$request->key.'</a> <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
-                                
-                                $_SESSION['captcha'] = null;
                                 
                             } else {
                                 

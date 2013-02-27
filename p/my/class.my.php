@@ -234,28 +234,28 @@
 
 							<div class="clearfix"></div>
                                                         
-                                                                  <br/>
-                                                                  <br/>
-                                                        <form id="sifre_degistirme_formu" name="sifre_degistirme_formu">
-                                                             <header>
-								<h1 class="sayfa_basligi">Şifre Değiştirme</h1>
-                                                            </header> 
-                                                            <div class="sol_form_bolumu span4" >
-                                                                <label for="password">Eski Şifre</label>
-                                                                <input type="password" placeholder="Eski Şifre" id="password" name="password" value="" />
-                                                                <i class="icon-exclamation-sign" id="password_i" style=" display: none; padding: 0"></i>	
-                                                                <label for="password_new">Yeni Şifre</label>
-                                                                <input type="password" placeholder="Yeni Şifre" id="password_new" name="password_new" value="" />
-                                                                <i class="icon-exclamation-sign" id="password_new_i" style="display: none;padding: 0"></i>	
-                                                                <label for="password_new2">Yeni Şifre Tekrar</label>
-                                                                <input type="password" placeholder="Yeni Şifre Tekrar" id="password_new2" name="password_new2" value="" />
-                                                                <i class="icon-exclamation-sign" id="password_new2_i" style="display: none;padding: 0"></i>	
-                                                                <div class="clearfix"></div>
-                                                                <button  style="float:left" class="btn btn-success pull-right" type="button" id="change_password_button">Değiştir</button>
-                                                                <i class="icon-exclamation-sign" id="button_i" style="display: none;padding: 0"></i>	
-                                                                
-                                                            </div>
-                                                        </form>
+                              	<br/>
+                      			<br/>
+                                <form id="sifre_degistirme_formu" name="sifre_degistirme_formu">
+                                     <header>
+										<h1 class="sayfa_basligi">Şifre Değiştirme</h1>
+                                    </header> 
+                                    <div class="sol_form_bolumu span4" >
+                                        <label for="password">Eski Şifre</label>
+                                        <input type="password" placeholder="Eski Şifre" id="password" name="password" value="" />
+                                        <i class="icon-exclamation-sign" id="password_i" style=" display: none; padding: 0"></i>	
+                                        <label for="password_new">Yeni Şifre</label>
+                                        <input type="password" placeholder="Yeni Şifre" id="password_new" name="password_new" value="" />
+                                        <i class="icon-exclamation-sign" id="password_new_i" style="display: none;padding: 0"></i>	
+                                        <label for="password_new2">Yeni Şifre Tekrar</label>
+                                        <input type="password" placeholder="Yeni Şifre Tekrar" id="password_new2" name="password_new2" value="" />
+                                        <i class="icon-exclamation-sign" id="password_new2_i" style="display: none;padding: 0"></i>	
+                                        <div class="clearfix"></div>
+                                        <button  style="float:left" class="btn btn-success pull-right" type="button" id="change_password_button">Değiştir</button>
+                                        <i class="icon-exclamation-sign" id="button_i" style="display: none;padding: 0"></i>	
+                                        
+                                    </div>
+                                </form>
 						</div>
 					</section>
 					
@@ -271,20 +271,22 @@
 							
 							<? 
 							$c_facebook = new facebookClass;
+							var_dump($c_facebook);
+							die;
 							if($model->profile->fbID)
 							{
 								?>
 								<div class="social_connect">
-                                                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
-                                                                </div>
+                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_friendFind(<?=$model->profile->fbID?>);">Facebook Arkadaşların</a>
+                                </div>
 								<?
 							}
 							else 
 							{
 								?>
 								<div class="social_connect">
-                                                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
-                                                                </div>
+                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
+                                </div>
 								<?
 							}
 							
@@ -294,34 +296,34 @@
 							{
 							?>
 								<div class="social_connect">
-                                                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
-                                                                </div>
+                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_friendFind();">Twitter Arkadaşların</a>
+                                </div>
 							<? 
 							}
 							else {
 							?>
 								<div class="social_connect">
-                                                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
-                                                                </div>
+                                    <a class="twitter_login" id="twit_buton" href="javascript:;" onclick="twitter_open_LoginWindow('<?=$c_twitter->get_loginUrl();?>');">Twitter Arkadaşlarım</a>
+                                </div>
 							<? 	
 							}
 								
 						?>
-                                                        <div class="social_connect">
-                                                            <button class="btn share_with_friends ">Arakadaşlarınla Paylaş</button>
-                                                        </div>
-                                                        <div style="clear: both;"></div>
-                                                        <div class="social_connect2" style="display: none;">
-                                                            <h4>Democratus'u arkadaşlarınla paylaş.</h4>
-                                                            <textarea id="share-with-social-text" class="textarea">Siz de davetlisiniz; ulke gundemini fikirlerinizle sekillendirebileceginiz online meclis, demokratik sosyal ag</textarea>
-                                                            <div style="clear: both;"></div>
-                                                            <div class="social_connect">
-                                                                <a class="twitter_login" onclick="javascript:share_totwit();" id="twit_buton" >Twitter'da paylaş</a>
-                                                            </div>
-                                                            <div class="social_connect">
-                                                                <a class="facebook_login" onclick="javascript:share_tofacebook();" id="face_button" >Facebook'ta paylaş</a>
-                                                            </div>
-                                                            </div>
+	                        <div class="social_connect">
+	                            <button class="btn share_with_friends ">Arakadaşlarınla Paylaş</button>
+	                        </div>
+	                        <div style="clear: both;"></div>
+	                        <div class="social_connect2" style="display: none;">
+	                            <h4>Democratus'u arkadaşlarınla paylaş.</h4>
+	                            <textarea id="share-with-social-text" class="textarea">Siz de davetlisiniz; ulke gundemini fikirlerinizle sekillendirebileceginiz online meclis, demokratik sosyal ag</textarea>
+	                            <div style="clear: both;"></div>
+	                            <div class="social_connect">
+	                                <a class="twitter_login" onclick="javascript:share_totwit();" id="twit_buton" >Twitter'da paylaş</a>
+	                            </div>
+	                            <div class="social_connect">
+	                                <a class="facebook_login" onclick="javascript:share_tofacebook();" id="face_button" >Facebook'ta paylaş</a>
+	                            </div>
+	                        </div>
 						</div>
 						<div style="clear: both;"></div>
 						<div id="socialListArea">

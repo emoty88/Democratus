@@ -89,6 +89,10 @@ $(document).ready(function() {
                 if(data.status=='success'){
                     $('#welcomeMessage-textArea').text(data.message);
                     $('#registerBtn').text('Kayıt Başarılı');
+                    if(data.action=="redirect")
+                    {
+                    	location.href="/";
+                    }
                     $('#registerBtn').attr('id','registerBtn2');
                     $('#registerBtn2').attr('disabled','disabled');
                     

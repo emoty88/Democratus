@@ -975,8 +975,8 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                         //login ol
                         $session = new stdClass;
                         
-                        $session->mode        = $mode;
-                        $session->sid        = md5( KEY . session_id() . uniqid() );
+                        $session->mode    	= $mode;
+                        $session->sid       = md5( KEY . session_id() . uniqid() );
                         $session->ip        =  filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING ) ;
                         $session->timeout   = date('Y-m-d H:i:s', time() + intval(SESSIONTIMEOUT)); //saniye
                         $session->starttime = date('Y-m-d H:i:s');

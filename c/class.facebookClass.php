@@ -8,12 +8,13 @@ class facebookClass{
 	public function __construct ($fbID=0)
 	{
 		global $model,$db;
-               
+              
 		require_once( 'c/smclass/facebook/facebook.php' );
-                if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
-                    $this->facebook_app_id = '142184682596814';
-                    $this->facebook_app_secret = '44c5a4a0d75c75f426c0a4560c66154b';
-                }
+		
+        if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
+            $this->facebook_app_id = '142184682596814';
+            $this->facebook_app_secret = '44c5a4a0d75c75f426c0a4560c66154b';
+        } 
 		$this->facebook = new Facebook(
 			array(
 				'appId' => $this->facebook_app_id,

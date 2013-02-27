@@ -18,29 +18,6 @@
 				case 'twitter2'	: return $this->twitter2(); break;
 				case 'twitter_sug'	: return $this->twitterSuggestion(); break;		
 			}
-			
-						/*
-			$db->setQuery("select oauth_uid ,userID  from  oauth where oauth_provider = 'twitter'");
-			$rows = $db->loadObjectList();
-			
-			
-			foreach ($rows as $r) {
-				
-				
-				
-				//echo $obj->fbID."<BR/>";
-				$obj->twID = $r->oauth_uid;
-				$obj->ID = $r->userID;
-				//
-				if($obj->twID != NULL)
-					$db->updateObject('profile',$obj,'ID');
-				
-			}
-			
-
-			die;
-			
-			*/
 		}
 
 		function twitterSuggestion(){
@@ -159,228 +136,233 @@
 			
 		}
 
-
-
 	public function facebook(){
-            global $model, $db;
-            if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
-                $this->facebook_app_id = '142184682596814';
-                $this->facebook_app_secret = '44c5a4a0d75c75f426c0a4560c66154b';
-            }
+        global $model, $db;
+		$c_profile = new profile();
+        if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
+            $this->facebook_app_id = '142184682596814';
+            $this->facebook_app_secret = '44c5a4a0d75c75f426c0a4560c66154b';
+        }
+            
+        
+        require_once( $model->pluginpath.'facebook/facebook.php' );
+        
+        $facebook = new Facebook(array('appId' => $this->facebook_app_id, 'secret' => $this->facebook_app_secret));
+        
+        $user = $facebook->getUser(); 
+        
+        
+        if(!$user){
+            $login_url = $facebook->getLoginUrl(array( 'scope' => 'email'));
+            $model->redirect($login_url);
+        }
+		
+        try {
+            // Proceed knowing you have a logged in user who's authenticated.
+            $user_profile = $facebook->api('/me');
+            //print_r($user_profile);
+            
+        } catch (FacebookApiException $e) {
+            error_log($e);
+            $user = null;
+            die($e->getMessage());
+        }
+		
+        try{
+            if (empty($user_profile )) throw new Exception('profile is empty');
                 
-            
-            require_once( $model->pluginpath.'facebook/facebook.php' );
-            
-            $facebook = new Facebook(array('appId' => $this->facebook_app_id, 'secret' => $this->facebook_app_secret));
-            
-            $user = $facebook->getUser(); 
-            
-            
-            if(!$user){
-                $login_url = $facebook->getLoginUrl(array( 'scope' => 'email'));
-                $model->redirect($login_url);
-            }
-            try {
-                // Proceed knowing you have a logged in user who's authenticated.
-                $user_profile = $facebook->api('/me');
-                print_r($user_profile);
                 
-            } catch (FacebookApiException $e) {
-                error_log($e);
+                $name         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['name'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $uid         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['id'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['email'], FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $username        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['username'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+             	if($_SERVER['REMOTE_ADDR']=='88.255.245.2522')
+				{
+					echo "<pre>";
+					var_dump($user_profile);
+					echo "</pre>";
+					die;
+				}
+                
+                
+                $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'facebook' AND oauth_uid = " . $db->quote($user_profile['id']) . "" );
+                $oauth = null; // bu alanı oauth kaydından değil profildeki userID den kontrol edeceğiz 
+                if($db->loadObject($oauth)){
+                    //login ol ve çık
+                    //die('oauth var');
+                    if($oauth->status>0)
+                        $model->login('ID='.intval($oauth->userID),'facebook');
+                    if($model->profile->fbID=="")
+                    {
+                    	$pro=new stdClass();
+                    	$pro->ID=intval($oauth->userID);
+                    	$pro->fbID=$db->quote($user_profile['id']);
+                    	$db->updateObject("profile", $pro, "ID");
+                    }
+                    if($model->profile->permalink=="")
+                    {
+                    	$pro=new stdClass();
+                    	$pro->ID=intval($oauth->userID);
+                    	$pro->permalink=$c_profile->normalize_permalink($username);
+                    	$db->updateObject("profile", $pro, "ID");
+                    }
+                    return $model->redirect('/');    
+                }
+                
+                
+                $email = strtolower( trim( $user_profile['email'] ) );
+                
+                $db->setQuery("SELECT * FROM user WHERE email = " . $db->quote($email));
                 $user = null;
-                die($e->getMessage());
-            }
-
-            try{
-                if (empty($user_profile )) throw new Exception('profile is empty');
+                if($db->loadObject($user)){
+                    echo '<h3>Bu email adresi ile zaten bir üyelik var.</h3>';
+                    //buraya oauthrequest yazalım.
                     
-                    
-                    $name         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['name'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                    $uid         = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['id'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                    $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['email'], FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                    $username        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_profile['username'], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                     if($_SERVER['REMOTE_ADDR']=='88.255.245.2522')
-						{
-							echo "<pre>";
-							var_dump($user_profile);
-							echo "</pre>";
-							die;
-						}
-                    
-                    
-                    //oauth kaydı var mı?
-                    
-                    $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'facebook' AND oauth_uid = " . $db->quote($user_profile['id']) . "" );
-                    $oauth = null; // bu alanı oauth kaydından değil profildeki userID den kontrol edeceğiz 
-                    if($db->loadObject($oauth)){
-                        //login ol ve çık
-                        //die('oauth var');
-                        if($oauth->status>0)
-                            $model->login('ID='.intval($oauth->userID),'facebook');
-                        if($model->profile->fbID=="")
-                        {
-                        	$pro=new stdClass();
-                        	$pro->ID=intval($oauth->userID);
-                        	$pro->fbID=$db->quote($user_profile['id']);
-                        	$db->updateObject("profile", $pro, "ID");
+                    $oauth = new stdClass;
+                    $oauth->userID  = $user->ID;
+                    $oauth->oauth_provider  = 'facebook';
+                    $oauth->oauth_uid       = $uid;
+                    $oauth->username       = $username;
+                    $oauth->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+                    $oauth->datetime  = date('Y-m-d H:i:s');
+                    $oauth->status    = 0;
+                    if( $db->insertObject('oauth', $oauth ) ){
+                        
+                        $request = new stdClass;
+                
+                        $request->oauthID   = $db->insertid();
+                        $request->email     = strtolower( trim( $email ) );
+                        $request->key       = md5( KEY . time() . uniqid() );
+                        $request->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
+                        $request->datetime  = date('Y-m-d H:i:s');
+                        $request->status    = 0;
+                        
+                        if($db->insertObject('oauthrequest', $request)){
+                            $response['status'] = 'success';
+                            $model->sendsystemmail($request->email, 'Democratus hesabına facebook ile bağlanma izni', 'Democratus.com\'da var olan hesabına facebook ile bağlanma talebinizi aldık. Eğer facebook hesabınızı kullanmak istiyorsanız şu onay linkine tıklamalı ya da tarayıcınızın adres çubuğuna yapıştırmalısınız: http://democratus.com/oauth/activate/'.$request->key);
+                            echo '<p>Size onaylamanız için bir e-posta gönderdik. Lütfen oradaki yönergeleri takip edin</p>';
+                            
+                        } else {
+                            throw new Exception('kayıt hatası');
                         }
-                        return $model->redirect('/');    
+                        
                     }
                     
+                    return;    
+                }
+                
+                
+                //hayır ise profil, user oluştur ve oauth kaydı yap
+                
+                //profil resmini alma olayı
+                $url = 'http://graph.facebook.com/'.$username.'/picture?type=large';
+                $headers = get_headers($url,1);
+                $img = file_get_contents($url);
+                print_r($headers);
+                if(is_array($headers['Content-Type']))
+                    $type = $headers['Content-Type'][0];
+                else
+                    $type = $headers['Content-Type'];
+                
+                if($type == 'image/jpeg'){
+                    $uniqueP = date("y_m_d");
+                    $upDir="p_image/".$uniqueP;
+                    if(!file_exists(UPLOADPATH.$upDir)){
+                            $olustur = mkdir(UPLOADPATH.$upDir, 0777);
+                    }
+                    $file = $upDir.'/'.$username.uniqid().'.jpg';
+                    file_put_contents(UPLOADPATH.$file, $img);
                     
-                    $email = strtolower( trim( $user_profile['email'] ) );
+                }  else {
+                    $file = '';
+                }
+                //bitti-profil resmini alma olayı
+               
+                
+                
+                
+                $profile = new stdClass;
+                $profile->name = $name;
+				
+				$oauth->permalink  = $c_profile->normalize_permalink($username);
+                $profile->status = 1;
+                $profile->fbID = $uid;
+                $profile->image =  $file;
+                
+                
+                if( $db->insertObject('profile', $profile ) ){
+                    //echo 'profile ok';
                     
-                    $db->setQuery("SELECT * FROM user WHERE email = " . $db->quote($email));
-                    $user = null;
-                    if($db->loadObject($user)){
-                        echo '<h3>Bu email adresi ile zaten bir üyelik var.</h3>';
-                        //buraya oauthrequest yazalım.
+                    $user = new stdClass;
+                    $user->email        = $email;
+                    $user->status = 1;
+                    $user->ID = $db->insertid();
+                    $user->registertime = date('Y-m-d H:i:s');
+                    
+                    if( $db->insertObject('user', $user ) ){
                         
                         $oauth = new stdClass;
-                        $oauth->userID  = $user->ID;
+                        $oauth->userID  = $db->insertid();
                         $oauth->oauth_provider  = 'facebook';
                         $oauth->oauth_uid       = $uid;
                         $oauth->username       = $username;
                         $oauth->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
                         $oauth->datetime  = date('Y-m-d H:i:s');
-                        $oauth->status    = 0;
+                        $oauth->status    = 1;
                         if( $db->insertObject('oauth', $oauth ) ){
+                            echo '<h2>Yaşasın başardık</h2>';
+                            $model->login('ID='.intval($oauth->userID), 'facebook');
+                            $_SESSION['from_sm'] = 'facebook';
+                            return $model->redirect('/');
                             
-                            $request = new stdClass;
-                    
-                            $request->oauthID   = $db->insertid();
-                            $request->email     = strtolower( trim( $email ) );
-                            $request->key       = md5( KEY . time() . uniqid() );
-                            $request->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
-                            $request->datetime  = date('Y-m-d H:i:s');
-                            $request->status    = 0;
-                            
-                            if($db->insertObject('oauthrequest', $request)){
-                                $response['status'] = 'success';
-                                $model->sendsystemmail($request->email, 'Democratus hesabına facebook ile bağlanma izni', 'Democratus.com\'da var olan hesabına facebook ile bağlanma talebinizi aldık. Eğer facebook hesabınızı kullanmak istiyorsanız şu onay linkine tıklamalı ya da tarayıcınızın adres çubuğuna yapıştırmalısınız: http://democratus.com/oauth/activate/'.$request->key);
-                                echo '<p>Size onaylamanız için bir e-posta gönderdik. Lütfen oradaki yönergeleri takip edin</p>';
-                                
-                            } else {
-                                throw new Exception('kayıt hatası');
-                            }
-                            
-                        }
-                        
-                        return;    
-                    }
-                    
-                    
-                    //hayır ise profil, user oluştur ve oauth kaydı yap
-                    
-                    //profil resmini alma olayı
-                    $url = 'http://graph.facebook.com/'.$username.'/picture?type=large';
-                    $headers = get_headers($url,1);
-                    $img = file_get_contents($url);
-                    print_r($headers);
-                    if(is_array($headers['Content-Type']))
-                        $type = $headers['Content-Type'][0];
-                    else
-                        $type = $headers['Content-Type'];
-                    
-                    if($type == 'image/jpeg'){
-                        $uniqueP = date("y_m_d");
-                        $upDir="p_image/".$uniqueP;
-                        if(!file_exists(UPLOADPATH.$upDir)){
-                                $olustur = mkdir(UPLOADPATH.$upDir, 0777);
-                        }
-                        $file = $upDir.'/'.$username.uniqid().'.jpg';
-                        file_put_contents(UPLOADPATH.$file, $img);
-                        
-                    }  else {
-                        $file = '';
-                    }
-                    //bitti-profil resmini alma olayı
-                   
-                    
-                    
-                    
-                    $profile = new stdClass;
-                    $profile->name = $name;
-					$c_profile = new profile();
-					$oauth->permalink  = $c_profile->normalize_permalink($username);
-                    $profile->status = 1;
-                    $profile->fbID = $uid;
-                    $profile->image =  $file;
-                    
-                    
-                    if( $db->insertObject('profile', $profile ) ){
-                        //echo 'profile ok';
-                        
-                        $user = new stdClass;
-                        $user->email        = $email;
-                        $user->status = 1;
-                        $user->ID = $db->insertid();
-                        $user->registertime = date('Y-m-d H:i:s');
-                        
-                        if( $db->insertObject('user', $user ) ){
-                            
-                            $oauth = new stdClass;
-                            $oauth->userID  = $db->insertid();
-                            $oauth->oauth_provider  = 'facebook';
-                            $oauth->oauth_uid       = $uid;
-                            $oauth->username       = $username;
-                            $oauth->ip        = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING );
-                            $oauth->datetime  = date('Y-m-d H:i:s');
-                            $oauth->status    = 1;
-                            if( $db->insertObject('oauth', $oauth ) ){
-                                echo '<h2>Yaşasın başardık</h2>';
-                                $model->login('ID='.intval($oauth->userID), 'facebook');
-                                $_SESSION['from_sm'] = 'facebook';
-                                return $model->redirect('/');
-                                
-                            } else throw new Exception('oauth insert');
-                    } else throw new Exception('user insert');
-                } else throw new Exception('oauth insert');
-                
-            } catch (Exception $e){
-                
-            }
+                        } else throw new Exception('oauth insert');
+                } else throw new Exception('user insert');
+            } else throw new Exception('oauth insert');
             
+        } catch (Exception $e){
             
-            
-            
-            /*
-            if(0 && $user){
-                
-
-                if (!empty($user_profile )) {
-                    # User info ok? Let's print it (Here we will be adding the login and registering routines)
-                    echo $user_profile['name'];
-                    die;
-                    
-                    $username = $user_profile['name'];
-                         $uid = $user_profile['id'];
-                     $email = $user_profile['email'];
-                    
-                    
-                    
-                    $user = new User();
-                    $userdata = $user->checkUser($uid, 'facebook', $username,$email,$twitter_otoken,$twitter_otoken_secret);
-                    if(!empty($userdata)){
-                        session_start();
-                        $_SESSION['id'] = $userdata['id'];
-             $_SESSION['oauth_id'] = $uid;
-
-                        $_SESSION['username'] = $userdata['username'];
-                        $_SESSION['email'] = $email;
-                        $_SESSION['oauth_provider'] = $userdata['oauth_provider'];
-                        header("Location: home.php");
-                    }
-                } else {
-                    # For testing purposes, if there was an error, let's kill the script
-                    die("There was an error.");
-                }
-            } 
-            */
-                        
-            
-
         }
+        
+        
+        
+        
+        /*
+        if(0 && $user){
+            
+
+            if (!empty($user_profile )) {
+                # User info ok? Let's print it (Here we will be adding the login and registering routines)
+                echo $user_profile['name'];
+                die;
+                
+                $username = $user_profile['name'];
+                     $uid = $user_profile['id'];
+                 $email = $user_profile['email'];
+                
+                
+                
+                $user = new User();
+                $userdata = $user->checkUser($uid, 'facebook', $username,$email,$twitter_otoken,$twitter_otoken_secret);
+                if(!empty($userdata)){
+                    session_start();
+                    $_SESSION['id'] = $userdata['id'];
+         $_SESSION['oauth_id'] = $uid;
+
+                    $_SESSION['username'] = $userdata['username'];
+                    $_SESSION['email'] = $email;
+                    $_SESSION['oauth_provider'] = $userdata['oauth_provider'];
+                    header("Location: home.php");
+                }
+            } else {
+                # For testing purposes, if there was an error, let's kill the script
+                die("There was an error.");
+            }
+        } 
+        */
+                    
+        
+
+    }
 	public function twitter2(){
             global $model, $db;
             require_once( $model->pluginpath.'twitter/twitteroauth.php' );
