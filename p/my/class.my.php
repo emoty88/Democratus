@@ -7,9 +7,9 @@
 			$model->template="ala";
 			$model->view="my";
 			$model->title = 'Democratus';
-                        $model->addScript('var share = 0');
-                        if(isset($_GET['share']))
-                            $model->addScript('share =1');
+            $model->addScript('var share = 0');
+            if(isset($_GET['share']))
+                $model->addScript('share =1');
                         
                             
                     
@@ -392,8 +392,8 @@
 							
 							<? 
 							$c_facebook = new facebookClass;
-							var_dump($c_facebook);
-							die;
+							//var_dump($c_facebook);
+							//die;
 							if($model->profile->fbID)
 							{
 								?>

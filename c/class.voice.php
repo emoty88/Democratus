@@ -95,6 +95,7 @@
 	        		$WHERE .= "\n AND onlyProfile='0'";
 			
 			$db->setQuery($SELECT.$FROM.$WHERE);
+	
 			return $db->loadResult();
 		}
 		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")
