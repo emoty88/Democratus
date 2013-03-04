@@ -1987,7 +1987,170 @@ else
         
         echo json_encode($response);
     }
-    
+    public function voicecomplaintmenu(){
+            global $model, $db;
+            $model->mode = 0;
+            $response = array();
+            try{
+                $response['height'] = 320;
+                $html = '';
+                $ID          = intval( filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT ) );
+                
+                if($ID<=0) throw new Exception('bi sorun var!');
+                //di'yi bul
+                $db->setQuery('SELECT * FROM di WHERE ID = ' . $db->quote($ID).' AND status>0');
+                $di = null;
+                if(!$db->loadObject($di)) throw new Exception('ses bulunamadı!');
+                
+                //profili bul
+                $db->setQuery('SELECT * FROM profile WHERE ID = ' . $db->quote($di->profileID).' AND status>0');
+                $profile = null;
+                if(!$db->loadObject($profile)) throw new Exception('profil bulunamadı!');
+                
+                //takip ediyor musun? bul
+               
+                
+                                
+                //o seni takip ediyor mu? bul
+                $db->setQuery('SELECT * FROM follow WHERE followerID = ' . $db->quote($profile->ID).' AND followingID = ' . $db->quote( $model->profileID));
+                $follow2 = null;
+                if($db->loadObject($follow2)){
+                    //evet seni takip ediyor
+                    
+                    //öyleyse engelleyebilirsin
+                    //$html .= '<p><input type="checkbox" name="block" value="1" />'. $profile->name . ' ı engelle</p>';
+                    
+                } else {
+                    
+                }
+                
+                //kaldır
+                if($di->profileID==$model->profileID){
+                    //throw new Exception('bu senin di\'n :)');
+                    $html .= '<p><input type="checkbox" name="remove" value="1" />Bu sesi kaldır</p>';
+                    $response['height'] = 120;
+                }
+                
+                //takip etme
+                
+                
+                
+                //engelle
+                
+                
+                //şikayet et
+                if($di->profileID!=$model->profileID){
+                    $html .= '<input type="hidden" name="complaint" value="1" />';
+					$html .= '<div class="complaintbox" style="margin: 0 0 0 30px;">';
+					$db->setQuery('SELECT * FROM follow WHERE followerID = ' . $db->quote($model->profileID).' AND followingID = ' . $db->quote( $profile->ID));
+	                $follow = null;
+	                if($db->loadObject($follow)){
+	                    //evet onu takip ediyorsun
+	                    if($follow->followerstatus >0 && $follow->followingstatus>0)
+	                    {
+		                    //takipten çıkar
+		                    $html .= '<p><input type="checkbox" name="unfollow" value="1" /> '. $profile->name . ' ı takip listemden çıkar</p>';
+	                    }
+	                } else {
+	                    
+	                }
+                    
+                    
+                    $html .= '<p><strong>Gerekçeniz:</strong></p>';
+                    $html .= '<p>'.$model->array_to_select(config::$direasons, 'reason').'</p>';
+                    $html .= '<p><strong>Notunuz:</strong><br />
+                                <textarea maxlength="200" name="note"></textarea>
+                              </p>';
+                              
+                    $html .= '</div>';
+                }
+                
+                $html .= '<input type="hidden" name="ID" value="'.$ID.'" />';
+                
+                $html = '<form id="dixmenuform'.$ID.'" class="dialogform">'.$html.'</form>';
+                $html = '<div id="dixmenu'.$ID.'">'.$html.'</div>';
+                
+                $response['html'] = $html;
+                $response['result'] = 'success';
+                $response['message'] = 'ok';
+                
+
+            } catch (Exception $e){
+                $response['result'] = 'error';
+                $response['message'] = $e->getMessage();
+            }
+            
+            echo json_encode($response);
+			die;
+        } 
+		public function voicecomplaint(){
+            global $model, $db;
+            $model->mode = 0;
+            $response = array();
+            try{
+                $response['height'] = 320;
+                $html = '';
+                $ID          = intval( filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT ) );
+                $remove      = intval( filter_input(INPUT_POST, 'remove', FILTER_SANITIZE_NUMBER_INT ) );
+                $unfollow    = intval( filter_input(INPUT_POST, 'unfollow', FILTER_SANITIZE_NUMBER_INT ) );
+                
+                $complaint   = intval( filter_input(INPUT_POST, 'complaint', FILTER_SANITIZE_NUMBER_INT ) );
+                $reason      = intval( filter_input(INPUT_POST, 'reason', FILTER_SANITIZE_NUMBER_INT ) );
+                $note        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'note', FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                
+                if($ID<=0) throw new Exception('bi sorun var!');
+                //di'yi bul
+                $db->setQuery('SELECT * FROM di WHERE ID = ' . $db->quote($ID).' AND status>0');
+                $di = null;
+                if(!$db->loadObject($di)) throw new Exception('di bulunamadı!');
+                
+                 if($unfollow>0){
+                    //takip ediyor musun? bul
+                    $db->setQuery('SELECT * FROM follow WHERE followerID = ' . $db->quote($model->profileID).' AND followingID = ' . $db->quote( $di->profileID));
+                    $follow = null;
+                    if($db->loadObject($follow)){
+                        $follow->followerstatus = 0;
+                        $follow->followingstatus = 0;
+                        $follow->status = 0;
+                        if(!$db->updateObject('follow', $follow, 'ID', 0)) throw new Exception('hata oluştu!');
+                    } else  {
+                        //zaten yok ki!
+                        throw new Exception('zaten takip etmiyorsun !');
+                    }
+                    
+                    
+                }
+                
+                if($complaint>0){
+                    
+                    $dc = new stdClass;
+                
+                    $dc->diID        = $ID;
+                    $dc->profileID   = $di->profileID;
+                    $dc->fromID      = $model->profileID;
+                    $dc->reason      = $reason;
+                    $dc->message     = $note;
+                    $dc->status      = 1;
+                    $dc->datetime    = date('Y-m-d H:i:s');
+                    $dc->ip          = $_SERVER['REMOTE_ADDR'];
+                    
+                    if(!$db->insertObject('dicomplaint', $dc)) throw new Exception('hata oluştu!');
+                    
+                    
+                }
+                 
+                //$response['html'] = $html;
+                $response['status'] = 'success';
+                $response['message'] = 'ok';
+                
+
+            } catch (Exception $e){
+                $response['result'] = 'error';
+                $response['message'] = $e->getMessage();
+            }
+            
+            echo json_encode($response);
+        }
     function from_sm(){
         global $model, $db;
         $returnA = array("status"=>"success");

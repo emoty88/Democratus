@@ -18,7 +18,9 @@
 			$model->addScript("voiceObj = ".json_encode($voiceRObj));
 			$model->addScript("$(document).ready(function (){
 				voiceDetail($('.voice_hover_area'));
-			});")
+				$('.sikayet').show();
+			});");
+			
 			?>
 			
 			<?

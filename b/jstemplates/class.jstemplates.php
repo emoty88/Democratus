@@ -13,8 +13,12 @@ class jstemplates_block extends control{
 			</aside>
 			
 			
-			<article class="duvar_yazisi" >
-				
+			<article class="duvar_yazisi voiceA" >
+				<span class="sikayet">
+					<a href="javascript:;" id="voicecomplaint" rel="${ID}">
+						Sakıncalı içerik bildir
+					</a>
+				</span>
 				<div class="voice_hover_area" style="" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}" >
 					<img class="profil_resmi" src="${sImage}" alt="${sName}">
 					<address class="yazar">

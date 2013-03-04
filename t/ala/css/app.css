@@ -380,6 +380,9 @@ body.atolye15_body { overflow-x: hidden; }
 #yeni_yazi_yaz .kontroller a { display: inline-block; float: right; margin-right: 5px; }
 
 .duvar_yazisi { padding: 20px 20px 20px 20px; border-bottom: 1px solid #e8e8e8; position: relative; color: #000; line-height: 16px; }
+.voiceA:hover{
+	background-color:#f6f6f6;
+}
 .duvar_yazisi .profil_resmi { position: absolute; top: 20px; left: 20px; width: 48px; height: 48px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .duvar_yazisi .yazar,
 .duvar_yazisi .duvar_yazisi_icerigi,
@@ -1430,6 +1433,7 @@ body #atolye15 .kirmizi_arkaplan h1 { font-size: 24px; line-height: 30px; color:
 #referandum { margin-bottom: 0; padding-bottom: 0; }
 
 .komut_tutucu_tutucu { position: relative; width: 100%; min-height: 50px; z-index: 200; margin-top: -35px; margin-left: 20px;}
+
 .refarandum_komut_tutucu.komut_tutucu_tutucu { margin-top: -35px; margin-left: 20px;}
 .komut_tutucu_tutucu .komut_tutucu { position: absolute; top: 10px; right: 20px; }
 header.komut_tutucu_tutucu .komut_tutucu { top: 10px; right: 20px; }
@@ -2053,3 +2057,14 @@ ul.sutunlar_2_sutun.fix > li:first-child { margin-left: 0; }
 #follow{
     cursor: pointer;
 }
+
+.voice_hover_area:hover{
+	cursor: pointer;
+}
+
+.sikayet {
+	float:right;
+	display: none;
+}
+.sikayet a {font-weight:normal; color:#969696;}
+.sikayet a:hover {text-decoration:none;}

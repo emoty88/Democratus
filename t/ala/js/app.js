@@ -141,24 +141,42 @@ jQuery(document).ready(function ($) {
 	}); 
 	
 	$('#profilecomplaint').live("click",function(){
+        $("#uygulaBtnProfile").remove();
         var ID = $(this).attr('rel');
-        $("#uygulaBtnProfile").attr("rel",ID);
-        var url = "/ajax/profilecomplaintmenu?ID="+ID;
-        
+
         $.post("/ajax/profilecomplaintmenu", { ID: ID }, function(data){ 
             if(data && data.result=='success'){
             	
             	$('.myModalLabel').html("Şikayet");
             	$('.modal-body').html(data.html);
-            	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnProfile" rel="0" class="btn btn-primary">Uygula</a>');
+            	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnProfile" rel="'+ID+'" class="btn btn-primary">Uygula</a>');
 				$('#myModal').modal('show'); 
-				 
 				
             } else {
                 alert(data.message);
             }
         },'json');
     });
+    
+    $('#voicecomplaint').live("click",function(){
+    	$("#uygulaBtnVoice").remove();
+        var ID = $(this).attr('rel');
+               
+        $.post("/ajax/voicecomplaintmenu", { ID: ID }, function(data){ 
+            if(data && data.result=='success'){
+            	
+            	$('.myModalLabel').html("Şikayet");
+            	$('.modal-body').html(data.html);
+            	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnVoice" rel="'+ID+'" class="btn btn-primary">Uygula</a>');
+				$('#myModal').modal('show'); 
+				
+            } else {
+                alert(data.message);
+            }
+        },'json');
+    });
+    
+    
     $("#uygulaBtnProfile").live("click", function (){
     	
     	var formData=$(".dialogform").serialize();
@@ -175,7 +193,22 @@ jQuery(document).ready(function ($) {
     		}
         },'json');
     }); 
-    
+    $("#uygulaBtnVoice").live("click", function (){
+    	
+    	var formData=$(".dialogform").serialize();
+    	$('.modal-bodyProfile').html("Şikayetiniz İletiliyor Lütfen Bekleyiniz");
+    	$.post('/ajax/voicecomplaint', formData, 
+    	function(data){
+    		//$('#sikayetModal').modal('hide');
+    		$('.modal-body').html(data);
+    		if(data.status=="success")
+    		{
+    			$("#uygulaBtnVoice").remove();
+    			$('#myModal').modal('hide');
+    			//$("#voice-"+ID).fadeOut(750); // sedece silmede bu çalışıcak diğerinde çalışmayacak
+    		}
+        },'json');
+    }); 
 	// CarouFredSel
     if ($().carouFredSel) {
    		
@@ -1258,6 +1291,14 @@ jQuery(document).ready(function ($) {
 		if(voiceDetail.arguments.length<2)
 		{
 			focusR= false;
+		}
+		if($(voice).parent().hasClass("voiceA"))
+		{
+			$(voice).parent().removeClass("voiceA");
+		}
+		else
+		{
+			$(voice).parent().addClass("voiceA");
 		}
         var $tetik = $('a[data-voiceid='+$(voice).attr("data-voiceID")+']');
         ac_kapa_manual($tetik);
