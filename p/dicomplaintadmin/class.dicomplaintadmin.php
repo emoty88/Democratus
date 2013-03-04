@@ -45,7 +45,7 @@
             colModel : [
                 {display: "ID", name : "ID", width : 30, sortable : true, align: "center"},
                 {display: "Name", name : "name", width : 150, sortable : true, align: "left"},
-                {display: "Di", name : "di", width : 150, sortable : true, align: "left"},
+                {display: "Di", name : "di", width : 230, sortable : true, align: "left"},
                 {display: "Reason", name : "reason", width : 150, sortable : true, align: "left"},
                 {display: "Reporter", name : "reporter", width : 100, sortable : false, align: "center"},
                 {display: "Status", name : "status", width : 30, sortable : false, align: "center"},                
@@ -205,9 +205,10 @@
 
             $start = (($page-1) * $rp);
             
-            $SELECT = "SELECT dc.*, di.di, di.status AS distatus, pr.name, pr.status AS prstatus";
+            $SELECT = "SELECT dc.*, di.di, di.status AS distatus, pr.name, pr.status AS prstatus, fpr.name as fromName";
             $FROM   = "\n FROM dicomplaint AS dc";
             $JOIN   = "\n LEFT JOIN profile AS pr ON pr.ID=dc.profileID";
+			$JOIN  .= "\n LEFT JOIN profile AS fpr ON fpr.ID=dc.fromID";
             $JOIN  .= "\n LEFT JOIN di AS di ON di.ID=dc.diID";
             if($query){
                 if(in_array($qtype,array( 'name' )))
@@ -273,14 +274,16 @@
                     $action = '-';
                     $reason = array_key_exists($row->reason, config::$direasons)? config::$direasons[$row->reason]:$row->reason;
                     
+					$porfile = '<a href="/profile/'.$row->ID.'" target="_blank">'.$row->name.' #'.$row->profileID.'</a>';
+					$reporter = '<a href="/profile/'.$row->fromID.'" target="_blank">'.$row->fromName.' #'.$row->fromID.'</a>';
                     $datarows[] = array(
                         "ID" => $row->ID,
                         "cell" => array(
                                         $row->ID,
-                                        $row->name, 
+                                       	$porfile, 
                                         $row->di,
                                         $reason,
-                                        $row->fromID,
+                                        $reporter,
                                         $status,
                                         $buttons
                                         )
