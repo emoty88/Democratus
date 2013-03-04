@@ -45,8 +45,8 @@
             colModel : [
                 {display: "ID", name : "ID", width : 30, sortable : true, align: "center"},
                 {display: "Name", name : "name", width : 150, sortable : true, align: "left"},
-                {display: "Reason", name : "reason", width : 150, sortable : true, align: "left"},
-                {display: "Reporter", name : "reporter", width : 300, sortable : false, align: "center"},
+                {display: "Reason", name : "reason", width : 350, sortable : true, align: "left"},
+                {display: "Reporter", name : "reporter", width : 150, sortable : false, align: "left"},
                 {display: "Status", name : "status", width : 30, sortable : false, align: "center"},                
                 {display: "Action", name : "action", width : 200, sortable : false, align: "center"}
                 ],                
@@ -54,7 +54,7 @@
                 {display: "Name", name : "name", isdefault: true}
                 ],
             sortname: "ID",
-            sortorder: "asc",
+            sortorder: "desc",
             usepager: true,
             title: "Profile Complaints",
             useRp: true,
@@ -200,9 +200,10 @@
 
             $start = (($page-1) * $rp);
             
-            $SELECT = "SELECT prc.*, pr.name, pr.status AS prstatus";
+            $SELECT = "SELECT prc.*, pr.name, pr.status AS prstatus, fpr.name as fromName";
             $FROM   = "\n FROM profilecomplaint AS prc";
             $JOIN   = "\n LEFT JOIN profile AS pr ON pr.ID=prc.profileID";
+			$JOIN   .= "\n LEFT JOIN profile AS fpr ON fpr.ID=prc.fromID";
             if($query){
                 if(in_array($qtype,array( 'name' )))
                     $WHERE = "\n WHERE $qtype LIKE '%".$db->escape($query)."%'";
@@ -229,7 +230,7 @@
             
             $db->setQuery($SELECT.$FROM.$JOIN.$WHERE.$ORDER.$LIMIT); 
             $rows = $db->loadObjectList();
-            
+           
             if(count($rows)){
                 foreach($rows as $row){
                     //profili durdur/ aç
@@ -258,13 +259,16 @@
                         $reason .= "\n <br /> <strong>not: </strong>". '<i>"' . $row->message . '"</i>';
                     
                     $action = '-';
+					
+					$porfile = '<a href="/profile/'.$row->ID.'" target="_blank">'.$row->name.' #'.$row->profileID.'</a>';
+					$reporter = '<a href="/profile/'.$row->fromID.'" target="_blank">'.$row->fromName.' #'.$row->fromID.'</a>';
                     $datarows[] = array(
                         "ID" => $row->ID,
                         "cell" => array(
                                         $row->ID,
-                                        $row->name.' #'.$row->profileID, 
+                                        $porfile, 
                                         $reason,
-                                        $row->fromID,
+                                        $reporter,
                                         $status,
                                         $buttons
                                         )
