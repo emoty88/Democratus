@@ -68,7 +68,7 @@
 			}
 			return array_merge($ilk, $son);
 		}
-		public function get_agendaPercent($agendaID)
+		public function get_agendaPercent($agendaID,$returnCount=false)
 		{
 			global $model, $db;
 			
@@ -104,9 +104,11 @@
 			}
 			$percents["max"]=$max;
 			$percents["sonuc"]=$sonuc;
+			if($returnCount)
+				$percents["count"]=$totalvote;
 			return $percents; 
 		}
-		public function get_agendaReturnObject($agendas)
+		public function get_agendaReturnObject($agendas, $returnCount=false)
 		{
 			global $model;
 			$return		= array();
@@ -131,7 +133,7 @@
 				$r_obj->myVote	= $a->myvote;
 				$r_obj->status	= $a->status;
 				$r_obj->sTime	= time_since( strtotime( $a->starttime ));
-				$r_obj->percent	= $this->get_agendaPercent($a->ID);
+				$r_obj->percent	= $this->get_agendaPercent($a->ID,$returnCount);
 				
 				$return[]=$r_obj;
 			}
@@ -376,96 +378,96 @@
 			return 7-$db->loadResult();
 		}
                 
-                public static function set_proposal_vote($id,$value){
-                    global $model, $db;
-                    try{
-                        if($model->profile->deputy!=1)
-                            throw  new Exception('verkil degil');
-                        $c_counter = new counter();
-                        $id = intval($id);
-                        $value = intval($value);
-                        $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING ) ;
-                        $QUERY  = 'SELECT * '. 
-                                  'FROM proposalvote '.
-                                  'WHERE proposalID='.$id.' AND '.
-                                  'deputyID='.$model->profileID.' AND '.
-                                  'status = 1  LIMIT 1'.
-                                  '';
-                        $db->setQuery($QUERY);
-						$sonucC = $db->loadObjectList();
-                        $count = count($sonucC);
-						
-						if($count>0 && $sonucC[0]->approve==$value)
-						{
-							 return false;
-						}
-                       	if($value>0){
-                            $approve = 1;
-                            $reject = 0;
-                            $q = ' approve=1, reject=0 ';
-                        }else{
-                            $approve = 0;
-                            $reject = 1;
-                            $q = ' approve=0, reject=1  ';
-                        }
-                        if($count<1){
-                            //insert
-                            $QUERY = 'INSERT INTO proposalvote (proposalID,deputyID,approve,reject,status, datetime, ip) VALUES'.
-                                "($id,$model->profileID,$approve,$reject,1,NOW(),'$ip')";
-                            $db->setQuery($QUERY);
-                            if(!$db->query()) throw new Exception('db error2');
-                            
-                            if($approve == 1)
-							{
-								$c_counter->set_proposalCount($id, "approve", "+");
-							}
-							else {
-								$c_counter->set_proposalCount($id, "reject", "+");
-							}
-                        }else{
-                            //update
-                            $QUERY = 'UPDATE proposalvote SET '.$q.', datetime = NOW(), '." ip = '$ip' ".
-                                  'WHERE proposalID='.$id.' AND '.
-                                  'deputyID='.$model->profileID.' AND '.
-                                  'status = 1  '.
-                                  '';
-                            //echo $QUERY;
-                            $db->setQuery($QUERY);
-                            if(!$db->query()) 
-                                throw new Exception('db error2');
-                                
-							if($approve == 1)
-							{
-								$c_counter->set_proposalCount($id, "approve", "+");
-								$c_counter->set_proposalCount($id, "reject", "-");
-							}
-							else 
-							{
-								$c_counter->set_proposalCount($id, "reject", "+");
-								$c_counter->set_proposalCount($id, "approve", "-");
-							}
-                        }
-                    }  catch (Exception $e){
-                        //echo $e->getMessage();
-                        return false;
-                    }
-                    return true;
+        public static function set_proposal_vote($id,$value){
+            global $model, $db;
+            try{
+                if($model->profile->deputy!=1)
+                    throw  new Exception('verkil degil');
+                $c_counter = new counter();
+                $id = intval($id);
+                $value = intval($value);
+                $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING ) ;
+                $QUERY  = 'SELECT * '. 
+                          'FROM proposalvote '.
+                          'WHERE proposalID='.$id.' AND '.
+                          'deputyID='.$model->profileID.' AND '.
+                          'status = 1  LIMIT 1'.
+                          '';
+                $db->setQuery($QUERY);
+				$sonucC = $db->loadObjectList();
+                $count = count($sonucC);
+				
+				if($count>0 && $sonucC[0]->approve==$value)
+				{
+					 return false;
+				}
+               	if($value>0){
+                    $approve = 1;
+                    $reject = 0;
+                    $q = ' approve=1, reject=0 ';
+                }else{
+                    $approve = 0;
+                    $reject = 1;
+                    $q = ' approve=0, reject=1  ';
                 }
-                
-                public static function proposal_delete($ID){
-                    global $model,$db;
-                    try {
-                        $uID = $model->profileID;
-                        $QUERY = "UPDATE proposal SET status = 0 WHERE ID=$ID AND (deputyID = $uID or mecliseAlan = $uID) AND status>0";
-                        $db->setQuery($QUERY);
-                        if(!$db->query())
-                            throw new Exception('hata');
-                    }  catch (Exception $e){
-                        return FALSE;
-                    }
+                if($count<1){
+                    //insert
+                    $QUERY = 'INSERT INTO proposalvote (proposalID,deputyID,approve,reject,status, datetime, ip) VALUES'.
+                        "($id,$model->profileID,$approve,$reject,1,NOW(),'$ip')";
+                    $db->setQuery($QUERY);
+                    if(!$db->query()) throw new Exception('db error2');
                     
-                    return TRUE;
+                    if($approve == 1)
+					{
+						$c_counter->set_proposalCount($id, "approve", "+");
+					}
+					else {
+						$c_counter->set_proposalCount($id, "reject", "+");
+					}
+                }else{
+                    //update
+                    $QUERY = 'UPDATE proposalvote SET '.$q.', datetime = NOW(), '." ip = '$ip' ".
+                          'WHERE proposalID='.$id.' AND '.
+                          'deputyID='.$model->profileID.' AND '.
+                          'status = 1  '.
+                          '';
+                    //echo $QUERY;
+                    $db->setQuery($QUERY);
+                    if(!$db->query()) 
+                        throw new Exception('db error2');
+                        
+					if($approve == 1)
+					{
+						$c_counter->set_proposalCount($id, "approve", "+");
+						$c_counter->set_proposalCount($id, "reject", "-");
+					}
+					else 
+					{
+						$c_counter->set_proposalCount($id, "reject", "+");
+						$c_counter->set_proposalCount($id, "approve", "-");
+					}
                 }
+            }  catch (Exception $e){
+                //echo $e->getMessage();
+                return false;
+            }
+            return true;
+        }
+                
+        public static function proposal_delete($ID){
+            global $model,$db;
+            try {
+                $uID = $model->profileID;
+                $QUERY = "UPDATE proposal SET status = 0 WHERE ID=$ID AND (deputyID = $uID or mecliseAlan = $uID) AND status>0";
+                $db->setQuery($QUERY);
+                if(!$db->query())
+                    throw new Exception('hata');
+            }  catch (Exception $e){
+                return FALSE;
+            }
+            
+            return TRUE;
+        }
 		public function get_hastagAgenda($active=1)
 		{
 			

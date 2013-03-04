@@ -1697,7 +1697,7 @@ else
 		$c_parliament = new parliament;
 		$active = filter_input(INPUT_POST, 'active', FILTER_SANITIZE_NUMBER_INT);
 		$agendas = $c_parliament->get_hastagAgenda($active);
-		$rt->agendas = $c_parliament->get_agendaReturnObject($agendas);
+		$rt->agendas = $c_parliament->get_agendaReturnObject($agendas, TRUE);
 		
 		echo json_encode($rt);
 	}

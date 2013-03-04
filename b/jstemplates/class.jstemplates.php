@@ -243,11 +243,11 @@ class jstemplates_block extends control{
 							<a class="btn {{if myVote == 3}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-3" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 3);">Kararsızım</a>
 							<a class="btn {{if myVote == 4}} btn-danger {{/if}} btn-agenda-${ID} btn-agenda-${ID}-4" data-type="parliementPage" href="javascript:set_meclis_oy(${ID}, 4);">Katılmıyorum</a>
 						</aside>
-                                            <aside class="komutlar" onclick="notOpen=1;">
-                                                {{if mecliseAlan>0 }}
-                                                    <a href="/${mecliseAlanPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${mecliseAlanName} Tarafından atandı</a> 
-                                                {{/if}}
-                                            </aside>
+                        <aside class="komutlar" onclick="notOpen=1;">
+                            {{if mecliseAlan>0 }}
+                                <a href="/${mecliseAlanPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${mecliseAlanName} Tarafından atandı</a> 
+                            {{/if}}
+                        </aside>
 						
 					</div>
                                     
@@ -342,6 +342,11 @@ class jstemplates_block extends control{
 						<address class="yazar">
 							<a title="${dName}'un Profilini Görüntüle" href="#">${dName}</a> 
 							<span>${sTime}</span>
+							{{if percent.count>0}}
+								<p>Toplam ${percent.count} oy kullanıldı</p>
+							{{else}}
+								<p>Hiç oy kullanılmadı</p>
+							{{/if}}
 						</address>
 						<div class="duvar_yazisi_icerigi">
 							<p style="min-height: 48px;">
@@ -366,6 +371,7 @@ class jstemplates_block extends control{
 						<aside class="cevaplar yuzde katilmiyorum" style="cursor: pointer;" data-original-title="">
 							<span class="sonuc"><strong>%${percent.max}</strong> Katılmıyorum</span>
 						{{/if}}
+						
 							<div style="display:none">
 								<p class="yuzdeler olumlu" style="width: ${percent.olumlu}%">${percent.olumlu}</p>
 								<p class="yuzdeler olumsuz" style="width: ${percent.olumsuz}%">${percent.olumsuz}</p>
