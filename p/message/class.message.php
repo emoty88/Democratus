@@ -36,7 +36,7 @@
 			$pID = profile::change_perma2ID($pPerma);
 			$model->addScript("var fID=".$pID);
 			$mesajlar=$this->msg->getDialog($model->profileID,$pID,null,20);
-$model->addScript(TEMPLATEURL."ala/js/jquery.nicescroll.min.js", "jquery.nicescroll.min.js", 1);
+			$model->addScript(TEMPLATEURL."ala/js/jquery.nicescroll.min.js", "jquery.nicescroll.min.js", 1);
             
 			//$model->addScript(TEMPLATEURL."ala/js/iscroll.js", "iscroll.js", 1);
 			//$model->addStyle(TEMPLATEURL."ala/css/antiscroll.css", "antiscroll.css", 1);

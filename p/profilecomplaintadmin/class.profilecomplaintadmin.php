@@ -35,7 +35,7 @@
             $model->addScript(PLUGINURL . 'lib/tiny_mce/tiny_mce.js', 'tiny_mce.js', 1 );
             
             $model->addScript(PLUGINURL . 'lib/democratus.js', 'democratus.js', 1 );
-            $model->addScript($model->pluginurl . 'profilecomplaintadmin.js', 'profilecomplaintadmin.js', 1 );            
+            $model->addScript($model->pluginurl . 'profilecomplaintadmin.js', 'profilecomplaintadmin.js', 1 );          
 ?>
 <table id="grid1" style="display: none;" class="flexigrid"><tr><td>&nbsp;</td></tr></table>
 <script type="text/javascript">
