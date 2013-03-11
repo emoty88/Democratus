@@ -1139,7 +1139,7 @@ jQuery(document).ready(function ($) {
 				{
 					if(callF=="newMessage")
 					{
-						location.href="/message/dialog/"+friendPerma;
+						//location.href="/message/dialog/"+friendPerma;
 					}
 					else if(callF=="messageSendBtn"){
 						get_dialog_details('');
@@ -1623,7 +1623,7 @@ jQuery(document).ready(function ($) {
 	    },'json');
 	}
 	function get_messageDialog(){
-		$.post("/ajax/get_messageDialog", {deputyID: 0}, function(response){
+		$.post("/ajax/get_messageDialog", {}, function(response){
 			if(response.status=="success")
 	        {
 	        	$("#message-dialog-tmpl").tmpl(response.dialogs).appendTo("#dialog_list_ul");
@@ -1636,39 +1636,39 @@ jQuery(document).ready(function ($) {
 	}
 	function get_dialog_details(before,x)
 	{
-                        $('#onceki_mesajlar').niceScroll();
-                        
-                        if(before.length<1)
-                                $("#onceki_mesajlar").html("");
-                                
-                        $("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
-                        $.post("/ajax/get_messageDialogDetail", {fID: fID,before:before}, function(response){
-                            if(response.status=="success")
-                            {
-                                if(response.last=='x')
-                                       $('#before-messages').hide();
-                                last = response.last;
-                                //alert(last);
-                                $('#before-messages').remove();
-                                $("#message-dialog-detail-tmpl").tmpl(response.dialogs).prependTo("#onceki_mesajlar");
-                                if(response.dialogs.length>=10)
-                                    $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
-                                
-                                
-                                if(x==1)
-                                    $('#onceki_mesajlar').scrollTo('#before-messages');
-                                else{
-                                    $('#onceki_mesajlar').append('<div id="focus"></div>');
-                                    $('#onceki_mesajlar').scrollTo('#focus');
-                                }
-                                $(".loading_bar").hide();
-                                //$.prependTo(content)
-                            }
-                            else
-                            {
-
-                            }
-                        },'json');
+	    $('#onceki_mesajlar').niceScroll();
+	    
+	    if(before.length<1)
+	            $("#onceki_mesajlar").html("");
+	            
+	    $("#loadingbar-tmpl").tmpl().appendTo("#onceki_mesajlar");
+	    $.post("/ajax/get_messageDialogDetail", {fID: fID,before:before}, function(response){
+	        if(response.status=="success")
+	        {
+	            if(response.last=='x')
+	                   $('#before-messages').hide();
+	            last = response.last;
+	            //alert(last);
+	            $('#before-messages').remove();
+	            $("#message-dialog-detail-tmpl").tmpl(response.dialogs).prependTo("#onceki_mesajlar");
+	            if(response.dialogs.length>=10)
+	                $('#onceki_mesajlar').prepend('<a href="javascript:;" style="text-align: center; display: block" id="before-messages" onclick="javascript:before();">Önceki Mesajlar</a>');
+	            
+	            
+	            if(x==1)
+	                $('#onceki_mesajlar').scrollTo('#before-messages');
+	            else{
+	                $('#onceki_mesajlar').append('<div id="focus"></div>');
+	                $('#onceki_mesajlar').scrollTo('#focus');
+	            }
+	            $(".loading_bar").hide();
+	            //$.prependTo(content)
+	        }
+	        else
+	        {
+	
+	        }
+	    },'json');
 	}
         
         function before(){
