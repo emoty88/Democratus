@@ -17,9 +17,79 @@
 				case 'twitter'	: return $this->twitter(); break;
 				case 'twitter2'	: return $this->twitter2(); break;
 				case 'twitter_sug'	: return $this->twitterSuggestion(); break;		
+				case 'activate' : return $this->activate();
 			}
 		}
-
+		public function activate(){
+            global $model, $db;
+            $model->initTemplate('simple');
+            $model->title = 'Activate Connect | Democratus.com';
+            $model->addScript(PLUGINURL . 'lib/combined.js', 'combined.js', 1 );
+            $model->addScript($model->pluginurl . 'user.js', 'user.js', 1 );
+            
+            $model->addStyle(PLUGINURL . 'lib/jquery-ui/jquery-ui.css', 'jquery-ui.css', 1 );
+            $model->addStyle(TEMPLATEURL . 'default/form.css', 'form.css', 1 );
+            
+            $activatekey = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($model->paths[2], FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+            try{
+                
+                $SELECT = "SELECT oa.*";
+                $FROM   = "\n FROM oauthrequest AS oa";
+                $WHERE  = "\n WHERE oa.key=".$db->quote($activatekey);
+                $LIMIT  = "\n LIMIT 1";
+                
+                $db->setQuery( $SELECT . $FROM . $WHERE . $LIMIT );
+                //die($db->_sql);
+                $request = null;
+                if( $db->loadObject($request) ){
+                    
+                    //die($request->email);
+                    
+                    if($request->status>0) 
+                        throw new Exception('zaten aktive edilmiş');
+                    
+                    $request->status=1;
+                    if( !$db->updateObject('oauthrequest', $request, 'ID'))
+                        throw new Exception('aktive edilirken hata oldu.');
+                    
+                    //üyeyi ve profili aktive et
+                    $db->setQuery("SELECT * FROM oauth WHERE ID=".$db->quote($request->oauthID));
+                    $oauth = null;
+                    if($db->loadObject($oauth)){
+                        //kullanıcı bulundu, aktive et
+                        if($oauth->status!=0) 
+                            throw new Exception('kullanıcı zaten aktif');
+                        
+                        $oauth->status = 1;
+                        if($db->updateObject('oauth', $oauth, 'ID')){
+                            echo '<h3>Aktivasyon başarılı</h3>';
+                            switch($oauth->oauth_provider){
+                                case 'facebook': $model->redirect('/oauth/facebook/'); break;
+                                case 'twitter': $model->redirect('/oauth/twitter/'); break;
+                                default: $model->redirect('/');
+                            }
+                            
+                            
+                            
+                        } else throw new Exception('aktivasyon sırasında bir hata oluştu');
+                        
+                    }
+                    
+                    
+                    
+                    
+                    //isteği sil
+                    
+                    
+                } else {
+                    //request not found
+                    throw new Exception('yok ki!');
+                }
+            } catch (Exception $e){
+                //echo $e->getMessage();
+                $model->redirect('/');
+            }
+        }
 		function twitterSuggestion(){
 				global $model,$db;
         		require_once( $model->pluginpath.'twitter/twitteroauth.php' );
@@ -135,7 +205,6 @@
             } 
 			
 		}
-
 	public function facebook(){
         global $model, $db;
 		$c_profile = new profile();
@@ -151,12 +220,11 @@
         
         $user = $facebook->getUser(); 
         
-        
         if(!$user){
             $login_url = $facebook->getLoginUrl(array( 'scope' => 'email'));
             $model->redirect($login_url);
         }
-		
+
         try {
             // Proceed knowing you have a logged in user who's authenticated.
             $user_profile = $facebook->api('/me');
@@ -169,6 +237,7 @@
         }
 		
         try{
+        	
             if (empty($user_profile )) throw new Exception('profile is empty');
                 
                 
@@ -187,28 +256,46 @@
                 
                 $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'facebook' AND oauth_uid = " . $db->quote($user_profile['id']) . "" );
                 $oauth = null; // bu alanı oauth kaydından değil profildeki userID den kontrol edeceğiz 
+                
                 if($db->loadObject($oauth)){
+                	echo "asd";
                     //login ol ve çık
                     //die('oauth var');
-                    if($oauth->status>0)
-                        $model->login('ID='.intval($oauth->userID),'facebook');
-                    if($model->profile->fbID=="")
-                    {
-                    	$pro=new stdClass();
-                    	$pro->ID=intval($oauth->userID);
-                    	$pro->fbID=$db->quote($user_profile['id']);
-                    	$db->updateObject("profile", $pro, "ID");
-                    }
-                    if($model->profile->permalink=="")
-                    {
-                    	$pro=new stdClass();
-                    	$pro->ID=intval($oauth->userID);
-                    	$pro->permalink=$c_profile->normalize_permalink($username);
-                    	$db->updateObject("profile", $pro, "ID");
-                    }
-                    return $model->redirect('/');    
+                    if($oauth->status>0){
+                    	$model->login('ID='.intval($oauth->userID),'facebook');
+					
+	                    if($model->profile->fbID=="")
+	                    {
+	                    	$pro=new stdClass();
+	                    	$pro->ID=intval($oauth->userID);
+	                    	$pro->fbID=$db->quote($user_profile['id']);
+	                    	$db->updateObject("profile", $pro, "ID");
+	                    }
+	                    if($model->profile->permalink=="")
+	                    {
+	                    	$pro=new stdClass();
+	                    	$pro->ID=intval($oauth->userID);
+	                    	$pro->permalink=$c_profile->normalize_permalink($username);
+	                    	$db->updateObject("profile", $pro, "ID");
+	                    }
+						return $model->redirect('/');  
+					}
+					else
+					{
+						
+						echo '<h3>Bu email adresi ile zaten bir üyelik var.</h3>';
+						$db->setQuery("select * from oauthrequest where oauthID=".$db->quote($oauth->ID));
+						  if($db->loadObject($request)){
+						  	
+                            $response['status'] = 'success';
+                            $model->sendsystemmail($request->email, 'Democratus hesabına facebook ile bağlanma izni', 'Democratus.com\'da var olan hesabına facebook ile bağlanma talebinizi aldık. Eğer facebook hesabınızı kullanmak istiyorsanız şu onay linkine tıklamalı ya da tarayıcınızın adres çubuğuna yapıştırmalısınız: http://democratus.com/oauth/activate/'.$request->key);
+                            echo '<p>Size onaylamanız için bir e-posta gönderdik. Lütfen oradaki yönergeleri takip edin</p>';
+                            return 0;
+                        } else {
+                            throw new Exception('kayıt hatası');
+                        }
+					}
                 }
-                
                 
                 $email = strtolower( trim( $user_profile['email'] ) );
                 
