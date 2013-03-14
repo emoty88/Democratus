@@ -431,7 +431,7 @@
 								
 						?>
 	                        <div class="social_connect">
-	                            <button class="btn share_with_friends ">Arakadaşlarınla Paylaş</button>
+	                            <button class="btn share_with_friends ">Arkadaşlarınla Paylaş</button>
 	                        </div>
 	                        <div style="clear: both;"></div>
 	                        <div class="social_connect2" style="display: none;">

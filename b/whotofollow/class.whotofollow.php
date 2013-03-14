@@ -21,11 +21,7 @@
 							
 						</ul>
 					</div>
-					<aside class="kontroller">
-						<a href="javascript:;" class="sayfaya_git" title="Tümünü görüntüle &rarr;">
-							<i class="atolye15-ikon-ok atolye15-ikon-24"></i>
-						</a>
-					</aside>
+					
 				</section>
 			<?
 			}

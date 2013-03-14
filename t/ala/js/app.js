@@ -147,7 +147,7 @@ jQuery(document).ready(function ($) {
         $.post("/ajax/profilecomplaintmenu", { ID: ID }, function(data){ 
             if(data && data.result=='success'){
             	
-            	$('.myModalLabel').html("Şikayet");
+            	$('#myModalLabel').html("Şikayet");
             	$('.modal-body').html(data.html);
             	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnProfile" rel="'+ID+'" class="btn btn-primary">Uygula</a>');
 				$('#myModal').modal('show'); 
@@ -165,7 +165,7 @@ jQuery(document).ready(function ($) {
         $.post("/ajax/voicecomplaintmenu", { ID: ID }, function(data){ 
             if(data && data.result=='success'){
             	
-            	$('.myModalLabel').html("Şikayet");
+            	$('#myModalLabel').html("Şikayet");
             	$('.modal-body').html(data.html);
             	$('.modal-footer').prepend('<a href="javascript:;" id="uygulaBtnVoice" rel="'+ID+'" class="btn btn-primary">Uygula</a>');
 				$('#myModal').modal('show'); 
