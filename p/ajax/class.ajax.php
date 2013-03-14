@@ -553,10 +553,18 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	}
 	public function get_messageCount()
 	{
-            
 		global $model;
+		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
+		{
+			$profileID = intval($_REQUEST["profileID"]);
+		}
+		else
+		{
+			$profileID = $model->profileID;
+		}
+		
 		$c_message = new messageClass();
-		echo $c_message->getCount($model->profileID);
+		echo $c_message->getCount($profileID);
 	}
 	public function redi(){
     	global $model, $db;
@@ -813,8 +821,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return["myDeputy"]= $c_profile->get_myDeputyReturnObj($deputy);
 		echo json_encode($return);
 	}
-	function get_myFollowing()
-	{
+	function get_myFollowing(){
 		global $model;
 		if(@$_REQUEST["limit"])
 		{
@@ -845,8 +852,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		
 		echo json_encode($return);
 	}
-	function set_vekilOyu()
-	{
+	function set_vekilOyu(){
 		global $model;
 		$deptyID	= filter_input(INPUT_POST, 'deputyID', FILTER_SANITIZE_NUMBER_INT);
 		$return		= array();
@@ -878,8 +884,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$myDCount	= $c_profile->get_myDuputy_count();
 		echo (10-$myDCount);
 	}
-	function get_proposal()
-	{
+	function get_proposal(){
 		$c_parliament	= new parliament;
 		$return		= array();
 		$proposal	= $c_parliament->get_proposal();
@@ -895,39 +900,66 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$poroposalRt	= $c_parliament->set_proposal($proposalTxt);
 		echo json_encode($poroposalRt);
 	}
-	function get_messageDialog()
-	{
+	function get_messageDialog(){
 		global $model;
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
-		$dialogs = $c_message->getDialogList($model->profileID);
-		$return["dialogs"] = $c_message->getDialogListRObj($dialogs);
+		
+		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
+		{
+			$profileID = intval($_REQUEST["profileID"]);
+		}
+		else
+		{
+			$profileID = $model->profileID;
+		}
+		//var_dump($profileID);
+		$dialogs = $c_message->getDialogList($profileID);
+		$return["dialogs"] = $c_message->getDialogListRObj($dialogs,$profileID);
 		echo json_encode($return);
 	}
-	function get_messageDialogDetail()
-	{
+	function get_messageDialogDetail(){
 		global $model;
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
-		$fID   	= filter_input(INPUT_POST, 'fID', FILTER_SANITIZE_NUMBER_INT );
-        $before = filter_input(INPUT_POST, 'before',FILTER_SANITIZE_STRING);
-        if(empty($before))
+		$fID	= intval($_REQUEST["fID"]);
+		$before	= intval($_REQUEST["before"]);
+		
+		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
+		{
+			$profileID = intval($_REQUEST["profileID"]);
+		}
+		else
+		{
+			$profileID = $model->profileID;
+		}
+		
+      	if(empty($before))
             $before = NULL;
-		$dialogs = $c_message->getDialog($model->profileID, $fID,$before);
-		$return["dialogs"] = $c_message->getDialogDetailRObj($dialogs);
-                if(sizeof($dialogs)<1){
-                    $return['last']='x';
-                }
-                $return['last'] = (string)$dialogs[0]['_id'];
+		$dialogs = $c_message->getDialog($profileID, $fID, $before);
+		$return["dialogs"] = $c_message->getDialogDetailRObj($dialogs, $profileID);
+        if(sizeof($dialogs)<1){
+            $return['last']='x';
+        }
+        $return['last'] = (string)$dialogs[0]['_id'];
 		echo json_encode($return);
 	}
-	function send_message()
-	{
+	function send_message(){
 		global $model;
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
 		$fPerma   	= filter_input(INPUT_POST, 'friendPerma', FILTER_SANITIZE_STRING );
 		$message   	= filter_input(INPUT_POST, 'msgText', FILTER_SANITIZE_STRING );
+		
+		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
+		{
+			$profileID = intval($_REQUEST["profileID"]);
+		}
+		else
+		{
+			$profileID = $model->profileID;
+		}
+		
 		$fID = profile::change_perma2ID($fPerma);
                 $profileClass = new profile;
                 $test = $profileClass->get_porfileObject($fID);
@@ -941,11 +973,11 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                         return;
                 }
                 
-                if($fID == $model->profileID){
+                if($fID == $profileID){
                     echo '{"result": "error"}';
                     return;
                 }
-		if($c_message->insertMessage($model->profileID, $fID, $message))
+		if($c_message->insertMessage($profileID, $fID, $message))
 		{
 			$return = array("status"=>"success");
 		}
@@ -963,19 +995,16 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$return = $c_profile->get_profileMultiReturtnObj($following);
 		echo json_encode($return);
 	}
-	function facebook_get_loginUrl()
-	{
+	function facebook_get_loginUrl(){
 		global $model;
 		$return["status"]="success";
 		$c_profile = new profile;
 		$perm = $_REQUEST["perm"];
 		$c_facebook = new facebookClass();
 		$return["url"]=$c_facebook->get_loginUrl($perm);
-		
 		echo json_encode($return);
 	}
-	function facebook_get_friendSuggestion()
-	{
+	function facebook_get_friendSuggestion(){
 		global $model, $db;
 		$returnA = array("status"=>"success");
 		$c_facebook = new facebookClass;
@@ -1675,7 +1704,15 @@ else
         $messageClass = new messageClass();
         $r_array = array();
         $r_array['status'] = 'success';
-        $userID = $model->profileID;
+		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
+		{
+			$userID = intval($_REQUEST["profileID"]);
+		}
+		else
+		{
+			$userID = $model->profileID;
+		}
+
         $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
         $user2ID = profile::change_perma2ID($user2ID);
         if($user2ID<2){

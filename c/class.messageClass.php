@@ -6,8 +6,8 @@ class messageClass {
 	public $collection;
 
 	function messageClass() {
-		
 		$this -> connection = new Mongo();
+		
 		//$this->db = $this->connection->selectDB(messageDB);
 		//$this->connection->authenticate("mongomessage","70gAh5LC21");
 		$this->database = $this->connection->selectDB(messageDB);
@@ -178,9 +178,9 @@ class messageClass {
 					array('fromID'=>$userID, 'statusFrom'=>TRUE)
 				)
 		);
-		
+
 		//status ekle
-		
+
 		$result = $this->collection->group(
 			array(
 				//'_id'=>FALSE,
@@ -215,7 +215,7 @@ class messageClass {
 		
 		$dialogsLastMessages = array();
 		//$dialogs = $this->subval_sort($dialogs, 'insertTime') ;
-		$id = intval($model->profileID);
+		$id = intval($userID);
 		
 		//$dialogs = $this->subval_sort($dialogs,'inserTime');
 		foreach ($dialogs as $key => $dialog) {
@@ -270,15 +270,20 @@ class messageClass {
 		$dialogsLastMessages = $this->subval_sort($dialogsLastMessages, 'insertTime',$limit) ;
 		return $dialogsLastMessages;
 	}
-	function getDialogDetailRObj($dialog)
+	function getDialogDetailRObj($dialog, $profileID=null)
 	{
 		global $model;
 		$returnA = array();
 		$c_profile = new profile;
+		
+		if($profileID==null)
+		{
+			$profileID = $model->profileID;
+		}
 		foreach ($dialog as $d) {
 			$ro = new stdClass;
 			$ro->ID = (string)  $d["_id"];
-			if($d["fromID"] == $model->profileID)
+			if($d["fromID"] == $profileID)
 			{
 				$ro->me = TRUE;
 			}
@@ -298,16 +303,21 @@ class messageClass {
 		}
 		return $returnA;
 	}
-	function getDialogListRObj($dialogs)
+	function getDialogListRObj($dialogs, $profileID=null)
 	{
 		global $model;
 		$returnA = array();
 		$c_profile = new profile;
+		if($profileID==null)
+		{
+			$model->profileID = $model->profileID;
+		}
+		
 		foreach($dialogs as $d)
 		{
 			$ro = new stdClass;
 			$ro->ID = (STRING) $d["_id"];
-			if($d["fromID"] == $model->profileID){
+			if($d["fromID"] == $profileID){
 				$ro->fID = $d["toID"];
 			}
 			else {
