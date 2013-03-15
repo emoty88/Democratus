@@ -10,16 +10,23 @@
 			$model->addHeaderElement();
 			
 			$c_voice = new voice($model->paths[1]);
-			$model->addScript("paths=".json_encode($model->paths));
-			$model->addScript("plugin='voice'");
-			$model->addScript("voiceID = ".$c_voice->_ID);
-			
-			$voiceRObj = $c_voice->get_return_object($c_voice->_voice);
-			$model->addScript("voiceObj = ".json_encode($voiceRObj));
-			$model->addScript("$(document).ready(function (){
-				voiceDetail($('.voice_hover_area'));
-				$('.sikayet').show();
-			});");
+
+			if($c_voice->_voice == null || $c_voice->_voice->status<1)
+			{
+				echo "<p>Aradığınız içerik bulunamadı.";
+			}
+			else {
+				$model->addScript("paths=".json_encode($model->paths));
+				$model->addScript("plugin='voice'");
+				$model->addScript("voiceID = ".$c_voice->_ID);
+				
+				$voiceRObj = $c_voice->get_return_object($c_voice->_voice);
+				$model->addScript("voiceObj = ".json_encode($voiceRObj));
+				$model->addScript("$(document).ready(function (){
+					voiceDetail($('.voice_hover_area'));
+					$('.sikayet').show();
+				});");
+			}
 			
 			?>
 			

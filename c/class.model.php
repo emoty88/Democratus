@@ -428,7 +428,8 @@
 
         public function load(){
             global $db;
-             
+            
+			
             $permalink  = $this->paths[0];
             $domain     = $this->domain;               
             $query  = "SELECT p.*"
@@ -487,6 +488,7 @@
 					}
 					
             }
+			
             
             $this->pluginurl  = PLUGINURL.$this->plugin.'/';
             $this->pluginpath = PLUGINPATH.$this->plugin.SLASH;
@@ -1355,9 +1357,23 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             die('<h1>Not Found</h1> <p>The requested URL was not found on this server.</p>');
         }
         
-        public function sendsystemmail($email, $subject, $message){
+        public function sendsystemmail($email, $subject, $message, $sendType="normal"){
             
             $mail = new phpmailer();
+			
+			if($sendType=="mandrill")
+			{
+				$mail->IsSMTP(); // telling the class to use SMTP
+				$mail->Host       = "smtp.mandrillapp.com"; 				// SMTP server
+				$mail->SMTPDebug  = 2;                     					// enables SMTP debug information (for testing)
+				                                           					// 1 = errors and messages
+				                                           					// 2 = messages only
+				$mail->SMTPAuth   = true;                  					// enable SMTP authentication
+				$mail->Host       = "smtp.mandrillapp.com"; 				// sets the SMTP server
+				$mail->Port       = 587;                    				// set the SMTP port for the GMAIL server
+				$mail->Username   = "caner.turkmen@democratus.com"; 		// SMTP account username
+				$mail->Password   = "bC4HRyEm1D4LZTaX7-xvvQ";        		// SMTP account password
+			}
             $mail->SetFrom('democratus@democratus.com', 'Democratus');
             $mail->AddAddress($email);
             $mail->Subject = $subject;

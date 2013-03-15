@@ -20,6 +20,7 @@ var voiceDControl 	= 0;
 var globalRandID	= 0;
 var newVoiceCount	= 0;
 var loadNewProsses	= 0;
+var scrollCount		= 0;
 var notLoadVoice	= false;
 
 
@@ -107,7 +108,12 @@ jQuery(document).ready(function ($) {
 		}
 		$(window).scroll(function(){
 		if(wallmoreAction==0 && $(window).scrollTop() == $(document).height() - $(window).height()){
-		    	get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
+				if(scrollCount<3)
+				{
+					get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
+					scrollCount = scrollCount + 1; 
+				}
+		    	
 	        }
 		});
 		get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag);
@@ -1021,7 +1027,7 @@ jQuery(document).ready(function ($) {
 				$("#duvaryazisi-tmpl").tmpl(voices, make_link).prependTo(container);
 			$(".loading_bar").remove();
 			
-			$("#dahafazlases-tmpl").tmpl().appendTo(container);
+			$("#dahafazlases-tmpl").tmpl().click(function(){ get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag); }).appendTo(container);
 			wallmoreAction=0;
 			get_iconText(voices);
 			get_iconCount(voices);
@@ -1072,6 +1078,7 @@ jQuery(document).ready(function ($) {
 		var post_data = {profileID:profileID, start:start, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword, pos:pos};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
+		//get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
 		$.ajax({
 			type: "POST",
 			url: "/ajax/get_wall",

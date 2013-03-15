@@ -127,7 +127,7 @@ class ajax_plugin extends control{
 			$c_voice= new voice;
 			$share->di=strip_tags( html_entity_decode( htmlspecialchars_decode(filter_input(INPUT_POST, 'voice_text', FILTER_SANITIZE_STRING), ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
 			$share->di=$urlS->changeUrlShort($share->di); 
-            $share->di=  mb_substr($share->di , 0, 200 ) ; 
+            $share->di=  mb_substr($share->di , 0, 201 ) ; 
             $share->onlyProfile=0;
     
             if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek // linkler otomatik gelecek

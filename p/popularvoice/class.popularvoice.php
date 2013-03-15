@@ -26,13 +26,13 @@ class popularvoice_plugin extends control{
 			</section>
 			<div class="tab-content">
 				<div class="tab-pane fade in active" id="tab-sesgetirenler">
-					<div id="sesgetirenler-content"></div>
+					<div id="sesgetirenler-content" style="z-index: 200;"></div>
 				</div>
 				<div class="tab-pane fade in active" id="tab-yukselenler">
-					<div id="yukselenler-content"></div>
+					<div id="yukselenler-content" style="z-index: 200;"></div>
 				</div>
 				<div class="tab-pane fade in active" id="tab-ulkeduvari">
-					<div id="ulkeduvari-content"></div>
+					<div id="ulkeduvari-content" style="z-index: 200;"></div>
 				</div>
 			</div>
 		<?
