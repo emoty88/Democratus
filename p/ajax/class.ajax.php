@@ -947,9 +947,10 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	function send_message(){
 		global $model;
 		$c_message = new messageClass;
-		$return = array("status"=>"success");
-		$fPerma   	= filter_input(INPUT_POST, 'friendPerma', FILTER_SANITIZE_STRING );
-		$message   	= filter_input(INPUT_POST, 'msgText', FILTER_SANITIZE_STRING );
+		 
+		$fPerma   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["friendPerma"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
+		$message   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["msgText"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
+		
 		
 		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
 		{
@@ -1712,8 +1713,7 @@ else
 		{
 			$userID = $model->profileID;
 		}
-
-        $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
+		$user2ID   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["perma"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
         $user2ID = profile::change_perma2ID($user2ID);
         if($user2ID<2){
             $r_array['status'] = 'error';
