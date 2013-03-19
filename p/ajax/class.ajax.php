@@ -173,42 +173,42 @@ class ajax_plugin extends control{
 				$share->profileType	= "tagPage";
 			}	
 			
-            if( $db->insertObject('di', $share,"ID") ){
-            	$share->ID=$db->insertid();
-				//KM::identify($model->user->email); // aktif edilince açılacak 
-			    //KM::record('writingvoice');
-			     
-               if($share->isReply == "1"){
-                		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
-                		$id = $db->loadResult();
-                		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
-                		
-                		//other commenters notice
-	                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-		                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-						
-						$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
-						$notNotice=$db->loadResultArray();
-	                   	if(count($notNotice))
-	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
-	                    else 
-	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
-	                    
-	                    $dicc = $db->loadObjectList();
-		             	if(count($dicc)){
-		                	foreach($dicc as $dic){
-		                    	if($dic->profileID==$share->profileID) continue;
-		                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
-		                  	}
-		             	}
-                	}
-                	else if (@$_POST["linkli"]=="profile")
-                	{
-                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
-                	}
+	            if( $db->insertObject('di', $share,"ID") ){
+	            	$share->ID=$db->insertid();
+					//KM::identify($model->user->email); // aktif edilince açılacak 
+				    //KM::record('writingvoice');
+				     
+	        	if($share->isReply == "1"){
+	        		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
+	        		$id = $db->loadResult();
+	        		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
+	        		
+	        		//other commenters notice
+	                //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+	                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+					
+					$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
+					$notNotice=$db->loadResultArray();
+	               	if(count($notNotice))
+	                	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
+	                else 
+	                	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
+	                
+	                $dicc = $db->loadObjectList();
+	             	if(count($dicc)){
+	                	foreach($dicc as $dic){
+	                    	if($dic->profileID==$share->profileID) continue;
+	                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
+	                  	}
+	             	}
+	        	}
+	        	else if (@$_POST["linkli"]=="profile")
+	        	{
+	        		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
+	        	}
 				
                         
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0  && false) //facebook app düzeltilince false kalkıcak
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0  || $model->profileID==1734) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
 					

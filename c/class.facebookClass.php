@@ -125,7 +125,7 @@ class facebookClass{
 	{
 		global $model, $db;
 	    
-		
+		$fbID = $model->profile->fbID;
 		$urlS=new urlshorter();
 		$response=$urlS->useBitly("http://democratus.com/voice/".$ID);
 		if($response["url"]!="")
@@ -136,25 +136,25 @@ class facebookClass{
 		{
 			$link="http://democratus.com/voice/".$ID;
 		}
-		
+	
 		$ret_obj = $this->facebook->api('/'.$fbID.'/feed', 'POST',
 			array(
 				'message' => $postIcerik
 			));
 	}
         
-        public function share_democratus_with_friends($postIcerik){
-            $ret_obj = $this->facebook->api('/feed', 'POST',
-			array(
-				'message' => $postIcerik,
-                                'link' => 'http://democratus.com',
-                                'name' => 'Democratus',
-                                'picture' => 'http://democratus.com/t/ala/img/login-logo2.png'
-			));
-            
-        }
+    public function share_democratus_with_friends($postIcerik){
+        $ret_obj = $this->facebook->api('/feed', 'POST',
+		array(
+			'message' => $postIcerik,
+                            'link' => 'http://democratus.com',
+                            'name' => 'Democratus',
+                            'picture' => 'http://democratus.com/t/ala/img/login-logo2.png'
+		));
+        
+    }
 
-        public function yazmaizniVarmi()
+    public function yazmaizniVarmi()
     {
     	global $model, $db;
 	   	$user = $this->facebook->getUser(); 
