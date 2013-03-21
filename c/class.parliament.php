@@ -29,7 +29,7 @@
              //hastag sayfalarının gündemi yok ve gündemi yoksa  alan boş geliyor tagin gündemi yoksa gerçek meclis gelsin 
             $GROUP  = "\n ";
       
-			if($type!="0")
+			if($type!="0" || $_SERVER['SERVER_NAME']="democratus.com")
 			{
 				$ORDER  = "\n ORDER BY a.ID DESC	";
 			}else

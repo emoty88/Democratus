@@ -5,7 +5,6 @@
             global $model, $db, $l;
             $model->mode=0;   
 			
-			
             if($model->paths[1]=="gundem56yn234rty")  
             {
             	$this->agenda();
@@ -29,6 +28,11 @@
 			{
 				$this->canerMo();
 				die;
+			}
+			else if($model->paths[1]=="test")
+			{
+				var_dump($model->sendsystemmail("emoty88@gmail.com", "test mail", "denem mail", "mandrill"));
+
 			}
             if($model->paths[2]!='dyHp7ozsNNfxyZCA28cUMtZ8bAsBdD1t1y3LAp0XoylKpGpH') die;
             if($_SERVER['REMOTE_ADDR']!='178.63.46.159') die('pardon izin yok!');
@@ -247,6 +251,8 @@
                     $ppvote->status      = 1;
                     
                     if($db->insertObject('delegacy', $delegacy)){
+                    	$ind = new induction;
+						$ind->set_profile_intduction("deputy", $row);
                         echo '<h3>Yeni vekillik oluşturuldu</h3>';
                         $arow = new stdClass;
                         $arow->ID = $row->ID;

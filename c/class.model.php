@@ -428,7 +428,8 @@
 
         public function load(){
             global $db;
-             
+            
+			
             $permalink  = $this->paths[0];
             $domain     = $this->domain;               
             $query  = "SELECT p.*"
@@ -487,6 +488,7 @@
 					}
 					
             }
+			
             
             $this->pluginurl  = PLUGINURL.$this->plugin.'/';
             $this->pluginpath = PLUGINPATH.$this->plugin.SLASH;
@@ -1355,142 +1357,156 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             die('<h1>Not Found</h1> <p>The requested URL was not found on this server.</p>');
         }
         
-        public function sendsystemmail($email, $subject, $message){
+        public function sendsystemmail($email, $subject, $message, $sendType="normal"){
             
             $mail = new phpmailer();
+			
+			if($sendType=="mandrill")
+			{
+				$mail->IsSMTP(); // telling the class to use SMTP
+				$mail->Host       = "smtp.mandrillapp.com"; 				// SMTP server
+				$mail->SMTPDebug  = 2;                     					// enables SMTP debug information (for testing)
+				                                           					// 1 = errors and messages
+				                                           					// 2 = messages only
+				$mail->SMTPAuth   = true;                  					// enable SMTP authentication
+				$mail->Host       = "smtp.mandrillapp.com"; 				// sets the SMTP server
+				$mail->Port       = 587;                    				// set the SMTP port for the GMAIL server
+				$mail->Username   = "caner.turkmen@democratus.com"; 		// SMTP account username
+				$mail->Password   = "bC4HRyEm1D4LZTaX7-xvvQ";        		// SMTP account password
+			}
             $mail->SetFrom('democratus@democratus.com', 'Democratus');
             $mail->AddAddress($email);
             $mail->Subject = $subject;
             
             $body = '<html lang="en">
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>Democratus</title>
-<link href="http://democratus.com/images/df.ico" rel="shortcut icon" type="image/x-icon" />
-<style type="text/css">
-a:hover {
-    text-decoration: none !important;
-}
-.header h1 {
-    color: #47c8db;
-    font: bold 32px Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 40px;
-}
-.header p {
-    color: #c6c6c6;
-    font: normal 12px Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 18px;
-}
-.sidebar table.toc-table {
-    color: #767676;
-    margin: 0;
-    padding: 0;
-    font-size: 12px;
-    font-family: Helvetica, Arial, sans-serif;
-}
-.sidebar table.toc-table td {
-    padding: 0 0 5px;
-    margin: 0;
-}
-.sidebar h4 {
-    color:#eb8484;
-    font-size: 11px;
-    line-height: 16px;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.sidebar p {
-    color: #989898;
-    font-size: 11px;
-    line-height: 16px;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.sidebar p a {
-    color: #0eb6ce;
-    text-decoration: none;
-}
-.content h2 {
-    color:#646464;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    line-height: 26px;
-    font-size: 18px;
-    font-family: Helvetica, Arial, sans-serif;
-}
-.content p {
-    color:#767676;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-    line-height: 20px;
-    font-size: 12px;
-    font-family: Helvetica, Arial, sans-serif;
-}
-.content a {
-    color: #0eb6ce;
-    text-decoration: none;
-}
-.footer p {
-    font-size: 11px;
-    color:#7d7a7a;
-    margin: 0;
-    padding: 0;
-    font-family: Helvetica, Arial, sans-serif;
-}
-.footer a {
-    color: #0eb6ce;
-    text-decoration: none;
-}
-</style>
-</head>
-<body style="margin: 0; padding: 0; background: #e3e1dc;" bgcolor="#e3e1dc">
-<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%" style="padding: 35px 0; background: #e3e1dc;" bgcolor="#e3e1dc">
-  <tr>
-    <td align="center" style="margin: 0; padding: 0;" ><table cellpadding="0" cellspacing="0" border="0" align="center" width="600" height="118" style="font-family: Helvetica, Arial, sans-serif; background-repeat:no-repeat;" class="header">
-        <tr>
-          <td width="600" align="left" style="padding: font-size: 0; line-height: 0; height: 7px;" height="7"><img src="http://democratus.com/images/bgheader.jpg" alt=""></td>
-        </tr>
-        <tr>
-          <td style="font-size: 0px;">&nbsp;</td>
-        </tr>
-      </table>
-      <!-- header-->
-      <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="font-family: Helvetica, Arial, sans-serif; " bgcolor="#fff">
-        <tr>
-          <td align="left" valign="top" bgcolor="#fff" style="font-family: Helvetica, Arial, sans-serif; padding:20px;">
-            <p>&nbsp;</p>
-            
-            
-            '.$message.'
-            
-            <p>&nbsp;</p>
-            
-          </td>
-        </tr>
-        <tr>
-          <td width="600" align="left" style="padding: font-size: 0; line-height: 0; height: 3px;" height="3"></td>
-        </tr>
-      </table>
-      <!-- body -->
-      <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="font-family: Helvetica, Arial, sans-serif; line-height: 10px;" class="footer">
-        <tr>
-          <td align="center" style="padding: 5px 0 10px; font-size: 11px; color:#7d7a7a; margin: 0; line-height: 1.2;font-family: Helvetica, Arial, sans-serif;" valign="top"><br>
-            <p style="font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;">Bu e-postayı hesap ayarlarınıza göre aldınız. Bildirim Ayarlarınız İçin<a href="http://democratus.com/my/account"> Tıklayın.</a></p></td>
-        </tr>
-      </table>
-    <!-- footer--></td>
-  </tr>
-</table>
-</body>
-</html>';
+						<head>
+						<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+						<title>Democratus</title>
+						<link href="http://democratus.com/images/df.ico" rel="shortcut icon" type="image/x-icon" />
+						<style type="text/css">
+						a:hover {
+						    text-decoration: none !important;
+						}
+						.header h1 {
+						    color: #47c8db;
+						    font: bold 32px Helvetica, Arial, sans-serif;
+						    margin: 0;
+						    padding: 0;
+						    line-height: 40px;
+						}
+						.header p {
+						    color: #c6c6c6;
+						    font: normal 12px Helvetica, Arial, sans-serif;
+						    margin: 0;
+						    padding: 0;
+						    line-height: 18px;
+						}
+						.sidebar table.toc-table {
+						    color: #767676;
+						    margin: 0;
+						    padding: 0;
+						    font-size: 12px;
+						    font-family: Helvetica, Arial, sans-serif;
+						}
+						.sidebar table.toc-table td {
+						    padding: 0 0 5px;
+						    margin: 0;
+						}
+						.sidebar h4 {
+						    color:#eb8484;
+						    font-size: 11px;
+						    line-height: 16px;
+						    font-family: Helvetica, Arial, sans-serif;
+						    margin: 0;
+						    padding: 0;
+						}
+						.sidebar p {
+						    color: #989898;
+						    font-size: 11px;
+						    line-height: 16px;
+						    font-family: Helvetica, Arial, sans-serif;
+						    margin: 0;
+						    padding: 0;
+						}
+						.sidebar p a {
+						    color: #0eb6ce;
+						    text-decoration: none;
+						}
+						.content h2 {
+						    color:#646464;
+						    font-weight: bold;
+						    margin: 0;
+						    padding: 0;
+						    line-height: 26px;
+						    font-size: 18px;
+						    font-family: Helvetica, Arial, sans-serif;
+						}
+						.content p {
+						    color:#767676;
+						    font-weight: normal;
+						    margin: 0;
+						    padding: 0;
+						    line-height: 20px;
+						    font-size: 12px;
+						    font-family: Helvetica, Arial, sans-serif;
+						}
+						.content a {
+						    color: #0eb6ce;
+						    text-decoration: none;
+						}
+						.footer p {
+						    font-size: 11px;
+						    color:#7d7a7a;
+						    margin: 0;
+						    padding: 0;
+						    font-family: Helvetica, Arial, sans-serif;
+						}
+						.footer a {
+						    color: #0eb6ce;
+						    text-decoration: none;
+						}
+						</style>
+						</head>
+						<body style="margin: 0; padding: 0; background: #e3e1dc;" bgcolor="#e3e1dc">
+						<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%" style="padding: 35px 0; background: #e3e1dc;" bgcolor="#e3e1dc">
+						  <tr>
+						    <td align="center" style="margin: 0; padding: 0;" ><table cellpadding="0" cellspacing="0" border="0" align="center" width="600" height="118" style="font-family: Helvetica, Arial, sans-serif; background-repeat:no-repeat;" class="header">
+						        <tr>
+						          <td width="600" align="left" style="padding: font-size: 0; line-height: 0; height: 7px;" height="7"><img src="http://democratus.com/images/bgheader.jpg" alt=""></td>
+						        </tr>
+						        <tr>
+						          <td style="font-size: 0px;">&nbsp;</td>
+						        </tr>
+						      </table>
+						      <!-- header-->
+						      <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="font-family: Helvetica, Arial, sans-serif; " bgcolor="#fff">
+						        <tr>
+						          <td align="left" valign="top" bgcolor="#fff" style="font-family: Helvetica, Arial, sans-serif; padding:20px;">
+						            <p>&nbsp;</p>
+						            
+						            
+						            '.$message.'
+						            
+						            <p>&nbsp;</p>
+						            
+						          </td>
+						        </tr>
+						        <tr>
+						          <td width="600" align="left" style="padding: font-size: 0; line-height: 0; height: 3px;" height="3"></td>
+						        </tr>
+						      </table>
+						      <!-- body -->
+						      <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="font-family: Helvetica, Arial, sans-serif; line-height: 10px;" class="footer">
+						        <tr>
+						          <td align="center" style="padding: 5px 0 10px; font-size: 11px; color:#7d7a7a; margin: 0; line-height: 1.2;font-family: Helvetica, Arial, sans-serif;" valign="top"><br>
+						            <p style="font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;">Bu e-postayı hesap ayarlarınıza göre aldınız. Bildirim Ayarlarınız İçin<a href="http://democratus.com/my/account"> Tıklayın.</a></p></td>
+						        </tr>
+						      </table>
+						    <!-- footer--></td>
+						  </tr>
+						</table>
+						</body>
+						</html>';
             //$body = str_replace('%name%', $model->profile->name, $body );
             //$body = preg_replace("/[\]/i",'',$body);
             $body = preg_replace("/\\\/",'',$body); 

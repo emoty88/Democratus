@@ -3,7 +3,7 @@
 		static public function main()
 		{
 			global $model, $db;
-			if($model->profile->status==5)
+			if($model->profile!=null && $model->profile->status==5)
 			{
 				self::alertShow_mailonay();
 				

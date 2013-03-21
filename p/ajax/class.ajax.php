@@ -127,7 +127,7 @@ class ajax_plugin extends control{
 			$c_voice= new voice;
 			$share->di=strip_tags( html_entity_decode( htmlspecialchars_decode(filter_input(INPUT_POST, 'voice_text', FILTER_SANITIZE_STRING), ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
 			$share->di=$urlS->changeUrlShort($share->di); 
-            $share->di=  mb_substr($share->di , 0, 200 ) ; 
+            $share->di=  mb_substr($share->di , 0, 201 ) ; 
             $share->onlyProfile=0;
     
             if(@$_POST["replying"]>0)// yeni versiyonda düzenlenicek // linkler otomatik gelecek
@@ -2231,6 +2231,29 @@ else
 			$return->content= $page->content;
 		}
 		echo json_encode($return);
+	}
+	function get_voice_statistic()
+	{
+		global $model, $db;
+		$voiceID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT );
+		$response = new stdClass;
+		if($voiceID==0)
+		{
+			$response->status="error";
+		}
+		$c_voice  = new voice($voiceID);
+		$agendaID =$c_voice->get_statistic();
+		if($agendaID>0)
+		{
+			$response->status = "success";
+			$response->agendaID = $agendaID;
+			$response->statistic = parliament::get_agendaPercent($agendaID);
+		}
+		else
+		{
+			$response->status="error";
+		}
+		echo json_encode($response); 
 	}
 
 }

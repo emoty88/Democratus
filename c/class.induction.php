@@ -75,7 +75,7 @@ class induction {
 		}
 		
 	}
-	public function set_profile_intduction($islem, $profile, $followID){
+	public function set_profile_intduction($islem, $profile, $followID=0){
 		global $model, $db;
 
 		$puanClass	= new puan;
@@ -97,6 +97,9 @@ class induction {
 			case "unfollow":
 				$c_counter->set_profileCount($profile->ID, "follower", "-");
 				$c_counter->set_profileCount($model->profileID, "following", "-");
+			break;
+			case 'deputy':
+				$c_counter->set_profileCount($profile->ID, "deputy");
 			break;
 		}
 	}
