@@ -516,5 +516,30 @@
 			//$voice	= $this->get_return_object($voice[0]);
 			return $result;
 		}
+		
+		public function get_statistic($voiceID=null)
+		{
+			global $model, $db;
+	
+			if($voiceID==null && $this->_cons==0)
+			{
+				return false;
+			}
+			else if($this->_cons==1)
+			{
+				$voiceID=$this->_ID;
+			}
+
+			
+			$SELECT = "SELECT ID";
+        	$FROM   = "\n FROM agenda";
+        	
+			$WHERE	= "\n WHERE status>0 AND diID = '".$voiceID."' ";
+			$LIMIT	= "\n LIMIT 1";
+			
+			$db->setQuery($SELECT.$FROM.$WHERE.$LIMIT);
+			$result=$db->loadResult();
+			return $result;
+		}
 	}
 ?>

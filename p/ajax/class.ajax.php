@@ -2232,6 +2232,29 @@ else
 		}
 		echo json_encode($return);
 	}
+	function get_voice_statistic()
+	{
+		global $model, $db;
+		$voiceID = filter_input(INPUT_POST, 'voiceID', FILTER_SANITIZE_NUMBER_INT );
+		$response = new stdClass;
+		if($voiceID==0)
+		{
+			$response->status="error";
+		}
+		$c_voice  = new voice($voiceID);
+		$agendaID =$c_voice->get_statistic();
+		if($agendaID>0)
+		{
+			$response->status = "success";
+			$response->agendaID = $agendaID;
+			$response->statistic = parliament::get_agendaPercent($agendaID);
+		}
+		else
+		{
+			$response->status="error";
+		}
+		echo json_encode($response); 
+	}
 
 }
 ?>

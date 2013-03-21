@@ -1792,6 +1792,7 @@ jQuery(document).ready(function ($) {
 	function voice_page()
 	{
 		$("#duvaryazisi-tmpl").tmpl(voiceObj,make_link).appendTo("#orta_alan_container");
+		get_voice_statistic(voiceObj);
 	}
 	function hashtag_page()
 	{
@@ -1815,6 +1816,19 @@ jQuery(document).ready(function ($) {
 	{
 		get_popularVoice();
 		
+	}
+	function get_voice_statistic(voice)
+	{
+		$.post("/ajax/get_voice_statistic", {voiceID: voice.ID}, function(response){ 
+			if(response.status == "success")
+			{
+				//$("#duvaryazisi-tmpl").tmpl(response.voices,make_link).appendTo("#sesgetirenler-content");
+				var oranlar={olumlu:response.statistic.olumlu, olumsuz:response.statistic.olumsuz,fikiryok:response.statistic.fikiryok};
+				$("#meclis-istatistik-tmpl").tmpl(oranlar).appendTo("#statistic_area");
+				$("#statistic_area").show();
+				//console.log(response);
+			}
+	    },'json');
 	}
 	function get_popularVoice()
 	{

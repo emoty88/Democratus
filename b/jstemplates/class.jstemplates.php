@@ -75,6 +75,9 @@ class jstemplates_block extends control{
 							Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 						</a>
 					</aside>
+					<aside id="statistic_area" style="margin-bottom: 30px; margin-left: 58px; display: none;">
+						
+					</aside>
 				</div>
 				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
 					<div id="replyArea_${ID}-${randNum}" class="replyArea">
