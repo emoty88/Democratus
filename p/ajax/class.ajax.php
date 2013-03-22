@@ -173,52 +173,51 @@ class ajax_plugin extends control{
 				$share->profileType	= "tagPage";
 			}	
 			
-            if( $db->insertObject('di', $share,"ID") ){
-            	$share->ID=$db->insertid();
-				//KM::identify($model->user->email); // aktif edilince açılacak 
-			    //KM::record('writingvoice');
-			     
-               if($share->isReply == "1"){
-                		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
-                		$id = $db->loadResult();
-                		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
-                		
-                		//other commenters notice
-	                    //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-		                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
-						
-						$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
-						$notNotice=$db->loadResultArray();
-	                   	if(count($notNotice))
-	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
-	                    else 
-	                    	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
-	                    
-	                    $dicc = $db->loadObjectList();
-		             	if(count($dicc)){
-		                	foreach($dicc as $dic){
-		                    	if($dic->profileID==$share->profileID) continue;
-		                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
-		                  	}
-		             	}
-                	}
-                	else if (@$_POST["linkli"]=="profile")
-                	{
-                		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
-                	}
+	            if( $db->insertObject('di', $share,"ID") ){
+	            	$share->ID=$db->insertid();
+					//KM::identify($model->user->email); // aktif edilince açılacak 
+				    //KM::record('writingvoice');
+				     
+	        	if($share->isReply == "1"){
+	        		$db->setQuery("select profileID from di where ID='".$share->replyID."'");
+	        		$id = $db->loadResult();
+	        		$model->notice($id, 'mentionDi', $db->insertid(),$share->replyID);
+	        		
+	        		//other commenters notice
+	                //$notNotice=$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+	                //$notNotice = $dbez->get_col("SELECT profileID FROM notsendnotice WHERE diID='".$_POST["sesHakkındaID"]."'");
+					
+					$db->setQuery("SELECT profileID FROM notsendnotice WHERE diID='".$share->replyID."'");
+					$notNotice=$db->loadResultArray();
+	               	if(count($notNotice))
+	                	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." AND profileID NOT IN (".implode(",", $notNotice).") GROUP BY profileID");
+	                else 
+	                	$db->setQuery("SELECT profileID FROM di WHERE replyID=".$share->replyID." GROUP BY profileID");
+	                
+	                $dicc = $db->loadObjectList();
+	             	if(count($dicc)){
+	                	foreach($dicc as $dic){
+	                    	if($dic->profileID==$share->profileID) continue;
+	                       	$model->notice($dic->profileID, 'mentiontoReplied', $share->ID, $share->replyID);
+	                  	}
+	             	}
+	        	}
+	        	else if (@$_POST["linkli"]=="profile")
+	        	{
+	        		$model->notice($_POST["profileID"], 'mentionProfile',$db->insertid());
+	        	}
 				
                         
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0  && false) //facebook app düzeltilince false kalkıcak
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
-					
                 	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
 					
-            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0  && false)  // twitter app düzeltilince false kalkacak 
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0  )  // twitter app düzeltilince false kalkacak 
                 {
                 	$tw=new twitter();
-                	print_r($tw->sendTweet(strip_tags($share->di),$share->ID));
+                	$tw->sendTweet(strip_tags($share->di),$share->ID);
                 }
                 $response['status'] = 'success';
 				 
@@ -233,7 +232,7 @@ class ajax_plugin extends control{
 				
                 $response['voice'] 	= $c_voice->get_return_object($share);
 				
-                                    if($share->initem=="1")
+                if($share->initem=="1")
 				{
 					$shareimage=new stdClass;
 					$shareimage->ID=null;
@@ -947,9 +946,10 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	function send_message(){
 		global $model;
 		$c_message = new messageClass;
-		$return = array("status"=>"success");
-		$fPerma   	= filter_input(INPUT_POST, 'friendPerma', FILTER_SANITIZE_STRING );
-		$message   	= filter_input(INPUT_POST, 'msgText', FILTER_SANITIZE_STRING );
+		 
+		$fPerma   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["friendPerma"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
+		$message   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["msgText"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
+		
 		
 		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
 		{
@@ -1712,8 +1712,7 @@ else
 		{
 			$userID = $model->profileID;
 		}
-
-        $user2ID = filter_input(INPUT_POST, "perma",FILTER_SANITIZE_STRING);
+		$user2ID   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["perma"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
         $user2ID = profile::change_perma2ID($user2ID);
         if($user2ID<2){
             $r_array['status'] = 'error';
@@ -2255,6 +2254,42 @@ else
 		}
 		echo json_encode($response); 
 	}
+	public function facebookPaylasIzin(){
+        global $model,$db;            
+        //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+        //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
 
+        $gProfil= new stdClass();
+        if($model->profile->facebookPaylasizin==1)
+        $gProfil->facebookPaylasizin=0;
+        else
+        $gProfil->facebookPaylasizin=1;
+        $gProfil->ID=$model->profileID;
+        
+        if($db->updateObject('profile', $gProfil, 'ID'))
+        {
+        	echo "tamam";
+        }
+        //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
+        
+    }
+    public function twitterPaylasIzin(){
+        global $model,$db;            
+        //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+        //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
+        $gProfil= new stdClass();
+        if($model->profile->twitterPaylasizin==1)
+        $gProfil->twitterPaylasizin=0;
+        else
+        $gProfil->twitterPaylasizin=1;
+        $gProfil->ID=$model->profileID;
+        
+        if($db->updateObject('profile', $gProfil, 'ID'))
+        {
+        	echo "tamam";
+        }
+        //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
+        
+    }
 }
 ?>

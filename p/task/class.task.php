@@ -5,7 +5,6 @@
             global $model, $db, $l;
             $model->mode=0;   
 			
-			
             if($model->paths[1]=="gundem56yn234rty")  
             {
             	$this->agenda();
@@ -25,9 +24,15 @@
 				$this->ex_cvs();
 				die;
 			}
+			else if($model->paths[1]=="canerMo")
+			{
+				$this->canerMo();
+				die;
+			}
 			else if($model->paths[1]=="test")
 			{
 				var_dump($model->sendsystemmail("emoty88@gmail.com", "test mail", "denem mail", "mandrill"));
+
 			}
             if($model->paths[2]!='dyHp7ozsNNfxyZCA28cUMtZ8bAsBdD1t1y3LAp0XoylKpGpH') die;
             if($_SERVER['REMOTE_ADDR']!='178.63.46.159') die('pardon izin yok!');
@@ -162,7 +167,7 @@
             
            
             
-            $model->sendsystemmail('emoty88@gmail.com', 'Gündem seçimi', $buffer);
+            $model->sendsystemmail('caner.turkmen@democratus.com', 'Gündem seçimi', $buffer);
             $model->sendsystemmail('director@democratus.com', 'Gündem seçimi', $buffer);
         }
         
@@ -282,7 +287,7 @@
 			//$db->query("update profile set puan='0' , temelPuanHesaplandi='0' ");
 			$db->setQuery("update profile set puan='0' , temelPuanHesaplandi='0' ");
             $db->uquery();
-            $model->sendsystemmail('emoty88@gmail.com', 'Milletvekili seçimi', $buffer);
+            $model->sendsystemmail('caner.turkmen@democratus.com', 'Milletvekili seçimi', $buffer);
             $model->sendsystemmail('director@democratus.com', 'Milletvekili seçimi', $buffer);
             
         }
@@ -298,7 +303,7 @@
 		}
         private function ex_cvs()
 		{
-			global $model, $dbez;
+			global $model, $db;
 			if($model->paths[2]!="erw56dsmk")
 				die("not safe");
 			echo '"email";"language";"cityID";"countryID";"living";"hometown";"sex";"birth";"name"'."\n";
@@ -307,6 +312,10 @@
 			{
 				echo '"'.$a->email.'";"'.$a->language.'";"'.$a->cityID.'";"'.$a->countryID.'";"'.$a->living.'";"'.$a->hometown.'";"'.$a->sex.'";"'.$a->birth.'";"'.$a->name.'"'."\n"; 
 			}
+		}
+		private function canerMo()
+		{
+			global $model, $db;
 		}
     }
 ?>

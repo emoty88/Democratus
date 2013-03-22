@@ -189,7 +189,7 @@ class jstemplates_block extends control{
 		
 		<script id="dahafazlacevap-tmpl" type="text/x-jquery-tmpl">
 			<aside class="daha_fazla_duvar_yazisi daha_fazla_cevap">
-				<a href="javascript:;" onclick="get_moreVoiceReply(${voiceID},${randNum}, ${lastID});">Deha fazla cevap göster...</a>
+				<a href="javascript:;" onclick="get_moreVoiceReply(${voiceID},${randNum}, ${lastID});">Daha fazla cevap göster...</a>
 			</aside>
 		</script>
 		

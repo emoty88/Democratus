@@ -46,7 +46,7 @@
 	    		
 	    				<div style="float: left; width: 280px">
 	    					<div class="social_connect">
-	    						<a class="facebook_login" href="#">Facebook ile Bağlan</a>
+	    						<a class="facebook_login" href="/oauth/facebook">Facebook ile Bağlan</a>
 	    					</div>
 	    			
 		    				<input class="inputR" type="text" name="name" id="name" placeholder="Ad-Soyad">
@@ -56,7 +56,7 @@
 		    				<input type="checkbox" id="agree" style="float: left" />
 		    				<p style="color: white; font-size: 12px; width: 220px; padding-left: 15px"> 
 								Kullanım 
-								<a style="color: white;" href="http://democratus.com/about#hizmet" target="_blank">
+								<a style="color: white;" href="http://democratus.com/privacy" target="_blank">
 									sözleşmesini okudum
 								</a>
 								, kabul ediyorum
@@ -65,7 +65,7 @@
 	    				
 		    			<div style="float: left; width: 240px;">
 		    				<div class="social_connect">
-	    						<a class="twitter_login" href="#">Twitter ile Bağlan</a>
+	    						<a class="twitter_login" href="/oauth/twitter">Twitter ile Bağlan</a>
     						</div>
 		    				<input class="inputR" type="password" name="password" id="password" placeholder="Şifre">
 		    				<input class="inputR" type="password" name="password2" id="password2" placeholder="Şifre Tekrar">

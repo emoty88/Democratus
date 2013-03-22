@@ -216,12 +216,13 @@
         
         require_once( $model->pluginpath.'facebook/facebook.php' );
         
-        $facebook = new Facebook(array('appId' => $this->facebook_app_id, 'secret' => $this->facebook_app_secret));
+        $facebook = new Facebook(array('appId' => $this->facebook_app_id, 'secret' => $this->facebook_app_secret, "cookie"=>true));
         
         $user = $facebook->getUser(); 
         
         if(!$user){
-            $login_url = $facebook->getLoginUrl(array( 'scope' => 'email'));
+            $login_url = $facebook->getLoginUrl(array( 'scope' => 'email', 'fbconnect'=>1));
+
             $model->redirect($login_url);
         }
 
@@ -258,7 +259,6 @@
                 $oauth = null; // bu alanı oauth kaydından değil profildeki userID den kontrol edeceğiz 
                 
                 if($db->loadObject($oauth)){
-                	echo "asd";
                     //login ol ve çık
                     //die('oauth var');
                     if($oauth->status>0){
