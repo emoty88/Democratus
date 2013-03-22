@@ -406,7 +406,7 @@
 							{
 								?>
 								<div class="social_connect">
-                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
+                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl();?>');">Facebook Arkadaşlarım</a>
                                 </div>
 								<?
 							}
