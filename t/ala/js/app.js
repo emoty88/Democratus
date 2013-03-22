@@ -2177,3 +2177,23 @@ jQuery(document).ready(function ($) {
         },'json');
     	
     }
+    function fbPaylasimTogle()
+    {
+		$.ajax({
+			  url: "/ajax/facebookPaylasIzin",
+			  success: function(data){
+			    if(data=="tamam");
+			    location.href=location.href; 
+			  }
+			});
+    }
+	function twPaylasimTogle()
+    {
+		$.ajax({
+			  url: "/ajax/twitterPaylasIzin",
+			  success: function(data){
+			    if(data=="tamam");
+			    location.href=location.href; 
+			  }
+			});
+    }

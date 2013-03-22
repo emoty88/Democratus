@@ -208,17 +208,16 @@ class ajax_plugin extends control{
 	        	}
 				
                         
-                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0  || $model->profileID==1734) //facebook app düzeltilince false kalkıcak
+                if($model->profile->facebookPaylasizin==1 && $share->onlyProfile==0) //facebook app düzeltilince false kalkıcak
                 {
                 	$fb = new facebookClass();
-					
                 	$fb->send_post(strip_tags($share->di),$share->ID);
                 }
 					
-            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0  && false)  // twitter app düzeltilince false kalkacak 
+            	if($model->profile->twitterPaylasizin==1 && $share->onlyProfile==0  )  // twitter app düzeltilince false kalkacak 
                 {
                 	$tw=new twitter();
-                	print_r($tw->sendTweet(strip_tags($share->di),$share->ID));
+                	$tw->sendTweet(strip_tags($share->di),$share->ID);
                 }
                 $response['status'] = 'success';
 				 
@@ -233,7 +232,7 @@ class ajax_plugin extends control{
 				
                 $response['voice'] 	= $c_voice->get_return_object($share);
 				
-                                    if($share->initem=="1")
+                if($share->initem=="1")
 				{
 					$shareimage=new stdClass;
 					$shareimage->ID=null;
@@ -2255,6 +2254,42 @@ else
 		}
 		echo json_encode($response); 
 	}
+	public function facebookPaylasIzin(){
+        global $model,$db;            
+        //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+        //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
 
+        $gProfil= new stdClass();
+        if($model->profile->facebookPaylasizin==1)
+        $gProfil->facebookPaylasizin=0;
+        else
+        $gProfil->facebookPaylasizin=1;
+        $gProfil->ID=$model->profileID;
+        
+        if($db->updateObject('profile', $gProfil, 'ID'))
+        {
+        	echo "tamam";
+        }
+        //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
+        
+    }
+    public function twitterPaylasIzin(){
+        global $model,$db;            
+        //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+        //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
+        $gProfil= new stdClass();
+        if($model->profile->twitterPaylasizin==1)
+        $gProfil->twitterPaylasizin=0;
+        else
+        $gProfil->twitterPaylasizin=1;
+        $gProfil->ID=$model->profileID;
+        
+        if($db->updateObject('profile', $gProfil, 'ID'))
+        {
+        	echo "tamam";
+        }
+        //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
+        
+    }
 }
 ?>

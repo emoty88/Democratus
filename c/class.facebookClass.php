@@ -75,14 +75,27 @@ class facebookClass{
 	{
 		 return  $this->facebook->getUser(); 
 	}
-	public function get_loginUrl($perm=0)
+	public function get_loginUrl($perm='email', $returnUrl='http://democratus.com/my/faceReturn', $display="popup")
 	{
-		if(count($perm)>0)
-		{
-			$permD = array("scope"=>$perm,'redirect_uri' => SITEURL.'my/faceReturn', 'display' => 'popup');
-		}
+		$permD = array('scope'=>$perm ,'redirect_uri' => $returnUrl, 'display' => $display);
 		return $this->facebook->getLoginUrl($permD);
 	}
+	/*
+	function get_loginUrl($scope, $redirectUrl="")
+	{
+		echo "dasd";
+		die;
+		$param = array( 'scope' => implode(",", $scope));
+		if($redirectUrl!="")
+		{
+			$param["redirect_uri"]=$redirectUrl;
+		}
+		var_dump($param);
+		//$login_url = $this->facebook->getLoginUrl($param);
+		
+		return $login_url;
+	}
+	 * */
 	public function get_friend($fbID=0)
 	{
 		if($fbID==0)
@@ -157,26 +170,23 @@ class facebookClass{
     public function yazmaizniVarmi()
     {
     	global $model, $db;
-	   	$user = $this->facebook->getUser(); 
-		if(!$user){
-			$login_url = $this->facebook->getLoginUrl(array( 'scope' => 'publish_stream'));
-			//$model->redirect($login_url);
-			$return["durum"]="login";
-			$return["loginUrl"]=$login_url;
-		}
-		else 
-		{	
-			$permissions = $this->facebook->api("/me/permissions");
-	    	if( array_key_exists('publish_stream', $permissions['data'][0]) ) {
-	    		$return["durum"]="izinVar";
-			} else {
-				$return["durum"]="izinal";
-				$return["izinUrl"]=$this->facebook->getLoginUrl(array("scope" => "publish_stream"));
-                                $return["loginUrl"]=$this->facebook->getLoginUrl(array("scope" => "publish_stream"));
-				//header( "Location: " . $facebook->getLoginUrl(array("scope" => "publish_stream")) );
+	  	if($model->profile->fbID=="0")
+		{
+			 $return = false;
+		} 
+		else
+		{
+			$permissions = $this->facebook->api("/".$model->profile->fbID."/permissions");
+			if( array_key_exists('publish_stream', $permissions['data'][0]) ) {
+		    	$return = true;
 			}
+			else
+			{
+				$return = false;
+			} 	
 		}
 		return $return;
     } 
+	
 }
 ?>

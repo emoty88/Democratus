@@ -32,7 +32,6 @@
 				return $this->twitterReturn();
 			}
 			
-			
 			$birth= date_parse($profile->birth);
 			if($birth['day']<10){
 				$birth['day'] = '0'.$birth['day'];
@@ -251,10 +250,12 @@
               		<div style="clear:both;"></div>
               	<?php 
 					
-					if($model->profile->fbID!="0") 
+					$fb= new facebookClass();
+					$izinVarmi=$fb->yazmaizniVarmi();
+					//var_dump($response);
+					if($izinVarmi)
 					{
-						
-						?>
+					?>
 						<script>
 							var fbID=<?=$model->profile->fbID?>;
 							$(document).ready(function(){
@@ -271,8 +272,7 @@
 								});
 							});
 						</script>
-						
-						<?
+						<?php
 						$che="";
 						//var_dump($model->profile->facebookPaylasizin==1);
 						if($model->profile->facebookPaylasizin=="1")
@@ -283,35 +283,15 @@
 					}
 					else
 					{
-						$fbn= new facebooknew();
-						$response=$fbn->yazmaizniVarmi();
-						if($_GET){
-							if($model->profile->fbID=="")
-							{
-								$pro = new stdClass();
-								$pro->fbID=$db->quote($fbn->get_fbID());
-								$pro->ID=$model->profileID;
-					            $db->updateObject("profile", $pro, "ID");
-					            echo "<script>location.href=location.href;</script>";
-							}
-						}
-						
-						if($response["durum"]=="login")
-						{ 	?>
-							<a href="<?=$response["loginUrl"]?>"><img src="/t/beta/img/facebook_icon.png"/> Facebook'ta Oturum Açın..</a>
-						<?php }
-						else if($response["durum"]=="izinal"){?>
-							<a href="<?=$response["izinUrl"]?>"><img src="/t/beta/img/facebook_icon.png"/> Facebook Uygulamasına İzin verin.</a>
-						<? }
-						else if($response["durum"]=="izinVar"){
-							$che="";
-							if($model->profile->facebookPaylasizin==1)
-							$che='checked="true"';
-							?>
-							Ses'lerimi Facebook'ta paylaş<input type="checkbox" value="option1" align="right" <?=$che?> onchange="fbPaylasimTogle();">
-						<? } 
-						
-					}//son else 
+						$loginUrl=$fb->get_loginUrl('email,publish_stream,status_update');
+						 
+						?>
+						<div class="social_connect">
+                            <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$loginUrl?>');">Facebook Bağla</a>
+                        </div>
+						<?
+					}
+					
               	?>
               	</label>
               
@@ -406,7 +386,7 @@
 							{
 								?>
 								<div class="social_connect">
-                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl(0);?>');">Facebook Arkadaşlarım</a>
+                                    <a class="facebook_login" id="face_button" href="javascript:;" onclick="facebook_open_LoginWindow('<?=$c_facebook->get_loginUrl();?>');">Facebook Arkadaşlarım</a>
                                 </div>
 								<?
 							}
@@ -692,7 +672,8 @@
 			$uProfile->fbID = $c_facebook->get_facebookID();
 			profile::update_profile($uProfile);
 			echo "<script>";
-			echo ("window.close();");
+			echo "window.opener.location.href=window.opener.location.href; \n";
+			echo "window.close();";
 			echo "</script>";
 			
 		}
@@ -739,6 +720,7 @@
                 $db->insertObject('oauth', $oauth, 'ID');    
 			}
 			echo "<script>";
+				echo "window.opener.location.href=window.opener.location.href; \n";
 				echo ("window.close();");
 			echo "</script>";
 		}
@@ -3076,41 +3058,6 @@
             //echo intval($db->loadResult());
             return intval($db->loadResult())>=7;            
         }
-        public function ajax_facebookPaylasIzin(){
-            global $model,$db;            
-            //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
-            //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
-            $gProfil= new stdClass();
-            if($model->profile->facebookPaylasizin==1)
-            $gProfil->facebookPaylasizin=0;
-            else
-            $gProfil->facebookPaylasizin=1;
-            $gProfil->ID=$model->profileID;
-            
-            if($db->updateObject('profile', $gProfil, 'ID'))
-            {
-            	echo "tamam";
-            }
-            //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
-            
-        }
-        public function ajax_twitterPaylasIzin(){
-            global $model,$db;            
-            //$profileID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
-            //$izin = filter_input(INPUT_POST, 'izin', FILTER_SANITIZE_NUMBER_INT);,
-            $gProfil= new stdClass();
-            if($model->profile->twitterPaylasizin==1)
-            $gProfil->twitterPaylasizin=0;
-            else
-            $gProfil->twitterPaylasizin=1;
-            $gProfil->ID=$model->profileID;
-            
-            if($db->updateObject('profile', $gProfil, 'ID'))
-            {
-            	echo "tamam";
-            }
-            //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
-            
-        }
+        
     }
 ?>
