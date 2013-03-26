@@ -452,7 +452,11 @@ class jstemplates_block extends control{
 		</script>
 		
 		<script id="message-dialog-tmpl" type="text/x-jquery-tmpl">
+		{{if read<1 && me != 1 }}
+			<li style="background-color:#e5e5e5">
+		{{else}}
 			<li>
+		{{/if}}
 				<article>
 					<header>
 						<address>

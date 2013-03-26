@@ -203,9 +203,15 @@
 											</ul>
 										</div>
 									</div>
-                                                                        
-								</div><!-- /.sol_form_bolumu -->
+                                        
+                                    <div class="clearfix"></div>
+                                    <br />
+									<button class="btn btn-success " type="button" id="kaydet_dgmesi">Kaydet</button>
+									<div class="clearfix"></div>   
 
+
+								</div><!-- /.sol_form_bolumu -->
+								<br />
 								<div class="sag_form_bolumu span3">
 									<div class="profil_resmi">
 										<img id="profileImage" alt="" src="<?=$model->getProfileImage($profile->image,200,200,"cutout");?>">
@@ -223,10 +229,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="clearfix"></div>
-
-									<button class="btn btn-success pull-right" type="button" id="kaydet_dgmesi">Kaydet</button>
-									<div class="clearfix"></div>
+									
 								</div>
 
 							</form>
