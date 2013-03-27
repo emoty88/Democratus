@@ -31,7 +31,7 @@
 			}
 			else if($model->paths[1]=="test")
 			{
-				var_dump($model->sendsystemmail("emoty88@gmail.com", "test mail", "denem mail", "mandrill"));
+				var_dump($model->sendsystemmail("mstfhrgl@gmail.com", "test mail", "denem maisdal", "mandrill"));
 
 			}
             if($model->paths[2]!='dyHp7ozsNNfxyZCA28cUMtZ8bAsBdD1t1y3LAp0XoylKpGpH') die;
