@@ -449,6 +449,115 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 			KM::record('login');
             echo json_encode($response);
         }
+	public function mobile_login()
+ 	{
+    	global $model, $db;
+        $model->mode = 0;
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header('Cache-Control: post-check=0, pre-check=0', FALSE);
+        header('Pragma: no-cache');
+        $response = array();
+        try{
+        	$email = $_REQUEST["email"];//filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $pass  = $_REQUEST["pass"]; //filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
+            
+            if(strlen($email)<2) throw new Exception('login - email - error');
+            if(strlen($pass)<2) throw new Exception('login - password - error');
+             
+            //die($email . ' - ' . $pass);
+            $pass = md5(KEY . trim( $pass ) );
+                
+            //die ($pass);
+                
+            //di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)
+            $SELECT	= "SELECT count(*) as Sayi ";
+			$FROM	= "\n FROM loginsec";
+			$WHERE	= "\n WHERE loginfailuredate > DATE_ADD(NOW(), INTERVAL -10 MINUTE)";
+			//$WHERE	.= "\n and (kullanici=".$db->quote($email)." or ip=".$db->quote($_SERVER['REMOTE_ADDR']).")";
+			$WHERE	.= "\n and (kullanici=".$db->quote($email).")";
+            $db->setQuery( $SELECT . $FROM . $WHERE );
+			if( $db->loadObject($result) )
+			{
+				if($result->Sayi>6)
+				{
+					throw new Exception('Çok fazla hatalı giriş denemesi yaptınız, lütfen daha sonra tekrar deneyin. 
+Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.');
+				}
+				
+			}
+                
+            $SELECT = "SELECT u.*, p.temelPuanHesaplandi";
+            $FROM   = "\n FROM user AS u";
+			$JOIN	= "\n LEFT JOIN profile as p on p.ID=u.ID";
+            $WHERE  = "\n WHERE (u.email=".$db->quote($email)." OR p.permalink=".$db->quote($email).") AND u.pass = ".$db->quote($pass);
+            $LIMIT  = "\n LIMIT 1";
+                
+            $db->setQuery( $SELECT . $FROM . $JOIN .  $WHERE . $LIMIT );
+                
+            $result = null;
+
+            if( $db->loadObject($result) ){
+                  
+                $session = new stdClass;
+                
+                $session->sid        = md5( KEY . session_id() . uniqid() );
+                $session->ip        =  "mobile" ;
+               
+				$prIP = new stdClass();
+				$prIP->lastLoginIP = "mobile";
+				$prIP->ID=$result->ID; 
+				$db->updateObject('profile', $prIP,"ID");
+                
+				$session->starttime = date('Y-m-d H:i:s');
+                $session->endtime   = date('Y-m-d H:i:s');
+                $session->userID    = $result->ID;
+                $session->profileID = $result->ID;
+                $session->status    = 1;
+                    
+                if($db->insertObject('session', $session)){
+                    $response['status'] = 'success';
+					if($result->temelPuanHesaplandi=="0")
+					{
+						$puan = new puan;
+						$puan->temelPuanIsle($result);
+					}
+                } else {
+                    //not logged in
+                    
+					$loginSec=new stdClass;
+					$loginSec->kullanici=$email;
+					$loginSec->loginfailuredate=date('Y-m-d H:i:s');
+					$loginSec->ip="mobile";
+					$db->insertObject('loginsec', $loginSec);
+					
+					throw new Exception('Kullanıcı adı veya şifre hatalı');
+                }
+            } else {
+                    $loginSec=new stdClass;
+					$loginSec->kullanici=$email;
+					$loginSec->loginfailuredate=date('Y-m-d H:i:s');
+					$loginSec->ip="mobile";
+					
+					$db->insertObject('loginsec', $loginSec); 
+					throw new Exception('Kullanıcı adı veya şifre hatalı');
+					
+                }
+                
+            } catch (Exception $e){
+                //die('error');
+                
+				
+                $response['status'] = 'error';
+                $response['message'] = $e->getMessage();
+                $response['code'] = $e->getCode();
+            }
+            
+            //print_r ($response);
+            //KM::identify($email);
+			//KM::record('login');
+            echo json_encode($response);
+        }
 	public function agendavote()
 	{
     	global $model, $db, $l;

@@ -1357,7 +1357,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             die('<h1>Not Found</h1> <p>The requested URL was not found on this server.</p>');
         }
         
-        public function sendsystemmail($email, $subject, $message, $sendType="normal"){
+        public function sendsystemmail($email, $subject, $message, $sendType="mandrill"){
             
             $mail = new phpmailer();
 			

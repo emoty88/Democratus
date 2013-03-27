@@ -153,16 +153,14 @@ class jstemplates_block extends control{
 									<img id="voice_resim_${ID}" class="duvar_fotografi" src="" alt="">
 								</div>
 							{{/if}}
-							<a id="soyles_btn_${ID}" href="/voice/${ID}">
-								<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-								Söyleş <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
-							</a>
+					
 							{{if isMine}}
 							<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
 								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
 								<span>Kaldır</span> 
 							</a>
 							{{else}}
+							
 							<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
 								<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
 								<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
@@ -173,10 +171,13 @@ class jstemplates_block extends control{
 							</a>
 							<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
 								<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
-								<span class="text">Paylaş</span>
-								<span class="count">{{if reShareCount>0}} (${reShareCount}){{/if}}</span>
+								<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
 							</a>
 							{{/if}}
+							<a id="soyles_btn_${ID}" href="/voice/${ID}">
+								<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
+								Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+							</a>
 						</aside>
 					</div>
 				</div>
