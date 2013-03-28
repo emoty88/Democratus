@@ -310,7 +310,7 @@ class messageClass {
 		$c_profile = new profile;
 		if($profileID==null)
 		{
-			$model->profileID = $model->profileID;
+			$profileID = $model->profileID;
 		}
 		
 		foreach($dialogs as $d)
@@ -323,7 +323,11 @@ class messageClass {
 			else {
 				$ro->fID = $d["fromID"];
 			}
-	
+			if($model->profileID=="1734")
+			{
+				$ro->toID = $d["toID"];
+				$ro->fromID = $d["fromID"];
+			}
 			$ro->fName = $c_profile->get_name($ro->fID);
 			$ro->fPerma = $c_profile->change_ID2perma($ro->fID);
 			$ro->fImage = $c_profile->get_profileImage($ro->fID,32,32);

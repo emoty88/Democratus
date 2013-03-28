@@ -9,9 +9,9 @@
 			$model->title = 'Democratus';
 			$model->mode = 0;
                         //main_old kullanılıyor. ya o fonksiyondan sökülecek ya da yeniden yazılacak
-                        if($model->paths["1"]=="mini"):
-                            return $this->main_old();
-                        endif; 
+            if($model->paths["1"]=="mini"):
+                return $this->main_old();
+            endif; 
 		}
                 //main_old kullanılıyor silme!!
         public function main_old(){

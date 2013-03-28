@@ -1719,10 +1719,12 @@ else
             echo json_encode($r_array);
             return;
         }
-        if(!$messageClass->delete($userID, $user2ID, FALSE, TRUE)){
+		
+		
+		if(!$messageClass->delete($userID, $user2ID, FALSE, TRUE)){
             $r_array['status'] = 'error';
         }
-        
+		
         echo json_encode($r_array);
     }
 	function get_hashtagAgenda()

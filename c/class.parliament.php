@@ -154,11 +154,16 @@
 			{
 				$WHERE .= "\n AND a.title LIKE '%". $db->escape( $keyword )."%' ";
 			}
+			$WHERE .= "\n  AND ( a.regionID IS NULL AND a.countryID IS NULL AND a.cityID IS NULL AND a.hastagID =0 )";	
 			$GROUP = "\n ";
 			$ORDER = "\n ORDER BY a.ID desc";
 			$LIMIT = "\n LIMIT 7";
 			
 			$db->setQuery ( $SELECT . $FROM . $JOIN . $WHERE . $GROUP . $ORDER . $LIMIT );
+			if($model->profileID==1734)
+			{ 
+				//echo $db->_sql;
+			}
 			$agendas = $db->loadObjectList ();
 			return $agendas;
 		}
