@@ -298,7 +298,6 @@ class messageClass {
 			$ro->message = $d["message"];
 			$ro->mTime = $model->get_beforeTime($d["insertTime"]);
 			$ro->mTimeFull = date("d-m-Y H:i:s",$d["insertTime"]);
-			
 			$returnA[] = $ro;
 		}
 		return $returnA;
@@ -330,6 +329,11 @@ class messageClass {
 			$ro->message = $d["message"];
 			$ro->mTime = $model->get_beforeTime($d["insertTime"]);
 			$ro->mTimeFull = date("d-m-Y H:i:s",$d["insertTime"]);
+			if($ro->fID == $model->profileID)
+				$ro->me = 1;
+			else
+				$ro->me = 0;
+			$ro->read = $d['read'];
 			$returnA[] = $ro;
 		}
 		return $returnA;
