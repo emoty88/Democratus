@@ -1357,7 +1357,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             die('<h1>Not Found</h1> <p>The requested URL was not found on this server.</p>');
         }
         
-        public function sendsystemmail($email, $subject, $message, $sendType="normal"){
+        public function sendsystemmail($email, $subject, $message, $sendType="mandrill"){
             
             $mail = new phpmailer();
 			
@@ -1365,7 +1365,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 			{
 				$mail->IsSMTP(); // telling the class to use SMTP
 				$mail->Host       = "smtp.mandrillapp.com"; 				// SMTP server
-				$mail->SMTPDebug  = 2;                     					// enables SMTP debug information (for testing)
+				$mail->SMTPDebug  = 0;                     					// enables SMTP debug information (for testing)
 				                                           					// 1 = errors and messages
 				                                           					// 2 = messages only
 				$mail->SMTPAuth   = true;                  					// enable SMTP authentication

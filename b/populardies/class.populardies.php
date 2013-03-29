@@ -5,11 +5,16 @@
         	global $model;
 			
 			$c_pVoice = new popularvoice;
-			if(isset($model->page->permalink) && $model->page->permalink=="hashTag")//chech ed 
-			{
+			if(isset($model->page->permalink) && $model->page->permalink=="hashTag"){
+				$title = "Ses Getirenler";
 				$voices=$c_pVoice->get_popularVoiceHashT($model->paths[0]);
 			}
+			else if(isset($model->page->permalink) && $model->page->permalink=="voice"){
+				$title = "Ses Getirenler";
+				$voices=$c_pVoice->get_popularVoiceVoice($model->paths[1]);
+			}
 			else {
+				$title = "Ses Getirenler";
 				$voices=$c_pVoice->get_popularVoice();
 			}
 			
@@ -18,7 +23,7 @@
 				<section class="bilesen kontroller_var" id="popularVoice_gadget">
 					<header>
 						<hgroup>
-							<h1>Ses Getirenler</h1>
+							<h1><?=$title?></h1>
 						</hgroup>
 					</header>
 					<div class="bilesen_icerigi dolgu_1 list_carousel">

@@ -1,6 +1,44 @@
 <?php
     class mobile_plugin extends control{
-        public function main(){
+    	public function main()
+		{
+			global $model;
+			$model->template="mobile";
+			$model->view="default";
+			$model->title = 'Democratus - Mobile';
+			
+			if($model->paths[1]!="")
+            {
+            	$func=$model->paths[1];
+            }
+            else
+            {
+            	$func="welcome";
+            }
+			if($model->paths[2]!="")
+            	$this->$func($model->paths[2]);
+			else
+            	$this->$func();
+			
+		}
+		public function feedback()
+		{
+			global $model;
+			$model->template="mobile";
+			$model->view="default";
+			$model->title = 'Democratus - Mobile';
+			?>
+			 	<label for="text-1"> Adınız:</label>
+			     <input name="name" id="name" value="" type="text">
+				 <label for="text-1">Mail Adresiniz:</label>
+			     <input name="mail" id="mail" value="" type="text">
+			     <label for="text-3">Şikayet ve Öneriniz</label>
+			     <textarea cols="40" rows="8" name="mesaj" id="mesaj"></textarea>
+			     <input value="Gönder" type="button" onclick="send_feedback();">
+			<?
+			return false;
+		}
+        public function main_old(){
         	global $model;// $db, $l;
             //die;
             $model->initTemplate('v2','mobile'); 
