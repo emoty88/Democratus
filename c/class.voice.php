@@ -69,6 +69,8 @@
 
 				$SELECT = "SELECT DISTINCT 	count(di.ID)";
 	        	$FROM   = "\n FROM di";
+	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
+	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
 	        	if(intval($profileID)<1){
 	        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
 	        		$WHERE  = "\n WHERE  ( ";
@@ -91,10 +93,11 @@
 				}
 	        	
 	        	$WHERE .= "\n AND di.status>0";
+				$WHERE .= "AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
 	        	if($onlyProfile==0)
 	        		$WHERE .= "\n AND onlyProfile='0'";
 			
-			$db->setQuery($SELECT.$FROM.$WHERE);
+			$db->setQuery($SELECT.$FROM.$JOIN.$WHERE);
 	
 			return $db->loadResult();
 		}
@@ -139,7 +142,7 @@
 					}
 					$WHERE .=")";
 	        	}
-				
+				$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
 				if($start>0){
 					if($pos=="bottom")
 	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
@@ -250,7 +253,7 @@
         	{
         		$WHERE .= "\n AND onlyProfile='0'";
 			}
-			
+			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
         	$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
@@ -371,6 +374,7 @@
         	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
 			$WHERE	="\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+			$WHERE .= "AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
 			if($start>0){
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
@@ -430,6 +434,7 @@
         	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
 			$WHERE	="\n WHERE di.status=1 and di.ID='".$voiceID."' ";
+			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
 			$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT 1";
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
@@ -441,7 +446,7 @@
 			global $model, $db;
 			$SELECT	= "SELECT count(ID) ";
 			$FROM	= "\n FROM di";
-			$WHERE	= "\n WHERE rediID='".$voiceID."' and profileID='".$model->profileID."' ";
+			$WHERE	= "\n WHERE rediID='".$voiceID."' and profileID='".$model->profileID."' AND status=1";
 			$db->setQuery($SELECT.$FROM.$WHERE);
 			if( $db->loadResult()  > 0)
 			{

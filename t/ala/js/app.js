@@ -1640,6 +1640,8 @@ jQuery(document).ready(function ($) {
 	        	
 	        }
 	    },'json');
+
+	    
 	}
 	function get_dialog_details(before,x)
 	{

@@ -160,9 +160,9 @@ class facebookClass{
         $ret_obj = $this->facebook->api('/feed', 'POST',
 		array(
 			'message' => $postIcerik,
-                            'link' => 'http://democratus.com',
-                            'name' => 'Democratus',
-                            'picture' => 'http://democratus.com/t/ala/img/login-logo2.png'
+            'link' => 'http://democratus.com',
+            'name' => 'Democratus',
+            'picture' => 'http://democratus.com/t/ala/img/login-logo2.png'
 		));
         
     }
