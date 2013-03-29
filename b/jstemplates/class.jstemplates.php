@@ -36,6 +36,9 @@ class jstemplates_block extends control{
 					<aside class="komutlar" onclick="notOpen=1;">
 						{{if redierName}}
 							<a href="/${redierPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${redierName} Tarafından paylaşıldı</a> 
+							<a id="paylas_btn_kaldir${ID}" href="javascript:redi(${ID});">
+								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> Paylaşımı kaldır
+							</a>
 							<br />
 						{{/if}}
 						{{if initem>0}}
@@ -72,8 +75,27 @@ class jstemplates_block extends control{
 						{{/if}}
 						<a id="soyles_btn_${ID}" href="/voice/${ID}">
 							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
-							Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
+							Tümü <span class="count">{{if replyCount>0}}(${replyCount}) {{/if}}</span>
 						</a>
+						
+						{{if isMine}}
+							{{if likeCount>0}} 
+							<a id="taktir_btn_${ID}" href="javascript:;">
+								
+								<span class="text">-&nbsp; Takdir </span>  <span class="count"> (${likeCount})</span>
+							</a>
+							{{/if}}
+							{{if dislikeCount>0}}
+							<a id="saygi_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Saygı </span> <span class="count"> (${dislikeCount})</span>
+							</a>
+							{{/if}}
+							{{if reShareCount>0}}
+							<a id="paylas_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Paylaşım </span><span class="count"> (${reShareCount})</span>
+							</a>
+							{{/if}}
+						{{/if}}
 					</aside>
 					<aside id="statistic_area" style="margin-bottom: 30px; margin-left: 58px; display: none;">
 						
@@ -178,6 +200,26 @@ class jstemplates_block extends control{
 								<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
 								Tümü <span class="count">{{if replyCount>0}}(${replyCount}){{/if}}</span>
 							</a>
+							
+							{{if isMine}}
+								{{if likeCount>0}} 
+								<a id="taktir_btn_${ID}" href="javascript:;">
+									
+									<span class="text">-&nbsp; Takdir </span>  <span class="count"> (${likeCount})</span>
+								</a>
+								{{/if}}
+								{{if dislikeCount>0}}
+								<a id="saygi_btn_${ID}" href="javascript:;">
+									<span class="text">-&nbsp; Saygı </span> <span class="count"> (${dislikeCount})</span>
+								</a>
+								{{/if}}
+								{{if reShareCount>0}}
+								<a id="paylas_btn_${ID}" href="javascript:;">
+									<span class="text">-&nbsp; Paylaşım </span><span class="count"> (${reShareCount})</span>
+								</a>
+								{{/if}}
+							{{/if}}
+						
 						</aside>
 					</div>
 				</div>

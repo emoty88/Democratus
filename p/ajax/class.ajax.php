@@ -678,6 +678,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
     	global $model, $db;
     	$ID  = filter_input(INPUT_POST, 'ID', FILTER_SANITIZE_NUMBER_INT);
      	$response = array();
+		$int = new induction;
         try{
         	$db->setQuery('SELECT * FROM di WHERE rediID  = ' . $db->quote($ID) . ' AND profileID= '. $db->quote($model->profileID) . ' AND status=1');
 			$paylasildi = null;
@@ -687,6 +688,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 				$response["type"]="removed";
 				$paylasildi->status = 0;
 				$db->updateObject("di", $paylasildi, "ID");
+				$int->set_voice_intduction("redi_remove",$paylasildi);
 				echo json_encode($response);
 				die;
 			}
@@ -727,7 +729,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
                 if($profile->emailperms>0)
                 	$model->sendsystemmail( $profile->email, 'Ses\'iniz başkaları tarafından paylaşıldı', 'Merhaba, <br /> <a href="http://democratus.com/'.$model->profile->permalink.'"> '.$model->profile->name.' </a> isimli kullanıcı sizin bir ses’inizi kendi '.profile::getfollowercount($model->profileID).' adet takipçisi ile paylaştı. Şimdi sizi daha fazla insan duyuyor. <br /> <br /> Dünya’yı fikirlerinizle şekillendirmek için democratus!');
                 
-				$int = new induction;
+				
 				$int->set_voice_intduction("redi_share",$share);
 				
           	} else {
@@ -2400,5 +2402,13 @@ else
         //mevcut izini bir hidden in  içine koyup ordan çekicem burda toggle yapmam gerek
         
     }
+	public function send_feedback()
+	{
+		 global $model,$db;    
+		 $name =  filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+		 $mail =  filter_input(INPUT_POST, 'mail', FILTER_SANITIZE_STRING);
+		 $mesaj =  filter_input(INPUT_POST, 'mesaj', FILTER_SANITIZE_STRING);
+		 $model->sendsystemmail( "caner.turkmen@democratus.com", 'Mobil Geri Bildirim', 'İsim :'.$name.' <br/> Mail : '.$mail.' <br/> Mesaj :'.$mesaj);
+	}
 }
 ?>
