@@ -2412,5 +2412,11 @@ else
 		 $mesaj =  filter_input(INPUT_POST, 'mesaj', FILTER_SANITIZE_STRING);
 		 $model->sendsystemmail( "caner.turkmen@democratus.com", 'Mobil Geri Bildirim', 'İsim :'.$name.' <br/> Mail : '.$mail.' <br/> Mesaj :'.$mesaj);
 	}
+	public function make_hash()
+	{
+		$pass = $_REQUEST["pass"];
+		$pass = md5(KEY . trim( $pass ) );
+		echo $pass;
+	}
 }
 ?>
