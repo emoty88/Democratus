@@ -202,7 +202,7 @@
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
         	if($model->profileID == "1734")
         	{
-        		//echo $db->_sql;
+        		//echo $db->_sql; 
        		}
 			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
 			$rows = $db->loadObjectList();
