@@ -198,10 +198,11 @@
 	        	$LIMIT  = "\n LIMIT $limit";
         	}
 			
-   
+   			
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
         	if($model->profileID == "1734")
         	{
+        		//sleep(5);
         		//echo $db->_sql;
        		}
 			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;

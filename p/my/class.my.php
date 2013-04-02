@@ -31,6 +31,10 @@
 			{
 				return $this->twitterReturn();
 			}
+			if($model->paths[1]=="afterRegister")
+			{
+				return $this->afterRegister($model->paths[2]);
+			}
 			
 			$birth= date_parse($profile->birth);
 			if($birth['day']<10){
@@ -3061,6 +3065,18 @@
             //echo intval($db->loadResult());
             return intval($db->loadResult())>=7;            
         }
+		public function afterRegister($step=1)
+		{
+			switch ($step) {
+				case '1':
+					echo "step 1";
+					break;
+				
+				default:
+					echo " default";
+					break;
+			}
+		}
         
     }
 ?>

@@ -22,7 +22,8 @@ var newVoiceCount	= 0;
 var loadNewProsses	= 0;
 var scrollCount		= 0;
 var notLoadVoice	= false;
-
+var noticeProg		= false;
+var messProg		= false;
 
 function starter()
 {
@@ -35,7 +36,7 @@ function starter()
 }
 jQuery(document).ready(function ($) {
 	//$(".fnc").fancybox();
-    starter();
+    setTimeout("starter()",3000);
     var last = 0;
 	//$(".fineUploader").each(function (){
 	//	init_fineUploader(this);
@@ -782,6 +783,11 @@ jQuery(document).ready(function ($) {
 	}
 	function get_messageCount()
 	{
+		if(messProg)
+		{
+			return false;
+		}
+		messProg=true;
 		var post_data	= {ID:0};
 		$.ajax({
 			type: "POST",
@@ -790,6 +796,7 @@ jQuery(document).ready(function ($) {
 			dataType:"json",
 			success: function(response)
 			{
+				messProg=false;
 				if(response<1)
 				{
 					$("#messageCount").hide();
@@ -805,6 +812,11 @@ jQuery(document).ready(function ($) {
 	}
 	function get_noticeCount()
 	{
+		if(noticeProg)
+		{
+			return false;
+		}
+		noticeProg=true;
 		var post_data	= {ID:0};
 		$.ajax({
 			type: "POST",
@@ -813,6 +825,7 @@ jQuery(document).ready(function ($) {
 			dataType:"json",
 			success: function(response)
 			{
+				noticeProg=false;
 				if(response==null)
 				{
 					$("#noticeCount").hide();

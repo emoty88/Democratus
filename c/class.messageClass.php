@@ -101,10 +101,8 @@ class messageClass {
 	
 	//okunmamış mesajlar
 	function getCount($userID){
+		//sleep(2);	
 		$userID = intval($userID);
-		
-                
-               
 		$query = array(
 			'read' => FALSE,
 			'toID' => $userID,
