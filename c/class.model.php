@@ -1735,6 +1735,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 			
 			$model->addScript(TEMPLATEURL."ala/js/fancy/jquery.fancybox.js", "jquery.fancybox.js", 1);
 			$model->addStyle(TEMPLATEURL ."ala/js/fancy/jquery.fancybox.css", "jquery.fancybox.css", 1 );
+			$model->addMeta('<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>');
 		}
              
     }
