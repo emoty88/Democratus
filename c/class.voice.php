@@ -197,13 +197,9 @@
 	        	$ORDER  = "\n ORDER BY di.ID DESC";
 	        	$LIMIT  = "\n LIMIT $limit";
         	}
-			
-   
+			   			
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
-        	if($model->profileID == "1734")
-        	{
-        		//echo $db->_sql; 
-       		}
+
 			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
 			$rows = $db->loadObjectList();
 			$voices	=array();
