@@ -72,7 +72,7 @@
 				</div>
 			</div><!-- // İçerik -->
 			
-			<a href="/home/tour" class="tour_btn">
+			<a href="/home/tour" class="tour_btn hidden-phone">
 				<div>
 					?
 				</div>

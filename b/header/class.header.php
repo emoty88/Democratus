@@ -20,7 +20,7 @@
 								</a>
 								
 								<!-- Mobil Menü Tetikleyici -->
-								<button id="mobil_menu_tetikleyici" type="button" class="btn visible-phone" data-tetikleyici="ac-kapa" data-hedef="#ana_menu">
+								<button id="mobil_menu_tetikleyici" type="button" class="btn visible-phone" data-tetikleyici="responsive" data-hedef="#ana_menu">
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>

@@ -329,10 +329,11 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
-	/* yenisi Ajax a uygun olarak hazırlandı 
+	 //yenisi Ajax a uygun olarak hazırlandı 
+	 // responsive için aktive edildildi
 	// ac kapa
-	if( $( '[data-tetikleyici="ac-kapa"]' ).length ) {
-		$( '[data-tetikleyici="ac-kapa"]' ).each(function(){
+	if( $( '[data-tetikleyici="responsive"]' ).length ) {
+		$( '[data-tetikleyici="responsive"]' ).each(function(){
 			var $tetikleyici = $(this);
 			if( is_valid_data_attr($tetikleyici.attr('data-hedef')) ) {
 				var $hedef = $( $tetikleyici.attr('data-hedef') );
@@ -365,7 +366,7 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
-	*/
+	
 	// panel tetikleyici
 	if( $( '[data-tetikleyici="panel"]' ).length ) {
 		$( '[data-tetikleyici="panel"]' ).each(function(){
