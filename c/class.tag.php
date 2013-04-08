@@ -120,5 +120,40 @@
 			}
 			return array_key_exists($profileID, $this->_admins);
 		}
+		public function get_hashtagSugg($profileID=0)
+		{
+			global $model, $db;
+			if($profileID==0)
+			{
+				$profileID=$model->profileID;
+			}
+			
+			$SELECT = "SELECT ID, permalink, image, name, motto ";
+			$FROM 	= "\n FROM profile";
+			$WHERE	= "\n WHERE type='hashTag' ";
+			$ORDER	= "\n ORDER BY count_voice" ;
+			$LIMIT	= "\n LIMIT 10";
+			
+			$db->setQuery($SELECT.$FROM.$WHERE.$ORDER.$LIMIT);
+			$hashtags=$db->loadObjectList();
+			return $this->get_MultiReturtnObj($hashtags);
+		}
+		function get_MultiReturtnObj($profiles)
+		{
+			global $model;
+			$returnObj=array();
+			foreach($profiles as $p)
+			{
+				 $ro	= new stdClass;
+				 $ro->ID		= $p->ID;
+				 $ro->pPerma	= $p->permalink;
+				 $ro->pImage	= $model->getProfileImage($p->image, 45,45, 'cutout');
+				 $ro->pName		= $p->name;
+				 $ro->pMotto	= $p->motto;
+				 $ro->ismyFollow= $this->isFollow($ro->ID);
+				 $returnObj[]	= $ro;
+			}
+			return $returnObj;
+		}
 	}
 ?>

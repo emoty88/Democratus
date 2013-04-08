@@ -2418,5 +2418,25 @@ else
 		$pass = md5(KEY . trim( $pass ) );
 		echo $pass;
 	}
+	public function get_hashtagSugg()
+	{
+		global $model, $db;
+		$c_hashtag = new tag();
+		
+		$return = new stdClass;
+		$return->status = "success";
+		$return->hashtags = $c_hashtag->get_hashtagSugg();
+		echo json_encode($return);
+	}
+	public function get_friendSugg()
+	{
+		global $model, $db;
+		$c_profile = new profile;
+		
+		$return = new stdClass;
+		$return->status = "success";
+		$return->hashtags = $c_hashtag->get_hashtagSugg();
+		echo json_encode($return);
+	}
 }
 ?>

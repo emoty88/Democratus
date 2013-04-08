@@ -76,9 +76,17 @@ jQuery(document).ready(function ($) {
                 
 		$.post("/ajax/save_settings", data, function(data){ 
 		        if(data.status == 'success'){
+		        
 		        	$('#kaydet_dgmesi').html('Kaydedildi');
-		        	$('a[href="#tab-arkadasB"]').tab("show");
-		           location.href="/my#arkadasB";
+		        	if(paths[1]=="afterRegister")
+		        	{
+		        		location.href="/my/afterRegister/2";
+		        	}
+		        	else
+		        	{
+		        		$('a[href="#tab-arkadasB"]').tab("show");
+		           		location.href="/my#arkadasB";
+		           	}
 		        }else{
 		        	$('#kaydet_dgmesi').html('Hata oluştu');
 		        }
@@ -142,3 +150,27 @@ jQuery(document).ready(function ($) {
 		$('#kaydet_dgmesi').removeAttr('disabled') ;
 	}
 });
+	function get_hashtagSugg()
+	{
+		$.post( "/ajax/get_hashtagSugg", function(data){ 
+        	if(data.status == 'success'){
+            	//$("#myprivacysave").html('Kaydedildi');   
+            	$("#social-friendList-tmpl").tmpl(data.hashtags).appendTo("#hahtagSugg");
+            	//console.log(data.hashtags);
+	          }else{
+    			//$("#myprivacysave").html('Bir sorun oluştu');
+          	  }  
+    	},'json');
+	}
+	function get_friendSugg()
+	{
+		$.post( "/ajax/get_who2follow", function(data){ 
+        	if(data.status == 'success'){
+            	//$("#myprivacysave").html('Kaydedildi');   
+            	$("#social-friendList-tmpl").tmpl(data.persons).appendTo("#friendSugg");
+            	//console.log(data.hashtags);
+	          }else{
+    			//$("#myprivacysave").html('Bir sorun oluştu');
+          	  }  
+    	},'json');
+	}

@@ -48,9 +48,10 @@
 									{{meclis}}
 
 									{{populardies}}
-                                                                        {{smsuggestion}}
-									{{whotofollow}}
-
+                                    
+                                    {{smsuggestion}}
+									
+									
 								</div>
 							</div>
 						</section><!-- // Yan Alan -->

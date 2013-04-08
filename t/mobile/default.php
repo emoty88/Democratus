@@ -13,9 +13,7 @@
 	</head>
 	<body>
 		<div data-role="page" data-theme="a">
-			<div data-role="header" data-position="inline">
-				<h1>Democratus</h1>
-			</div>
+			
 			<div data-role="content" data-theme="a">
 				{{main}}
 			</div>
