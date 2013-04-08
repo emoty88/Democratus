@@ -12,7 +12,7 @@
 			dataType:"json",
 			success: function(response)
 			{
-				alert(response);				
+				location.href="/mobile/fbSendSuccess";
 			}
 		});	// ajax son 
 	}
