@@ -697,7 +697,7 @@ body.atolye15_body { overflow-x: hidden; }
 	.duvar_kontrolleri.aktif #duvara_git { width: 85px; }
 }
 @media (max-width: 767px) {
-	body .popover { left:0px !important; width:100% !important; min-width:400px !important;}
+	body .popover { left:0px !important; width:100% !important; min-width:310px !important;}
 	body .duvar_kontrolleri #duvara_git .sag_tarafi_sil,
 	body .duvar_kontrolleri.aktif #duvara_git .sag_tarafi_sil { display: none; }
 	body .duvar_kontrolleri #duvara_git, .duvar_kontrolleri.aktif #duvara_git { width: 114px; }

@@ -96,7 +96,7 @@
 		{
 		?>
 			<li>
-				<a id="noticeIcon" class="bildirim" href="javascript:;">
+				<a id="noticeIcon" onclick="_gaq.push(['_trackEvent', 'noticeBtn', 'clicked'])"  class="bildirim" href="javascript:;">
 					<span class="ikon"><i class="atolye15-ikon-uyari atolye15-ikon-32"></i></span>
 					<span id="noticeCount" class="bildirim_sayisi" style="display:none;"></span>
 				</a>
@@ -107,7 +107,7 @@
 		{
 		?>
 			<li>
-				<a id="messageIcon" class="bildirim" href="/message" >
+				<a id="messageIcon" onclick="_gaq.push(['_trackEvent', 'messageBtn', 'clicked'])" class="bildirim" href="/message" >
 					<span class="ikon"><i class="atolye15-ikon-mesaj atolye15-ikon-32"></i></span>
 					<span id="messageCount" class="bildirim_sayisi" style="display:none;"></span>
 				</a>

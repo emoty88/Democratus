@@ -38,6 +38,13 @@
 			<?
 			return false;
 		}
+		public function fbSendSuccess()
+		{
+			?>
+			<h1>Şikayet ve öneriniz gönderildi</h1>
+			<p>Mesajınız gönderilmiştir en kısa zamanda belirttiğiniz adrese geridönüş yapılacaktır ilginiz için teşekkür ederiz.</p>
+			<?		
+		}
         public function main_old(){
         	global $model;// $db, $l;
             //die;
