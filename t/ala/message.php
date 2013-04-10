@@ -47,11 +47,13 @@
 									{{meclis}}
 
 									{{populardies}}
-                                                                        {{smsuggestion}}
+                                    
+                                    {{smsuggestion}}
+									
 									{{whotofollow}}
 
 								</div>
-							</div>http://democ.com/my#arkadasB
+							</div>
 						</section><!-- // Yan Alan -->
 
 						<!-- Orta Alan -->

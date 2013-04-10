@@ -1148,6 +1148,7 @@ jQuery(document).ready(function ($) {
 	
 	function send_message(friendPerma, msgText, callF)
 	{
+		$("#message_send").attr("disabled","true").text("Gönderiliyor");
 		post_data={friendPerma:friendPerma, msgText:msgText};
 		$.ajax({
 			type: "POST",
@@ -1158,6 +1159,7 @@ jQuery(document).ready(function ($) {
 			{
 				if(response.status == "success")
 				{
+					$("#message_send").removeAttr("disabled").text("Gönder");
 					if(callF=="newMessage")
 					{
 						//location.href="/message/dialog/"+friendPerma;
