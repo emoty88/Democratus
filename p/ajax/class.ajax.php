@@ -1033,7 +1033,7 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 		$c_message = new messageClass;
 		$return = array("status"=>"success");
 		$fID	= intval($_REQUEST["fID"]);
-		$before	= intval($_REQUEST["before"]);
+		$before	= $_REQUEST["before"];
 		
 		if(isset($_REQUEST["profileID"]) && $_REQUEST["key"]=="123")
 		{
@@ -1057,7 +1057,6 @@ Eğer parolanızı unuttuysanız Şifremi Unuttum butonuna tıklayabilirsiniz.')
 	function send_message(){
 		global $model;
 		$c_message = new messageClass;
-		 
 		$fPerma   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["friendPerma"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
 		$message   	= strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["msgText"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
 		
