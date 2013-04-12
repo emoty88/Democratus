@@ -29,7 +29,7 @@
 			
         	?>
         		<!-- Kırmızı Bileşen -->
-				<section class="bilesen kirmizi kontroller_var" id="meclis_gagget">
+        		<section class="bilesen kirmizi kontroller_var" id="meclis_gagget">
 					<header>
 						<hgroup>
 							<h1><?=$meclisName?></h1>

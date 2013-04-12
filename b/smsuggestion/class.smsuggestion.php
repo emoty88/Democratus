@@ -8,7 +8,7 @@
 				 
 			?>
 				<!-- Bileşen -->
-				<section class="bilesen beyaz padding_yok" id="whotofollow">
+				<section class="bilesen beyaz padding_yok hidden-phone" id="whotofollow">
 					<header>
 						<h1>Arkadaşlarını Davet Et</h1>
 					</header>

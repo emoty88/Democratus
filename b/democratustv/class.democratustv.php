@@ -5,7 +5,7 @@
 			if($model->paths[0]=="democratus")
 			{
             ?>
-            <section class="bilesen beyaz padding_yok" id="whotofollow">
+            <section class="bilesen beyaz padding_yok hidden-phone" id="whotofollow">
 				<header>
 					<h1><?=$model->paths[0]?> Tv</h1>
 				</header>

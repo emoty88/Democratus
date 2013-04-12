@@ -20,7 +20,7 @@
 			
 			?>
 			<!-- Bileşen -->
-				<section class="bilesen kontroller_var" id="popularVoice_gadget">
+				<section class="bilesen kontroller_var hidden-phone" id="popularVoice_gadget">
 					<header>
 						<hgroup>
 							<h1><?=$title?></h1>

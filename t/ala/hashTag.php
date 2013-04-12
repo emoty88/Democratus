@@ -40,7 +40,7 @@
 								
 								{{sidebarTop}}
 								
-								<div class="satir bilesenler hidden-phone">
+								<div class="satir bilesenler">
 									
 									{{quickEditor}}
 									<div class="hashTag_slide">
