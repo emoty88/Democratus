@@ -2437,5 +2437,57 @@ else
 		$return->hashtags = $c_hashtag->get_hashtagSugg();
 		echo json_encode($return);
 	}
+	public function get_image()
+	{
+		global $model;
+		if(isset($_REQUEST["imageUrl"]) && $_REQUEST["imageUrl"])
+		{
+			$imageU = $_REQUEST["imageUrl"];
+		}
+		else
+		{
+			echo "Url Gönderilmedi";
+			die;
+		}
+		//var_dump($_REQUEST);
+		if(isset($_REQUEST["w"]) && $_REQUEST["w"])
+		{
+			if($_REQUEST["w"]>1000)
+				$w = 1000;
+ 			else
+				$w = $_REQUEST["w"];
+		}
+		else {
+			$w = 0;
+		}
+		if(isset($_REQUEST["h"]) && $_REQUEST["h"])
+		{
+			if($_REQUEST["h"]>1000)
+				$h = 1000;
+			else 
+				$h = $_REQUEST["h"];
+		}
+		else {
+			$h = 0;
+		}
+		if(isset($_REQUEST["action"]) && $_REQUEST["action"])
+		{
+			$action = $_REQUEST["action"];
+		}
+		else {
+			$action = "cutout";
+		}
+		
+		$filePath = $model->getImage($imageU, $w, $h, $action, true);
+		$extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+		header('Content-Type: image/'.$extension);
+		header('Content-Disposition: inline;filename="'.pathinfo($filePath, PATHINFO_FILENAME)); 
+		readfile($filePath); 
+		die;
+		//readfile($model->getProfileImage("11/11/24/04/2ade/twitter5.jpg", 200,200, 'cutout',true)); 
+		//echo "11/11/24/04/2ade/twitter5.jpg";
+		//echo $model->getProfileImage("11/11/24/04/2ade/twitter5.jpg", 200,200, 'cutout');
+	}
 }
 ?>
