@@ -1139,9 +1139,14 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                 return  $this->getImage('default-image/default-profile-image.png', $width, $height, $action);
         }
         
-        public function getImage($path, $width=0, $height=0, $action = 'cutout'){
+        public function getImage($path, $width=0, $height=0, $action = 'cutout', $returnPath=false){
             global $model, $db;
-
+			
+			$returnPU = UPLOADURL;
+			if($returnPath)
+			{
+				$returnPU = UPLOADPATH;
+			}
             if (is_null($path)||strlen($path)==0) return null;
             $key = $width.'x'.$height.$action;
           	
@@ -1151,14 +1156,14 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             $ofile = $pinfo['basename'];
 
             if($width==0 && $height==0){
-                return UPLOADURL.$path.'/'.$ofile; 
+                return $returnPU.$path.'/'.$ofile; 
             }
 
             $nfile = substr($ofile,0,strlen(@$pinfo['basename'])-strlen(@$pinfo['extension'])-1).'_'.$key.'.'.@$pinfo['extension'];
 			
 			
          	if(file_exists(UPLOADPATH.$path.SLASH.$nfile) || is_file(UPLOADPATH.$path.SLASH.$nfile)){
-                return UPLOADURL.$path.'/'.$nfile;
+                return $returnPU.$path.'/'.$nfile;
             }
 			
             if(file_exists(UPLOADPATH.$path.SLASH.$ofile) && is_file(UPLOADPATH.$path.SLASH.$ofile)){
@@ -1169,7 +1174,7 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     //save the image
                     $image->write(UPLOADPATH.$path.SLASH.$nfile);
                     $image = null; unset($image);
-                    return UPLOADURL.$path.'/'.$nfile;                 
+                    return $returnPU.$path.'/'.$nfile;                 
                 
                 } catch (Exception $e) {
                 	
