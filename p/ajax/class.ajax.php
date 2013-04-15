@@ -2477,10 +2477,8 @@ else
 		else {
 			$action = "cutout";
 		}
-		
 		$filePath = $model->getImage($imageU, $w, $h, $action, true);
 		$extension = pathinfo($filePath, PATHINFO_EXTENSION);
-
 		header('Content-Type: image/'.$extension);
 		header('Content-Disposition: inline;filename="'.pathinfo($filePath, PATHINFO_FILENAME)); 
 		readfile($filePath); 

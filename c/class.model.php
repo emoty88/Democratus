@@ -1162,10 +1162,12 @@ $this->buffer = ' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             $nfile = substr($ofile,0,strlen(@$pinfo['basename'])-strlen(@$pinfo['extension'])-1).'_'.$key.'.'.@$pinfo['extension'];
 			
 			
-         	if(file_exists(UPLOADPATH.$path.SLASH.$nfile) || is_file(UPLOADPATH.$path.SLASH.$nfile)){
+       		if(file_exists(UPLOADPATH.$path.SLASH.$nfile) || is_file(UPLOADPATH.$path.SLASH.$nfile)){
                 return $returnPU.$path.'/'.$nfile;
             }
-			
+			//var_dump(UPLOADPATH.$path.SLASH.$ofile);
+			//var_dump(file_exists(UPLOADPATH.$path.SLASH.$ofile));
+			//var_dump(is_file(UPLOADPATH.$path.SLASH.$ofile));
             if(file_exists(UPLOADPATH.$path.SLASH.$ofile) && is_file(UPLOADPATH.$path.SLASH.$ofile)){
                 try {
                     $image = new image(UPLOADPATH.$path.SLASH.$ofile);
