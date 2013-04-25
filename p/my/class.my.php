@@ -61,7 +61,7 @@
 						<div class="satir_ic">
 							<?php 
 								$this->profile_form();
-								//$this->social_form(); //localde sorunlu 
+								$this->social_form(); //localde sorunlu 
 								$this->passwordChange_form();
 							?>   
 						</div>
@@ -74,15 +74,14 @@
 					<section class="satir ilk_satir uste_cikar">
 						<div class="satir_ic">
 							<?php
-								//$this->findFriendSocial_form(); //localde sorunlu 
+								$this->findFriendSocial_form(); //localde sorunlu 
 							?>
 						</div>
 					</section>             
                 </div>
-                <!-- Profile arkadaş Tab  Sonu -->
+                <!-- Profile arkadaş Tab  Sonu --> 
                 <!-- Gizlilik Tab -->
                 <div class="tab-pane fade" id="tab-engellemeler">
-	
 	        			<div class="roundedcontent shareidea">
 							<h2>
 								Bu Modül Test Aşamasındadır.
