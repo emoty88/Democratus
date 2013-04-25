@@ -45,7 +45,7 @@
 					<ul class="alt_menu visible-desktop" id="tab-container">
 						<li class="active"><a href="#tab-profilA" rel="profilA" data-toggle="tab">PROFİL AYARLARI</a></li>
 						<li><a href="#tab-arkadasB" rel="arkadasB" data-toggle="tab">ARKADAŞ BUL</a></li>
-						<li><a href="#tab-engellemeler" rel="engellemeler" data-toggle="tab">ENGELLEMELER</a></li>
+						<li><a href="#tab-privacy" rel="privacy" data-toggle="tab">GİZLİLİK</a></li>
 					</ul>
 					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
 						
@@ -81,20 +81,28 @@
                 </div>
                 <!-- Profile arkadaş Tab  Sonu -->
                 <!-- Gizlilik Tab -->
-                <div class="tab-pane fade" id="tab-engellemeler">
-	
-	        			<div class="roundedcontent shareidea">
-							<h2>
-								Bu Modül Test Aşamasındadır.
-							</h2>
-							<div class="clear"></div>
-							<p>Kullanıcılarımıza kusursuz bir deneyim sunmak için bu modülü kapalı olarak test ediyoruz.</p>
-							<br>
+                <div class="tab-pane fade" id="tab-privacy">
+	        		<section class="satir ilk_satir uste_cikar">
+						<div class="satir_ic">
+							<h1 class="sayfa_basligi">Gizlilik</h1>
+							<?php 
+								$this->privacy_form();
+							?>
 						</div>
+						
+					</section>
 	            </div>
 	            <!-- Gizlilik Tab Sonu -->
 	    	</div>
 		<?
+		}
+		public function privacy_form()
+		{
+			global $model;
+			?>
+			<p>Engelli kullanıclar</p>
+			<div id="block_userList"></div>
+			<?php
 		}
 		public function profile_form()
 		{

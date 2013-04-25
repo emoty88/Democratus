@@ -57,6 +57,15 @@
 			$son =  array();
 			foreach($agendas as $a)
 			{
+				$c_profile = new profile;
+				$isBlock=$c_profile->isBlock($a->deputyID);
+				if($isBlock)
+				{
+					$a->deputyID = 0;
+					$a->deputyimage = "default-image/default-profile-image_22x22cutout.png";
+					$a->deputyname = "Kullanıcı";
+					$a->deputyPerma = "Kullanici";
+				}
 				if($a->myvote==null)
 				{
 					$ilk[] = $a;
@@ -64,7 +73,7 @@
 				else{
 					$son[] = $a;
 				} 
-
+				
 			}
 			return array_merge($ilk, $son);
 		}

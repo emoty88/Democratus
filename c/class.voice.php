@@ -94,6 +94,7 @@
 	        	
 	        	$WHERE .= "\n AND di.status>0";
 				$WHERE .= "AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
+				$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 	        	if($onlyProfile==0)
 	        		$WHERE .= "\n AND onlyProfile='0'";
 			
@@ -104,104 +105,56 @@
 		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")
 		{
 			global $model, $db, $l, $LIKETYPES;
-			if($model->profileID < 1)
-			{
-				//return FALSE;
-			}
-
-			if(true)
-			{
-				$db->setQuery("SELECT followingID from follow where followerID='".$model->profileID."' AND status=1");
-				$followin=$db->loadResultArray();
+			
+			$SELECT = "SELECT DISTINCT 	di.*, 
+        								sharer.image AS sharerimage, 
+        								sharer.name AS sharername, 
+        								sharer.deputy AS sharerDeputy, 
+        								redier.name AS rediername, 
+        								redier.image AS redierimage, 
+        								sharer.deputy AS deputy, 
+        								sharer.showdies,
+        								sharer.permalink as permalink";
+        	$FROM   = "\n FROM di";
+        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
+        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
+        	if(intval($profileID)<1){
+        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+        		$WHERE  = "\n WHERE  ( ";
+        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
+        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+        		$WHERE .= "\n OR profileID IN (".$this->get_profileIDInQuery(0,"following").")";
 				
-				$SELECT = "SELECT DISTINCT 	di.*, 
-	        								sharer.image AS sharerimage, 
-	        								sharer.name AS sharername, 
-	        								sharer.deputy AS sharerDeputy, 
-	        								redier.name AS rediername, 
-	        								redier.image AS redierimage, 
-	        								sharer.deputy AS deputy, 
-	        								sharer.showdies,
-	        								sharer.permalink as permalink";
-	        	$FROM   = "\n FROM di";
-	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
-	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
-	        	if(intval($profileID)<1){
-	        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
-	        		$WHERE  = "\n WHERE  ( ";
-	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
-	        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
-					if(count($followin)>0)
-	        		$WHERE .= "\n OR profileID IN (".implode(",", $followin).")";
-	        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
-	        	} else {
-	        		$WHERE  = "\n WHERE (di.profileID = " . $db->quote(intval( $profileID ));
-					if(@$hashTag != "0")
-					{
-						$WHERE .= "\n  OR di.di  LIKE '%". $db->escape( "#".$hashTag )."%'";
-					}
-					$WHERE .=")";
-	        	}
-				$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
-				if($start>0){
-					if($pos=="bottom")
-	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
-					else 
-						$WHERE .= "\n AND di.ID>" . $db->quote($start);
-	        	}  
-				
-	        	$WHERE .= "\n AND di.status>0";
-	        	if($onlyProfile==0)
-	        		$WHERE .= "\n AND onlyProfile='0'";
-				
-	        	$ORDER  = "\n ORDER BY di.ID DESC";
-	        	$LIMIT  = "\n LIMIT $limit";
-			}
-			else {
-	        	$SELECT = "SELECT DISTINCT 	di.*, 
-	        								sharer.image AS sharerimage, 
-	        								sharer.name AS sharername, 
-	        								sharer.deputy AS sharerDeputy, 
-	        								redier.name AS rediername, 
-	        								redier.image AS redierimage, 
-	        								sharer.deputy AS deputy, 
-	        								sharer.showdies,
-	        								sharer.permalink as permalink";
-	        	$FROM   = "\n FROM di";
-	        	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
-	        	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
-	        	if(intval($profileID)<1){
-	        		$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
-	        		$WHERE  = "\n WHERE  ( ";
-	        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
-	        		$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
-	        		$WHERE .= "\n OR ( di.profileID<1000 ))"; //democratus profili
-	        	} else {
-	        		$WHERE  = "\n WHERE di.profileID = " . $db->quote(intval( $profileID ));
-	        	}
-				if($start>0){
-					if($pos=="bottom")
-	        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
-					else 
-						$WHERE .= "\n AND di.ID>" . $db->quote($start);
-	        	}  
-				if($hashTag != "0")
+        		//$WHERE .= "\n OR profileID IN (get_following(".$model->profileID."))";
+        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
+        	} else {
+        		$WHERE  = "\n WHERE (di.profileID = " . $db->quote(intval( $profileID ));
+				if(@$hashTag != "0")
 				{
-					$WHERE .= "\n  OR (di.di  LIKE '%". $db->escape( "#".$hashTag )."%')";
+					$WHERE .= "\n  OR di.di  LIKE '%". $db->escape( "#".$hashTag )."%'";
 				}
-	        	
-	        	$WHERE .= "\n AND di.status>0";
-	        	if($onlyProfile==0)
-	        		$WHERE .= "\n AND onlyProfile='0'";
-				
-	        	$ORDER  = "\n ORDER BY di.ID DESC";
-	        	$LIMIT  = "\n LIMIT $limit";
+				$WHERE .=")";
         	}
-			   			
-        	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
+			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
+			if($start>0){
+				if($pos=="bottom")
+        			$WHERE .= "\n AND di.ID<" . $db->quote($start);
+				else 
+					$WHERE .= "\n AND di.ID>" . $db->quote($start);
+        	}  
+			
+        	$WHERE .= "\n AND di.status>0";
+        	if($onlyProfile==0)
+        		$WHERE .= "\n AND onlyProfile='0'";
+			
+        	$ORDER  = "\n ORDER BY di.ID DESC";
+        	$LIMIT  = "\n LIMIT $limit";
 
-			//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
+        	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+			//echo $db->_sql;
 			$rows = $db->loadObjectList();
+			
 			$voices	=array();
 			if(count($rows)>0)
 			{
@@ -250,6 +203,7 @@
         		$WHERE .= "\n AND onlyProfile='0'";
 			}
 			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
+			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
         	$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
@@ -369,8 +323,9 @@
         	$FROM   = "\n FROM di as di";
         	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
-			$WHERE	="\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+			$WHERE	= "\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
 			$WHERE .= "AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
+			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 			if($start>0){
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
@@ -398,7 +353,8 @@
 
 			$SELECT = "SELECT DISTINCT 	count(*) ";
         	$FROM   = "\n FROM di as di";
-			$WHERE	="\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+			$WHERE	= "\n WHERE di.status=1 and di.replyID='".$voiceID."' ";
+			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 		 	if($start>0){
         		$WHERE .= "\n AND di.ID<" . $db->quote($start);
         	}  
@@ -429,8 +385,9 @@
         	$FROM   = "\n FROM di as di";
         	$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";
-			$WHERE	="\n WHERE di.status=1 and di.ID='".$voiceID."' ";
+			$WHERE	= "\n WHERE di.status=1 and di.ID='".$voiceID."' ";
 			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
+			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 			$ORDER  = "\n ORDER BY di.ID DESC";
         	$LIMIT  = "\n LIMIT 1";
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
@@ -541,6 +498,46 @@
 			$db->setQuery($SELECT.$FROM.$WHERE.$LIMIT);
 			$result=$db->loadResult();
 			return $result;
+		}
+		public function get_profileIDInQuery($profileID=0, $whichProfile="following")
+		{
+			global $model, $db;
+			if($profileID==0)
+			{
+				$profileID=$model->profileID;
+			}
+			switch ($whichProfile) {
+				case 'following':
+					$db->setQuery("SELECT followingID from follow where followerID='".$profileID."' AND status=1");
+					break;
+				case 'follower':
+					$db->setQuery("SELECT followerID from follow where followingID='".$profileID."' AND status=1");
+					break;
+				case 'blocking':
+					$db->setQuery("SELECT blockingID from block where blockerID='".$profileID."' AND status=1");
+					break;
+				case 'blocker':
+					$db->setQuery("SELECT blockerID from block where blockingID='".$profileID."' AND status=1");
+					break;
+				case 'allBlock':
+					$db->setQuery("SELECT blockingID from block where blockerID='".$profileID."' AND status=1");
+					$IDs=$db->loadResultArray();
+					$db->setQuery("SELECT blockerID from block where blockingID='".$profileID."' AND status=1");
+					$IDs2=$db->loadResultArray();
+					if(count($IDs)>0 || count($IDs2))
+					{
+						return implode(",", array_merge($IDs,$IDs2));
+					}
+					else {
+						return 0;
+					}
+					break;
+			}
+			$IDs=$db->loadResultArray();
+			if(count($IDs)>0)
+				return implode(",", $IDs);
+			else
+				return "0";
 		}
 	}
 ?>

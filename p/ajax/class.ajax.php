@@ -299,6 +299,7 @@ class ajax_plugin extends control{
 		if(!file_exists(UPLOADPATH.$upDir))
 		{
 			$olustur = mkdir(UPLOADPATH.$upDir, 0777);
+			chmod(UPLOADPATH.$upDir, 0777);
 		}
 		$result = $uploader->handleUpload(UPLOADPATH.$upDir.'/');
 		$result["uploadDir"]=$upDir;
@@ -1302,6 +1303,28 @@ else
 	        if($followingID == $model->profileID) throw new Exception('Kendi kendini takip edemessin');
 	        $c_profile = new profile;
 			$res = $c_profile->set_follow($followingID);
+			
+			if($res["status"]!="success")
+			{
+				throw new Exception ($res["message"]);
+			}
+	    } catch (Exception $e){
+	        $response['status'] = 'error';
+	        $response['message'] = $e->getMessage();
+	    }
+	    
+	    echo json_encode($response);
+	}
+	
+	public function block(){
+            global $model, $db;
+            $model->mode = 0;
+            $response = array("status" => "success");
+	    try{
+	        $blockingID = filter_input(INPUT_POST, 'profileID', FILTER_SANITIZE_NUMBER_INT);
+	        if($blockingID == $model->profileID) throw new Exception('Kendi kendini engelleyemessiniz.');
+	        $c_profile = new profile;
+			$res = $c_profile->set_block($blockingID);
 			
 			if($res["status"]!="success")
 			{
@@ -2486,6 +2509,15 @@ else
 		//readfile($model->getProfileImage("11/11/24/04/2ade/twitter5.jpg", 200,200, 'cutout',true)); 
 		//echo "11/11/24/04/2ade/twitter5.jpg";
 		//echo $model->getProfileImage("11/11/24/04/2ade/twitter5.jpg", 200,200, 'cutout');
+	}
+	public function get_blockUser()
+	{
+		global $model;
+		$c_profile = new profile;
+		$return->status = "success";
+		$return->bUsers = $c_profile->get_blockUser();
+		$return->bUsers = $c_profile->get_profileMultiReturtnObj($return->bUsers);
+		echo json_encode($return);
 	}
 }
 ?>
