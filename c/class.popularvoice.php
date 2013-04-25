@@ -23,6 +23,7 @@ class popularvoice extends voice
 				$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
 	       		$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";   
 				$WHERE  = "\n WHERE di.status>0";
+				$WHERE .= "\n AND di.profileID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
 				$GROUP  = "\n"; 
 	        	$ORDER  = "\n ORDER BY ID DESC";
 	        	$LIMIT  = "\n LIMIT $sLimit, $limit";
@@ -46,7 +47,8 @@ class popularvoice extends voice
 	        $FROM   = "\n FROM dilike, di";
 	        $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
 	        $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
-	        $WHERE = "\n WHERE di.status>0";
+	        $WHERE  = "\n WHERE di.status>0";
+	        $WHERE .= "\n AND di.profileID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
 	        if($_SERVER['SERVER_NAME']=="democratus.com")
 	            {
 					$WHERE  .= "\n AND di.datetime > DATE_ADD(NOW(), INTERVAL -1 DAY)"; 
@@ -100,7 +102,8 @@ class popularvoice extends voice
         $FROM   = "\n FROM dilike, di";
         $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
-        $WHERE = "\n WHERE di.status>0";
+        $WHERE  = "\n WHERE di.status>0";
+        $WHERE .= "\n AND di.profileID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
         if($_SERVER['SERVER_NAME']=="democratus.com")
             {
 				$WHERE  .= "\n AND di.datetime > DATE_ADD(NOW(), INTERVAL -4 DAY)";  // hastagler için  son 4 gün
@@ -144,6 +147,7 @@ class popularvoice extends voice
         $JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         $JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";            
         $WHERE = "\n WHERE di.status>0";
+        $WHERE .= "\n AND di.profileID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
         $WHERE .= "\n AND di.ID = dilike.diID"; // AND
         $WHERE .= "\n AND di.popularstatus>0";
 		$WHERE .= "\n AND (di.replyID = '". $db->escape( $voice )."')";

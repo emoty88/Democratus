@@ -95,6 +95,7 @@ jQuery(document).ready(function ($) {
    		case "hashTag_manage" : hashtagManage_page();break;
    		case "search" : search_page();break;
    		case "popularvoice" : popularvoice_page();break;
+   		case "my" : my_page();break;
    	}  	
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
@@ -1833,7 +1834,19 @@ jQuery(document).ready(function ($) {
 	function popularvoice_page()
 	{
 		get_popularVoice();
-		
+	}
+	function my_page()
+	{
+		get_blockUser();
+	}
+	function get_blockUser()
+	{
+		$.post("/ajax/get_blockUser", function(response){ 
+			if(response.status == "success")
+			{
+				$("#blockedList-tmpl").tmpl(response.bUsers).appendTo("#block_userList");
+			}
+	    },'json');
 	}
 	function get_voice_statistic(voice)
 	{
@@ -1919,7 +1932,26 @@ jQuery(document).ready(function ($) {
 			}
 	    },'json');
 	}
-
+	
+	function block(profileID)
+	{
+		$.post("/ajax/block", {profileID: profileID}, function(response){ 
+			if(response.status == "success")
+			{
+				if(plugin=="my")
+	        		$(".blockUser-" + profileID).remove();
+	        	else
+	        		location.href="/my#privacy";
+			}
+	    },'json');
+	}
+	function block_user(profileID)
+	{
+		$('#myModalLabel').html("Engellemek istediğinize eminmisiniz.");
+    	$('.modal-body').html("<p>Bu kişiyi engellerseniz Democratus üzerinde birbirinize ait içerikleri göremiceksiniz. <br />Engelliler listesine <a href='/my'>Ayarlar</a> sayfanızın <a href='/my#privacy'>Gizlilik</a> sekmesinden ulaşabilirsiniz.</p>");
+    	$('.modal-footer').prepend('<a href="javascript:;" id="block" onclick="block('+profileID+')" class="btn btn-primary">Uygula</a>');
+		$('#myModal').modal('show'); 
+	}
 	function init_quick_editor()
 	{
 		if(plugin=="profile")

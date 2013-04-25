@@ -453,6 +453,7 @@
                     . "\n FROM profile AS p"
                     . "\n WHERE p.permalink=".$db->quote($permalink)." "
                     . "\n AND p.status>0"
+                    . "\n AND ID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")"
                     . "\n LIMIT 1"
                     ;
 					$db->setQuery( $query );

@@ -79,6 +79,29 @@
             	return false;
             }
 		}
+		public function isBlock($blockingID=0, $blockerID=0)
+		{
+			global $model, $db;
+			if($blockingID==0)
+			{
+				return false;
+			}
+			if($blockerID==0)
+			{
+				if($this->profileID==0)
+				{
+					return FALSE;
+				}
+				$blockerID=$this->profileID;
+			}
+			$db->setQuery("SELECT ID FROM block WHERE blockerID=".$blockerID." AND blockingID=".$blockingID." AND status>0");
+         	$block = null;
+			if($db->loadObject($block)){
+            	return true;
+          	} else {
+            	return false;
+            }
+		}
         static public function isallowed( $profileID, $privacy ){
             global $model, $db, $dbez;
             /*$a = array(
@@ -203,6 +226,7 @@
 				return 0;
 			}
         }
+		
 		public function set_follow($followingID=0, $followerID=0)
 		{
 			global $model, $db;
@@ -274,6 +298,83 @@
 			}
 			
 			if($response["status"]=="success")
+			{
+				$c_induction = new induction;
+				if($follow->status==1)
+				{
+					$c_induction->set_profile_intduction("follow",  $profile, $follow->ID);
+				}
+				else
+				{
+					$c_induction->set_profile_intduction("unfollow",  $profile, $follow->ID);
+				}
+			}
+			return $response;
+		}
+		
+		public function set_block($blockingID=0, $blockerID=0)
+		{
+			global $model, $db;
+			
+			if($blockingID==0)
+			{
+				return false;
+			}
+			if($blockerID==0)
+			{
+				if($this->profileID==0)
+				{
+					return FALSE;
+				}
+				$blockerID=$this->profileID;
+			}
+			try {
+				$db->setQuery("SELECT p.*, u.email AS email FROM profile AS p, user AS u WHERE p.ID=".$db->quote($blockingID)." AND u.ID=p.ID");
+			    $profile = null;
+		        if(!$db->loadObject($profile)) throw new Exception('Profil Bulunamadı');
+		        
+				$db->setQuery("SELECT b.* FROM block AS b WHERE b.blockingID=".$db->quote($blockingID)." AND b.blockerID=".$db->quote($blockerID));
+		        $block = null;
+		        if(!$db->loadObject($block)){
+		            //first contact start
+		            $block = new stdClass;
+		            $block->blockerID = $blockerID;
+		            $block->blockingID = $blockingID;
+		            $block->datetime = date('Y-m-d H:i:s');
+		            $block->status = 1;
+		            
+		            if($db->insertObject('block', $block)){
+		                $block->ID = $db->insertid();
+		                $response['status'] = 'success'; 
+		            } else {
+		                $response['status'] = 'error';
+		            }
+		            //first contact end
+		        } else {
+		            //daha önce kontakt var, duruma 
+		           	$block->blockingID = $blockingID; 
+		           	$block->blockerID = $blockerID;
+		            if($block->status == 1)
+					{
+						$block->status = 0;
+					}
+					else {
+						$block->status = 1;
+					}
+		            $block->datetime = date('Y-m-d H:i:s');
+		            if($db->updateObject('block', $block, 'ID')){
+		                $response['status'] = 'success';
+		            } else {
+		                $response['status'] = 'error';
+		            }                    
+		        }
+	        }
+			catch (exception $e){
+				$response['status'] = 'error';
+	        	$response['message'] = $e->getMessage();
+			}
+			
+			if($response["status"]=="success" && false) // intduction ları belirle
 			{
 				$c_induction = new induction;
 				if($follow->status==1)
@@ -414,6 +515,7 @@
 			{
 				$WHERE .= "\n AND (p.name like '".$keyword."%' or p.permalink like '".$keyword."%') ";
 			}
+			$WHERE .= "\n AND p.ID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
 			$ORDER  = "\n ORDER BY p.ID DESC";
 			$LIMIT  = "\n LIMIT $start, $limit";
 			
@@ -683,8 +785,8 @@
 			if($start>0){
         		$WHERE .= "\n AND ID<" . $db->quote($start);
         	}  
-			$WHERE .= "\n  AND (name LIKE '%". $db->escape( $keyword )."%' OR permalink  LIKE '%". $db->escape( $keyword )."%')";
-   		
+			$WHERE .= "\n AND (name LIKE '%". $db->escape( $keyword )."%' OR permalink  LIKE '%". $db->escape( $keyword )."%')";
+   			$WHERE .= "\n ID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
         	$ORDER  = "\n ORDER BY ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
@@ -822,6 +924,18 @@
 				return $permalink;
 
 			}
+		}
+		public function get_blockUser()
+		{
+			global $model, $db;
+			$SELECT = " SELECT p.* ";
+			$FROM	= " FROM profile as p";
+			$JOIN	= " LEFT JOIN block as b on p.ID = b.blockingID ";
+			$WHERE	= " WHERE p.status = 1 AND b.status = 1 AND b.blockerID = ".$db->quote($this->profileID);
+			
+			$db->setQuery($SELECT.$FROM.$JOIN.$WHERE);
+			$rows = $db->loadObjectList();
+			return $rows;
 		}
     }
 ?>

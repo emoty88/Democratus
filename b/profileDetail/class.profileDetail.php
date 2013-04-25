@@ -76,34 +76,50 @@
 								</div>
 							</aside>
 							<aside class="takip_bilgileri">
-								<ul class="istatistik_listesi_2">
-									
-									<? 
-									if($p->ID != $model->profileID)
-									{ 
-										$followHide = "";
+								<div class="btn-group">
+					                <button data-toggle="dropdown" class="btn dropdown-toggle" style="position: absolute; left: -60px;">
+					                	
+					                	<span class="icon-user"></span>
+					                	<span class="caret"></span>
+					                </button>
+					                <ul class="dropdown-menu pull-right" style="margin-top:35px; margin-right: 5px; ">
+					                  
+					                  <?php
+					                  	$followHide = "";
 										$unFollowHide = "display:none";
 										$vekilOBtn = "";
 										if($c_profile->isFollow($p->ID, $model->profileID)){
 											$followHide="display:none";
 											$unFollowHide =""; 
-											$vekilOBtn = '<li><a class="btn" onclick="vekilOyu('.$p->ID.'); " href="javascript:;" style="width:95px;">Vekil Olsun</a></li>';
+											$vekilOBtn = '<li><a onclick="vekilOyu('.$p->ID.'); " href="javascript:;" >Vekil Olsun</a></li>';
 										} 
-
+										
+					                 	echo $vekilOBtn;
+					                 	?>
+					                 	<li ><a href="javascript:;" id="profilecomplaint" rel="<?=$p->ID?>" style=""> Şikayet Et  </a></li>
+					                  	<li ><a href="javascript:;" id="profileBlock" rel="<?=$p->ID?>" onclick="block_user(<?=$p->ID?>)">Engelle </a></li>
+					                </ul>
+					          	</div>
+								<ul class="istatistik_listesi_2">
+									
+									<? 
+									if($p->ID != $model->profileID)
+									{ 
+										
 									?>
 									
 										<li>
 											<button type="button" class="btn btn follow follow-<?=$p->ID?>" style="<?=$followHide?>" onclick="follow(profileID);">Takip Et</button>
 											<button type="button" class="btn btn-info unfollow unfollow-<?=$p->ID?>" style="<?=$unFollowHide?>" onclick="follow(profileID);" data-unfText="Takibi Bırak" data-fText="Takip Ediliyor">Takip Ediliyor</button>
 										</li>
-										<?=$vekilOBtn?>
+										
 									<? 
 									}
 									?>
 									<li><span class="puan"><strong><?=$p->puan?></strong> PUAN</span></li>
 									<li id="follow" data-follow="follows" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_following?></strong> TAKİP ETTİĞİ</li>
 									<li id="follow" data-follow="followers" data-id="<?=$p->ID?>" data-clear="true"><strong><?=$p->count_follower?></strong> TAKİPÇİ</li>
-									<li ><a href="javascript:;" id="profilecomplaint" rel="<?=$p->ID?>" style="text-decoration:none;color:#584C43"> Şikayet Et ! </a></li>
+									
 								</ul>
 							</aside>
 						</div>

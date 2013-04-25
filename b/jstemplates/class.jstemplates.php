@@ -563,7 +563,29 @@ class jstemplates_block extends control{
 				</div>
 				<div style="clear: both;"></div>
 			</article>
-		</script> 
+		</script>
+		
+		<script id="blockedList-tmpl" type="text/x-jquery-tmpl">
+			<article class="duvar_yazisi blockUser-${ID}" style="min-height: 45px;">
+				<img alt="${pName} Profil Fotoğrafı" src="${pImage}" class="profil_resmi">
+				
+				<address class="yazar">
+					<a title="${pName} Profilini Görüntüle" href="/${pPerma}">
+						${pName} 
+					</a>
+					<a title="${pName} Profilini Görüntüle" href="/${pPerma}">
+						<span>@${pPerma}</span>
+					</a>	
+				</address>
+				<div class="duvar_yazisi_icerigi" style="width: 400px;">
+					<p style="">${pMotto}</p>
+				</div>
+				<div style="position: absolute;top: 20px; left: 500px;">
+					<button type="button" class="btn btn-info unfollow unblock-${ID}" style="" onclick="block(${ID});" data-unfText="Engeli Kaldır" data-fText="Engellendi">Engellendi</button>
+				</div>
+				<div style="clear: both;"></div>
+			</article>
+		</script>
 		
 		<script id="gaget-w2f-tmpl" type="text/x-jquery-tmpl">
 			<li>
