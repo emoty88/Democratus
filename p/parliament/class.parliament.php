@@ -47,12 +47,12 @@ class parliament_plugin extends control {
 						<li><a href="#tab-tasariyaz" rel="tasariyaz" data-toggle="tab" >TASARI YAZ</a></li>
 						<li><a href="#tab-eskireferandumlar" rel="eskireferandumlar" data-toggle="tab" >ESKİ REFERANDUMLAR</a></li>
 					</ul>
-					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
-						<option value="">REFERANDUM</option>
-						<option value="">DÖNEM VEKİLLERİ</option>
-						<option value="">VEKİL SEÇİMLERİ</option>
-						<option selected="" value="">ADAYLARIM</option>
-						<option value="">ESKİ REFERANDUMLAR</option>
+					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil" >
+						<option selected="" value="#tab-referandum" >REFERANDUM</option>
+						<option value="#tab-vekilsecimleri" >VEKİL SEÇİMLERİ</option>
+						<option value="#tab-donemvekilleri" rel="donemvekilleri" data-toggle="tab">DÖNEM VEKİLLERİ</option>
+						<option value="#tab-tasariyaz">TASARI YAZ</option>
+						<option value="#tab-eskireferandumlar">ESKİ REFERANDUMLAR</option>
 					</select>
 				</nav>
 				<div class="clearfix"></div>

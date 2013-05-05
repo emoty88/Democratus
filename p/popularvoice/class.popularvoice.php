@@ -21,7 +21,11 @@ class popularvoice_plugin extends control{
 					<li><a href="#tab-yukselenler" rel="yukselenler" data-toggle="tab" >Yükselenler</a></li>
 					<li><a href="#tab-ulkeduvari" rel="ulkeduvari" data-toggle="tab" >Ülke Duvarı</a></li>
 				</ul>
-				
+				<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
+					<option value="#tab-sesgetirenler">Ses Getirenler</option>
+					<option value="#tab-yukselenler">Yükselenler</option>
+					<option value="#tab-ulkeduvari">Ülke Duvarı</option>
+				</select>
 				<div class="clearfix"></div>
 			</section>
 			<div class="tab-content">

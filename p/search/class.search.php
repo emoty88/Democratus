@@ -27,9 +27,9 @@
 						<li><a href="#tab-arsivler" rel="arsivler" data-toggle="tab" >ARŞİVLER</a></li>
 					</ul>
 					<select class="mobil_menu hidden-desktop" id="alt_menu_mobil">
-						<option value="">KİŞİLER</option>
-						<option value="">SESLER</option>
-						<option value="">ARŞİVLER</option>
+						<option value="#tab-kisiler">KİŞİLER</option>
+						<option value="#tab-sesler">SESLER</option>
+						<option value="#tab-arsivler">ARŞİVLER</option>
 					</select>
 				</nav>
 				<div class="clearfix"></div>

@@ -84,7 +84,11 @@ jQuery(document).ready(function ($) {
     	$(this).tab('show');
     	location.href="#"+$(this).attr("rel");
    	});
-
+   	
+	$(".mobil_menu").live("change", function (e){
+		console.log($(this).val());
+		$('a[href="'+$(this).val()+'"]').tab("show");
+	});
    	switch(plugin)
    	{
    		case "parliament": parliament_page(); break;
