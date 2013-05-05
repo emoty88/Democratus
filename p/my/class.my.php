@@ -81,16 +81,6 @@
                 </div>
                 <!-- Profile arkadaş Tab  Sonu --> 
                 <!-- Gizlilik Tab -->
-<<<<<<< HEAD
-                <div class="tab-pane fade" id="tab-engellemeler">
-	        			<div class="roundedcontent shareidea">
-							<h2>
-								Bu Modül Test Aşamasındadır.
-							</h2>
-							<div class="clear"></div>
-							<p>Kullanıcılarımıza kusursuz bir deneyim sunmak için bu modülü kapalı olarak test ediyoruz.</p>
-							<br>
-=======
                 <div class="tab-pane fade" id="tab-privacy">
 	        		<section class="satir ilk_satir uste_cikar">
 						<div class="satir_ic">
@@ -98,7 +88,6 @@
 							<?php 
 								$this->privacy_form();
 							?>
->>>>>>> 51b72aa258016bad23ea40debeca91048b96d00b
 						</div>
 						
 					</section>
@@ -135,7 +124,7 @@
 			        <p id="alert-textArea">'.implode(" ve ", $varningT).' doğru ve eksiksiz şekilde girmelisiniz !</p>
 		   		</div>';
 			}
-			?>
+			?> 
 			<header>
 				<h1 class="sayfa_basligi">Profil Ayarlarım</h1>
 			</header>			
