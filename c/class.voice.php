@@ -93,13 +93,13 @@
 				}
 	        	
 	        	$WHERE .= "\n AND di.status>0";
-				$WHERE .= "AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
+				$WHERE .= "\n AND (sharer.status > 0 )"; // 28 3 13 Silinen kişilerin sesleri kalksın
 				$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 	        	if($onlyProfile==0)
 	        		$WHERE .= "\n AND onlyProfile='0'";
 			
 			$db->setQuery($SELECT.$FROM.$JOIN.$WHERE);
-	
+			//echo $db->_sql;
 			return $db->loadResult();
 		}
 		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")

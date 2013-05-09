@@ -15,7 +15,10 @@
 			$c_profile 	= new profile($userPerma);
 			$model->addScript('profileID='.$c_profile->profile->ID.'; profilePerma="'.$userPerma.'";');
 			$model->addScript('onlyProfile=1;');
-			
+			if($model->paths[1]=="autoload")
+			{
+				$model->addScript('var autoload=1');
+			}
 			if($model->paths[1]=="manage")
 			{
 				$this->manage();

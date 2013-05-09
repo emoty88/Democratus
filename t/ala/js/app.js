@@ -24,6 +24,7 @@ var scrollCount		= 0;
 var notLoadVoice	= false;
 var noticeProg		= false;
 var messProg		= false;
+var autoload		= 0;
 
 function starter()
 {
@@ -104,6 +105,7 @@ jQuery(document).ready(function ($) {
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
 	{
+		
 		if(plugin == "hashTag")
 		{
 			hashTag = profilePerma;
@@ -123,9 +125,10 @@ jQuery(document).ready(function ($) {
 	        }
 		});
 		get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag);
+		//alert(firstVoice);
+		//get_newWallCount(0, firstVoice, 20, onlyProfile, hashTag, "", 'top');
 	}
-	
-	
+
 	// mobile_menu
 	if( $('[data-benim-olayim="hedef_goster_gizle"]').length )
 	{
@@ -141,7 +144,11 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
-	
+	if(autoload==1)
+	{
+		//setTimeout("get_wall("+profileID+","+lastVoiceID+",20,"+onlyProfile+", '"+hashTag+"');",3000);
+		setTimeout("autoLoad();",3000);
+	}
 	var detaylar=	{	html	:true, 
 						title	:"Bildirimler",
 						content	:'<div class="popoverContent-noticeIcon">Yükleniyor</div>',
@@ -1055,6 +1062,7 @@ jQuery(document).ready(function ($) {
 		}
 		else{
 			$(".loading_bar").remove();
+			if(autoload!=1)
 			$("#voiceBulunamadı-tmpl").tmpl(voices).prependTo(container);
 		}
 	}
@@ -2251,3 +2259,11 @@ jQuery(document).ready(function ($) {
 			  }
 			});
     }
+	function autoLoad()
+	{
+		if(this.isActive){
+			get_wall(profileID,lastVoiceID,20,onlyProfile, hashTag, "", "top");
+		}
+		setTimeout("autoLoad();",3000);
+	}
+	
