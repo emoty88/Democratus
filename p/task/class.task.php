@@ -316,6 +316,29 @@
 		private function canerMo()
 		{
 			global $model, $db;
+			$c_facebook = new facebookClass;
+			$c_profile = new profile;
+			
+			$query = "SELECT ID, name, fbID from profile WHERE permalink IS NULL AND fbID != '0' LIMIT 30";
+			$db->setQuery($query);
+			$rows = $db->loadObjectList();
+			
+			foreach ($rows as $r)
+			{
+				echo"<pre>";
+				$perma=$c_profile->normalize_permalink($r->name);
+				
+				echo $perma."<br>";
+				$profile = new stdClass;
+				$profile->ID = $r->ID;
+				$profile->permalink = $perma;
+
+				var_dump($c_profile->update_profile($profile));
+				echo "</pre>";
+			}
+			die;
+			
+			//$c_profile->
 		}
     }
 ?>

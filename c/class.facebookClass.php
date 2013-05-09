@@ -71,6 +71,13 @@ class facebookClass{
 	{
 		 return  $this->facebook->api('/me');
 	}
+	public function get_userInfoWithFID($fbID=0)
+	{
+		if($fbID==0)
+			return false;
+		else
+		 	return  $this->facebook->api($fbID);
+	}
 	public function get_facebookID()
 	{
 		 return  $this->facebook->getUser(); 

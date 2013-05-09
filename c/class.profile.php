@@ -786,13 +786,14 @@
         		$WHERE .= "\n AND ID<" . $db->quote($start);
         	}  
 			$WHERE .= "\n AND (name LIKE '%". $db->escape( $keyword )."%' OR permalink  LIKE '%". $db->escape( $keyword )."%')";
-   			$WHERE .= "\n ID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
+   			$WHERE .= "\n AND ID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
         	$ORDER  = "\n ORDER BY ID DESC";
         	$LIMIT  = "\n LIMIT $limit";
+			
         	//echo $SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT;
  			//die;
         	$db->setQuery($SELECT . $FROM .  $WHERE . $ORDER . $LIMIT);
-		
+			
 			$rows = $db->loadObjectList();
 			return $rows;
 		}
@@ -911,6 +912,10 @@
 			{
 				return false;
 			}
+			$text = trim($permalink); 
+			$search = array('Ç','ç','Ğ','ğ','ı','İ','Ö','ö','Ş','ş','Ü','ü',' ','\'');
+			$replace = array('c','c','g','g','i','i','o','o','s','s','u','u','_','');
+			$permalink = str_replace($search,$replace,$text);
 			$query = "SELECT count(permalink) FROM $element WHERE permalink= '$permalink'";
 			$db->setQuery($query);
 			$sonuc = $db->loadResult();
