@@ -2500,7 +2500,17 @@ else
 		else {
 			$action = "cutout";
 		}
+		
+		if($w==0 || $h==0)
+		{
+			$imageSize=$this->oranHesapla($imageU, $w, $h);
+			$w = $imageSize["w"];
+			$h = $imageSize["h"];
+		}
+		
+	
 		$filePath = $model->getImage($imageU, $w, $h, $action, true);
+		
 		$extension = pathinfo($filePath, PATHINFO_EXTENSION);
 		header('Content-Type: image/'.$extension);
 		header('Content-Disposition: inline;filename="'.pathinfo($filePath, PATHINFO_FILENAME)); 
@@ -2510,9 +2520,31 @@ else
 		//echo "11/11/24/04/2ade/twitter5.jpg";
 		//echo $model->getProfileImage("11/11/24/04/2ade/twitter5.jpg", 200,200, 'cutout');
 	}
+	function oranHesapla($imageU, $w, $h)
+	{
+		global $model;
+		$imageSize = getimagesize(UPLOADURL.$imageU);
+		//var_dump($imageSize);
+		if($w == 0)
+		{
+			$newSize["h"]=$h;
+			$newSize["w"]=floor($imageSize[0] / ($imageSize[1]/$h));
+			
+		}else if ($h == 0)
+		{
+			$newSize["w"]=$w;
+			$newSize["h"]=floor($imageSize[1] / ($imageSize[0]/$w));
+		}else 
+		{
+			$newSize["w"]=$w;
+			$newSize["h"]=$h;
+		}
+		return $newSize;
+	}
 	public function get_blockUser()
 	{
 		global $model;
+	
 		$c_profile = new profile;
 		$return->status = "success";
 		$return->bUsers = $c_profile->get_blockUser();
