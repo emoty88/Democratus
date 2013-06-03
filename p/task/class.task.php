@@ -169,6 +169,11 @@
             
             $model->sendsystemmail('caner.turkmen@democratus.com', 'Gündem seçimi', $buffer);
             $model->sendsystemmail('director@democratus.com', 'Gündem seçimi', $buffer);
+            //upload mailleri için otomatik folder create
+            $uniqueP = date("y_m_d");
+            $upDir="p_image/".$uniqueP;
+            $olustur = mkdir(UPLOADPATH.$upDir, 0777);
+            chmod(UPLOADPATH.$upDir, 0777);
         }
         
         private function deputy(){
