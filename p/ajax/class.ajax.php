@@ -1561,8 +1561,8 @@ else
                 
 
                 
-                $email        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-
+                //$email = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                $email = strip_tags( html_entity_decode( htmlspecialchars_decode($_REQUEST["email"], ENT_QUOTES ), ENT_QUOTES, 'utf-8' ) );
                 if(!isEmail($email)){
                     $response['field'] = 'email';
                     throw new Exception('email adresi geçerli değil',1);
