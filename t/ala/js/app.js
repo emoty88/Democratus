@@ -97,13 +97,14 @@ jQuery(document).ready(function ($) {
    		case "message-dialog" : message_dialog_page(); break;
    		case "voice" : voice_page(); break;
    		case "hashTag" : hashtag_page();break;
+   		case "newHashTag" : newHashTag_page();break;
    		case "hashTag_manage" : hashtagManage_page();break;
    		case "search" : search_page();break;
    		case "popularvoice" : popularvoice_page();break;
    		case "my" : my_page();break;
    	}  	
 	
-	if(plugin=="profile" || plugin=="home" || plugin=="hashTag")
+	if(plugin=="profile" || plugin=="home" || plugin=="hashTag" || plugin=="newHashTag")
 	{
 		
 		if(plugin == "hashTag")
@@ -1831,6 +1832,11 @@ jQuery(document).ready(function ($) {
 
 		get_imageGalery(profileID);
 		get_promotedVoice(profileID);
+	}
+	function newHashTag_page() 
+	{
+		//get_imageGalery(profileID);
+		//get_promotedVoice(profileID);
 	}
 	function hashtagManage_page()
 	{

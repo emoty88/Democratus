@@ -468,6 +468,10 @@
 						{
 							$page = "hashTag";
 						}
+						else if($profileID->type == "newHashTag")
+						{
+							$page = "newHashTag";
+						}
 						$query  = "SELECT p.*"
 			                    . "\n FROM #__page AS p"
 			                    . "\n WHERE p.permalink=".$db->quote($page)." AND ( p.domain IS NULL OR p.domain=".$db->quote($domain)." )"
