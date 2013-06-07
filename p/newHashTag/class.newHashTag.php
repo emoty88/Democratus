@@ -1,4 +1,4 @@
-<?php
+d<?php
     class newHashTag_plugin extends control{//HashTag Sayfası
         public $limit = 14;
         public function main(){
@@ -28,7 +28,7 @@
 			if($model->paths[1]=="startTour")
 			{
 				
-				$model->addScript("$(document).ready(function (){ show_step(0)});");
+				$model->addScript("$(document).ready(function (){ show_step(0); });");
 			}
 		}
 		public function manage()

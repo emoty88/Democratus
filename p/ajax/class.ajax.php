@@ -2551,5 +2551,26 @@ else
 		$return->bUsers = $c_profile->get_profileMultiReturtnObj($return->bUsers);
 		echo json_encode($return);
 	}
+	public function set_hashtagChoice()
+	{
+		global $model;
+		$c_profile 	= new profile;
+		$hashtagID 	= filter_input(INPUT_POST, 'hashtagID', FILTER_SANITIZE_NUMBER_INT );
+		$choice 	= filter_input(INPUT_POST, 'choice', FILTER_SANITIZE_NUMBER_INT );
+		$c_tag 		= new tag($hashtagID);
+		$return->status = "success";
+		$return->operation = $c_tag->set_choice($choice);
+		echo json_encode($return);
+	}
+	public function get_hashtagChoicePercent()
+	{
+		global $model;
+		$hashtagID 	= filter_input(INPUT_POST, 'hashtagID', FILTER_SANITIZE_NUMBER_INT );
+		$c_tag 		= new tag($hashtagID);
+		$return->status = "success";
+		$return->percent = $c_tag->get_choicePercent();
+
+		echo json_encode($return);
+	}
 }
 ?>

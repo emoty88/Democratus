@@ -558,7 +558,35 @@ jQuery(document).ready(function ($) {
              }
         
      });
-       
+     $(".nh_btn").live("click",function(){
+     	var choice = $(this).attr("data-htchoice");
+     	var hashtagID = profileID;
+     	
+     	var post_data = {choice:choice, hashtagID:hashtagID};
+     	$.ajax({
+			type: "POST",
+			url: "/ajax/set_hashtagChoice",
+			data: post_data,
+			dataType:"json",
+			success: function(response)
+			{
+				if(response.status == "success")
+				{
+					if(response.operation==true)
+					{
+						$("#htBtnGroup").hide();
+						$("#htChoicePer").show();
+						set_choicePercent(hashtagID);
+					}
+				}
+				else
+				{
+					
+				}
+				
+			}
+		});	// ajax son 
+     });
 });
 
         
@@ -2272,4 +2300,21 @@ jQuery(document).ready(function ($) {
 		}
 		setTimeout("autoLoad();",3000);
 	}
+	function set_choicePercent(hashtagID)
+	{
+		$.ajax({
+			  url: "/ajax/get_hashtagChoicePercent",
+			  type: "POST",
+			  data : {hashtagID : hashtagID},
+			  dataType:"json",
+			  success: function(response){
+			    $("#htChoicePositivePer").css("width", response.percent.positive+"%");
+			    $("#htChoicePositiveText").text(response.percent.positive);
+			    
+			    $("#htChoiceNegativePer").css("width", response.percent.negative+"%");
+			    $("#htChoiceNegativeText").text(response.percent.negative);
+			  }
+			});
+	}
+	
 	

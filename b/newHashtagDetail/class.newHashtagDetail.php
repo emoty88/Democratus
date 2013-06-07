@@ -41,16 +41,16 @@
 						
 					</div>
 						<div style="margin:0px 10px; text-align: center;">
-							<div class="btn-group" style="width: 100%; ">
-								<button class="btn btn-large btn-success" type="button" style="width: 50%">Destekle</button>
-								<button class="btn btn-large btn-danger" type="button" style="width: 50%">Köstekle</button>
+							<div id="htBtnGroup" class="btn-group" style="width: 100%; ">
+								<button id="nh_destekle" data-htchoice="1" class="nh_btn btn btn-large btn-success" type="button" style="width: 50%">Destekle</button>
+								<button id="nh_kostekle" data-htchoice="2" class="nh_btn btn btn-large btn-danger" type="button" style="width: 50%">Köstekle</button>
 							</div>
-							<div class="progress progress-striped active" style="height: 45px;">
-							    <div class="bar bar-success" style="width: 50%; background-size:45px 45px;">
-							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;">%50 Destek</div>
+							<div id="htChoicePer" class="progress progress-striped active" style="height: 45px; display: none;">
+							    <div id="htChoicePositivePer" class="bar bar-success" style="width: 50%; background-size:45px 45px;">
+							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;"><span id="htChoicePositiveText" ></span> Destek</div>
 							    </div>
-							    <div class="bar bar-danger" style="width: 50%; background-size:45px 45px;">
-							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;">%50 Köstek</div>
+							    <div id="htChoiceNegativePer"  class="bar bar-danger" style="width: 50%; background-size:45px 45px;">
+							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;"><span id="htChoiceNegativeText" ></span>  Köstek</div>
 							    </div>
 						    </div>
 						</div>

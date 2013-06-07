@@ -27,6 +27,38 @@
 		{
 			$this->__construct($this->get_porfileObject($perma));
 		}
+		public function get_porfileObject($KEY)
+		{
+			global $model, $db;
+			
+			if(!is_object($KEY) && !is_array($KEY))
+			{
+				$SELECT = "SELECT *";
+		        $FROM   = "\n FROM profile ";
+				$WHERE  = "\n WHERE ID=".$db->quote($KEY)." OR permalink like '".$KEY."'";
+			    $WHERE .= "\n AND status>0";
+		        $ORDER  = "\n ";
+		        $LIMIT  = "\n LIMIT 1";
+				$db->setQuery($SELECT . $FROM  . $WHERE . $ORDER . $LIMIT);
+		        if($db->loadObject($profile)) {
+		        	return $profile;
+		        }
+				else {
+					return FALSE;
+				}
+			}
+			else {
+				
+				$SELECT = "SELECT *";
+		        $FROM   = "\n FROM profile ";
+				$WHERE  = "\n WHERE ID in (".implode(",", $KEY).")";
+			    $WHERE .= "\n AND status>0";
+		        $ORDER  = "\n ";
+		        $LIMIT  = "\n ";
+				$db->setQuery($SELECT . $FROM  . $WHERE . $ORDER . $LIMIT);
+				return $db->loadObjectList();
+			}
+		}
 		public function set_admins()
 		{
 			global $db;
@@ -154,6 +186,49 @@
 				 $returnObj[]	= $ro;
 			}
 			return $returnObj;
+		}
+		/**
+		 * Yeni hash tag sayfaları hakkındaki görüşler 
+		 * katılıyorum kararsızım 
+		 * @param choice = katılıyorum kararsızım seçimi 
+		 * @param hID = hashtag ID si eğer belirtilmesse constaki hashtag alınır
+		 * 
+		 */
+		function set_choice($choice=0, $hID=0)
+		{
+			global $model, $db;
+			if($hID==0)
+			{
+				$hID=$this->tagID;
+			}
+			
+			$return = new stdClass;
+			$insertObj = new stdClass;
+			$insertObj->htID =  $hID;
+			$insertObj->profileID = $model->profileID;
+			$insertObj->choice = $choice;
+			$insertObj->status = 1;
+			$insertObj->IP	= $_SERVER["REMOTE_ADDR"];
+			return $db->insertObject("htChoice", $insertObj);
+			
+		}
+		function get_choicePercent($hID=0)
+		{
+			global $model, $db;
+			if($hID==0)
+			{
+				$hID=$this->tagID;
+			}
+			$db->setQuery("select count(ID) from htChoice where status =1");
+			$totalCount = $db->loadResult();
+			$db->setQuery("select count(ID) from htChoice where status =1 AND choice=1");
+			$positiveCount = $db->loadResult();
+			$positivePercent = round((100 * $positiveCount) / $totalCount);
+			$negativePercent = 100 - $positivePercent;
+			$percents = new stdClass;
+			$percents->positive = $positivePercent;
+			$percents->negative = $negativePercent;
+			return $percents;
 		}
 	}
 ?>
