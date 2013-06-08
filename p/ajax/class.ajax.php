@@ -2558,8 +2558,17 @@ else
 		$hashtagID 	= filter_input(INPUT_POST, 'hashtagID', FILTER_SANITIZE_NUMBER_INT );
 		$choice 	= filter_input(INPUT_POST, 'choice', FILTER_SANITIZE_NUMBER_INT );
 		$c_tag 		= new tag($hashtagID);
-		$return->status = "success";
-		$return->operation = $c_tag->set_choice($choice);
+		
+		if($c_profile->is_setChoice($c_tag->profileID))
+		{
+			$return->status = "error";
+			$return->message = "Her Konu için birkere oy verebilirsiniz";
+		}
+		else {
+			$return->status = "success";
+			$return->operation = $c_tag->set_choice($choice);
+		}
+		
 		echo json_encode($return);
 	}
 	public function get_hashtagChoicePercent()
