@@ -44,15 +44,10 @@
 									
 									{{quickEditor}}
 									<div class="hashTag_slide">
-									{{meclis}}
-
-									{{populardies}}
+									{{hashtagSug}}
 									</div>
 									
-                                  	{{democratustv}}
                                   	
-                                  	{{smsuggestion}}
-									{{whotofollow}}
 
 								</div>
 							</div>

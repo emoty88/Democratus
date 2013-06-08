@@ -1,4 +1,4 @@
-d<?php
+<?php
     class newHashTag_plugin extends control{//HashTag Sayfası
         public $limit = 14;
         public function main(){

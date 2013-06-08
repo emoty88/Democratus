@@ -24,6 +24,16 @@
             $model->addScript($model->pluginurl . 'welcome.js', 'welcome.js', 1);
             $model->addScript("paths=".json_encode($model->paths));
             $model->addScript("plugin='welcome'");
+			$model->addScript("redirect='/'");
+			if(isset($_SERVER['HTTP_REFERER']))
+			{
+				$urlD = parse_url($_SERVER['HTTP_REFERER']);
+				if(($urlD["host"]== "democratus.com" || $urlD["host"]== "www.democratus.com") && $urlD["path"]!= "/popularvoice" )
+				{
+					$model->addScript("redirect='".$urlD["path"]."'");
+				}
+			}
+			
             if(isset($_GET['register']))
                 $model->addScript("$(document).ready(function()".'{'."$('#wellcome-register-button').click()});");	
 			

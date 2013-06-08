@@ -40,6 +40,10 @@
 						
 						
 					</div>
+					<?
+					if($model->checkLogin())
+					{
+						?>
 						<div style="margin:0px 10px; text-align: center;">
 							<div id="htBtnGroup" class="btn-group" style="width: 100%; ">
 								<button id="nh_destekle" data-htchoice="1" class="nh_btn btn btn-large btn-success" type="button" style="width: 50%">Destekle</button>
@@ -54,6 +58,21 @@
 							    </div>
 						    </div>
 						</div>
+						<?
+					}
+					else
+					{
+						?>
+						<div style="margin:0px 10px; text-align: center;">
+							<div id="htBtnGroup" class="btn-group" style="width: 100%; ">
+								<button id="" class="btn btn-large btn-success" type="button" style="width: 50%" onclick="location.href='/oauth/twitter';">Destekle</button>
+								<button id="" class="btn btn-large btn-danger" type="button" style="width: 50%" onclick="location.href='/oauth/twitter';">Köstekle</button>
+							</div>
+						</div>
+						<?
+					}
+					?>
+						
 				</article>
 			</section>
 			<? 

@@ -1,8 +1,299 @@
 <?php 
 class jstemplates_block extends control{    
 	public function block(){
-	?>
+	global $model;
+	var_dump($model->page->permalink);
+	if($model->page->permalink=="newHashTag")
+	{
+		?>
 		<script id="duvaryazisi-tmpl" type="text/x-jquery-tmpl">
+			
+			<div id="duvar_yazisi-content-${ID}">
+			<!-- Duvar Yazısı -->
+			<div id="voiceSliceTop_${ID}-${randNum}" class="dyazi_top_slice" ></div>
+			
+			<aside id="voiceTopArea_${ID}-${randNum}" class="yorumlar" data-replyID="${replyID}" data-isload="0" style="border:0; margin:0px; display: none;" onclick="notOpen=1;" >
+					
+			</aside>
+			
+			
+			<article class="duvar_yazisi voiceA" >
+				<span class="sikayet">
+					<a href="javascript:;" id="voicecomplaint" rel="${ID}">
+						Sakıncalı içerik bildir
+					</a>
+				</span>
+				<div class="voice_hover_area" style=""  data-voiceID="${ID}" data-randNum="${randNum}" >
+					<img class="profil_resmi" src="${sImage}" alt="${sName}">
+					<address class="yazar">
+						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+							{{if sDeputy}}
+								<i class="atolye15-rutbe-"></i>
+							{{/if}}
+							${sName}
+						</a> 
+                        <span>${sTime} Önce</span>
+					</address>
+					<div class="duvar_yazisi_icerigi">
+						<p>{{html $item.mk(voice)}}</p>
+					</div>
+					<aside class="komutlar" onclick="notOpen=1;">
+						{{if redierName}}
+							<a href="/${redierPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${redierName} Tarafından paylaşıldı</a> 
+							<a id="paylas_btn_kaldir${ID}" href="javascript:redi(${ID});">
+								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> Paylaşımı kaldır
+							</a>
+							<br />
+						{{/if}}
+						{{if initem>0}}
+							<a href="javascript:;"  data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
+								<i class="atolye15-ikon-gorsel atolye15-ikon-24"></i> <span>Fotoğrafı Göster</span>
+							</a>
+							<div id="fotograf_${ID}" style="display:none;">
+								<img id="voice_resim_${ID}" class="duvar_fotografi" src="" alt="">
+							</div>
+						{{/if}}
+						
+						{{if isMine}}
+						<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
+							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
+							<span>Kaldır</span> 
+						</a>
+						{{else}}
+						
+						<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
+							<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
+							<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
+						</a>
+						<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
+							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
+							<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
+						</a>
+						<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
+							<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
+							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
+						</a>
+						{{/if}}
+						
+						
+						{{if isMine}}
+							{{if likeCount>0}} 
+							<a id="taktir_btn_${ID}" href="javascript:;">
+								
+								<span class="text">-&nbsp; Takdir </span>  <span class="count"> (${likeCount})</span>
+							</a>
+							{{/if}}
+							{{if dislikeCount>0}}
+							<a id="saygi_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Saygı </span> <span class="count"> (${dislikeCount})</span>
+							</a>
+							{{/if}}
+							{{if reShareCount>0}}
+							<a id="paylas_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Paylaşım </span><span class="count"> (${reShareCount})</span>
+							</a>
+							{{/if}}
+						{{/if}}
+					</aside>
+					<aside id="statistic_area" style="margin-bottom: 30px; margin-left: 58px; display: none;">
+						
+					</aside>
+				</div>
+				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
+					<div id="replyArea_${ID}-${randNum}" class="replyArea">
+						<textarea id="replyTextArea_${ID}-${randNum}" class="karakteri_sayilacak_alan" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
+						<div class="reply_bottom">
+							<div class="kalan_karakter_mesaji">
+								<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci" data-limit="200">200</span> karakter
+							</div>
+							
+							<div class="kontroller_voice">
+							
+								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
+								
+								
+								
+								<a id="fine-uploader-btn_${ID}-${randNum}" class="fineUploader" href="javascript:;" data-randID="${ID}-${randNum}">
+									<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
+								</a>
+								<div id="fine-uploader-msg_${ID}-${randNum}"></div>	
+								
+								
+								<input type="hidden" id="replying_${ID}-${randNum}" value="${ID}" />
+	
+							</div>
+							<div style="clear: both;"> </div>
+							
+							<input type="hidden" id="initem_${ID}-${randNum}" name="initem" value="0" />
+				    		<input type="hidden" id="initem-name_${ID}-${randNum}" name="initem-name" value="0" />
+						</div>
+						
+					</div>
+				</aside>
+				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar replyAreaFix" data-isload="0" style="display: none;" onclick="notOpen=1;" >
+					<!-- İnce Ayar -->
+					<span class="ust_golge"></span>
+					<span class="alt_golge"></span>
+					<span class="asagi_ok"><span></span></span>
+				</aside>
+			</article>
+			
+			<!-- <div id="voiceSliceBottom_${ID}-${randNum}" class="dyazi_bottom_slice" ></div> -->
+			<!-- Duvar Yazısı Son -->
+			</div>
+		</script>
+		<?
+	}
+	else
+	{
+		?>
+		<script id="duvaryazisi-tmpl" type="text/x-jquery-tmpl">
+			
+			<div id="duvar_yazisi-content-${ID}">
+			<!-- Duvar Yazısı -->
+			<div id="voiceSliceTop_${ID}-${randNum}" class="dyazi_top_slice" ></div>
+			
+			<aside id="voiceTopArea_${ID}-${randNum}" class="yorumlar" data-replyID="${replyID}" data-isload="0" style="border:0; margin:0px; display: none;" onclick="notOpen=1;" >
+					
+			</aside>
+			
+			
+			<article class="duvar_yazisi voiceA" >
+				<span class="sikayet">
+					<a href="javascript:;" id="voicecomplaint" rel="${ID}">
+						Sakıncalı içerik bildir
+					</a>
+				</span>
+				<div class="voice_hover_area" style="" onclick="voiceDetail(this);" data-voiceID="${ID}" data-randNum="${randNum}" >
+					<img class="profil_resmi" src="${sImage}" alt="${sName}">
+					<address class="yazar">
+						<a href="/${sPerma}" title="${sName} Profilini Görüntüle" onclick="notOpen=1;">
+							{{if sDeputy}}
+								<i class="atolye15-rutbe-"></i>
+							{{/if}}
+							${sName}
+						</a> 
+                        <span>${sTime} Önce</span>
+					</address>
+					<div class="duvar_yazisi_icerigi">
+						<p>{{html $item.mk(voice)}}</p>
+					</div>
+					<aside class="komutlar" onclick="notOpen=1;">
+						{{if redierName}}
+							<a href="/${redierPerma}"><i class="atolye15-ikon-paylas atolye15-ikon-24"></i> ${redierName} Tarafından paylaşıldı</a> 
+							<a id="paylas_btn_kaldir${ID}" href="javascript:redi(${ID});">
+								<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> Paylaşımı kaldır
+							</a>
+							<br />
+						{{/if}}
+						{{if initem>0}}
+							<a href="javascript:;"  data-hedef="#fotograf_${ID}" data-vazgec-metni="Fotoğrafı Gizle" data-metni="Fotoğrafı Göster" data-voiceID="${ID}" >
+								<i class="atolye15-ikon-gorsel atolye15-ikon-24"></i> <span>Fotoğrafı Göster</span>
+							</a>
+							<div id="fotograf_${ID}" style="display:none;">
+								<img id="voice_resim_${ID}" class="duvar_fotografi" src="" alt="">
+							</div>
+						{{/if}}
+						<a id="yanitla_btn_${ID}" href="javascript:;" onclick="voiceDetail(this,true);" data-voiceID="${ID}" data-randNum="${randNum}">
+							<i class="atolye15-ikon-yanitla atolye15-ikon-24"></i> 
+							Yanıtla <span class="count"></span>
+						</a>
+						{{if isMine}}
+						<a id="kaldir_${ID}" onclick="voice_delete_confirm(${ID});" href="javascript:;">
+							<i class="atolye15-ikon-kaldir atolye15-ikon-24"></i> 
+							<span>Kaldır</span> 
+						</a>
+						{{else}}
+						
+						<a id="taktir_btn_${ID}" href="javascript:voice_like(${ID}, 1);">
+							<i class="atolye15-ikon-taktir atolye15-ikon-24"></i> 
+							<span class="text">Takdir Et</span>  <span class="count">{{if likeCount>0}}(${likeCount}){{/if}}</span>
+						</a>
+						<a id="saygi_btn_${ID}" href="javascript:voice_like(${ID}, 2);">
+							<i class="atolye15-ikon-saygi atolye15-ikon-24"></i> 
+							<span class="text">Saygı Duy</span> <span class="count">{{if dislikeCount>0}} (${dislikeCount}){{/if}}</span>
+						</a>
+						<a id="paylas_btn_${ID}" href="javascript:redi(${ID});">
+							<i class="atolye15-ikon-paylas atolye15-ikon-24"></i> 
+							<span class="text">Paylaş</span><span class="count"> {{if reShareCount>0}} (${reShareCount}){{/if}}</span>
+						</a>
+						{{/if}}
+						<a id="soyles_btn_${ID}" href="/voice/${ID}">
+							<i class="atolye15-ikon-soylesi atolye15-ikon-24"></i> 
+							Tümü <span class="count">{{if replyCount>0}}(${replyCount}) {{/if}}</span>
+						</a>
+						
+						{{if isMine}}
+							{{if likeCount>0}} 
+							<a id="taktir_btn_${ID}" href="javascript:;">
+								
+								<span class="text">-&nbsp; Takdir </span>  <span class="count"> (${likeCount})</span>
+							</a>
+							{{/if}}
+							{{if dislikeCount>0}}
+							<a id="saygi_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Saygı </span> <span class="count"> (${dislikeCount})</span>
+							</a>
+							{{/if}}
+							{{if reShareCount>0}}
+							<a id="paylas_btn_${ID}" href="javascript:;">
+								<span class="text">-&nbsp; Paylaşım </span><span class="count"> (${reShareCount})</span>
+							</a>
+							{{/if}}
+						{{/if}}
+					</aside>
+					<aside id="statistic_area" style="margin-bottom: 30px; margin-left: 58px; display: none;">
+						
+					</aside>
+				</div>
+				<aside id="voice_detailArea_${ID}-${randNum}" style="display: none;" data-isOpen="0" >
+					<div id="replyArea_${ID}-${randNum}" class="replyArea">
+						<textarea id="replyTextArea_${ID}-${randNum}" class="karakteri_sayilacak_alan" onfocus="replyTextFocus(${ID},${randNum});" onblur="replyTextBlur(${ID},${randNum});"  rows="1" >+voice </textarea>
+						<div class="reply_bottom">
+							<div class="kalan_karakter_mesaji">
+								<span id="replyArea_${ID}-${randNum}Number" class="karakter_sayaci" data-limit="200">200</span> karakter
+							</div>
+							
+							<div class="kontroller_voice">
+							
+								<button class="btn btn-danger" id="replyArea_${ID}-${randNum}Button" onclick="share_voice(this)" data-randID="${ID}-${randNum}" >Paylaş</button>
+								
+								
+								
+								<a id="fine-uploader-btn_${ID}-${randNum}" class="fineUploader" href="javascript:;" data-randID="${ID}-${randNum}">
+									<i id="bootstrapped-fine-uploader" class="atolye15-ikon-gorsel atolye15-ikon-24"></i>
+								</a>
+								<div id="fine-uploader-msg_${ID}-${randNum}"></div>	
+								
+								
+								<input type="hidden" id="replying_${ID}-${randNum}" value="${ID}" />
+	
+							</div>
+							<div style="clear: both;"> </div>
+							
+							<input type="hidden" id="initem_${ID}-${randNum}" name="initem" value="0" />
+				    		<input type="hidden" id="initem-name_${ID}-${randNum}" name="initem-name" value="0" />
+						</div>
+						
+					</div>
+				</aside>
+				<aside id="voiceReplyArea_${ID}-${randNum}" class="yorumlar replyAreaFix" data-isload="0" style="display: none;" onclick="notOpen=1;" >
+					<!-- İnce Ayar -->
+					<span class="ust_golge"></span>
+					<span class="alt_golge"></span>
+					<span class="asagi_ok"><span></span></span>
+				</aside>
+			</article>
+			
+			<!-- <div id="voiceSliceBottom_${ID}-${randNum}" class="dyazi_bottom_slice" ></div> -->
+			<!-- Duvar Yazısı Son -->
+			</div>
+		</script>
+		<?
+	}
+	?>
+
+		<script id="duvaryazisi-tmpl-old" type="text/x-jquery-tmpl">
 			
 			<div id="duvar_yazisi-content-${ID}">
 			<!-- Duvar Yazısı -->

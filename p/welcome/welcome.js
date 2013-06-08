@@ -13,7 +13,7 @@ $(document).ready(function() {
             
             if(data.status=='success'){
                 //alert('success');
-                window.location = "/";
+                window.location = redirect;
             } else {
                 
                 $('#welcomeMessage-textArea').text(data.message);
