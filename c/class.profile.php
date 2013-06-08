@@ -942,5 +942,24 @@
 			$rows = $db->loadObjectList();
 			return $rows;
 		}
+		public function is_setChoice($hID = 0 , $profileID=0)
+		{
+			global $model, $db;
+			if($profileID==0)
+            {
+            	$profileID=$this->profileID;
+            }
+			
+			$db->setQuery("SELECT count(*) FROM htChoice WHERE profileID='".$profileID."' AND htID='".$hID."' AND status=1");
+			$varmi = $db->loadResult();
+			if($varmi>0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
     }
 ?>

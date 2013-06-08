@@ -43,13 +43,24 @@
 					<?
 					if($model->checkLogin())
 					{
+						$btn_style = "";
+						$per_style = "";
+						if($c_profile->is_setChoice($c_profile->profileID, $model->profileID))
+						{
+							$btn_style = "display: none;";
+							$model->addScript("$().ready(function(){set_choicePercent(); });");
+						}
+						else
+						{
+							$per_style = "display: none;";
+						}
 						?>
 						<div style="margin:0px 10px; text-align: center;">
-							<div id="htBtnGroup" class="btn-group" style="width: 100%; ">
+							<div id="htBtnGroup" class="btn-group" style="width: 100%; <?=$btn_style?>">
 								<button id="nh_destekle" data-htchoice="1" class="nh_btn btn btn-large btn-success" type="button" style="width: 50%">Destekle</button>
 								<button id="nh_kostekle" data-htchoice="2" class="nh_btn btn btn-large btn-danger" type="button" style="width: 50%">Köstekle</button>
 							</div>
-							<div id="htChoicePer" class="progress progress-striped active" style="height: 45px; display: none;">
+							<div id="htChoicePer" class="progress progress-striped active" style="height: 45px; <?=$per_style?>">
 							    <div id="htChoicePositivePer" class="bar bar-success" style="width: 50%; background-size:45px 45px;">
 							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;"><span id="htChoicePositiveText" ></span> Destek</div>
 							    </div>
