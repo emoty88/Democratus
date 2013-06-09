@@ -107,7 +107,7 @@ jQuery(document).ready(function ($) {
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag" || plugin=="newHashTag")
 	{
 		
-		if(plugin == "hashTag")
+		if(plugin == "hashTag" || plugin=="newHashTag")
 		{
 			hashTag = profilePerma;
 		}
