@@ -10,6 +10,7 @@ class ajax_plugin extends control{
 			die();
 		} 
 	}
+	
 	public function get_wall(){
 		global $model, $db;
 		$model->mode = 0;

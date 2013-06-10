@@ -59,6 +59,9 @@
 								{{newHashtagDetail}}
 								<div id="pormotedVoice"></div>
 								<div id="orta_alan_container">
+									<div style="margin-left:20px;">
+									<a href="#" >En Yeni</a> / <a href="#new" style="font-weight: normal;" >En İyi</a>
+									</div>
 									{{main}}
 								</div>
 							</div>
