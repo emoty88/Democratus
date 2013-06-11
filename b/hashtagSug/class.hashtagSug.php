@@ -3,8 +3,9 @@
         
         public function block(){
         	global $model, $db; 
-			$db->setQuery("SELECT * FROM hashRelated WHERE htPerma='".$model->page->permalink."' and status=1 LIMIT 7");
+			$db->setQuery("SELECT * FROM hashRelated WHERE htPerma='".$model->paths[0]."' and status=1 LIMIT 7");
 			$relatedH = $db->loadObjectList();
+
 			if(count($relatedH)>0)
 			{
 			?>
