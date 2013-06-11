@@ -590,10 +590,14 @@ jQuery(document).ready(function ($) {
      $("#nh-enyeni").live("click", function (){
      	$("#orta_alan_container").html("");
      	get_wall(profileID, 0, 20, onlyProfile, hashTag, "", 'top');
+     	$(this).css("font-weight","bold");
+     	$("#nh-eniyi").css("font-weight","normal");
      });
      $("#nh-eniyi").live("click", function (){
      	$("#orta_alan_container").html("");
      	get_wall(profileID, 0, 20, onlyProfile, hashTag, "", 'top', "popular");
+     	$(this).css("font-weight","bold");
+     	$("#nh-enyeni").css("font-weight","normal");
      });
 });
 
