@@ -62,10 +62,10 @@
 							</div>
 							<div id="htChoicePer" class="progress progress-striped active" style="height: 45px; <?=$per_style?>">
 							    <div id="htChoicePositivePer" class="bar bar-success" style="width: 50%; background-size:45px 45px;">
-							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;"><span id="htChoicePositiveText" ></span> Destek</div>
+							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;">%<span id="htChoicePositiveText" ></span> Destek</div>
 							    </div>
 							    <div id="htChoiceNegativePer"  class="bar bar-danger" style="width: 50%; background-size:45px 45px;">
-							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;"><span id="htChoiceNegativeText" ></span>  Köstek</div>
+							    	<div style="padding-top:12px; font-size:16pt; font-weight: bold;">%<span id="htChoiceNegativeText" ></span>  Köstek</div>
 							    </div>
 						    </div>
 						</div>

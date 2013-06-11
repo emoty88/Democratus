@@ -59,6 +59,7 @@
 								{{newHashtagDetail}}
 								<div id="pormotedVoice"></div>
 								<div style="margin-left:20px;">
+									<span style="font-size: 12pt; font-weight: bold;">Talepler: </span> 
 									<a href="#natural" id="nh-enyeni"  >En Yeni</a> / <a href="#popular" id="nh-eniyi" style="font-weight: normal;" >En İyi</a>
 								</div>
 								<div id="orta_alan_container">
