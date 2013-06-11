@@ -58,10 +58,10 @@
 							<div class="satirlar padding_yok">
 								{{newHashtagDetail}}
 								<div id="pormotedVoice"></div>
+								<div style="margin-left:20px;">
+									<a href="#natural" id="nh-enyeni"  >En Yeni</a> / <a href="#popular" id="nh-eniyi" style="font-weight: normal;" >En İyi</a>
+								</div>
 								<div id="orta_alan_container">
-									<div style="margin-left:20px;">
-									<a href="#" >En Yeni</a> / <a href="#new" style="font-weight: normal;" >En İyi</a>
-									</div>
 									{{main}}
 								</div>
 							</div>

@@ -102,7 +102,7 @@
 			//echo $db->_sql;
 			return $db->loadResult();
 		}
-		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom")
+		public function get_voices_for_wall($profileID = 0, $start = 0 , $limit = 7 , $onlyProfile = 0, $hashTag = "" ,$keyword="", $pos="bottom", $type="normal")
 		{
 			global $model, $db, $l, $LIKETYPES;
 			
@@ -115,7 +115,12 @@
         								sharer.deputy AS deputy, 
         								sharer.showdies,
         								sharer.permalink as permalink";
-        	$FROM   = "\n FROM di";
+			if($type == "popular")
+			{
+				$SELECT.= ", (di.count_like*3+di.count_dislike*1+di.count_reShare*10) popularite";
+			}
+			$FROM   = "\n FROM di";
+			$JOIN   = "\n LEFT JOIN profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
         	if(intval($profileID)<1){
@@ -136,7 +141,7 @@
 				$WHERE .=")";
         	}
 			$WHERE .= "AND (sharer.status > 0)"; // 28 3 13 Silinen kişilerin sesleri kalksın
-			$WHERE .= "\n AND profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
+			$WHERE .= "\n AND di.profileID NOT IN (".$this->get_profileIDInQuery(0,"allBlock").")";
 			if($start>0){
 				if($pos=="bottom")
         			$WHERE .= "\n AND di.ID<" . $db->quote($start);
@@ -144,14 +149,24 @@
 					$WHERE .= "\n AND di.ID>" . $db->quote($start);
         	}  
 			
+			
         	$WHERE .= "\n AND di.status>0";
         	if($onlyProfile==0)
-        		$WHERE .= "\n AND onlyProfile='0'";
+        		$WHERE .= "\n AND di.onlyProfile='0'";
 			
-        	$ORDER  = "\n ORDER BY di.ID DESC";
+			if($type == "popular")
+			{
+				$ORDER  = "\n ORDER BY popularite DESC, di.ID DESC";	
+			}
+			else
+			{
+				$ORDER  = "\n ORDER BY di.ID DESC";
+			}
+			
         	$LIMIT  = "\n LIMIT $limit";
-
+ 
         	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
+			
 			//echo $db->_sql;
 			$rows = $db->loadObjectList();
 			

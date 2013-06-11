@@ -23,10 +23,11 @@ class ajax_plugin extends control{
 		$hashTag 	= filter_input(INPUT_POST, 'hashTag', FILTER_SANITIZE_STRING);
 		$keyword 	= filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
 		$pos	 	= filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
+		$type	 	= filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
 		
         $c_voice 	= new voice;
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos);
+		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos, $type);
         echo json_encode($response);
 	}
 	public function get_newWallCount()

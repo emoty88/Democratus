@@ -2,7 +2,6 @@
 class jstemplates_block extends control{    
 	public function block(){
 	global $model;
-	var_dump($model->page->permalink);
 	if($model->page->permalink=="newHashTag")
 	{
 		?>
