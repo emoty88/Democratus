@@ -483,6 +483,12 @@
                         $motto        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->description, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $location        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         //$birth        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
+                        if($_SERVER["REMOTE_ADDR"]=="176.240.195.68")
+						{
+							echo "<pre>";
+							var_dump($user_info);
+							echo "</pre>";
+						}
                         if($_SERVER['REMOTE_ADDR']=='127.0.0.11')
 						{
 							echo "<pre>";
@@ -591,6 +597,12 @@
                     
                 } catch (Exception $e){
                     //return $model->redirect('/welcome');
+                    if($_SERVER["REMOTE_ADDR"]== "176.240.195.68")
+					{
+						echo "<pre>";
+						var_dump($e);
+						echo "</pre>";
+					}
                     die('beklenmedik bi hata oluştu');
                 }
                 
