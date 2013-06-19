@@ -70,7 +70,7 @@
             global $db, $L;
             
             $starttime = array_sum( explode(' ', microtime()));
-        
+        	
             $this->parseURL();
             //session id'nin tüm subdomainlerde aynı olmasını sağlamak için
             ini_set('session.cookie_domain','.' . $this->domain); 
@@ -713,6 +713,7 @@
                 $myBody = str_replace('{{main}}', $this->pagebuffer, $myBody );
                 //die($myBody);
                 //print_r($myBody);
+               
                 preg_match_all( "/(\{\{[a-zA-Z0-9]+\}\})/i", $myBody, $pozs );
                 if(count($pozs)) $pozs = $pozs[0];
                 if(count($pozs)){
