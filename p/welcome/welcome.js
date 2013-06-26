@@ -1,171 +1,56 @@
-$(document).ready(function() { 
-	 $('#wellcome-login').live('click',function() {
-        
-        
-        var email = $('#loginemail').attr('value');
-        var pass = $('#loginpass').attr('value');
-        
-        //if( !isemail(email) ) return false;
-        
-        if( !(email.length >1) || !(pass.length >1) ) return false;        
-        
-        $.post( '/ajax/login/', { email: email, pass: pass }, function(data){
-            
-            if(data.status=='success'){
-                //alert('success');
-                window.location = redirect;
-            } else {
-                
-                $('#welcomeMessage-textArea').text(data.message);
-                $('#welcomeMessage').show();
-                                
-            }
-            
-        }, 'json');
-        return false;
-    });
-
-    $('#wellcome-register-button').click(function() {
-		
-        $('.login-box').fadeToggle('slow');
-        
-        if($(this).html()=='Giriş Yap'){
-        	$(this).html('Hemen Kayıt Ol');
-                $('#welcomeMessage').hide();
-        }else{
-        	$(this).html('Giriş Yap');
-                $('#welcomeMessage').hide();
-        }
-        return false;
+$(document).ready(function(){
+	$("#login-form").submit(function () {
+		var email = $("#login-user").val();
+		var pass = $("#login-pass").val();
+		if( !(email.length >1) || !(pass.length >1) ) return false;        
+	        
+	    $.post( '/ajax/login/', { email: email, pass: pass }, function(data){
+	        
+	        if(data.status=='success'){
+	            //alert('success');
+	            window.location = redirect;
+	        } else {
+	            
+	            $('#welcomeLogin-error').text("* "+data.message);
+	            $('#welcomeLogin-error').show();
+	                            
+	        }
+	        
+	    }, 'json');
+	    return false;
     });
     
-    $('.input').keypress(function(e) {
-        if(e.which == 13) {
-            $('#wellcome-login').focus().click();
-        }
-    });
-    $('.inputR').keypress(function(e) {
-        if(e.which == 13) {
-            $('#registerBtn').focus().click();
-        }
-    });
-	
-    $('#registerBtn').live('click',function() {
-		
-        try{
-            if(!$("#agree").is(":checked"))
-            {
-            	$('#welcomeMessage-textArea').text("Lütfen kullanım sözleşmesini onaylayınız.");
-            	$('#welcomeMessage').show();
-            	return false;
-            }
-            	
-            //name
-            var name = $('#name').val();
-            
-            //userName
-            var userName = $('#userName').val();
-            
-            //email
-            var email = $('#email').val();
-            
-            //password    
-            var password = $('#password').val();
-            
-            //password2
-            var password2 = $('#password2').val();
-            
-            
-          
-          //birth
-            var male = $('#selectB').val();
-            
-            //captcha
-          //  var captcha = $('#applyform input[name=captcha]').val();
-            
-            //send
-            $.post( '/ajax/register/', { name: name, userName:userName, email: email, password: password, password2: password2,male:male }, function(data){
-               
-                if(data.status=='success'){
-                    $('#welcomeMessage-textArea').text(data.message);
-                    $('#registerBtn').text('Kayıt Başarılı');
-                    if(data.action=="redirect")
-                    {
-                    	location.href="/";
-                    }
-                    $('#registerBtn').attr('id','registerBtn2');
-                    $('#registerBtn2').attr('disabled','disabled');
-                    
-                } else if (data.status=='error') {
-                    $('#welcomeMessage-textArea').text(data.message);
-                    $('#message').show();
-                    $('#'+data.field).focus();
-                    //$('#applyform [name=name]').focus();
-                } else {
-                    $('#welcomeMessage-textArea').text('bir hata oluştu!');
-                    $('#welcomeMessage').show();
-                    $('#applyform [name=name]').focus();
-                }
-                
-            }, 'json');
-            return false;
-        
-        
-        
-        
-        
-            //adddlert("Welcome guest!");
-        } catch(err) { //err.description
-            //alert( err.description );
-        }
-        
-        
-    });
     
-    $('.forget_password').click(function() {
-        var dialog = $(".dialog").dialog({
-                         width: 400,
-                         height: 300,
-                         title: "Şifre sıfırlama", 
-                         modal: true,
-                         resizable: true,
-                         close: function() { $( this ).hide(); },
-                         buttons: {
-                            "Tamam": function() {
-                                var email = $("#email-forgot").val();
-                                
-                                if(email.length<3) return false;
-                                
-                                $.post("/ajax/resetpassword", {  
-                                email: $("#dialog input[name=email]").val()
-                                
-                                }, function(data){ 
-                                    if(data.status=='success'){
-                                        $('#welcomeMessage-textArea').text(data.message);;
-                                        //window.location = "/";
-                                    } else {
-                                        $('#welcomeMessage-textArea').text(data.message);
-                                    }
-                                
-                                    //eval(data); 
-                                }, 'json');
-                                                            
-                                                            
-                                $( this ).dialog( "close" );
-                                $( this ).hide();
-                                
-                            },
-                            "İptal": function() {
-                                $( this ).dialog( "close" );
-                                $( this ).hide();
-                            }
-                         }
-                    });
-        
-        
-
-        return false;
-    });
+    $("#register-form").submit(function () {
+		$('#welcomeRegister-error').text("");
+        $('#welcomeRegister-error').hide();
+	  	if(!$("#agree").is(":checked"))
+        {
+        	$('#welcomeRegister-error').text("* Lütfen kullanım sözleşmesini onaylayınız.");
+        	$('#welcomeRegister-error').show();
+        	return false;
+        }
+        var name = $("#register-name").val();
+        var user = $("#register-user").val();
+        var email = $("#register-email").val();
  
+		var password = $("#register-pass").val();  	
+		var password2 = $("#register-pass2").val(); 
+		//kontrolleri ekle  
+	        
+	    $.post( '/ajax/login/', { email: email, pass: pass }, function(data){
+	        
+	        if(data.status=='success'){
+	            //alert('success');
+	            window.location = redirect;
+	        } else {
+	            
+	            $('#welcomeRegister-error').text("* "+data.message);
+	            $('#welcomeRegister-error').show();
+	                            
+	        }
+	        return false;
+	    }, 'json');
+	    return false;
+    });
 });
-
