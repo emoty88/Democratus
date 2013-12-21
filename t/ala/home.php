@@ -33,7 +33,7 @@
 						<!-- Yan Alan -->
 						<section id="yan_alan" class="span4">
 							<div class="satirlar">
-                             	<div class="satir duvar_kontrolleri_tutucu">
+                             	<div class="satir duvar_kontrolleri_tutucu hidden-phone">
 									<div class="duvar_kontrolleri">
 										<a href="javascript:;" onclick="$('#replyTextArea_0').focus();"><i class="atolye15-ikon-yeni-yazi atolye15-ikon-48"></i></a>
 										<a id="duvara_git" href="/" class="aktif">

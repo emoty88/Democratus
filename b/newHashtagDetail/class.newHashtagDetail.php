@@ -73,11 +73,18 @@
 					}
 					else
 					{
+						//var_dump();
+						if($_SERVER["REMOTE_ADDR"]=="78.191.25.844")
+						{
+							?>
+							<button id="" class="btn btn-large btn-success" type="button" style="width: 50%" onclick="open_twitter();">twTest</button>
+							<?	
+						}
 						?>
 						<div style="margin:0px 10px; text-align: center;">
 							<div id="htBtnGroup" class="btn-group" style="width: 100%; ">
-								<button id="" class="btn btn-large btn-success" type="button" style="width: 50%" onclick="location.href='/oauth/twitter';">Destekle</button>
-								<button id="" class="btn btn-large btn-danger" type="button" style="width: 50%" onclick="location.href='/oauth/twitter';">Köstekle</button>
+								<button id="" class="btn btn-large btn-success" type="button" style="width: 50%" onclick="open_twitter();">Destekle</button>
+								<button id="" class="btn btn-large btn-danger" type="button" style="width: 50%" onclick="open_twitter();">Köstekle</button>
 							</div>
 						</div>
 						<?

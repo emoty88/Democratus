@@ -2,6 +2,8 @@
 class popularvoice_plugin extends control{ 
 	public function main(){ //return print( $this->location_to_select('loca', 89) );
     	global $model, $db;
+		$model->checkLogin(1);
+		
 		$model->template="ala";
 		$model->view="default";
 		$model->title = 'Democratus - Sesgetirenler';

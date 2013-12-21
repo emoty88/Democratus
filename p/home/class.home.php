@@ -4,7 +4,7 @@
         public function main(){
           
         	global $model, $db, $l;
-			$model->checkLogin(1,"popularvoice");
+			$model->checkLogin(1);
 			$c_profile = new profile();
 			
 			

@@ -68,7 +68,7 @@
     		*/ ?>
     		<div class="clearfix"></div>
     		
-    		<section class="signup">
+    		<section class="signup" style="display:none;">
     			<button id="wellcome-register-button" class="btn btn-large btn-block">Hemen Kayıt Ol</button>
     			<div class="clearfix"></div>
     		</section>

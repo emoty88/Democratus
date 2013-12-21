@@ -2,6 +2,7 @@
     class profile_plugin extends control{
         public function main(){
 			global $model, $db, $l;
+			$model->checkLogin(1);
 			
 			$model->template="ala";
 			$model->view="profile";

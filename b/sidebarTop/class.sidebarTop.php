@@ -3,7 +3,7 @@
         public function block()
 		{
 			?>
-			<div class="satir duvar_kontrolleri_tutucu">
+			<div class="satir duvar_kontrolleri_tutucu hidden-phone">
 				<div class="duvar_kontrolleri">
 					<a href="javascript:;" onclick="$('#quick-editor').toggle('fast');"><i class="atolye15-ikon-yeni-yazi atolye15-ikon-48"></i></a>
 					<a id="duvara_git" href="/" class="">

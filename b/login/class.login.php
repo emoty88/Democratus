@@ -20,7 +20,7 @@
                             </p>
                         </form>
                     </div>
-                    <section class="login" style="height: 180px; width: 530px">
+                    <section class="login" style="height: 180px; width: 205px">
                         <div id="login-box" class="login-box" style="position: absolute">
 	       			<form>
 	    				<input class="input" type="text" id="loginemail" placeholder="E-Posta ya da kullanıcı adı">
@@ -30,7 +30,7 @@
 	    				
 	    			</form>
 	    			
-	    			
+	    			<?php /*
 	                <i class="or_before"></i>
 	    			<span class="or">veya</span>
 	    			<i class="or_after"></i>
@@ -41,6 +41,8 @@
 	    				<a class="twitter_login" href="/oauth/twitter">Twitter ile Bağlan</a>
 	    			
 	    			</div>
+					 * 
+					 */?>
     			</div>
     			<div id="register-box" class="login-box" style="display:none; position: absolute">
 	    		

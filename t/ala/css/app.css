@@ -344,7 +344,7 @@ body.atolye15_body { overflow-x: hidden; }
 	#icerik .container { margin: 10px; background-image: none; }
 }
 @media (max-width: 480px) {
-	
+	html, body { width:100%;  overflow-x:hidden; } 
 }
 
 

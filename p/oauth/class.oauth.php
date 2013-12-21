@@ -17,7 +17,8 @@
 				case 'twitter'	: return $this->twitter(); break;
 				case 'twitter2'	: return $this->twitter2(); break;
 				case 'twitter_sug'	: return $this->twitterSuggestion(); break;		
-				case 'activate' : return $this->activate();
+				case 'activate' : return $this->activate(); break;
+				case 'pCloser' : return $this->pCloser();
 			}
 		}
 		public function activate(){
@@ -453,7 +454,15 @@
 	public function twitter2(){
             global $model, $db;
             require_once( $model->pluginpath.'twitter/twitteroauth.php' );
-            
+            if($_SERVER["REMOTE_ADDR"]=="78.191.25.84")
+			{
+				?>
+					<script>
+						console.log(window.opener.name);
+					</script>
+				<?
+				
+			}
             if (!empty($_GET['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty($_SESSION['oauth_token_secret'])) {
                 
                 // We've got everything we need
@@ -483,24 +492,7 @@
                         $motto        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->description, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         $location        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
                         //$birth        = strip_tags( html_entity_decode( htmlspecialchars_decode( filter_var($user_info->location, FILTER_SANITIZE_STRING), ENT_QUOTES), ENT_QUOTES, 'UTF-8') );
-                        if($_SERVER["REMOTE_ADDR"]=="176.240.195.68")
-						{
-							echo "<pre>";
-							var_dump($user_info);
-							echo "</pre>";
-						}
-                        if($_SERVER['REMOTE_ADDR']=='127.0.0.11')
-						{
-							echo "<pre>";
-							var_dump($user_info);
-							echo "</pre>";
-                                                        $db->setQuery("SELECT * FROM oauth WHERE oauth_provider = 'twitter' AND oauth_uid = " . $db->quote($uid) . "" );
-                                                        $oauth = null;
-                                                        if($db->loadObject($oauth)){
-                                                            print_r($oauth);
-                                                        }
-							die;
-						}
+
                         if (strlen($uid)<3) throw new Exception('id not valid');
                         
                         //oauth kaydı var mı?
@@ -520,7 +512,7 @@
                             if($oauth->status>0)
                                 $model->login('ID='.intval($oauth->userID), 'twitter');
                             
-                            return $model->redirect('/');    
+                            return $model->redirect('/oauth/pCloser');    
                         }
                         
                         
@@ -589,7 +581,7 @@
                                     //echo '<h2>Yaşasın başardık</h2>';
                                     $model->login('ID='.intval($oauth->userID), 'twitter');
                                     $_SESSION['from_sm'] = 'twitter';
-                                    return $model->redirect('/');
+                                    return $model->redirect('/oauth/pCloser');
                                     
                                 } else throw new Exception('oauth insert');
                         } else throw new Exception('user insert');
@@ -698,6 +690,29 @@
                 die('Twitter cevap vermiyor!');
             } 
         }
-		
+		public function pCloser()
+		{
+			global $model;
+			$model->mode = 0;
+			?>
+			
+			<script>	
+				
+				function closeRed()
+				{
+					if(window.name == 'popupOpener')
+					{
+						window.opener.location = window.opener.location;
+						window.close();
+					}
+					else {
+						location.href = "/";
+					}
+				}
+				window.load = closeRed();
+			</script>	
+			<?
+			die;
+		}
 	}
 ?>
