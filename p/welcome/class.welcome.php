@@ -43,8 +43,8 @@
 			            <div class="span12">
 			              <h1><a class="site-title pull-left" href="/"> Democratus</a></h1>
 			              <div class="user text-right">
-			                <a class="user-login fnc" href="#login" >Giriş</a> | 
-			                <a class="user-regidter fnc" href="#register">Kayıt Ol</a>
+			                <a class="user-login fnc" href="#login" >Login</a> | 
+			                <a class="user-regidter fnc" href="#register">Register</a>
 			              </div>
 			            </div><!-- /span12 -->
 			          </div><!-- /row-fluid -->
