@@ -55,7 +55,7 @@
 			          <div class="span12">
 			          
 			            <div class="header-description">
-			              <h2 style="line-height: 85px;">Shape The World <br/> With Your Opinnion!</h2>
+			              <h2 style="line-height: 85px;">Shape The World <br/> With Your Opinion!</h2>
 			              <!--<a class="header-btn" href="#">Join now</a> -->
 			            </div><!-- /header-description -->
 			            
