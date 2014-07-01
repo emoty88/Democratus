@@ -48,7 +48,7 @@
 								<div class="satir bilesenler ">
                                                                        
                                                                         
-									{{meclis}}
+									<? //{{meclis}} ?>
 
 									{{populardies}}
                                     
@@ -64,6 +64,13 @@
 						<section id="orta_alan" class="span8">
 							<div class="satirlar padding_yok">
 								{{sharetextbox}}
+								<div style="margin-left:20px;">
+									<div class="btn-group">
+									  <a href="/" class="btn btn-large wallTypeBtn normal" onClick="changeWallType('normal');">Duvarım</a>
+									  <a href="/#popular" class="btn btn-large wallTypeBtn popular" onClick="changeWallType('popular');">Popüler</a>
+									  <a href="/#newest" class="btn btn-large wallTypeBtn newest" onClick="changeWallType('newest');">Ülke Duvarı</a>
+									</div>
+								</div>
 								<div id="orta_alan_container">
 									{{main}}
 								</div>

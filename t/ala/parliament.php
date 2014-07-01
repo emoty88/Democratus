@@ -44,7 +44,7 @@
 									
 									{{quickEditor}}
 
-									{{meclis}}
+									<? //{{meclis}} ?>
 
 									{{populardies}}
                                                                         {{smsuggestion}}

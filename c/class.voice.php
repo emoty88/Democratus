@@ -124,14 +124,21 @@
         	$JOIN   = "\n LEFT JOIN #__profile AS sharer ON sharer.ID = di.profileID";
         	$JOIN  .= "\n LEFT JOIN #__profile AS redier ON redier.ID = di.redi";
         	if(intval($profileID)<1){
-        		//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
-        		$WHERE  = "\n WHERE  ( ";
-        		$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
-        		//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
-        		$WHERE .= "\n OR profileID IN (".$this->get_profileIDInQuery(0,"following").")";
-				
-        		//$WHERE .= "\n OR profileID IN (get_following(".$model->profileID."))";
-        		$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
+				if($type=="normal"){
+					//$JOIN  .= "\n LEFT JOIN #__follow AS f ON f.followingID = di.profileID";
+					$WHERE  = "\n WHERE  ( ";
+
+					$WHERE .= "\n (di.profileID = " . $db->quote(intval( $model->profileID )) . ")";  //kendi profilinde yayınlananlar
+					//$WHERE .= "\n OR (f.followerID=".$db->quote(intval( $model->profileID ))." AND f.status>0 )"; //takip ettikleri
+					$WHERE .= "\n OR profileID IN (".$this->get_profileIDInQuery(0,"following").")";
+					
+					//$WHERE .= "\n OR profileID IN (get_following(".$model->profileID."))";
+					$WHERE .= "\n OR ( di.profileID<1000 ) )"; //democratus profili
+				}
+				else{
+					$WHERE  = "\n WHERE 1=1 ";
+				}
+
         	} else {
         		$WHERE  = "\n WHERE (di.profileID = " . $db->quote(intval( $profileID ));
 				if(@$hashTag != "0")
@@ -164,9 +171,8 @@
 			}
 			
         	$LIMIT  = "\n LIMIT $limit";
- 
-        	$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 			
+			$db->setQuery($SELECT . $FROM . $JOIN . $WHERE . $ORDER . $LIMIT);
 			//echo $db->_sql;
 			$rows = $db->loadObjectList();
 			

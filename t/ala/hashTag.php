@@ -44,7 +44,7 @@
 									
 									{{quickEditor}}
 									<div class="hashTag_slide">
-									{{meclis}}
+									<? //{{meclis}} ?>
 
 									{{populardies}}
 									</div>

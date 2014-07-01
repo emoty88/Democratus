@@ -44,10 +44,12 @@
 									
 									{{quickEditor}}
 									
-									{{meclis}}
+									<? //{{meclis}} ?>
 
 									{{populardies}}
-                                                                        {{smsuggestion}}
+									
+									{{smsuggestion}}
+									
 									{{whotofollow}}
 
 								</div>

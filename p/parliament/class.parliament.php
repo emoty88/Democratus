@@ -5,7 +5,7 @@ class parliament_plugin extends control {
 		$model->template	= "ala";
 		$model->view		= "default";
 		$model->title 		= 'Democratus - Parliament';
-		
+		$model->redirect('/');
 		$model->addHeaderElement();
 		
 		$model->addScript("paths=".json_encode($model->paths));

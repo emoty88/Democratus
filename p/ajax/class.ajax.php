@@ -24,11 +24,26 @@ class ajax_plugin extends control{
 		$keyword 	= filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
 		$pos	 	= filter_input(INPUT_POST, 'pos', FILTER_SANITIZE_STRING);
 		$type	 	= filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+		$type	 	= filter_input(INPUT_POST, 'mainPageHash', FILTER_SANITIZE_STRING);
 		
-        $c_voice 	= new voice;
+		
+        
 		$response->status	= "success";
-		$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos, $type);
-        echo json_encode($response);
+		if($type == "popular")
+		{
+			$c_pVoice = new popularvoice;
+			$response->voices	= $c_pVoice->get_popularVoice($start , $limit , 0, 0, false);
+		}
+		else if($type == "newest"){
+			$c_pVoice = new popularvoice;
+			$response->voices	= $c_pVoice->get_popularVoice($start , $limit , 0, 0, true);
+		}
+		else
+		{
+			$c_voice 	= new voice;
+			$response->voices	= $c_voice->get_voices_for_wall($profileID, $start, $limit ,$onlyProfile, $hashTag, $keyword, $pos, $type, $type);
+		}
+		echo json_encode($response);
 	}
 	public function get_newWallCount()
 	{

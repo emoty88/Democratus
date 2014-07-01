@@ -25,7 +25,7 @@ var notLoadVoice	= false;
 var noticeProg		= false;
 var messProg		= false;
 var autoload		= 0;
-
+var mainPageHash	= "";
 function starter()
 {
 	if(this.isActive)
@@ -37,6 +37,7 @@ function starter()
 }
 jQuery(document).ready(function ($) {
 	//$(".fnc").fancybox();
+	
     setTimeout("starter()",3000);
     var last = 0;
 	//$(".fineUploader").each(function (){
@@ -106,6 +107,15 @@ jQuery(document).ready(function ($) {
 	
 	if(plugin=="profile" || plugin=="home" || plugin=="hashTag" || plugin=="newHashTag")
 	{
+		if(plugin=="home")
+		{
+			if(window.location.hash ) {
+				mainPageHash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+			} else {
+				mainPageHash = 'normal';
+			}
+			$('.'+mainPageHash).addClass('active');
+		}
 		
 		if(plugin == "hashTag" || plugin=="newHashTag")
 		{
@@ -1027,8 +1037,12 @@ jQuery(document).ready(function ($) {
 	{
 		var post_data = {profileID:profileID, start:firstVoice, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword,pos:pos};
 		loadNewProsses=1;
-		if(!this.isActive)
+		if(!this.isActive )
 			return false;
+			
+		if(plugin!='home' && mainPageHash!='normal')
+			return false;
+		
 		$.ajax({
 			type: "POST",
 			url: "/ajax/get_newWallCount",
@@ -1108,6 +1122,7 @@ jQuery(document).ready(function ($) {
 		}
 	}
 	function get_wall(profileID, start, limit, onlyProfile, hashTag, keyword, pos, type){
+		
 		if(notLoadVoice)
 		{
 			return false;
@@ -1147,7 +1162,7 @@ jQuery(document).ready(function ($) {
 			profileID=0;
 		}
 		
-		var post_data = {profileID:profileID, start:start, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword, pos:pos, type:type};
+		var post_data = {profileID:profileID, start:start, limit:limit, onlyProfile:onlyProfile, hashTag:hashTag, keyword:keyword, pos:pos, type:type, mainPageHash : mainPageHash};
 		$(".daha_fazla_duvar_yazisi").remove();
 		$("#loadingbar-tmpl").tmpl().appendTo("#orta_alan_container");
 		//get_wall(profileID,lastVoiceID,20, onlyProfile, hashTag);
@@ -2338,5 +2353,15 @@ jQuery(document).ready(function ($) {
   		var top = (screen.height/2)-(300);
 		pp = window.open("/oauth/twitter", "popupOpener", "location=1,status=1,scrollbars=1,width=800,height=600, top="+top+", left="+left);  
 		
+	}
+	
+	function changeWallType(wallType){
+		$(".wallTypeBtn").removeClass('active');
+		$('.'+wallType).addClass('active');
+		$('#orta_alan_container').text('');
+		start=0;
+		hashTag=0;
+		mainPageHash = wallType;
+		get_wall(profileID, start, 30, onlyProfile, hashTag, '', 'bottom', mainPageHash);
 	}
 	

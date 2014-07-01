@@ -24,6 +24,9 @@ class popularvoice extends voice
 	       		$JOIN  .= "\n LEFT JOIN profile AS redier ON redier.ID = di.redi";   
 				$WHERE  = "\n WHERE di.status>0";
 				$WHERE .= "\n AND di.profileID NOT IN (".voice::get_profileIDInQuery(0,"allBlock").")";
+				if($onlyProfile==0){
+					$WHERE .= "\n AND onlyProfile='0'";
+				}
 				$GROUP  = "\n"; 
 	        	$ORDER  = "\n ORDER BY ID DESC";
 	        	$LIMIT  = "\n LIMIT $sLimit, $limit";
